@@ -32,6 +32,14 @@ module.exports = {
       },
     },
     {
+    resolve: 'gatsby-source-google-sheets',
+    options: {
+        spreadsheetId: '12a1r2I6v3cJgmCZjJ9Yu86lw_aD69fhlM6HYqGn13jM',
+        worksheetTitle: 'list',
+        credentials: require(`${__dirname}/client_secret.json`,)
+    }
+    },
+    {
       resolve: 'gatsby-plugin-emotion',
       options: {
         autoLabel: process.env.NODE_ENV !== 'production',
