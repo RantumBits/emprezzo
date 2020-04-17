@@ -8,6 +8,43 @@ exports.createPages = ({ graphql, actions }) => {
     const tagPage = path.resolve('src/pages/tags.jsx');
     const tagPosts = path.resolve('src/templates/tag.jsx');
 
+    //Start of creating pages from Google Sheet Data
+    const singleItemTemplate = path.resolve('src/templates/singleitem.jsx');
+    resolve(
+      graphql(
+        `
+          query {
+            allGoogleSheetListRow {
+              edges {
+                node {
+                  name
+                }
+              }
+            }
+          }
+        `
+      ).then(result => {
+        if (result.errors) {
+          return reject(result.errors);
+        }
+
+        const sheetRows = result.data.allGoogleSheetListRow.edges;
+
+        //create pages
+        sheetRows.forEach(({ node }, index) => {
+          const path = node.name;
+          createPage({
+            path,
+            component: singleItemTemplate,
+            context: {
+              pathSlug: path,
+            },
+          });
+        });
+      })
+    );
+    //End of creating pages from Google Sheet Data
+
     resolve(
       graphql(
         `
@@ -90,6 +127,7 @@ exports.createPages = ({ graphql, actions }) => {
         });
       })
     );
+
   });
 };
 
