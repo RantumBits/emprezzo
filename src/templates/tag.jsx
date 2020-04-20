@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { Layout, Container } from 'layouts';
-import { Header } from 'components';
+import { Header, SEO } from 'components';
 import config from '../../config/site';
 
 const StyledLink = styled(Link)`
@@ -29,9 +29,12 @@ const Information = styled.div`
 const Tag = ({ pageContext }) => {
   const { posts, tagName } = pageContext;
   const upperTag = tagName.charAt(0).toUpperCase() + tagName.slice(1);
+  const title = "Tag: "+tagName;
   return (
     <Layout>
-      <Helmet title={`${tagName} | ${config.siteTitle}`} />
+      <SEO
+        title={`${title} | ${config.title}`}
+      />
       <Header title={upperTag}>
         <StyledLink to="/tags">All Tags</StyledLink>
       </Header>

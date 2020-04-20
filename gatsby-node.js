@@ -5,11 +5,13 @@ exports.createPages = ({ graphql, actions }) => {
 
   return new Promise((resolve, reject) => {
     const postTemplate = path.resolve('src/templates/post.jsx');
-    const tagPage = path.resolve('src/pages/tags.jsx');
+    const alltagsPage = path.resolve('src/templates/alltags.jsx');
     const tagPosts = path.resolve('src/templates/tag.jsx');
 
+    const postsByTag = {};
+
     //Start of creating pages from Google Sheet Data
-    const singleItemTemplate = path.resolve('src/templates/singleitem.jsx');
+    const shopTemplate = path.resolve('src/templates/singleitem.jsx');
     resolve(
       graphql(
         `
@@ -18,6 +20,7 @@ exports.createPages = ({ graphql, actions }) => {
               edges {
                 node {
                   name
+                  tags
                 }
               }
             }
@@ -30,14 +33,40 @@ exports.createPages = ({ graphql, actions }) => {
 
         const sheetRows = result.data.allGoogleSheetListRow.edges;
 
+        // extracting tags from pages
+        sheetRows.forEach(({ node }) => {
+          if (node.tags) {
+            const tagsList = node.tags.split(',')
+            let rowPost = {
+              frontmatter: {
+                title: "",
+                path: ""
+              }
+            }
+            tagsList.forEach(tag => {
+              rowPost.frontmatter.title = node.name
+              rowPost.frontmatter.path = '/shops/'+node.name
+              if (!postsByTag[tag]) {
+                postsByTag[tag] = [];
+              }
+              postsByTag[tag].push(rowPost);
+            });
+          }
+        });
+
         //create pages
         sheetRows.forEach(({ node }, index) => {
-          const path = node.name;
+          const path = '/shops/'+node.name;
+          const prev = index === 0 ? null : sheetRows[index - 1].node;
+          const next =
+            index === sheetRows.length - 1 ? null : sheetRows[index + 1].node;
           createPage({
             path,
-            component: singleItemTemplate,
+            component: shopTemplate,
             context: {
-              pathSlug: path,
+              pathSlug: node.name,
+              prev,
+              next,
             },
           });
         });
@@ -71,7 +100,6 @@ exports.createPages = ({ graphql, actions }) => {
 
         const posts = result.data.allMarkdownRemark.edges;
 
-        const postsByTag = {};
         // create tags page
         posts.forEach(({ node }) => {
           if (node.frontmatter.tags) {
@@ -87,9 +115,10 @@ exports.createPages = ({ graphql, actions }) => {
 
         const tags = Object.keys(postsByTag);
 
+        //Create All Tags page
         createPage({
           path: '/tags',
-          component: tagPage,
+          component: alltagsPage,
           context: {
             tags: tags.sort(),
           },
