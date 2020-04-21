@@ -48,8 +48,24 @@ const Index = ({ data }) => {
   const shopEdges = data.allGoogleSheetListRow.edges;
   return (
     <Layout>
-      <Helmet title={'Home Page'} />
-      <Header title="Home Page">Gatsby Tutorial Starter</Header>
+      <Helmet title={'uncommonry'} />
+      <Header title="uncommonry">🧐discover exceptional retailers & independent brands<br/>🛒shop directly & support innovative small businesses</Header>
+      <ShopSectionHeading>Shops</ShopSectionHeading>
+      <ShopWrapper>
+        {shopEdges.map(({ node }) => {
+          return (
+            <ShopList
+              key={node.name}
+              cover={node.imageurl}
+              path={`/shops/${node.name}`}
+              title={node.name}
+              date={node.date}
+              excerpt={node.about.substring(0,40)+"..."}
+            />
+          );
+        })}
+      </ShopWrapper>
+
       <PostSectionHeading>Posts</PostSectionHeading>
       <PostWrapper>
         {edges.map(({ node }) => {
@@ -68,21 +84,7 @@ const Index = ({ data }) => {
         })}
       </PostWrapper>
 
-      <ShopSectionHeading>Shops</ShopSectionHeading>
-      <ShopWrapper>
-        {shopEdges.map(({ node }) => {
-          return (
-            <ShopList
-              key={node.name}
-              cover={node.imageurl}
-              path={`/shops/${node.name}`}
-              title={node.name}
-              date={node.date}
-              excerpt={node.about.substring(0,40)+"..."}
-            />
-          );
-        })}
-      </ShopWrapper>
+
     </Layout>
   );
 };

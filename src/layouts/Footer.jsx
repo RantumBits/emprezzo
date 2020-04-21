@@ -25,8 +25,9 @@ const Footer = () => (
   <Wrapper>
     <Text>
       <span>
-        Gatsby Tutorial Starter -{' '}
-        <a href="https://justinformentin.com">Justin Formentin</a>
+        <strong>uncommmonry</strong> <br/>🛒 shop independent <br/>
+        ⚒ california 🥑 <a href="https://ecomloop.com">ecomloop</a>
+
       </span>
     </Text>
   </Wrapper>

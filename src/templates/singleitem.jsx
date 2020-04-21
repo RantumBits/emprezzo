@@ -35,17 +35,13 @@ const SingleItem = ({ data, pageContext }) => {
       />
       <Header title={name} date={date} cover={imageurl} />
       <Container>
-        <br/ >Image URL = <Content input={imageurl} />
-        <br/ >URL = <Content input={url} />
-        <br/ >Category = <Content input={category} />
-        <br/ >Tags = <Content input={tags} />
-        <br/ >AmazonLink = <Content input={amazonlink} />
-        <br/ >SocialLink = <Content input={sociallink} />
-        <br/ >About = <Content input={about} />
-        <br/ >Country = <Content input={country} />
-        <br/ >City = <Content input={city} />
-        <br/ >State = <Content input={state} />
+
+        <h1>{name}</h1>
+        <h5>{city}, {state} {country}</h5>
         <TagsBlock list={tagsList || []} />
+        <p><Content input={about} /></p><br/>
+        <a target="_blank" href ={url}>Shop {name} directly</a><br/>
+
       </Container>
       <SuggestionBar>
         <PostSuggestion>
