@@ -50,7 +50,7 @@ const Header = ({ children, title, date, cover }) => (
       <Img fluid={cover || {} || [] || ''} />
     }
     {typeof cover === 'string' &&
-      <img src={cover || {} || [] || ''} />
+      <img src={cover || {} || [] || ''} style={{width: '100%', objectFit: 'fill', objectPosition: '50% 50%'}} />
     }
     <Text>
       <h1>{title}</h1>

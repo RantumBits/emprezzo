@@ -41,6 +41,7 @@ const SingleItem = ({ data, pageContext }) => {
         <br/ >Tags = <Content input={tags} />
         <br/ >AmazonLink = <Content input={amazonlink} />
         <br/ >SocialLink = <Content input={sociallink} />
+        <br/ >About = <Content input={about} />
         <br/ >Country = <Content input={country} />
         <br/ >City = <Content input={city} />
         <br/ >State = <Content input={state} />

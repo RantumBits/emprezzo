@@ -95,7 +95,7 @@ const BlogList = ({ path, cover, title, date, excerpt, tags }) => (
             <Img fluid={cover || {} || [] || ''} />
           }
           {typeof cover === 'string' &&
-            <img src={cover || {} || [] || ''} />
+            <img src={cover || {} || [] || ''} style={{height: '100%', objectFit: 'fill'}} />
           }
         </Link>
       </Image>

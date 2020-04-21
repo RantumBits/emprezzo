@@ -4,7 +4,12 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import styled from '@emotion/styled';
 import { Header, PostList } from 'components';
+import ShopList from 'components/ShopList';
 import { Layout } from 'layouts';
+
+const PostSectionHeading = styled.h1`
+  margin-left: 4rem;
+`;
 
 const PostWrapper = styled.div`
   display: flex;
@@ -20,12 +25,32 @@ const PostWrapper = styled.div`
   }
 `;
 
+const ShopSectionHeading = styled.h1`
+  margin-left: 4rem;
+`;
+
+const ShopWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 4rem 4rem 1rem 4rem;
+  @media (max-width: 1000px) {
+    margin: 4rem 2rem 1rem 2rem;
+  }
+  @media (max-width: 700px) {
+    margin: 4rem 1rem 1rem 1rem;
+  }
+`;
+
 const Index = ({ data }) => {
   const { edges } = data.allMarkdownRemark;
+  const shopEdges = data.allGoogleSheetListRow.edges;
   return (
     <Layout>
       <Helmet title={'Home Page'} />
       <Header title="Home Page">Gatsby Tutorial Starter</Header>
+      <PostSectionHeading>Posts</PostSectionHeading>
       <PostWrapper>
         {edges.map(({ node }) => {
           const { id, excerpt, frontmatter } = node;
@@ -42,6 +67,22 @@ const Index = ({ data }) => {
           );
         })}
       </PostWrapper>
+
+      <ShopSectionHeading>Shops</ShopSectionHeading>
+      <ShopWrapper>
+        {shopEdges.map(({ node }) => {
+          return (
+            <ShopList
+              key={node.name}
+              cover={node.imageurl}
+              path={`/shops/${node.name}`}
+              title={node.name}
+              date={node.date}
+              excerpt={node.about.substring(0,40)+"..."}
+            />
+          );
+        })}
+      </ShopWrapper>
     </Layout>
   );
 };
@@ -96,6 +137,26 @@ export const query = graphql`
               }
             }
           }
+        }
+      }
+    }
+
+    allGoogleSheetListRow(limit: 6, sort: {fields: date, order: DESC}) {
+      edges {
+        node {
+          name
+          date
+          url
+          category
+          tags
+          amazonlink
+          sociallink
+          about
+          country
+          state
+          city
+          like
+          imageurl
         }
       }
     }

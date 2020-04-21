@@ -5,12 +5,14 @@ import PropTypes from 'prop-types';
 import { Header, BlogList } from 'components';
 import { Layout } from 'layouts';
 
+
+
 const Shops = ({ data }) => {
   const { edges } = data.allGoogleSheetListRow;
   return (
     <Layout>
-      <Helmet title={'Shops Page'} />
-      <Header title="Shops Page">Gatsby Tutorial Starter</Header>
+      <Helmet title={'Uncommon Shops'} />
+      <Header title="Uncommon Shops">an ever-growing list of exceptional independent brands & retailers</Header>
       {edges.map(({ node }) => (
         <BlogList
           key={node.name}
