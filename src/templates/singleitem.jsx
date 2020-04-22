@@ -21,19 +21,21 @@ const PostSuggestion = styled.div`
 
 const SingleItem = ({ data, pageContext }) => {
   const { next, prev } = pageContext;
-  const { name, date, imageurl, url, category, tags, amazonlink, sociallink, about, country, state, city, like } = data.googleSheetListRow
+  const { name, date, imageurl, url, category, tags, localImageUrl, sociallink, about, country, state, city, like } = data.googleSheetListRow
 
   //converting comma seperated tags to tags map
   const tagsList = tags.split(',')
+  const image = localImageUrl.childImageSharp.fluid;
 
   return (
     <Layout>
       <SEO
         title={name}
         description={about || ' '}
+        banner={image}
         pathname={url}
       />
-      <Header title={name} date={date} cover={imageurl} />
+      <Header title={name} date={date} cover={image} />
       <Container>
 
         <h1>{name}</h1>
@@ -71,18 +73,29 @@ export const query = graphql`
   query($pathSlug: String!) {
     googleSheetListRow(name: {eq: $pathSlug}) {
       name
-      date
       imageurl
+      localImageUrl {
+        childImageSharp {
+          fluid(
+            maxWidth: 1920
+            quality: 90
+            duotone: { highlight: "#386eee", shadow: "#2323be", opacity: 60 }
+          ) {
+            ...GatsbyImageSharpFluid_withWebp
+          }
+          resize(width: 1200, quality: 90) {
+            src
+          }
+        }
+      }
       url
       category
       tags
-      amazonlink
       sociallink
       about
       country
       state
       city
-      like
     }
   }
 `;

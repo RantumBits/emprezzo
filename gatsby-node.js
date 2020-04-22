@@ -7,6 +7,7 @@ exports.createPages = ({ graphql, actions }) => {
     const postTemplate = path.resolve('src/templates/post.jsx');
     const alltagsPage = path.resolve('src/templates/alltags.jsx');
     const tagPosts = path.resolve('src/templates/tag.jsx');
+    const categoryTemplate = path.resolve('src/templates/category.jsx');
 
     const postsByTag = {};
 
@@ -21,6 +22,7 @@ exports.createPages = ({ graphql, actions }) => {
                 node {
                   name
                   tags
+                  category
                 }
               }
             }
@@ -45,7 +47,7 @@ exports.createPages = ({ graphql, actions }) => {
             }
             tagsList.forEach(tag => {
               rowPost.frontmatter.title = node.name
-              rowPost.frontmatter.path = '/shops/'+node.name
+              rowPost.frontmatter.path = '/shops/' + node.name
               if (!postsByTag[tag]) {
                 postsByTag[tag] = [];
               }
@@ -54,9 +56,34 @@ exports.createPages = ({ graphql, actions }) => {
           }
         });
 
+        // extracting categories from the page and creating seperate category pages
+        let uniqueCategories = []
+        sheetRows.forEach(({ node }) => {
+          if (node.category) {
+            const categoryList = node.category.split(',')
+            categoryList.forEach(category => {
+              if (uniqueCategories.indexOf(category) === -1) {
+                uniqueCategories.push(category)
+              }
+            });
+          }
+        });
+
+        // Make category pages
+        uniqueCategories.forEach(cat => {
+          categoryKebabCase = cat.replace(/([a-z])([A-Z])/g, '$1-$2').replace(/\s+/g, '-').toLowerCase();
+          createPage({
+            path: `/category/${categoryKebabCase}/`,
+            component: categoryTemplate,
+            context: {
+              category: cat,
+            },
+          })
+        })
+
         //create pages
         sheetRows.forEach(({ node }, index) => {
-          const path = '/shops/'+node.name;
+          const path = '/shops/' + node.name;
           const prev = index === 0 ? null : sheetRows[index - 1].node;
           const next =
             index === sheetRows.length - 1 ? null : sheetRows[index + 1].node;

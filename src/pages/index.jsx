@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import styled from '@emotion/styled';
 import { Header, PostList } from 'components';
-import ShopList from 'components/ShopList';
 import { Layout } from 'layouts';
 
 const PostSectionHeading = styled.h1`
@@ -54,12 +53,11 @@ const Index = ({ data }) => {
       <ShopWrapper>
         {shopEdges.map(({ node }) => {
           return (
-            <ShopList
+            <PostList
               key={node.name}
-              cover={node.imageurl}
+              cover={node.localImageUrl.childImageSharp.fluid}
               path={`/shops/${node.name}`}
               title={node.name}
-              date={node.date}
               excerpt={node.about.substring(0,40)+"..."}
             />
           );
@@ -143,21 +141,29 @@ export const query = graphql`
       }
     }
 
-    allGoogleSheetListRow(limit: 6, sort: {fields: date, order: DESC}) {
+    allGoogleSheetListRow(filter: {category: {eq: "HOME"}}, limit: 6) {
       edges {
         node {
           name
-          date
           url
           category
           tags
-          amazonlink
           sociallink
           about
           country
           state
           city
-          like
+          localImageUrl {
+            childImageSharp {
+              fluid(
+                maxWidth: 1000
+                quality: 90
+                traceSVG: { color: "#2B2B2F" }
+              ) {
+                ...GatsbyImageSharpFluid_withWebp_tracedSVG
+              }
+            }
+          }
           imageurl
         }
       }

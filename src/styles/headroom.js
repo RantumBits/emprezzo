@@ -51,6 +51,16 @@ const headroom = css`
           color: ${theme.colors.black.base};
         }
       }
+      .dropdown {
+        color: ${theme.colors.black.base};
+        &:hover {
+          border-color: ${theme.colors.black.base};
+          color: ${theme.colors.black.base};
+        }
+        &:focus {
+          color: ${theme.colors.black.base};
+        }
+      }
     }
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
