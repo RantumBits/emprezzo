@@ -113,20 +113,21 @@ const NavBar = () => {
   return (
     <Headroom calcHeightOnResize disableInlineStyles>
       <StyledLink to="/">
-        <img src={logo} alt="Gatsby Logo" />
+        <img src={logo} alt="uncommonry - discover & shop indepdent retailers & brands" />
       </StyledLink>
       <Nav>
-        <Link to="/">Home</Link>
-        <Link to="/blog">Blog</Link>
-        <Link to="/shops">Shops</Link>
+
+
+
         <div className="dropdown">
-          Categories
+          <Link to="/shops">Discover Shops</Link>
         <div className="dropdown-content">
             {uniqueCategoriesMap.map((item) => (
               <Link to={`/category/${item.url}`} > {item.text}</Link>
             ))}
           </div>
         </div>
+        <Link to="/submit_shop">Submit Shop</Link>
         <Link to="/about">About</Link>
       </Nav>
     </Headroom >

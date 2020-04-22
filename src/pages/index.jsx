@@ -45,11 +45,13 @@ const ShopWrapper = styled.div`
 const Index = ({ data }) => {
   const { edges } = data.allMarkdownRemark;
   const shopEdges = data.allGoogleSheetListRow.edges;
+  const shopHomeEdges = data.allGoogleSheetListRow.edges;
+
   return (
     <Layout>
       <Helmet title={'uncommonry'} />
-      <Header title="uncommonry">🧐discover exceptional retailers & independent brands<br/>🛒shop directly & support innovative small businesses</Header>
-      <ShopSectionHeading>Shops</ShopSectionHeading>
+      <Header title="Discover & Shop Independent Businesses">🧐 Discover exceptional retailers & independent brands<br/>🛒 Shop direct to support innovative small businesses</Header>
+      <ShopSectionHeading>Food</ShopSectionHeading>
       <ShopWrapper>
         {shopEdges.map(({ node }) => {
           return (
@@ -63,6 +65,22 @@ const Index = ({ data }) => {
           );
         })}
       </ShopWrapper>
+
+      <ShopSectionHeading>Home</ShopSectionHeading>
+      <ShopWrapper>
+        {shopHomeEdges.map(({ node }) => {
+          return (
+            <PostList
+              key={node.name}
+              cover={node.localImageUrl.childImageSharp.fluid}
+              path={`/shops/${node.name}`}
+              title={node.name}
+              excerpt={node.about.substring(0,40)+"..."}
+            />
+          );
+        })}
+      </ShopWrapper>
+
 
       <PostSectionHeading>Posts</PostSectionHeading>
       <PostWrapper>
@@ -141,7 +159,7 @@ export const query = graphql`
       }
     }
 
-    allGoogleSheetListRow(filter: {category: {eq: "HOME"}}, limit: 6) {
+    allGoogleSheetListRow(filter: {category: {eq: "Food"}}, limit: 3) {
       edges {
         node {
           name
