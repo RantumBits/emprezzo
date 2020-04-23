@@ -44,8 +44,21 @@ const ShopWrapper = styled.div`
 
 const Index = ({ data }) => {
   const { edges } = data.allMarkdownRemark;
-  const shopEdges = data.allGoogleSheetListRow.edges;
-  const shopHomeEdges = data.allGoogleSheetListRow.edges;
+  const rowEdges = data.allGoogleSheetListRow.edges;
+  const foodEdges = [];
+  const homeEdges = [];
+  const maxItems = 6;
+
+  //filtering home and food items maximum to 6 items
+  rowEdges.map((edge) => {
+    if(edge.node.category && edge.node.category == "Food" && foodEdges.length<maxItems) {
+      foodEdges.push(edge);
+    }
+    else if(edge.node.category && edge.node.category == "Home" && homeEdges.length<maxItems) {
+      homeEdges.push(edge);
+    }
+
+  })
 
   return (
     <Layout>
@@ -53,7 +66,7 @@ const Index = ({ data }) => {
       <Header title="Discover & Shop Independent Businesses">🧐 Discover exceptional retailers & independent brands<br/>🛒 Shop direct to support innovative small businesses</Header>
       <ShopSectionHeading>Food</ShopSectionHeading>
       <ShopWrapper>
-        {shopEdges.map(({ node }) => {
+        {foodEdges.map(({ node }) => {
           return (
             <PostList
               key={node.name}
@@ -68,7 +81,7 @@ const Index = ({ data }) => {
 
       <ShopSectionHeading>Home</ShopSectionHeading>
       <ShopWrapper>
-        {shopHomeEdges.map(({ node }) => {
+        {homeEdges.map(({ node }) => {
           return (
             <PostList
               key={node.name}
@@ -159,7 +172,7 @@ export const query = graphql`
       }
     }
 
-    allGoogleSheetListRow(filter: {category: {eq: "Food"}}, limit: 3) {
+    allGoogleSheetListRow {
       edges {
         node {
           name
@@ -175,7 +188,7 @@ export const query = graphql`
             childImageSharp {
               fluid(
                 maxWidth: 1000
-                quality: 90
+                quality: 100
                 traceSVG: { color: "#2B2B2F" }
               ) {
                 ...GatsbyImageSharpFluid_withWebp_tracedSVG

@@ -21,8 +21,15 @@ exports.createPages = ({ graphql, actions }) => {
               edges {
                 node {
                   name
-                  tags
+                  url
                   category
+                  tags
+                  sociallink
+                  about
+                  country
+                  state
+                  city
+                  imageurl
                 }
               }
             }
@@ -51,7 +58,7 @@ exports.createPages = ({ graphql, actions }) => {
               if (!postsByTag[tag]) {
                 postsByTag[tag] = [];
               }
-              postsByTag[tag].push(rowPost);
+              postsByTag[tag].push(node);
             });
           }
         });

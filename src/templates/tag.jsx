@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { Layout, Container } from 'layouts';
 import { Header, SEO } from 'components';
+import ShopList from '../components/ShopList';
 import config from '../../config/site';
 
 const StyledLink = styled(Link)`
@@ -18,18 +19,29 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const Information = styled.div`
-  text-align: center;
-  h1 {
-    font-size: 2rem;
-    margin-bottom: 1.25rem;
+const TagWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 4rem 4rem 1rem 4rem;
+  @media (max-width: 1000px) {
+    margin: 4rem 2rem 1rem 2rem;
+  }
+  @media (max-width: 700px) {
+    margin: 4rem 1rem 1rem 1rem;
   }
 `;
 
 const Tag = ({ pageContext }) => {
   const { posts, tagName } = pageContext;
   const upperTag = tagName.charAt(0).toUpperCase() + tagName.slice(1);
-  const title = "Tag: "+tagName;
+  const title = "Tag: " + tagName;
+
+  console.log("**************");
+  console.log(posts);
+  console.log("**************");
+
   return (
     <Layout>
       <SEO
@@ -38,15 +50,20 @@ const Tag = ({ pageContext }) => {
       <Header title={upperTag}>
         <StyledLink to="/tags">All Tags</StyledLink>
       </Header>
-      <Container>
-        <Information>
-          {posts.map((post, index) => (
-            <Link key={index} to={post.frontmatter.path}>
-              <h3>{post.frontmatter.title}</h3>
-            </Link>
+        <TagWrapper>
+          {posts.map((node) => (
+            <ShopList
+              key={node.name}
+              cover={node.imageurl}
+              path={`/shops/${node.name}`}
+              title={node.name}
+              date={node.date}
+              tags={node.tags && node.tags.split(',')}
+              excerpt={node.about && node.about.substring(0, 40) + "..."}
+            />
           ))}
-        </Information>
-      </Container>
+        </TagWrapper>
+
     </Layout>
   );
 };
