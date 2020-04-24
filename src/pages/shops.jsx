@@ -12,7 +12,7 @@ const Shops = ({ data }) => {
   return (
     <Layout>
       <Helmet title={'Uncommon Shops'} />
-      <Header title="Uncommon Shops">an ever-growing list of exceptional independent brands & retailers</Header>
+      <Header title="Uncommon Shops">🧐 Discover exceptional retailers & innovative brands<br/>🛒 Shop direct to support independent businesses</Header>
       {edges.map(({ node }) => (
         <BlogList
           key={node.name}

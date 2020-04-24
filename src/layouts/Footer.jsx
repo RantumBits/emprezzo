@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import logo from '../../static/logo/header-logo.png';
 
 const Wrapper = styled.footer`
   position: relative;
@@ -24,11 +25,13 @@ const Text = styled.div`
 const Footer = () => (
   <Wrapper>
     <Text>
-      <span>
-        <strong>uncommmonry</strong> <br/>🛒 shop independent <br/>
-        ⚒ california 🥑 <a href="https://ecomloop.com">ecomloop</a>
+      <div>
 
-      </span>
+        <img src={logo} width="200px" alt="uncommonry - discover & shop indepdent retailers & brands" />
+        <div>🛒 shop independent <br/>
+        ⚒ <a href="https://ecomloop.com">ecomloop</a> 🥑 california</div>
+
+      </div>
     </Text>
   </Wrapper>
 );

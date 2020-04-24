@@ -7,18 +7,20 @@ import { Layout, Container } from 'layouts';
 const Submit = center => (
   <Layout>
     <Helmet title={'Submit Shop'} />
-    <Header title="Submit a Shop">we help consumers discover & support exceptional independent brands & retailers</Header>
+    <Header title="Submit a Shop">🧐 Discover exceptional retailers & innovative brands<br/>🛒 Shop direct to support independent businesses</Header>
     <Container center={center}>
     <form name="submit_shop" method="POST" action="/" data-netlify="true" netlify-honeypot="bot-field">
+    Submit a new independent shop to add to our list! <br/>All entries are manually reviewed. <br/><br/>
     <input type="hidden" name="bot-field" />
-    <label>Your name: <input type="text" name="name" placeholder="your name" required /></label>
-    <label>Your email: <input type="email" name="email" placeholder="hello@example.com" required /></label>
-    <label>Shop URL: <input type="shop_website" placeholder="example.com" name="shop_website" required /></label>
-    <label>What makes this shop a good addition?<br/> <textarea name="message" required></textarea></label>
-  </p>
-  <p>
-    <button type="submit">Send</button>
-  </p>
+    Your contact info
+    <div class="pair"><label><input type="text" name="name" placeholder="Your name" required /></label></div>
+    <div class="pair"><label><input type="email" name="email" placeholder="hello@example.com" required /></label></div>
+    <br/>Shop details
+    <div class="pair"><label><input type="shop_name" placeholder="Shop name" name="shop_name" required /></label></div>
+    <div class="pair"><label><input type="shop_category" placeholder="Category" name="shop_category" required /></label></div>
+    <div class="pair"><label><input type="shop_website" placeholder="example.com" name="shop_website" required /></label></div>
+    <div class="pair"><label><textarea name="message" placeholder="What makes this shop a good addition?" required></textarea></label></div>
+    <button type="submit">Submit</button>
 </form>
     </Container>
   </Layout>
