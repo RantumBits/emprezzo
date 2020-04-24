@@ -20,7 +20,7 @@ const Submit = center => (
     <div class="pair"><label><input type="shop_category" placeholder="Category" name="shop_category" required /></label></div>
     <div class="pair"><label><input type="shop_website" placeholder="example.com" name="shop_website" required /></label></div>
     <div class="pair"><label><textarea name="message" placeholder="What makes this shop a good addition?" required></textarea></label></div>
-    <input type="submit">Submit</button>
+    <input type="submit">Submit</input>
 </form>
     </Container>
   </Layout>
