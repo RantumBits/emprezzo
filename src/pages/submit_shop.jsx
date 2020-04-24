@@ -9,7 +9,7 @@ const Submit = center => (
     <Helmet title={'Submit Shop'} />
     <Header title="Submit a Shop">🧐 Discover exceptional retailers & innovative brands<br/>🛒 Shop direct to support independent businesses</Header>
     <Container center={center}>
-    <form name="submit_shop" method="POST" action="/" data-netlify="true" netlify-honeypot="bot-field">
+    <form name="submit_shop" method="POST" action="/success" data-netlify="true" netlify-honeypot="bot-field">
     Submit a new independent shop to add to our list! <br/>All entries are manually reviewed. <br/><br/>
     <input type="hidden" name="bot-field" />
     Your contact info
