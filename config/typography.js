@@ -5,16 +5,17 @@ export const typography = new Typography({
   baseFontSize: '18px',
   baseLineHeight: 1.45,
   headerFontFamily: [
+    'Roboto',
     'Candal',
     '-apple-system',
     'BlinkMacSystemFont',
     'Segoe UI',
-    'Roboto',
     'Helvetica',
     'Arial',
     'sans-serif',
   ],
   bodyFontFamily: [
+    'Segoe UI',
     'Open Sans',
     '-apple-system',
     'BlinkMacSystemFont',

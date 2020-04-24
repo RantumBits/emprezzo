@@ -63,7 +63,7 @@ const Index = ({ data }) => {
   return (
     <Layout>
       <Helmet title={'uncommonry'} />
-      <Header title="Discover & Shop Independent Businesses">🧐 Discover exceptional retailers & independent brands<br/>🛒 Shop direct to support innovative small businesses</Header>
+      <Header title="Discover & Shop Independent Businesses">🧐 Discover exceptional retailers & innovative brands<br/>🛒 Shop direct to support independent businesses</Header>
       <ShopSectionHeading>Food</ShopSectionHeading>
       <ShopWrapper>
         {foodEdges.map(({ node }) => {

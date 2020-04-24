@@ -9,18 +9,12 @@ const Submit = center => (
     <Helmet title={'Submit Shop'} />
     <Header title="Submit a Shop">we help consumers discover & support exceptional independent brands & retailers</Header>
     <Container center={center}>
-    <form name="submit_shop" method="POST" data-netlify="true">
-  <p>
-    <label>Your name: <input type="text" name="name" /></label>
-  </p>
-  <p>
-    <label>Your email: <input type="email" name="email" /></label>
-  </p>
-  <p>
-    <label>Shop URL: <input type="shop_website" name="shop_website" /></label>
-  </p>
-  <p>
-    <label>What makes this shop a good fit for uncommonry?<br/> <textarea name="message"></textarea></label>
+    <form name="submit_shop" method="POST" action="/" data-netlify="true" netlify-honeypot="bot-field">
+    <input type="hidden" name="bot-field" />
+    <label>Your name: <input type="text" name="name" placeholder="your name" required /></label>
+    <label>Your email: <input type="email" name="email" placeholder="hello@example.com" required /></label>
+    <label>Shop URL: <input type="shop_website" placeholder="example.com" name="shop_website" required /></label>
+    <label>What makes this shop a good addition?<br/> <textarea name="message" required></textarea></label>
   </p>
   <p>
     <button type="submit">Send</button>
