@@ -38,10 +38,6 @@ const Tag = ({ pageContext }) => {
   const upperTag = tagName.charAt(0).toUpperCase() + tagName.slice(1);
   const title = "Tag: " + tagName;
 
-  console.log("**************");
-  console.log(posts);
-  console.log("**************");
-
   return (
     <Layout>
       <SEO

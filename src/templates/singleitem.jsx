@@ -42,7 +42,7 @@ const SingleItem = ({ data, pageContext }) => {
         <h5>{city}, {state} {country}</h5>
         <TagsBlock list={tagsList || []} />
         <p><Content input={about} /></p><br/>
-        <a target="_blank" href ={url}>Shop {name} directly</a><br/>
+        <a target="_blank" href ={url} class="button">Shop {name}</a> <a href ="/randomshop" class="button buttonalt">See another shop</a>
 
       </Container>
       <SuggestionBar>
