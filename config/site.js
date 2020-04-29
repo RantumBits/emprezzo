@@ -3,8 +3,8 @@ module.exports = {
   title: 'uncommonry', // Navigation and Site Title
   titleAlt: 'uncommonry', // Title for JSONLD
   description: 'discover, shop & support great independent shops & brands',
-  url: 'https://uncommonize.netlify.com', // Domain of your site. No trailing slash!
-  siteUrl: 'https://uncommonize.netlify.com', // url + pathPrefix
+  url: 'https://uncommonry.netlify.com', // Domain of your site. No trailing slash!
+  siteUrl: 'https://uncommonry.netlify.com', // url + pathPrefix
   siteLanguage: 'en', // Language Tag on <html> element
   logo: 'static/logo/logo.png', // Used for SEO
   banner: 'static/logo/banner.png',

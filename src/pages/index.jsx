@@ -54,7 +54,7 @@ const Index = ({ data }) => {
     if(edge.node.category && edge.node.category == "Food" && foodEdges.length<maxItems) {
       foodEdges.push(edge);
     }
-    else if(edge.node.category && edge.node.category == "Home" && homeEdges.length<maxItems) {
+    else if(edge.node.category && edge.node.category == "Health" && homeEdges.length<maxItems) {
       homeEdges.push(edge);
     }
 
@@ -79,7 +79,7 @@ const Index = ({ data }) => {
         })}
       </ShopWrapper>
 
-      <ShopSectionHeading>Home</ShopSectionHeading>
+      <ShopSectionHeading>Health</ShopSectionHeading>
       <ShopWrapper>
         {homeEdges.map(({ node }) => {
           return (

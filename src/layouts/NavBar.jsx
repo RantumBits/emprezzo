@@ -120,15 +120,15 @@ const NavBar = () => {
 
 
         <div className="dropdown">
-          <Link to="/shops">Discover Shops</Link>
+          <Link to="/shops">Discover</Link>
         <div className="dropdown-content">
             {uniqueCategoriesMap.map((item) => (
               <Link key={item.url} to={`/category/${item.url}`} > {item.text}</Link>
             ))}
           </div>
         </div>
-        <Link to="/randomshop">Random Shop</Link>
-        <Link to="/submit_shop">Submit Shop</Link>
+        <Link to="/randomshop">Random</Link>
+        <Link to="/submit_shop">Submit</Link>
         <Link to="/about">About</Link>
       </Nav>
     </Headroom >
