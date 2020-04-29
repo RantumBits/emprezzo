@@ -12,6 +12,11 @@ const headroom = css`
     display: none;
 }
 
+p.center {
+    text-align: center;
+    margin: 25px;
+}
+
   a{ color: #6f6add;}
   a.button{
     display:inline-block;

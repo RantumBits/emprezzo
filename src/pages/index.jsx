@@ -47,7 +47,7 @@ const Index = ({ data }) => {
   const rowEdges = data.allGoogleSheetListRow.edges;
   const foodEdges = [];
   const homeEdges = [];
-  const maxItems = 6;
+  const maxItems = 9;
 
   //filtering home and food items maximum to 6 items
   rowEdges.map((edge) => {
@@ -64,8 +64,13 @@ const Index = ({ data }) => {
     <Layout>
       <Helmet title={'uncommonry'} />
       <Header title="Discover & Shop Independent Businesses">🧐 Discover exceptional retailers & innovative brands<br/>🛒 Shop direct to support independent businesses</Header>
-      <ShopSectionHeading>Food</ShopSectionHeading>
+
+<p class="center"><a href ="/randomshop" class="button button">Discover a  shop</a></p>
+
+      <ShopSectionHeading>Browse</ShopSectionHeading>
+
       <ShopWrapper>
+
         {foodEdges.map(({ node }) => {
           return (
             <PostList
@@ -79,7 +84,7 @@ const Index = ({ data }) => {
         })}
       </ShopWrapper>
 
-      <ShopSectionHeading>Health</ShopSectionHeading>
+
       <ShopWrapper>
         {homeEdges.map(({ node }) => {
           return (
@@ -95,23 +100,7 @@ const Index = ({ data }) => {
       </ShopWrapper>
 
 
-      <PostSectionHeading>Posts</PostSectionHeading>
-      <PostWrapper>
-        {edges.map(({ node }) => {
-          const { id, excerpt, frontmatter } = node;
-          const { cover, path, title, date } = frontmatter;
-          return (
-            <PostList
-              key={id}
-              cover={cover.childImageSharp.fluid}
-              path={path}
-              title={title}
-              date={date}
-              excerpt={excerpt}
-            />
-          );
-        })}
-      </PostWrapper>
+
 
 
     </Layout>
@@ -144,7 +133,7 @@ Index.propTypes = {
 export const query = graphql`
   query {
     allMarkdownRemark(
-      limit: 6
+      limit: 9
       sort: { order: DESC, fields: [frontmatter___date] }
     ) {
       edges {
