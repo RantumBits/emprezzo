@@ -42,7 +42,7 @@ const Category = ({ data, pageContext }) => {
             path={`/shops/${node.name}`}
             title={node.name}
             date={node.date}
-            tags={node.tags.split(',')}
+            tags={node.tags && node.tags.split(',')}
             excerpt={node.about.substring(0,40)+"..."}
           />
         ))}

@@ -116,7 +116,7 @@ const ShopList = ({ path, cover, title, date, excerpt, tags }) => (
     <Wrapper>
       <Image>
         <Link to={path} title={title}>
-          {typeof cover === 'object' &&
+          {cover && typeof cover === 'object' &&
             <Img fluid={cover || {} || [] || ''} />
           }
           {typeof cover === 'string' &&
@@ -138,10 +138,10 @@ const ShopList = ({ path, cover, title, date, excerpt, tags }) => (
 export default ShopList;
 
 ShopList.propTypes = {
-  cover: PropTypes.object.isRequired,
+  cover: PropTypes.object,
   path: PropTypes.string.isRequired,
   excerpt: PropTypes.string,
-  date: PropTypes.string.isRequired,
+  date: PropTypes.string,
   title: PropTypes.string.isRequired,
-  tags: PropTypes.array.isRequired,
+  tags: PropTypes.array,
 };

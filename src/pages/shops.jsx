@@ -20,7 +20,7 @@ const Shops = ({ data }) => {
           path={`/shops/${node.name}`}
           title={node.name}
           date={node.date}
-          tags={node.tags.split(',')}
+          tags={node.tags && node.tags.split(',')}
           excerpt={node.about}
         />
       ))}

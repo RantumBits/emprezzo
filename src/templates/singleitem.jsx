@@ -24,8 +24,8 @@ const SingleItem = ({ data, pageContext }) => {
   const { name, date, imageurl, url, category, tags, localImageUrl, sociallink, about, country, state, city, like } = data.googleSheetListRow
 
   //converting comma seperated tags to tags map
-  const tagsList = tags.split(',')
-  const image = localImageUrl.childImageSharp.fluid;
+  const tagsList = tags ? tags.split(',') : [];
+  const image = localImageUrl ? localImageUrl.childImageSharp.fluid : null;
 
   return (
     <Layout>
@@ -41,8 +41,8 @@ const SingleItem = ({ data, pageContext }) => {
         <h1>{name}</h1>
         <h5>{city}, {state} {country}</h5>
         <TagsBlock list={tagsList || []} />
-        <p><Content input={about} /></p><br/>
-        <a target="_blank" href ={url} class="button">Shop {name}</a> <a href ="/randomshop" class="button buttonalt">Discover another shop</a>
+        <Content input={about} /><br />
+        <a target="_blank" href={url} className="button">Shop {name}</a> <a href="/randomshop" className="button buttonalt">Discover another shop</a>
 
       </Container>
       <SuggestionBar>
