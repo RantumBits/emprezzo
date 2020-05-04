@@ -47,7 +47,7 @@ const Index = ({ data }) => {
   const rowEdges = data.allGoogleSheetListRow.edges;
   const foodEdges = [];
   const homeEdges = [];
-  const maxItems = 9;
+  const maxItems = 0;
 
   //filtering home and food items maximum to 6 items
   rowEdges.map((edge) => {
@@ -67,7 +67,7 @@ const Index = ({ data }) => {
 
 <p class="center"><a href ="/randomshop" class="button button">Discover a  shop</a></p>
 
-      <ShopSectionHeading>Browse</ShopSectionHeading>
+      <ShopSectionHeading></ShopSectionHeading>
 
       <ShopWrapper>
 
