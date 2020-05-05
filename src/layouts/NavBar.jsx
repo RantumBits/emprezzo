@@ -3,6 +3,12 @@ import { Link, useStaticQuery } from 'gatsby';
 import styled from '@emotion/styled';
 import Headroom from 'react-headroom';
 import logo from '../../static/logo/header-logo.png';
+import Search from "../components/Search"
+
+const searchIndices = [
+  { name: `Pages`, title: `Pages`, hitComp: `PageHit` },
+  { name: `Posts`, title: `Blog Posts`, hitComp: `PostHit` },
+]
 
 const StyledLink = styled(Link)`
   display: flex;
@@ -127,7 +133,7 @@ const NavBar = () => {
             ))}
           </div>
         </div>
-        <Link to="/randomshop">Random</Link>
+        <Search collapse indices={searchIndices} />
         <Link to="/submit_shop">Submit</Link>
         <Link to="/about">About</Link>
       </Nav>
