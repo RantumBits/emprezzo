@@ -47,7 +47,7 @@ const Index = ({ data }) => {
   const rowEdges = data.allGoogleSheetListRow.edges;
   const foodEdges = [];
   const homeEdges = [];
-  const maxItems = 0;
+  const maxItems = 3;
 
   //filtering home and food items maximum to 6 items
   rowEdges.map((edge) => {
@@ -133,7 +133,7 @@ Index.propTypes = {
 export const query = graphql`
   query {
     allMarkdownRemark(
-      limit: 9
+      limit: 3
       sort: { order: DESC, fields: [frontmatter___date] }
     ) {
       edges {
