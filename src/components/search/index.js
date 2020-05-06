@@ -1,19 +1,19 @@
-import React, { useState, useEffect, createRef } from "react"
+import React, { useState, useEffect, createRef, useRef } from "react"
 import {
   InstantSearch,
   Index,
-  Hits,
   connectStateResults,
 } from "react-instantsearch-dom"
 import algoliasearch from "algoliasearch/lite"
 
 import { Root, HitsWrapper, PoweredBy } from "./styles"
-import Input from "./Input"
-import * as hitComps from "./hitComps"
+import Input from "./input"
+import Hits from './hits'
 
 const Results = connectStateResults(
-  ({ searchState: state, searchResults: res, children }) =>
-    res && res.nbHits > 0 ? children : `No results for '${state.query}'`
+  ({ searching, searchState, searchResults: res }) =>
+    (searching && <div>Searching...</div>) ||
+    (res && res.nbHits === 0 && <div>No results for &apos;{searchState.query}&apos;</div>)
 )
 
 const Stats = connectStateResults(
@@ -21,18 +21,30 @@ const Stats = connectStateResults(
     res && res.nbHits > 0 && `${res.nbHits} result${res.nbHits > 1 ? `s` : ``}`
 )
 
-const useClickOutside = (ref, handler, events) => {
+export function useOnClickOutside(ref, handler, events) {
   if (!events) events = [`mousedown`, `touchstart`]
   const detectClickOutside = event =>
-    !ref.current.contains(event.target) && handler()
+    ref.current && event && !ref.current.contains(event.target) && handler(event)
+  useEventListener(events, detectClickOutside)
+}
+
+export function useEventListener(eventNames, handler, element = globalThis) {
+  // Create a ref that stores the handler.
+  const savedHandler = useRef()
+  if (!Array.isArray(eventNames)) eventNames = [eventNames]
+
+  useEffect(() => (savedHandler.current = handler), [handler])
+
   useEffect(() => {
-    for (const event of events)
-      document.addEventListener(event, detectClickOutside)
+    if (!element.addEventListener) return // Element doesn't support a listener, abort.
+
+    // Create event listener that calls handler function stored in ref
+    const listener = event => savedHandler.current(event)
+    for (const e of eventNames) element.addEventListener(e, listener)
     return () => {
-      for (const event of events)
-        document.removeEventListener(event, detectClickOutside)
+      for (const e of eventNames) element.removeEventListener(e, listener)
     }
-  })
+  }, [element, eventNames])
 }
 
 export default function Search({ indices, collapse, hitsAsGrid }) {
@@ -43,29 +55,29 @@ export default function Search({ indices, collapse, hitsAsGrid }) {
     process.env.GATSBY_ALGOLIA_APP_ID,
     process.env.GATSBY_ALGOLIA_SEARCH_KEY
   )
-  useClickOutside(ref, () => setFocus(false))
+  useOnClickOutside(ref, () => setFocus(false))
   return (
-    <InstantSearch
-      searchClient={searchClient}
-      indexName={indices[0].name}
-      onSearchStateChange={({ query }) => setQuery(query)}
-      root={{ Root, props: { ref } }}
-    >
-      <Input onFocus={() => setFocus(true)} {...{ collapse, focus }} />
-      <HitsWrapper show={query.length > 0 && focus} asGrid={hitsAsGrid}>
-        {indices.map(({ name, title, hitComp }) => (
-          <Index key={name} indexName={name}>
-            <header>
-              <h3>{title}</h3>
-              <Stats />
-            </header>
-            <Results>
-              <Hits hitComponent={hitComps[hitComp](() => setFocus(false))} />
-            </Results>
-          </Index>
-        ))}
-        <PoweredBy />
-      </HitsWrapper>
-    </InstantSearch>
+    <Root ref={ref}>
+      <InstantSearch
+        searchClient={searchClient}
+        indexName={indices[0].name}
+        onSearchStateChange={({ query }) => setQuery(query)}
+      >
+        <Input onFocus={() => setFocus(true)} {...{ collapse, focus }} />
+        <HitsWrapper show={query.length > 0 && focus} asGrid={hitsAsGrid}>
+          {indices.map(({ name, title, type }) => (
+            <Index key={name} indexName={name}>
+              <header>
+                <h3>{title}</h3>
+                <Stats />
+              </header>
+              <Results />
+              <Hits type={type} onClick={() => setFocus(false)} />
+            </Index>
+          ))}
+          <PoweredBy />
+        </HitsWrapper>
+      </InstantSearch>
+    </Root>
   )
 }

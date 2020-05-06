@@ -1,36 +1,13 @@
-const pageQuery = `{
-  pages: allMarkdownRemark(
-    filter: {
-      fileAbsolutePath: { regex: "/pages/" },
-      frontmatter: {purpose: {eq: "page"}}
-    }
-  ) {
+const shopQuery = `{
+  shops: allGoogleSheetListRow {
     edges {
       node {
         objectID: id
-        frontmatter {
-          title
-          slug
-        }
-        excerpt(pruneLength: 5000)
-      }
-    }
-  }
-}`
-const postQuery = `{
-  posts: allMarkdownRemark(
-    filter: { fileAbsolutePath: { regex: "/posts/" } }
-  ) {
-    edges {
-      node {
-        objectID: id
-        frontmatter {
-          title
-          slug
-          date(formatString: "MMM D, YYYY")
-          tags
-        }
-        excerpt(pruneLength: 5000)
+        title: name
+        slug: name
+        date
+        tags
+        excerpt: about
       }
     }
   }
@@ -43,15 +20,9 @@ const flatten = arr =>
 const settings = { attributesToSnippet: [`excerpt:20`] }
 const queries = [
   {
-    query: pageQuery,
-    transformer: ({ data }) => flatten(data.pages.edges),
-    indexName: `Pages`,
-    settings,
-  },
-  {
-    query: postQuery,
-    transformer: ({ data }) => flatten(data.posts.edges),
-    indexName: `Posts`,
+    query: shopQuery,
+    transformer: ({ data }) => flatten(data.shops.edges),
+    indexName: `uncommonry`,
     settings,
   },
 ]

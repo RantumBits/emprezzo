@@ -1,7 +1,8 @@
 import React from "react"
-import styled, { css } from "styled-components"
-import { Search } from "styled-icons/fa-solid/Search"
-import { Algolia } from "styled-icons/fa-brands/Algolia"
+import { css } from "styled-components"
+import styled from '@emotion/styled'
+import { Search } from "@styled-icons/fa-solid"
+import { Algolia } from "@styled-icons/fa-brands"
 export const Root = styled.div`
   position: relative;
   display: grid;
@@ -46,9 +47,10 @@ const expand = css`
 `
 export const Input = styled.input`
   outline: none;
-  border: none;
+  border: 0.5px solid white;
   font-size: 1em;
   background: transparent;
+  color: white;
   transition: ${props => props.theme.shortTrans};
   border-radius: ${props => props.theme.smallBorderRadius};
   {highlight-next-line}
@@ -58,6 +60,7 @@ export const Form = styled.form`
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
+  margin: 0px;
 `
 export const HitsWrapper = styled.div`
   display: ${props => (props.show ? `grid` : `none`)};
@@ -100,9 +103,9 @@ export const HitsWrapper = styled.div`
     margin-bottom: 0.3em;
     h3 {
       color: white;
-      background: ${props => props.theme.gray};
+      background: gray;
       padding: 0.1em 0.4em;
-      border-radius: ${props => props.theme.smallBorderRadius};
+      border-radius: 0.2em;
     }
   }
   h3 {

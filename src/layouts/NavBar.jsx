@@ -3,11 +3,10 @@ import { Link, useStaticQuery } from 'gatsby';
 import styled from '@emotion/styled';
 import Headroom from 'react-headroom';
 import logo from '../../static/logo/header-logo.png';
-import Search from "../components/Search"
+import Search from '../components/search'
 
 const searchIndices = [
-  { name: `Pages`, title: `Pages`, hitComp: `PageHit` },
-  { name: `Posts`, title: `Blog Posts`, hitComp: `PostHit` },
+  { name: `uncommonry`, title: `Shops`, type: `shopHit` },
 ]
 
 const StyledLink = styled(Link)`
@@ -77,6 +76,13 @@ const Nav = styled.nav`
   }
 `;
 
+const SearchWrapper = styled.div`
+  position: relative;
+    display: grid;
+    color: black;
+    gap: 1em;
+`;
+
 const NavBar = () => {
 
   const { allGoogleSheetListRow } = useStaticQuery(
@@ -127,16 +133,19 @@ const NavBar = () => {
 
         <div className="dropdown">
           <Link to="/shops">Discover</Link>
-        <div className="dropdown-content">
+          <div className="dropdown-content">
             {uniqueCategoriesMap.map((item) => (
               <Link key={item.url} to={`/category/${item.url}`} > {item.text}</Link>
             ))}
           </div>
         </div>
-        <Search collapse indices={searchIndices} />
         <Link to="/submit_shop">Submit</Link>
-        <Link to="/about">About</Link>
+        <Link to="/about">About </Link> &nbsp;
+        <SearchWrapper>
+          <Search collapse indices={searchIndices} />
+        </SearchWrapper>
       </Nav>
+
     </Headroom >
   );
 

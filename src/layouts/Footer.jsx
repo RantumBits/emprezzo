@@ -29,7 +29,7 @@ const Footer = () => (
 
         <img src={logo} width="200px" alt="uncommonry - discover & shop indepdent retailers & brands" />
         <div>🛒 shop independent <br/>
-        ⚒ <a href="https://ecomloop.com">ecomloop</a> 🥑 california</div>
+        ⚒ by <a href="https://ecomloop.com" target="_blank">ecomloop</a> in 🥑 california</div>
 
       </div>
     </Text>
