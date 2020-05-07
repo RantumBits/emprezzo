@@ -142,7 +142,7 @@ const NavBar = () => {
         <Link to="/submit_shop">Submit</Link>
         <Link to="/about">About </Link> &nbsp;
         <SearchWrapper>
-          <Search collapse indices={searchIndices} />
+          <Search collapse indices={searchIndices} variation={"light"} />
         </SearchWrapper>
       </Nav>
 

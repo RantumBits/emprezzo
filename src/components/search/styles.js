@@ -18,7 +18,7 @@ const focus = css`
   cursor: text;
   width: 5em;
   + ${SearchIcon} {
-    color: ${props => props.theme.darkBlue};
+    color: ${props => ((props.variation && props.variation == "light") ? props.theme.colors.white.light :  props.theme.colors.primary.light)};
     margin: 0.3em;
   }
 `
@@ -27,7 +27,7 @@ const collapse = css`
   cursor: pointer;
   color: ${props => props.theme.lightBlue};
   + ${SearchIcon} {
-    color: white;
+    color: ${props => ((props.variation && props.variation == "light") ? props.theme.colors.white.light :  props.theme.colors.primary.light)};
   }
   ${props => props.focus && focus}
   margin-left: ${props => (props.focus ? `-1.6em` : `-1em`)};
@@ -45,12 +45,15 @@ const expand = css`
     margin: 0.3em;
   }
 `
+
 export const Input = styled.input`
   outline: none;
-  border: 0.5px solid white;
+  border: 0.5px solid ${props => ((props.variation && props.variation == "light") ? props.theme.colors.white.light :  props.theme.colors.primary.light)};
   font-size: 1em;
   background: transparent;
-  color: white;
+  color: ${props => ((props.variation && props.variation == "light") ? props.theme.colors.white.light :  props.theme.colors.primary.light)};
+  padding-left: 5px;
+  margin-left: 5px;
   transition: ${props => props.theme.shortTrans};
   border-radius: ${props => props.theme.smallBorderRadius};
   {highlight-next-line}
@@ -60,13 +63,16 @@ export const Form = styled.form`
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
+  text-align: center;
+  justify-content: center;
   margin: 0px;
 `
+
 export const HitsWrapper = styled.div`
   display: ${props => (props.show ? `grid` : `none`)};
   max-height: 80vh;
   overflow: scroll;
-  z-index: 2;
+  z-index: 999;
   -webkit-overflow-scrolling: touch;
   position: absolute;
   right: 0;
@@ -102,16 +108,18 @@ export const HitsWrapper = styled.div`
     justify-content: space-between;
     margin-bottom: 0.3em;
     h3 {
-      color: white;
-      background: gray;
       padding: 0.1em 0.4em;
       border-radius: 0.2em;
+      background: ${props => props.theme.colors.black.blue};
+      color: ${props => props.theme.colors.white.light};
     }
   }
   h3 {
     margin: 0 0 0.5em;
   }
   h4 {
+    font-size: 1.1em;
+    color: ${props => props.theme.colors.black.blue};
     margin-bottom: 0.3em;
   }
 `

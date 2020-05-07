@@ -5,6 +5,7 @@ import Helmet from 'react-helmet';
 import styled from '@emotion/styled';
 import { Header, PostList } from 'components';
 import { Layout } from 'layouts';
+import Search from 'components/search'
 
 const PostSectionHeading = styled.h1`
   margin-left: 4rem;
@@ -49,6 +50,10 @@ const Index = ({ data }) => {
   const homeEdges = [];
   const maxItems = 3;
 
+  const searchIndices = [
+    { name: `uncommonry`, title: `Shops`, type: `shopHit` },
+  ]
+
   //filtering home and food items maximum to 6 items
   rowEdges.map((edge) => {
     if(edge.node.category && edge.node.category == "Food" && foodEdges.length<maxItems) {
@@ -65,7 +70,8 @@ const Index = ({ data }) => {
       <Helmet title={'uncommonry'} />
       <Header title="Discover & Shop Independent Businesses">🧐 Discover exceptional retailers & innovative brands<br/>🛒 Shop direct to support independent businesses</Header>
 
-<p class="center"><a href ="/randomshop" class="button button">Discover a  shop</a></p>
+      {/* <p class="center"><a href ="/randomshop" class="button button">Discover a  shop</a></p> */}
+      <Search collapse indices={searchIndices} />
 
       <ShopSectionHeading></ShopSectionHeading>
 
