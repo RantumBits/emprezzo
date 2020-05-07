@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import { Layout, Container, Content } from 'layouts';
 import { TagsBlock, Header, SEO } from 'components';
+import AtomFeedList from '../components/AtomFeedList';
 import '../styles/prism';
 
 const SuggestionBar = styled.div`
@@ -21,11 +22,12 @@ const PostSuggestion = styled.div`
 
 const SingleItem = ({ data, pageContext }) => {
   const { next, prev } = pageContext;
-  const { name, date, imageurl, url, category, tags, localImageUrl, sociallink, about, country, state, city, like } = data.googleSheetListRow
+  const { name, date, imageurl, url, category, tags, localImageUrl, sociallink, about, country, state, city, like, fields } = data.googleSheetListRow
 
   //converting comma seperated tags to tags map
   const tagsList = tags ? tags.split(',') : [];
   const image = localImageUrl ? localImageUrl.childImageSharp.fluid : null;
+  const atomfeed = fields && fields.atomfeed ? fields.atomfeed : [];
 
   return (
     <Layout>
@@ -42,6 +44,7 @@ const SingleItem = ({ data, pageContext }) => {
         <h5>{city}, {state} {country}</h5>
         <TagsBlock list={tagsList || []} />
         <Content input={about} /><br />
+        <AtomFeedList list={atomfeed} />
         <a target="_blank" href={url} className="button">Shop {name}</a> <a href="/randomshop" className="button buttonalt">Discover another shop</a>
 
       </Container>
@@ -96,6 +99,13 @@ export const query = graphql`
       country
       state
       city
+      fields {
+        atomfeed {
+          guid
+          title
+          link
+        }
+      }
     }
   }
 `;

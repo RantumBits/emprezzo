@@ -1,4 +1,7 @@
 const path = require('path');
+const _ = require("lodash");
+const fetch = require("node-fetch");
+const FeedParser = require("feedparser");
 
 exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions;
@@ -201,4 +204,57 @@ exports.onCreateWebpackConfig = ({ actions }) => {
       modules: [path.resolve(__dirname, 'src'), 'node_modules'],
     },
   });
+};
+
+
+exports.onCreateNode = ({ node, actions }) => {
+  const { createNodeField } = actions
+  let entries = [];
+  const processedArticleFields = _.union(
+    [
+      "title",
+      "link",
+      "origlink",
+      "permalink",
+      "date",
+      "pubdate",
+      "author",
+      "guid",
+      "image"
+    ]
+  );
+  if (node.internal
+      && node.internal.owner === 'gatsby-source-google-sheets'
+      && node.url
+      && node.url.startsWith("http")
+  ) {
+    const feedurl = node.url+"/collections/all.atom";
+    console.log("******* Feed URL = "+feedurl);
+    var req = fetch(feedurl)
+    var feedparser = new FeedParser();
+    req.then(function (res) {
+      if (res.status !== 200) {
+        console.log("** Bad status code '"+feedurl+"' : "+res.status)
+      }
+      else {
+        res.body.pipe(feedparser);
+      }
+    }, function (err) {
+      console.log("** Error while reading feed for '"+feedurl+"' : "+err)
+    });
+    feedparser.on('readable', function () {
+      var stream = this; // `this` is `feedparser`, which is a stream
+      var item;
+      while (item = stream.read()) {
+        entries.push(_.pick(item, processedArticleFields));
+      }
+    });
+    feedparser.on("end", () => {
+      createNodeField({
+        name: 'atomfeed', // field name
+        node, // the node on which we want to add a custom field
+        value: entries // field value
+      });
+    });
+  }
 };
