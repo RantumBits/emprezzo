@@ -28,7 +28,7 @@ export function useOnClickOutside(ref, handler, events) {
   useEventListener(events, detectClickOutside)
 }
 
-export function useEventListener(eventNames, handler, element = globalThis) {
+export function useEventListener(eventNames, handler, element) {
   // Create a ref that stores the handler.
   const savedHandler = useRef()
   if (!Array.isArray(eventNames)) eventNames = [eventNames]
@@ -36,7 +36,7 @@ export function useEventListener(eventNames, handler, element = globalThis) {
   useEffect(() => (savedHandler.current = handler), [handler])
 
   useEffect(() => {
-    if (!element.addEventListener) return // Element doesn't support a listener, abort.
+    if (!element || !element.addEventListener) return // Element doesn't support a listener, abort.
 
     // Create event listener that calls handler function stored in ref
     const listener = event => savedHandler.current(event)
