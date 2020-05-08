@@ -75,7 +75,7 @@ export const HitsWrapper = styled.div`
   z-index: 999;
   -webkit-overflow-scrolling: touch;
   position: absolute;
-  right: 0;
+  right: 25%;
   top: calc(100% + 0.5em);
   width: 80vw;
   max-width: 30em;
@@ -125,9 +125,6 @@ export const HitsWrapper = styled.div`
 `
 export const PoweredBy = () => (
   <span css="font-size: 0.6em; text-align: end; padding: 0;">
-    Powered by{` `}
-    <a href="https://algolia.com">
-      <Algolia size="1em" /> Algolia
-    </a>
+
   </span>
 )

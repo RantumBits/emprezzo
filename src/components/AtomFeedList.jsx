@@ -15,7 +15,7 @@ const FeedContainer = styled.div`
 
 const AtomFeedList = ({ list }) => (
   <FeedContainer>
-    {list && list.length > 0 && <h3>Atom Feed List</h3>}
+    {list && list.length > 0 && <h3>Sample product list:</h3>}
 
     {list &&
       list.slice(0, 5).map(feed => {

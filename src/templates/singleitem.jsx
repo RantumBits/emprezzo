@@ -44,7 +44,7 @@ const SingleItem = ({ data, pageContext }) => {
         <h5>{city}, {state} {country}</h5>
         <TagsBlock list={tagsList || []} />
         <Content input={about} /><br />
-        <AtomFeedList list={atomfeed} />
+        <AtomFeedList list={atomfeed} /><br/>
         <a target="_blank" href={url} className="button">Shop {name}</a> <a href="/randomshop" className="button buttonalt">Discover another shop</a>
 
       </Container>

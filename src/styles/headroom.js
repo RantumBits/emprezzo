@@ -37,7 +37,17 @@ a.buttonalt{
   opacity: 50%;
 
 }
+.center{
+  text-align: center;
+  margin: 25px;
+}
 
+.search_main Input.e1kdxvpr2 {
+  width: 33%;
+  padding: 1em;
+  border-radius: 10px;
+  margin: 25px 0 0 10px;
+}
 a.button:hover{
   opacity:75%;
 }

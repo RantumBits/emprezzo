@@ -48,7 +48,7 @@ const Index = ({ data }) => {
   const rowEdges = data.allGoogleSheetListRow.edges;
   const foodEdges = [];
   const homeEdges = [];
-  const maxItems = 3;
+  const maxItems = 9;
 
   const searchIndices = [
     { name: `uncommonry`, title: `Shops`, type: `shopHit` },
@@ -68,10 +68,16 @@ const Index = ({ data }) => {
   return (
     <Layout>
       <Helmet title={'uncommonry'} />
-      <Header title="Discover & Shop Independent Businesses">🧐 Discover exceptional retailers & innovative brands<br/>🛒 Shop direct to support independent businesses</Header>
+      <Header title="Discover & Shop Independent Businesses"></Header>
 
       {/* <p class="center"><a href ="/randomshop" class="button button">Discover a  shop</a></p> */}
+      <div class="center">
+      🧐 Discover exceptional retailers & innovative brands<br/>🛒 Shop direct to support independent businesses
+      </div>
+<div class="search_main">
       <Search collapse indices={searchIndices} />
+    
+      </div>
 
       <ShopSectionHeading></ShopSectionHeading>
 
@@ -139,7 +145,7 @@ Index.propTypes = {
 export const query = graphql`
   query {
     allMarkdownRemark(
-      limit: 3
+      limit: 6
       sort: { order: DESC, fields: [frontmatter___date] }
     ) {
       edges {

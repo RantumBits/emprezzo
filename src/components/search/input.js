@@ -6,7 +6,7 @@ export default connectSearchBox(({ refine, ...rest }) => (
   <Form>
     <Input
       type="text"
-      placeholder="find a shop"
+      placeholder="Seach organic, gourmet, market, etc"
       aria-label="Search"
       onChange={e => refine(e.target.value)}
       onMouseLeave={e => e.target.blur()}
