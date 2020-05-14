@@ -33,6 +33,7 @@ const Footer = () => (
 
       </div>
     </Text>
+    <div className="cui-embed" data-cui-uid="e7T54e" data-cui-mode="pill" data-cui-pill-button-color="#0000FF"></div>
   </Wrapper>
 );
 export default Footer;

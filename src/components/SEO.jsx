@@ -103,6 +103,7 @@ const SEO = ({ title, description, banner, pathname, article }) => (
             <meta name="twitter:title" content={seo.title} />
             <meta name="twitter:description" content={seo.description} />
             <meta name="twitter:image" content={seo.image} />
+            <script src="https://public-assets.typeform.com/confab/embed.js" async></script>
           </Helmet>
         </>
       );

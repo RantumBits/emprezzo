@@ -5,7 +5,7 @@
   "description": "🧐 Discover exceptional retailers & innovative brands<br/>🛒 Shop direct to support independent businesses",
   "homepage": "https://uncommonry.netlify.app/",
   "license": "MIT",
-  "version": "0.5.1",
+  "version": "0.4.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/ecomloop/uncommonize/"
@@ -59,6 +59,7 @@
     "react-headroom": "^2.2.8",
     "react-helmet": "^5.2.1",
     "react-instantsearch-dom": "^6.4.0",
+    "react-typeform-embed": "^0.2.1",
     "react-typography": "^0.16.19",
     "styled-components": "^5.1.0",
     "styled-icons": "^10.2.1",
