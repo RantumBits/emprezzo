@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { Layout, Container } from 'layouts';
 import { Header, SEO } from 'components';
-import ShopList from '../components/ShopList';
+import PostList from '../components/PostList';
 import config from '../../config/site';
 
 const StyledLink = styled(Link)`
@@ -48,14 +48,12 @@ const Tag = ({ pageContext }) => {
       </Header>
         <TagWrapper>
           {posts.map((node) => (
-            <ShopList
+            <PostList
               key={node.name}
               cover={node.imageurl}
               path={`/shops/${node.name}`}
               title={node.name}
-              date={node.date}
-              tags={node.tags && node.tags.split(',')}
-              excerpt={node.about && node.about.substring(0, 40) + "..."}
+              excerpt={node.about && node.about.substring(0,40)+"..."}
             />
           ))}
         </TagWrapper>

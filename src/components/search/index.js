@@ -47,7 +47,7 @@ export function useEventListener(eventNames, handler, element) {
   }, [element, eventNames])
 }
 
-export default function Search({ indices, collapse, hitsAsGrid, variation }) {
+export default function Search({ indices, collapse, homepage, hitsAsGrid, variation }) {
   const ref = createRef()
   const [query, setQuery] = useState(``)
   const [focus, setFocus] = useState(false)
@@ -64,7 +64,7 @@ export default function Search({ indices, collapse, hitsAsGrid, variation }) {
         onSearchStateChange={({ query }) => setQuery(query)}
       >
         <Input onFocus={() => setFocus(true)} {...{ collapse, focus }} variation={variation} />
-        <HitsWrapper show={query.length > 0 && focus} asGrid={hitsAsGrid}>
+        <HitsWrapper show={query.length > 0 && focus} asGrid={hitsAsGrid} homepage={homepage}>
           {indices.map(({ name, title, type }) => (
             <Index key={name} indexName={name}>
               <header>

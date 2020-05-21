@@ -108,7 +108,13 @@ const Title = styled.h2`
 const PostList = ({ cover, path, date, title, excerpt }) => (
   <Wrapper>
     <Image>
-      <Img fluid={cover} />
+
+      {typeof cover === 'object' &&
+        <Img fluid={cover} />
+      }
+      {typeof cover === 'string' &&
+        <img src={cover || {} || [] || ''} style={{height: '100%', objectFit: 'fill'}} />
+      }
     </Image>
     <StyledLink to={path}>
       <Info>

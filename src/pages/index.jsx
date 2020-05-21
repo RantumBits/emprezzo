@@ -75,7 +75,7 @@ const Index = ({ data }) => {
       🧐 Discover exceptional retailers & innovative brands<br/>🛒 Shop direct to support independent businesses
       </div>
 <div class="search_main">
-      <Search collapse indices={searchIndices} />
+      <Search collapse homepage indices={searchIndices} />
     
       </div>
 

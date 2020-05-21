@@ -75,7 +75,7 @@ export const HitsWrapper = styled.div`
   z-index: 999;
   -webkit-overflow-scrolling: touch;
   position: absolute;
-  right: 25%;
+  right: ${props => (props.homepage ? `35%` : `25%`)};
   top: calc(100% + 0.5em);
   width: 80vw;
   max-width: 30em;
@@ -83,6 +83,9 @@ export const HitsWrapper = styled.div`
   padding: 0.7em 1em 0.4em;
   background: white;
   border-radius: ${props => props.theme.smallBorderRadius};
+  @media (max-width: 500px) {
+    right: 15%;
+  }
   > * + * {
     padding-top: 1em !important;
     border-top: 2px solid ${props => props.theme.darkGray};

@@ -32,6 +32,13 @@ exports.createPages = ({ graphql, actions }) => {
                   country
                   state
                   city
+                  localImageUrl {
+                    childImageSharp {
+                      fluid {
+                        ...GatsbyImageSharpFluid
+                      }
+                    }
+                  }
                   imageurl
                 }
               }
