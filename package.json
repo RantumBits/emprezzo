@@ -5,10 +5,10 @@
   "description": "🧐 Discover exceptional retailers & innovative brands<br/>🛒 Shop direct to support independent businesses",
   "homepage": "https://uncommonry.netlify.app/",
   "license": "MIT",
-  "version": "0.4.1",
+  "version": "0.4.4",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ecomloop/uncommonize/"
+    "url": "https://github.com/ecomloop/uncommonry/"
   },
   "scripts": {
     "develop": "gatsby develop",
