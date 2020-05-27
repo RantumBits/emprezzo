@@ -1,14 +1,14 @@
-{
+git {
   "name": "uncommmonry",
   "author": "andrew maury at ecomloop",
   "title": "uncommonry",
   "description": "🧐 Discover exceptional retailers & innovative brands<br/>🛒 Shop direct to support independent businesses",
   "homepage": "https://uncommonry.netlify.app/",
   "license": "MIT",
-  "version": "0.4.4",
+  "version": "0.4.1",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ecomloop/uncommonry/"
+    "url": "https://github.com/ecomloop/uncommonize/"
   },
   "scripts": {
     "develop": "gatsby develop",
