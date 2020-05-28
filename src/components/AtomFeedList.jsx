@@ -21,7 +21,7 @@ const AtomFeedList = ({ list }) => (
       list.slice(0, 5).map(feed => {
         //const upperTag = tag.charAt(0).toUpperCase() + tag.slice(1);
         return (
-          <div>
+          <div key={feed.guid} >
             <a key={feed.guid} href={feed.link} target="_blank">
               {feed.title}
             </a>

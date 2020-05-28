@@ -11,10 +11,12 @@ exports.createSchemaCustomization = ({ actions }) => {
       localProfileImage: File @link(from: "localProfileImage___NODE")
       fields: fields
       instagramname: String
+      alexarank: String
+      alexatimeonsite: String
     }
 
     type fields {
-      atomfeed: atomfeed
+      atomfeed: [atomfeed]
     }
 
     type atomfeed {

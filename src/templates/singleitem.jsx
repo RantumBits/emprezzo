@@ -31,6 +31,12 @@ const StatisticItem = styled.div`
   margin-right: 40px;
 `;
 
+const StatisticIcon = styled.img`
+  width: 30px;
+  margin-left: 7px;
+  margin-top: 5px;
+`;
+
 const SingleItem = ({ data, pageContext }) => {
   const { next, prev } = pageContext;
   const { name, date, imageurl, url, category, tags, localImageUrl, profileimage, instagramname, instagramposts, instagramfollowers, instagramfollowing, alexalink, alexarank, alexatimeonsite, about, country, state, city, like, fields } = data.googleSheetListRow
@@ -61,15 +67,16 @@ const SingleItem = ({ data, pageContext }) => {
         <Content input={about} /><br />
 
         <Statistics>
-          <StatisticItem><a href={`https://www.instagram.com/${instagramname}/`}>{instagramname}</a></StatisticItem>
+          <StatisticItem><a target="_blank" href={`https://www.instagram.com/${instagramname}/`}><StatisticIcon src="/instagram_icon.png" alt={instagramname} /></a></StatisticItem>
           <StatisticItem>{instagramfollowers} <br/>followers</StatisticItem>
           <StatisticItem>{instagramposts} <br/>posts</StatisticItem>
           <StatisticItem>{instagramfollowing} <br/>following</StatisticItem>
         </Statistics>
 
         <Statistics>
-          <StatisticItem>{alexarank} <br/>alex rank</StatisticItem>
-          <StatisticItem>{alexatimeonsite} <br/>time on site</StatisticItem>
+          <StatisticItem><a target="_blank" href={alexalink}><StatisticIcon src="/alexa_icon.jpg" alt={alexalink} /></a></StatisticItem>
+          <StatisticItem>{alexarank} <br/>alexa rank</StatisticItem>
+          <StatisticItem>{alexatimeonsite} <br/>avg minutes per visit</StatisticItem>
         </Statistics>
 
         <AtomFeedList list={atomfeed} /><br />
