@@ -55,7 +55,7 @@ a.button:hover{
     display: flex;
     justify-content: space-between;
     flex-direction: row;
-    width: 100%;
+    width: 100vw;
     padding: 1rem 1.5rem;
     svg {
       height: 2.5rem;
@@ -103,6 +103,15 @@ a.button:hover{
         &:focus {
           color: ${theme.colors.black.base};
         }
+      }
+
+      input {
+        border-color: ${theme.colors.black.base};
+        color: ${theme.colors.black.base};
+      }
+
+      svg {
+        color: ${theme.colors.black.base} !important;
       }
     }
     padding-top: 0.75rem;

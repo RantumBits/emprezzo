@@ -43,7 +43,7 @@ const Category = ({ data, pageContext }) => {
             title={node.name}
             date={node.date}
             tags={node.tags && node.tags.split(',')}
-            excerpt={node.about.substring(0,40)+"..."}
+            excerpt={node.about && node.about.substring(0,40)+"..."}
           />
         ))}
       </CategoryWrapper>

@@ -90,7 +90,7 @@ const Index = ({ data }) => {
               cover={node.localImageUrl.childImageSharp.fluid}
               path={`/shops/${node.name}`}
               title={node.name}
-              excerpt={node.about.substring(0,40)+"..."}
+              excerpt={node.about && node.about.substring(0,40)+"..."}
             />
           );
         })}

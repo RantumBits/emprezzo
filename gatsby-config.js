@@ -4,6 +4,8 @@ require("dotenv").config();
 
 module.exports = {
   siteMetadata: {
+    title: "uncommonry",
+    description: "🧐 Discover exceptional retailers & innovative brands<br/>🛒 Shop direct to support independent businesses",
     ...config,
   },
   plugins: [

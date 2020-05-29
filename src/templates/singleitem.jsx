@@ -18,6 +18,22 @@ const PostSuggestion = styled.div`
   display: flex;
   align-items: center;
   margin: 1rem 3rem 0 3rem;
+  @media (max-width: 600px) {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+`;
+
+const Title = styled.h1`
+  @media (max-width: ${props => props.theme.breakpoints.s}) {
+    font-size: 1rem;
+  }
+`;
+
+const Subtitle = styled.h5`
+  @media (max-width: ${props => props.theme.breakpoints.s}) {
+    font-size: 0.7rem;
+  }
 `;
 
 const Statistics = styled.div`
@@ -29,6 +45,10 @@ const Statistics = styled.div`
 
 const StatisticItem = styled.div`
   margin-right: 40px;
+  @media (max-width: ${props => props.theme.breakpoints.s}) {
+    font-size: 0.6rem;
+    margin-right: 10px;
+  }
 `;
 
 const StatisticIcon = styled.img`
@@ -59,8 +79,8 @@ const SingleItem = ({ data, pageContext }) => {
         <div style={{ display: "flex" }}>
           <img src={profileimage} />
           <div style={{paddingLeft: "15px"}}>
-            <h1>{name}</h1>
-            <h5>{city}, {state} {country}</h5>
+            <Title>{name}</Title>
+            <Subtitle>{city}, {state} {country}</Subtitle>
           </div>
         </div>
         <TagsBlock list={tagsList || []} />

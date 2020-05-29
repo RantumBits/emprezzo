@@ -15,6 +15,10 @@ const StyledLink = styled(Link)`
   align-items: center;
 `;
 
+const NavWrapper = styled.div`
+
+`
+
 const Nav = styled.nav`
   display: flex;
   justify-content: flex-end;
@@ -22,12 +26,19 @@ const Nav = styled.nav`
   font-weight: 500;
   font-size: 1.1rem;
   align-items: center;
+  @media (max-width: ${props => props.theme.breakpoints.s}) {
+    font-size: 0.75rem;
+    margin-left: -10px;
+  }
   a {
     color: ${props => props.theme.colors.white.base};
     margin-left: 2rem;
     transition: all ${props => props.theme.transitions.default.duration};
     &:hover {
       color: ${props => props.theme.colors.white.grey};
+    }
+    @media (max-width: ${props => props.theme.breakpoints.s}) {
+      margin-left: 0.5rem;
     }
   }
 
@@ -41,6 +52,9 @@ const Nav = styled.nav`
     &:hover {
       color: ${props => props.theme.colors.white.grey};
       cursor: pointer;
+    }
+    @media (max-width: ${props => props.theme.breakpoints.s}) {
+      margin-left: 0.5rem;
     }
   }
 
@@ -73,6 +87,12 @@ const Nav = styled.nav`
   /* Show the dropdown menu on hover */
   .dropdown:hover .dropdown-content {
     display: block;
+  }
+
+  input {
+    @media (max-width: 600px) {
+      width: 85px !important;
+    }
   }
 `;
 
@@ -127,25 +147,23 @@ const NavBar = () => {
       <StyledLink to="/">
         <img src={logo} alt="uncommonry - discover & shop indepdent retailers & brands" />
       </StyledLink>
-      <Nav>
-
-
-
-        <div className="dropdown">
-          <Link to="/shops">Discover</Link>
-          <div className="dropdown-content">
-            {uniqueCategoriesMap.map((item) => (
-              <Link key={item.url} to={`/category/${item.url}`} > {item.text}</Link>
-            ))}
+      <NavWrapper>
+        <Nav>
+          <div className="dropdown">
+            <Link to="/shops">Discover</Link>
+            <div className="dropdown-content">
+              {uniqueCategoriesMap.map((item) => (
+                <Link key={item.url} to={`/category/${item.url}`} > {item.text}</Link>
+              ))}
+            </div>
           </div>
-        </div>
-        <Link to="/submit_shop">Submit</Link>
-        <Link to="/about">About </Link> &nbsp;
-        <SearchWrapper>
-          <Search collapse indices={searchIndices} variation={"light"} />
-        </SearchWrapper>
-      </Nav>
-
+          <Link to="/submit_shop">Submit</Link>
+          <Link to="/about">About </Link> &nbsp;
+          <SearchWrapper>
+            <Search collapse indices={searchIndices} variation={"light"} />
+          </SearchWrapper>
+        </Nav>
+      </NavWrapper>
     </Headroom >
   );
 

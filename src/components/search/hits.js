@@ -22,7 +22,6 @@ export default connectHits(function HitComp({ type, hits, onClick }) {
           <Highlight attribute="title" hit={hit} tagName="mark" />
         </h4>
       </Link>
-      {extend && extend(hit)}
       <Snippet attribute="excerpt" hit={hit} tagName="mark" />
     </div>
   ))

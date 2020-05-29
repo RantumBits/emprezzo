@@ -37,6 +37,11 @@ const Text = styled.div`
   padding: 0 2rem;
   margin-bottom: 3rem;
   align-items: center;
+  h1 {
+    @media (max-width: ${props => props.theme.breakpoints.s}) {
+      font-size: 1.5rem;
+    }
+  }
 `;
 
 const Subtitle = styled.p`

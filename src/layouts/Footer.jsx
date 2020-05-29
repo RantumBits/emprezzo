@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link, useStaticQuery } from 'gatsby';
 import styled from '@emotion/styled';
 import logo from '../../static/logo/header-logo.png';
 
@@ -28,7 +29,8 @@ const Footer = () => (
       <div>
 
         <img src={logo} width="200px" alt="uncommonry - discover & shop indepdent retailers & brands" />
-        <div>🛒 shop independent <br/>
+        <div>💌<Link to="/submit_shop"> submit an uncommon business</Link><br/>
+          🛒<Link to="/about"> about </Link> <br/>
         ⚒ by <a href="https://ecomloop.com" target="_blank">ecomloop</a> in 🥑 california</div>
 
       </div>
