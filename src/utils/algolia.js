@@ -2,12 +2,12 @@ const shopQuery = `{
   shops: allGoogleSheetListRow {
     edges {
       node {
-        objectID: id
+        objectID: slug
         title: name
-        slug: slug
+        slug
         date
         tags
-        excerpt: about
+        about
       }
     }
   }
@@ -17,7 +17,7 @@ const flatten = arr =>
     ...frontmatter,
     ...rest,
   }))
-const settings = { attributesToSnippet: [`excerpt:120`] }
+const settings = { attributesToSnippet: [`excerpt:20`] }
 const queries = [
   {
     query: shopQuery,

@@ -19,7 +19,7 @@ const focus = css`
   width: 5em;
   + ${SearchIcon} {
     color: ${props => ((props.variation && props.variation == "light") ? props.theme.colors.white.light :  props.theme.colors.primary.light)};
-    margin: 0.3em;
+    margin: 0.5em;
   }
 `
 const collapse = css`

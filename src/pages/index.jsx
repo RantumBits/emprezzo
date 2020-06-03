@@ -48,7 +48,7 @@ const Index = ({ data }) => {
   const rowEdges = data.allGoogleSheetListRow.edges;
   const foodEdges = [];
   const homeEdges = [];
-  const maxItems = 9;
+  const maxItems = 8;
 
   const searchIndices = [
     { name: `uncommonry`, title: `Shops`, type: `shopHit` },
@@ -56,10 +56,10 @@ const Index = ({ data }) => {
 
   //filtering home and food items maximum to 6 items
   rowEdges.map((edge) => {
-    if(edge.node.category && edge.node.category == "Featured" && foodEdges.length<maxItems) {
+    if(edge.node.category && edge.node.category != "" && foodEdges.length<maxItems) {
       foodEdges.push(edge);
     }
-    else if(edge.node.category && edge.node.category != " " && homeEdges.length<maxItems) {
+    else if(edge.node.category && edge.node.category == " " && homeEdges.length<maxItems) {
       homeEdges.push(edge);
     }
 
@@ -145,7 +145,7 @@ Index.propTypes = {
 export const query = graphql`
   query {
     allMarkdownRemark(
-      limit: 6
+      limit: 8
       sort: { order: DESC, fields: [frontmatter___date] }
     ) {
       edges {

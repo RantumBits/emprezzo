@@ -10,7 +10,7 @@ const RandomShop = ({ data }) => {
   const randomnumber = Math.round(Math.random() * edges.length);
   console.log("Generated Random Number = "+randomnumber);
   const edge = edges[randomnumber-1] ? edges[randomnumber-1] : edges[0];
-  const randomshopurl = "/shops/"+edge.node.name;
+  const randomshopurl = "/shops/"+edge.node.slug;
   console.log("Random URL = "+randomshopurl);
   navigate(randomshopurl);
 
@@ -28,6 +28,7 @@ export const query = graphql`
       edges {
         node {
           name
+          slug
         }
       }
     }
