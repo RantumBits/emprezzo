@@ -75,7 +75,7 @@ export default function Search({ indices, collapse, homepage, hitsAsGrid, variat
               <Hits type={type} onClick={() => setFocus(false)} />
             </Index>
           ))}
-          <PoweredBy />
+          
         </HitsWrapper>
       </InstantSearch>
     </Root>

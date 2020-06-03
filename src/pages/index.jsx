@@ -56,10 +56,10 @@ const Index = ({ data }) => {
 
   //filtering home and food items maximum to 6 items
   rowEdges.map((edge) => {
-    if(edge.node.category && edge.node.category == "Food" && foodEdges.length<maxItems) {
+    if(edge.node.category && edge.node.category == "Featured" && foodEdges.length<maxItems) {
       foodEdges.push(edge);
     }
-    else if(edge.node.category && edge.node.category == "Health" && homeEdges.length<maxItems) {
+    else if(edge.node.category && edge.node.category != " " && homeEdges.length<maxItems) {
       homeEdges.push(edge);
     }
 
@@ -88,7 +88,7 @@ const Index = ({ data }) => {
             <PostList
               key={node.name}
               cover={node.localImageUrl.childImageSharp.fluid}
-              path={`/shops/${node.name}`}
+              path={`/shops/${node.slug}`}
               title={node.name}
               excerpt={node.about && node.about.substring(0,40)+"..."}
             />
@@ -103,7 +103,7 @@ const Index = ({ data }) => {
             <PostList
               key={node.name}
               cover={node.localImageUrl.childImageSharp.fluid}
-              path={`/shops/${node.name}`}
+              path={`/shops/${node.slug}`}
               title={node.name}
               excerpt={node.about.substring(0,40)+"..."}
             />
@@ -178,6 +178,7 @@ export const query = graphql`
         node {
           name
           url
+          slug
           category
           tags
           about

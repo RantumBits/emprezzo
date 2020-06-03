@@ -48,6 +48,7 @@ exports.createPages = ({ graphql, actions }) => {
               edges {
                 node {
                   name
+                  slug
                   url
                   category
                   tags
@@ -80,7 +81,7 @@ exports.createPages = ({ graphql, actions }) => {
             }
             tagsList.forEach(tag => {
               rowPost.frontmatter.title = node.name
-              rowPost.frontmatter.path = '/shops/' + node.name
+              rowPost.frontmatter.path = '/shops/' + node.slug
               if (!postsByTag[tag]) {
                 postsByTag[tag] = [];
               }
@@ -116,7 +117,7 @@ exports.createPages = ({ graphql, actions }) => {
 
         //create pages
         sheetRows.forEach(({ node }, index) => {
-          const path = '/shops/' + node.name;
+          const path = '/shops/' + node.slug;
           const prev = index === 0 ? null : sheetRows[index - 1].node;
           const next =
             index === sheetRows.length - 1 ? null : sheetRows[index + 1].node;
@@ -124,7 +125,7 @@ exports.createPages = ({ graphql, actions }) => {
             path,
             component: shopTemplate,
             context: {
-              pathSlug: node.name,
+              pathSlug: node.slug,
               prev,
               next,
             },

@@ -150,15 +150,14 @@ const NavBar = () => {
       <NavWrapper>
         <Nav>
           <div className="dropdown">
-            <Link to="/shops">Discover</Link>
+            <Link to="/shops">Discover </Link>
             <div className="dropdown-content">
               {uniqueCategoriesMap.map((item) => (
                 <Link key={item.url} to={`/category/${item.url}`} > {item.text}</Link>
               ))}
             </div>
           </div>
-          <Link to="/submit_shop">Submit</Link>
-          <Link to="/about">About </Link> &nbsp;
+
           <SearchWrapper>
             <Search collapse indices={searchIndices} variation={"light"} />
           </SearchWrapper>

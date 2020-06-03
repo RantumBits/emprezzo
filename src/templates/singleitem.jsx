@@ -129,7 +129,7 @@ export default SingleItem;
 
 export const query = graphql`
   query($pathSlug: String!) {
-    googleSheetListRow(name: {eq: $pathSlug}) {
+    googleSheetListRow(slug: {eq: $pathSlug}) {
       name
       imageurl
       localImageUrl {
@@ -147,6 +147,7 @@ export const query = graphql`
         }
       }
       url
+      slug
       category
       tags
       about

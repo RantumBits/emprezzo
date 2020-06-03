@@ -4,7 +4,7 @@ const shopQuery = `{
       node {
         objectID: id
         title: name
-        slug: name
+        slug: slug
         date
         tags
         excerpt: about
@@ -17,7 +17,7 @@ const flatten = arr =>
     ...frontmatter,
     ...rest,
   }))
-const settings = { attributesToSnippet: [`excerpt:20`] }
+const settings = { attributesToSnippet: [`excerpt:120`] }
 const queries = [
   {
     query: shopQuery,
