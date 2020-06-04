@@ -51,7 +51,7 @@ const Tag = ({ pageContext }) => {
             <PostList
               key={node.name}
               cover={node.imageurl}
-              path={`/shops/${node.name}`}
+              path={`/shops/${node.slug}`}
               title={node.name}
               excerpt={node.about && node.about.substring(0,40)+"..."}
             />

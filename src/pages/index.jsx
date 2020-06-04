@@ -48,7 +48,7 @@ const Index = ({ data }) => {
   const rowEdges = data.allGoogleSheetListRow.edges;
   const foodEdges = [];
   const homeEdges = [];
-  const maxItems = 8;
+  const maxItems = 9;
 
   const searchIndices = [
     { name: `uncommonry`, title: `Shops`, type: `shopHit` },
@@ -87,7 +87,7 @@ const Index = ({ data }) => {
           return (
             <PostList
               key={node.name}
-              cover={node.localImageUrl.childImageSharp.fluid}
+              cover={node.localImageUrl && node.localImageUrl.childImageSharp.fluid}
               path={`/shops/${node.slug}`}
               title={node.name}
               excerpt={node.about && node.about.substring(0,40)+"..."}
@@ -102,7 +102,7 @@ const Index = ({ data }) => {
           return (
             <PostList
               key={node.name}
-              cover={node.localImageUrl.childImageSharp.fluid}
+              cover={node.localImageUrl && node.localImageUrl.childImageSharp.fluid}
               path={`/shops/${node.slug}`}
               title={node.name}
               excerpt={node.about.substring(0,40)+"..."}
@@ -145,8 +145,8 @@ Index.propTypes = {
 export const query = graphql`
   query {
     allMarkdownRemark(
-      limit: 8
-      sort: { order: DESC, fields: [frontmatter___date] }
+      limit: 9
+      sort: { order: ASC, fields: [frontmatter___date] }
     ) {
       edges {
         node {

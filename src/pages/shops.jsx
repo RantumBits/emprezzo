@@ -17,7 +17,7 @@ const Shops = ({ data }) => {
         <BlogList
           key={node.name}
           cover={node.localImageUrl && node.localImageUrl.childImageSharp && node.localImageUrl.childImageSharp.fluid}
-          path={`/shops/${node.name}`}
+          path={`/shops/${node.slug}`}
           title={node.name}
           date={node.date}
           tags={node.tags && node.tags.split(',')}
@@ -38,6 +38,7 @@ export const query = graphql`
           name
           url
           category
+          slug
           tags
           about
           country
