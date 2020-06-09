@@ -26,6 +26,7 @@ p.center {
     text-decoration:none;
     text-transform:uppercase;
     font-weight:400;
+    font-size: .8em;
     color:#FFFFFF;
     background-color:#6f6add;
     box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
@@ -37,7 +38,19 @@ a.buttonalt{
 }
 .profileimage{
   border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
 }
+
+.profile_left{
+  max-width: 30%;
+
+}
+.stat_title{
+  font-size: .8rem;
+}
+font-size: 0.6rem;
 .logo{
   max-width: 40px;
 }
@@ -46,7 +59,7 @@ a.buttonalt{
   margin: 25px;
 }
 .search_main Input.e1kdxvpr2 {
-  width: 33%;
+  min-width: 33%;
   padding: 1em;
   border-radius: 10px;
   margin: 25px 0 0 10px;

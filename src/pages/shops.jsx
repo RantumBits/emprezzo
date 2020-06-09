@@ -25,8 +25,9 @@ const Shops = ({ data }) => {
   const { edges } = data.allGoogleSheetListRow;
   return (
     <Layout>
-      <Helmet title={'Uncommon Shops'} />
-      <Header title="Uncommon Shops">🧐 Discover exceptional retailers & innovative brands<br/>🛒 Shop direct to support independent businesses</Header>
+      <Helmet title={'all Shops'} />
+      <Header title="discover a great shop"></Header>
+
       <ShopsWrapper>
         {edges.map(({ node }) => (
           <PostList

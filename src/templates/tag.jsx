@@ -44,7 +44,7 @@ const Tag = ({ pageContext }) => {
         title={`${title} | ${config.title}`}
       />
       <Header title={upperTag}>
-        <StyledLink to="/tags">All Tags</StyledLink>
+        Browse indepent online {upperTag} stores selling directly to consumers
       </Header>
         <TagWrapper>
           {posts.map((node) => (

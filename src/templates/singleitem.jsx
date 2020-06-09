@@ -43,17 +43,19 @@ const Statistics = styled.div`
 `;
 
 const StatisticItem = styled.div`
-  margin-right: 40px;
+  margin-right: 1rem;
+  text-align: center;
+  line-height: 1.2rem;
   @media (max-width: ${props => props.theme.breakpoints.s}) {
-    font-size: 0.6rem;
+    font-size: 1rem;
+
     margin-right: 10px;
   }
 `;
 
 const StatisticIcon = styled.img`
-  width: 30px;
-  margin-left: 7px;
-  margin-top: 5px;
+  max-width: 25px;
+  margin:5px;
 `;
 
 const SingleItem = ({ data, pageContext }) => {
@@ -77,19 +79,20 @@ const SingleItem = ({ data, pageContext }) => {
       />
       <Header title={name} children={subtitle} date={date} cover={image} />
       <Container>
-        <div style={{ display: "flex" }}>
-          <img src={profileimage} alt={name} class="profileimage"/>
+        <div class="profile_left" style={{ display: "flex" }}>
+          <img width="100px" height="100px" src={profileimage} alt={name} class="profileimage"/>
           <div style={{paddingLeft: "15px"}}>
           <Statistics>
-            <StatisticItem><a target="_blank" href={`https://www.instagram.com/${instagramname}/`}><StatisticIcon src="/instagram_icon.png" alt={instagramname} /></a></StatisticItem>
-            <StatisticItem>{instagramfollowers} <br/>followers</StatisticItem>
-            <StatisticItem>{instagramposts} <br/>posts</StatisticItem>
-            <StatisticItem>{instagramfollowing} <br/>following</StatisticItem>
+            <StatisticItem><a target="_blank" href={`https://www.instagram.com/${instagramname}/`}><StatisticIcon src="/instagram_icon.png" alt={instagramname} width="15px" height="15px" max-width="25px"  /></a></StatisticItem>
+            <StatisticItem>{instagramfollowers} <br/><span class="stat_title" title="*Instagram Follow Score">*IFS*</span></StatisticItem>
+            <StatisticItem>{instagramposts} <br/><span class="stat_title" title="Instagram Post Score">*IPS*</span></StatisticItem>
+
           </Statistics>
-            <TagsBlock list={tagsList || []} />
+
           </div>
         </div>
         <Content input={about} /><br/>
+        <TagsBlock title="tags" list={tagsList || []} />
         <a target="_blank" href={url} className="button">Shop {name}</a> <a href="/randomshop" className="button buttonalt">Discover another shop</a>
 
 <AtomFeedList list={atomfeed} /><br />

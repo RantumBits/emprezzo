@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useStaticQuery } from 'gatsby';
 import styled from '@emotion/styled';
-import logo from '../../static/logo/header-logo.png';
+import logo from '../../static/logo/logo.png';
 
 const Wrapper = styled.footer`
   position: relative;
@@ -28,10 +28,10 @@ const Footer = () => (
     <Text>
       <div>
 
-        <img src={logo} width="200px" alt="uncommonry - discover & shop indepdent retailers & brands" />
-        <div>💌<Link to="/submit_shop"> submit an uncommon business</Link><br/>
+        <img src={logo} width="30px" alt="uncommonry - discover & shop indepdent retailers & brands" />
+        <div>💌<Link to="/submit_shop"> contact</Link> |
           🛒<Link to="/about"> about </Link> <br/>
-        ⚒ by <a href="https://ecomloop.com" target="_blank">ecomloop</a> in 🥑 california</div>
+        ⚒ by <a href="https://ecomloop.com" target="_blank">ecomloop</a></div>
 
       </div>
     </Text>

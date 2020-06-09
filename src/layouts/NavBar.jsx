@@ -91,7 +91,7 @@ const Nav = styled.nav`
 
   input {
     @media (max-width: 600px) {
-      width: 85px !important;
+      width: 150px !important;
     }
   }
 `;
@@ -145,7 +145,7 @@ const NavBar = () => {
   return (
     <Headroom calcHeightOnResize disableInlineStyles>
       <StyledLink to="/">
-        <img src={logo} class="logo" alt="uncommonry - discover & shop indepdent retailers & brands" />
+        <img src={logo} class="logo" title="emprezzo - discover & shop indepdent retailers & brands" alt="emprezzo - discover & shop indepdent retailers & brands" />
       </StyledLink>
       <NavWrapper>
         <Nav>

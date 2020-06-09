@@ -35,17 +35,17 @@ const Text = styled.div`
   width: 100%;
   max-width: ${props => props.theme.layout.base};
   padding: 0 2rem;
-  margin-bottom: 3rem;
+  margin-bottom: 0rem;
   align-items: center;
   h1 {
     @media (max-width: ${props => props.theme.breakpoints.s}) {
       font-size: 1.5rem;
     }
+    margin-bottom: 0rem;
   }
 `;
 
 const Subtitle = styled.p`
-  max-width: 650px;
   color: ${props => props.theme.colors.white.light};
 `;
 
