@@ -1,11 +1,11 @@
 import Typography from 'typography';
 
 export const typography = new Typography({
-  title: 'GatsbyTutorial',
+  title: 'typography',
   baseFontSize: '18px',
   baseLineHeight: 1.45,
   headerFontFamily: [
-    'Gibson',
+    'Jost',
     'Segoe UI',
     'Roboto',
     'Candal',
@@ -17,6 +17,7 @@ export const typography = new Typography({
     'sans-serif',
   ],
   bodyFontFamily: [
+    'Overpass Mono',
     'Consolas',
     'Open Sans',
     '-apple-system',

@@ -67,9 +67,9 @@ export const theme = {
   },
   fontFamily: {
     // eslint-disable-next-line
-    body: `Consolas,-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'`,
+    body: `'Overpass Mono',-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'`,
     // eslint-disable-next-line
-    heading: `'Gibson', 'Segoe UI', Roboto, Helvetica, -apple-system, BlinkMacSystemFont, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'`,
+    heading: `'Jost', 'Segoe UI', Roboto, Helvetica, -apple-system, BlinkMacSystemFont, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'`,
   },
   layout: {
     article: '46rem',

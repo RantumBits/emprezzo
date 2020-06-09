@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useStaticQuery } from 'gatsby';
 import styled from '@emotion/styled';
 import Headroom from 'react-headroom';
-import logo from '../../static/logo/header-logo.png';
+import logo from '../../static/logo/logo.png';
 import Search from '../components/search'
 
 const searchIndices = [
@@ -145,7 +145,7 @@ const NavBar = () => {
   return (
     <Headroom calcHeightOnResize disableInlineStyles>
       <StyledLink to="/">
-        <img src={logo} alt="uncommonry - discover & shop indepdent retailers & brands" />
+        <img src={logo} class="logo" alt="uncommonry - discover & shop indepdent retailers & brands" />
       </StyledLink>
       <NavWrapper>
         <Nav>

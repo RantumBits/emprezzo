@@ -15,6 +15,19 @@ const shopHit = hit => (
 
 export default connectHits(function HitComp({ type, hits, onClick }) {
   const extend = { shopHit }[type]
+  console.log(hits)
+  //adding the excertp of 140 characters to all the hits
+  hits.map(hit => {
+    let text = hit._highlightResult.about.value;
+    //remove the highlighting
+    text = text.replace("<ais-highlight-0000000000>","");
+    text = text.replace("</ais-highlight-0000000000>","");
+    text = text.substring(0,140)+"...";
+    //add the highlighting back
+    text = text.replace(hit._highlightResult.about.matchedWords[0],"<ais-highlight-0000000000>"+hit._highlightResult.about.matchedWords[0]+"</ais-highlight-0000000000>")
+    hit._highlightResult.about.value = text;
+  })
+
   return hits.map(hit => (
     <div key={hit.objectID}>
       <Link to={`/shops/` + hit.slug} onClick={onClick}>
@@ -22,7 +35,6 @@ export default connectHits(function HitComp({ type, hits, onClick }) {
           <Highlight attribute="title" hit={hit} tagName="mark" />
         </h4>
       </Link>
-      <Highlight attribute="about" hit={hit} tagName="mark" />
       <Snippet attribute="about" hit={hit} tagName="mark" />
     </div>
   ))

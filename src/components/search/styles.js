@@ -30,8 +30,8 @@ const collapse = css`
     color: ${props => ((props.variation && props.variation == "light") ? props.theme.colors.white.light :  props.theme.colors.primary.light)};
   }
   ${props => props.focus && focus}
-  margin-left: ${props => (props.focus ? `-1.6em` : `-1em`)};
-  padding-left: ${props => (props.focus ? `1.6em` : `1em`)};
+  margin-left: ${props => (props.focus ? `-1.6em` : `-1.6em`)};
+  padding-left: ${props => (props.focus ? `1.6em` : `1.6em`)};
   ::placeholder {
     color: ${props => props.theme.gray};
   }
@@ -57,6 +57,7 @@ export const Input = styled.input`
   transition: ${props => props.theme.shortTrans};
   border-radius: ${props => props.theme.smallBorderRadius};
   {highlight-next-line}
+  ${props => focus};
   ${props => (props.collapse ? collapse : expand)};
 `
 export const Form = styled.form`

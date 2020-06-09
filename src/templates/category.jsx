@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import { Header } from 'components';
-import ShopList from '../components/ShopList';
+import PostList from '../components/PostList';
 import { Layout } from 'layouts';
 
 const CategoryHeading = styled.h1`
@@ -36,15 +36,13 @@ const Category = ({ data, pageContext }) => {
       <CategoryHeading>{categoryHeading}</CategoryHeading>
       <CategoryWrapper>
         {edges.map(({ node }) => (
-          <ShopList
-            key={node.name}
-            cover={node.localImageUrl && node.localImageUrl.childImageSharp && node.localImageUrl.childImageSharp.fluid}
-            path={`/shops/${node.name}`}
-            title={node.name}
-            date={node.date}
-            tags={node.tags && node.tags.split(',')}
-            excerpt={node.about && node.about.substring(0,40)+"..."}
-          />
+          <PostList
+              key={node.name}
+              cover={node.localImageUrl && node.localImageUrl.childImageSharp.fluid}
+              path={`/shops/${node.slug}`}
+              title={node.name}
+              excerpt={node.about && node.about.substring(0,40)+"..."}
+            />
         ))}
       </CategoryWrapper>
     </Layout>
@@ -59,6 +57,7 @@ export const query = graphql`
       edges {
         node {
           name
+          slug
           url
           category
           tags

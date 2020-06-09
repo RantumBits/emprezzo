@@ -38,7 +38,6 @@ const Subtitle = styled.h5`
 
 const Statistics = styled.div`
   display: flex;
-  border: 1px solid ${props => props.theme.colors.white.grey};
   margin-bottom: 15px;
   padding: 5px;
 `;
@@ -66,6 +65,8 @@ const SingleItem = ({ data, pageContext }) => {
   const image = localImageUrl ? localImageUrl.childImageSharp.fluid : null;
   const atomfeed = fields && fields.atomfeed ? fields.atomfeed : [];
 
+  const subtitle = city+", "+state+" "+country
+
   return (
     <Layout>
       <SEO
@@ -74,49 +75,48 @@ const SingleItem = ({ data, pageContext }) => {
         banner={image}
         pathname={url}
       />
-      <Header title={name} date={date} />
+      <Header title={name} children={subtitle} date={date} cover={image} />
       <Container>
         <div style={{ display: "flex" }}>
-          <img src={profileimage} />
+          <img src={profileimage} alt={name} class="profileimage"/>
           <div style={{paddingLeft: "15px"}}>
-            <Title>{name}</Title>
-            <Subtitle>{city}, {state} {country}</Subtitle>
+          <Statistics>
+            <StatisticItem><a target="_blank" href={`https://www.instagram.com/${instagramname}/`}><StatisticIcon src="/instagram_icon.png" alt={instagramname} /></a></StatisticItem>
+            <StatisticItem>{instagramfollowers} <br/>followers</StatisticItem>
+            <StatisticItem>{instagramposts} <br/>posts</StatisticItem>
+            <StatisticItem>{instagramfollowing} <br/>following</StatisticItem>
+          </Statistics>
+            <TagsBlock list={tagsList || []} />
           </div>
         </div>
-        <TagsBlock list={tagsList || []} />
-        <Content input={about} /><br />
+        <Content input={about} /><br/>
+        <a target="_blank" href={url} className="button">Shop {name}</a> <a href="/randomshop" className="button buttonalt">Discover another shop</a>
 
-        <Statistics>
-          <StatisticItem><a target="_blank" href={`https://www.instagram.com/${instagramname}/`}><StatisticIcon src="/instagram_icon.png" alt={instagramname} /></a></StatisticItem>
-          <StatisticItem>{instagramfollowers} <br/>followers</StatisticItem>
-          <StatisticItem>{instagramposts} <br/>posts</StatisticItem>
-          <StatisticItem>{instagramfollowing} <br/>following</StatisticItem>
-        </Statistics>
-
+<AtomFeedList list={atomfeed} /><br />
+{/*
         <Statistics>
           <StatisticItem><a target="_blank" href={alexalink}><StatisticIcon src="/alexa_icon.jpg" alt={alexalink} /></a></StatisticItem>
           <StatisticItem>{alexarank} <br/>alexa rank</StatisticItem>
           <StatisticItem>{alexatimeonsite} <br/>avg minutes per visit</StatisticItem>
         </Statistics>
+*/}
 
-        <AtomFeedList list={atomfeed} /><br />
-        <a target="_blank" href={url} className="button">Shop {name}</a> <a href="/randomshop" className="button buttonalt">Discover another shop</a>
 
       </Container>
       <SuggestionBar>
         <PostSuggestion>
           {prev && (
             <Link to={`/shops/${prev.slug}`}>
-              <h4>Previous</h4>
-              <p>{prev.name}</p>
+              Previous
+              <h3>{prev.name}</h3>
             </Link>
           )}
         </PostSuggestion>
         <PostSuggestion>
           {next && (
             <Link to={`/shops/${next.slug}`}>
-              <h4>Next</h4>
-              <p>{next.name}</p>
+              Next
+              <h3>{next.name}</h3>
             </Link>
           )}
         </PostSuggestion>

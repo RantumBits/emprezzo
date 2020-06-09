@@ -11,12 +11,11 @@ const headroom = css`
   .css-14za4wp.eqxxxtn1, .css-woc7hc.eqxxxtn0 {
     display: none;
 }
-
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@500&family=Overpass+Mono:wght@600&display=swap');
 p.center {
     text-align: center;
     margin: 25px;
 }
-
   a{ color: #6f6add;}
   a.button{
     display:inline-block;
@@ -35,13 +34,17 @@ p.center {
 }
 a.buttonalt{
   opacity: 50%;
-
+}
+.profileimage{
+  border-radius: 50%;
+}
+.logo{
+  max-width: 40px;
 }
 .center{
   text-align: center;
   margin: 25px;
 }
-
 .search_main Input.e1kdxvpr2 {
   width: 33%;
   padding: 1em;
@@ -104,12 +107,10 @@ a.button:hover{
           color: ${theme.colors.black.base};
         }
       }
-
       input {
         border-color: ${theme.colors.black.base};
         color: ${theme.colors.black.base};
       }
-
       svg {
         color: ${theme.colors.black.base} !important;
       }
