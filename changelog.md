@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v0.7.2 2020.06.10
+conigured domain at netlify
+configured domain at google domains to point to netlify
+change instagram fields to new score fields
+adjust 'tags', 'category' template and '/shops/' page to load 9 listings by default & add 'show more' button to bottom of page
+change profile image to lazy loading
+adjust headings on tags & category pages
+
 ## v0.7.1 2020.06.09
 changed name to emprezzo.com
 revised shop template page to remove one instagram stat, revise titles

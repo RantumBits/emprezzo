@@ -23,13 +23,29 @@ const ShopsWrapper = styled.div`
 
 const Shops = ({ data }) => {
   const { edges } = data.allGoogleSheetListRow;
+  const listEdges = [];
+  const maxItems = 12;
+  const [limit, setLimit] = React.useState(maxItems);
+  const [showMore, setShowMore] = React.useState(true);
+
+  const increaseLimit = () => {
+      setLimit(limit + maxItems);
+  }
+
+  //filtering items as per limit
+  edges.map((edge) => {
+    if (listEdges.length < limit) {
+      listEdges.push(edge);
+    }
+  })
+
   return (
     <Layout>
       <Helmet title={'all Shops'} />
-      <Header title="discover a great shop"></Header>
+      <Header title="discover a great independent shop"><span class="Header--Subtitle"></span></Header>
 
       <ShopsWrapper>
-        {edges.map(({ node }) => (
+        {listEdges.map(({ node }) => (
           <PostList
               key={node.name}
               cover={node.localImageUrl && node.localImageUrl.childImageSharp.fluid}
@@ -39,6 +55,13 @@ const Shops = ({ data }) => {
             />
         ))}
       </ShopsWrapper>
+      {showMore && listEdges.length > 0 && listEdges.length < edges.length &&
+        <div className="center">
+            <a className="button" onClick={increaseLimit} style={{cursor: "pointer"}}>
+                Load More
+            </a>
+        </div>
+      }
     </Layout>
   );
 };

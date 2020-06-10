@@ -27,15 +27,31 @@ const CategoryWrapper = styled.div`
 
 const Category = ({ data, pageContext }) => {
   const { category } = pageContext;
-  const categoryHeading = "Category: " + category;
+  const categoryHeading = category + " Shops";
   const { edges } = data.allGoogleSheetListRow;
+  const listEdges = [];
+  const maxItems = 12;
+  const [limit, setLimit] = React.useState(maxItems);
+  const [showMore, setShowMore] = React.useState(true);
+
+  const increaseLimit = () => {
+      setLimit(limit + maxItems);
+  }
+
+  //filtering items as per limit
+  edges.map((edge) => {
+    if (listEdges.length < limit) {
+      listEdges.push(edge);
+    }
+  })
+
   return (
     <Layout>
-      <Helmet title={'Uncommon Shops : ' + categoryHeading} />
-      <Header title="Uncommon Shops">an ever-growing list of exceptional independent brands & retailers</Header>
-      <CategoryHeading>{categoryHeading}</CategoryHeading>
+      <Helmet title={'Shop Independent ' + categoryHeading + ' | Discover direct-to-consumer' + categoryHeading } />
+      <Header title={categoryHeading}><span class="Header--Subtitle">discover exceptional independent {categoryHeading}</span></Header>
+
       <CategoryWrapper>
-        {edges.map(({ node }) => (
+        {listEdges.map(({ node }) => (
           <PostList
               key={node.name}
               cover={node.localImageUrl && node.localImageUrl.childImageSharp.fluid}
@@ -45,6 +61,13 @@ const Category = ({ data, pageContext }) => {
             />
         ))}
       </CategoryWrapper>
+      {showMore && listEdges.length > 0 && listEdges.length < edges.length &&
+        <div className="center">
+            <a className="button" onClick={increaseLimit} style={{cursor: "pointer"}}>
+                Load More
+            </a>
+        </div>
+      }
     </Layout>
   );
 };

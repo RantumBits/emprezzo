@@ -1,5 +1,6 @@
 import React from 'react';
 import { graphql, Link } from 'gatsby';
+import Image from 'gatsby-image';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import { Layout, Container, Content } from 'layouts';
@@ -60,7 +61,7 @@ const StatisticIcon = styled.img`
 
 const SingleItem = ({ data, pageContext }) => {
   const { next, prev } = pageContext;
-  const { name, date, slug, imageurl, url, category, tags, localImageUrl, profileimage, instagramname, instagramposts, instagramfollowers, instagramfollowing, alexalink, alexarank, alexatimeonsite, about, country, state, city, like, fields } = data.googleSheetListRow
+  const { name, date, slug, imageurl, url, category, tags, localImageUrl, profileimage, localProfileImage, instagramname, instagramposts, instagramfollowers, instagramfollowing, alexalink, alexarank, alexatimeonsite, followersperfollow, followersperpost, about, country, state, city, like, fields } = data.googleSheetListRow
 
   //converting comma seperated tags to tags map
   const tagsList = tags ? tags.split(',') : [];
@@ -79,13 +80,15 @@ const SingleItem = ({ data, pageContext }) => {
       />
       <Header title={name} children={subtitle} date={date} cover={image} />
       <Container>
-        <div class="profile_left" style={{ display: "flex" }}>
-          <img width="100px" height="100px" src={profileimage} alt={name} class="profileimage"/>
+        <div class="profileimage" style={{ display: "flex" }}>
+          {localProfileImage &&
+            <Image fluid={localProfileImage.childImageSharp.fluid} alt={name}  class="profileimage" style={{width: "100px"}} />
+          }
           <div style={{paddingLeft: "15px"}}>
           <Statistics>
             <StatisticItem><a target="_blank" href={`https://www.instagram.com/${instagramname}/`}><StatisticIcon src="/instagram_icon.png" alt={instagramname} width="15px" height="15px" max-width="25px"  /></a></StatisticItem>
-            <StatisticItem>{instagramfollowers} <br/><span class="stat_title" title="*Instagram Follow Score">*IFS*</span></StatisticItem>
-            <StatisticItem>{instagramposts} <br/><span class="stat_title" title="Instagram Post Score">*IPS*</span></StatisticItem>
+            <StatisticItem>{followersperfollow} <br/><span class="stat_title" title="*Instagram Follow Score">*IFS*</span></StatisticItem>
+            <StatisticItem>{followersperpost} <br/><span class="stat_title" title="Instagram Post Score">*IPS*</span></StatisticItem>
 
           </Statistics>
 
@@ -110,16 +113,16 @@ const SingleItem = ({ data, pageContext }) => {
         <PostSuggestion>
           {prev && (
             <Link to={`/shops/${prev.slug}`}>
-              Previous
-              <h3>{prev.name}</h3>
+
+              <p>&lt; {prev.name}</p>
             </Link>
           )}
         </PostSuggestion>
         <PostSuggestion>
           {next && (
             <Link to={`/shops/${next.slug}`}>
-              Next
-              <h3>{next.name}</h3>
+
+              <p>{next.name}	&gt;</p>
             </Link>
           )}
         </PostSuggestion>
@@ -155,10 +158,19 @@ export const query = graphql`
       tags
       about
       profileimage
+      localProfileImage {
+          childImageSharp {
+            fluid (maxWidth: 100) {
+              ...GatsbyImageSharpFluid
+            }
+          }
+        }
       instagramname
       instagramposts
       instagramfollowers
       instagramfollowing
+      followersperfollow
+      followersperpost
       alexalink
       alexarank
       alexatimeonsite

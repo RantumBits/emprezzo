@@ -72,7 +72,7 @@ const Index = ({ data }) => {
 
       {/* <p class="center"><a href ="/randomshop" class="button button">Discover a  shop</a></p> */}
       <div class="center">
-      🧐 Discover exceptional retailers & innovative brands<br/>🛒 Shop direct to support independent businesses
+      🧐 Discover exceptional innovative stores<br/>🛒 Shop direct-to-consumer brands
       </div>
 <div class="search_main">
       <Search collapse homepage indices={searchIndices} />

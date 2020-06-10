@@ -11,7 +11,7 @@ const headroom = css`
   .css-14za4wp.eqxxxtn1, .css-woc7hc.eqxxxtn0 {
     display: none;
 }
-@import url('https://fonts.googleapis.com/css2?family=Jost:wght@500&family=Overpass+Mono:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@500&family=Overpass+Mono:wght@400&display=swap');
 p.center {
     text-align: center;
     margin: 25px;
@@ -36,11 +36,21 @@ p.center {
 a.buttonalt{
   opacity: 50%;
 }
+
+
+
+.Header--Subtitle {
+  text-transform: lowercase;
+}
+
 .profileimage{
-  border-radius: 50%;
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
+  margin-bottom: 15px;
+
+}
+.profileimage img{
+  border-radius: 20%;
+
+
 }
 
 .profile_left{

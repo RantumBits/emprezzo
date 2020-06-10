@@ -37,6 +37,21 @@ const Tag = ({ pageContext }) => {
   const { posts, tagName } = pageContext;
   const upperTag = tagName.charAt(0).toUpperCase() + tagName.slice(1);
   const title = "Tag: " + tagName;
+  const listEdges = [];
+  const maxItems = 12;
+  const [limit, setLimit] = React.useState(maxItems);
+  const [showMore, setShowMore] = React.useState(true);
+
+  const increaseLimit = () => {
+      setLimit(limit + maxItems);
+  }
+
+  //filtering as per limit
+  posts.map((node) => {
+    if (listEdges.length < limit) {
+      listEdges.push(node);
+    }
+  })
 
   return (
     <Layout>
@@ -47,7 +62,7 @@ const Tag = ({ pageContext }) => {
         Browse indepent online {upperTag} stores selling directly to consumers
       </Header>
         <TagWrapper>
-          {posts.map((node) => (
+          {listEdges.map((node) => (
             <PostList
               key={node.name}
               cover={node.imageurl}
@@ -57,7 +72,13 @@ const Tag = ({ pageContext }) => {
             />
           ))}
         </TagWrapper>
-
+        {showMore && listEdges.length > 0 && listEdges.length < posts.length &&
+          <div className="center">
+              <a className="button" onClick={increaseLimit} style={{cursor: "pointer"}}>
+                  Load More
+              </a>
+          </div>
+        }
     </Layout>
   );
 };
