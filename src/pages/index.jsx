@@ -67,7 +67,7 @@ const Index = ({ data }) => {
 
   return (
     <Layout>
-      <Helmet title={'uncommonry'} />
+      <Helmet title={'emprezzo'} />
       <Header title="Discover & Shop Independent Businesses"></Header>
 
       {/* <p class="center"><a href ="/randomshop" class="button button">Discover a  shop</a></p> */}

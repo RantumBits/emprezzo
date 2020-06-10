@@ -61,7 +61,7 @@ const StatisticIcon = styled.img`
 
 const SingleItem = ({ data, pageContext }) => {
   const { next, prev } = pageContext;
-  const { name, date, slug, imageurl, url, category, tags, localImageUrl, profileimage, localProfileImage, instagramname, instagramposts, instagramfollowers, instagramfollowing, alexalink, alexarank, alexatimeonsite, followersperfollow, followersperpost, about, country, state, city, like, fields } = data.googleSheetListRow
+  const { name, date, slug, imageurl, url, category, tags, localImageUrl, profileimage, localProfileImage, instagramname, instagramposts, instagramfollowers, instagramfollowing, alexalink, alexarank, alexatimeonsite, followersperfollow, followersperpost, socialscore, about, country, state, city, like, fields } = data.googleSheetListRow
 
   //converting comma seperated tags to tags map
   const tagsList = tags ? tags.split(',') : [];
@@ -89,7 +89,7 @@ const SingleItem = ({ data, pageContext }) => {
             <StatisticItem><a target="_blank" href={`https://www.instagram.com/${instagramname}/`}><StatisticIcon src="/instagram_icon.png" alt={instagramname} width="15px" height="15px" max-width="25px"  /></a></StatisticItem>
             <StatisticItem>{followersperfollow} <br/><span class="stat_title" title="*Instagram Follow Score">*IFS*</span></StatisticItem>
             <StatisticItem>{followersperpost} <br/><span class="stat_title" title="Instagram Post Score">*IPS*</span></StatisticItem>
-
+            <StatisticItem>{socialscore} <br/><span class="stat_title" title="Social Score">*ESS*</span></StatisticItem>
           </Statistics>
 
           </div>
@@ -171,6 +171,7 @@ export const query = graphql`
       instagramfollowing
       followersperfollow
       followersperpost
+      socialscore
       alexalink
       alexarank
       alexatimeonsite
