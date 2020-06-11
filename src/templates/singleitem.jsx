@@ -87,9 +87,10 @@ const SingleItem = ({ data, pageContext }) => {
           <div style={{paddingLeft: "15px"}}>
           <Statistics>
             <StatisticItem><a target="_blank" href={`https://www.instagram.com/${instagramname}/`}><StatisticIcon src="/instagram_icon.png" alt={instagramname} width="15px" height="15px" max-width="25px"  /></a></StatisticItem>
+<StatisticItem>{socialscore} <br/><span class="stat_title" title="Social Score">*ESS*</span></StatisticItem>
             <StatisticItem>{followersperfollow} <br/><span class="stat_title" title="*Instagram Follow Score">*IFS*</span></StatisticItem>
             <StatisticItem>{followersperpost} <br/><span class="stat_title" title="Instagram Post Score">*IPS*</span></StatisticItem>
-            <StatisticItem>{socialscore} <br/><span class="stat_title" title="Social Score">*ESS*</span></StatisticItem>
+
           </Statistics>
 
           </div>
@@ -145,7 +146,7 @@ export const query = graphql`
             quality: 100
             duotone: { highlight: "#386eee", shadow: "#2323be", opacity: 60 }
           ) {
-            ...GatsbyImageSharpFluid_withWebp
+            ...GatsbyImageSharpFluid
           }
           resize(width: 1200, quality: 90) {
             src

@@ -152,12 +152,14 @@ const NavBar = () => {
           <div className="dropdown">
             <Link to="/shops">Discover </Link>
             <div className="dropdown-content">
+
               {uniqueCategoriesMap.map((item) => (
+
                 <Link key={item.url} to={`/category/${item.url}`} > {item.text}</Link>
               ))}
             </div>
           </div>
-
+  <Link to="/entries">Rankings </Link>
           <SearchWrapper>
             <Search collapse indices={searchIndices} variation={"light"} />
           </SearchWrapper>

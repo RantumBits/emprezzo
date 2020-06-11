@@ -72,7 +72,7 @@ const Index = ({ data }) => {
 
       {/* <p class="center"><a href ="/randomshop" class="button button">Discover a  shop</a></p> */}
       <div class="center">
-      🧐 Discover exceptional innovative stores<br/>🛒 Shop direct-to-consumer brands
+      🧐 Discover direct-to-consumer stores<br/>🛒 Shop & support independent businesseses
       </div>
 <div class="search_main">
       <Search collapse homepage indices={searchIndices} />
@@ -164,7 +164,7 @@ export const query = graphql`
                   quality: 90
                   traceSVG: { color: "#2B2B2F" }
                 ) {
-                  ...GatsbyImageSharpFluid_withWebp_tracedSVG
+                  ...GatsbyImageSharpFluid_tracedSVG
                 }
               }
             }
@@ -192,7 +192,7 @@ export const query = graphql`
                 quality: 100
                 traceSVG: { color: "#2B2B2F" }
               ) {
-                ...GatsbyImageSharpFluid_withWebp_tracedSVG
+                ...GatsbyImageSharpFluid_tracedSVG
               }
             }
           }
