@@ -41,11 +41,11 @@ const Entries = ({ data }) => {
 
   return (
     <Layout>
-      <Helmet title={'all Shops'} />
+      <Helmet title={'Store Rankings | Discover the best ecommerce stores'} />
       <Header title="🧐 Discover direct-to-consumer stores"><span class="Header--Subtitle"></span></Header>
 
       <ShopsWrapper>
-     
+
         <table>
           <thead>
             <tr>

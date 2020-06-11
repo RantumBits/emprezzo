@@ -6,7 +6,7 @@ import logo from '../../static/logo/logo.png';
 import Search from '../components/search'
 
 const searchIndices = [
-  { name: `uncommonry`, title: `Shops`, type: `shopHit` },
+  { name: `emprezzo`, title: `Shops`, type: `shopHit` },
 ]
 
 const StyledLink = styled(Link)`
@@ -159,7 +159,7 @@ const NavBar = () => {
               ))}
             </div>
           </div>
-  <Link to="/entries">Rankings </Link>
+  <Link to="/rankings">Rankings </Link>
           <SearchWrapper>
             <Search collapse indices={searchIndices} variation={"light"} />
           </SearchWrapper>
