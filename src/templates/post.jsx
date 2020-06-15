@@ -82,18 +82,13 @@ export const query = graphql`
         cover {
           childImageSharp {
             fluid(
-              maxWidth: 1920
-              quality: 90
               duotone: { highlight: "#386eee", shadow: "#2323be", opacity: 60 }
             ) {
               ...GatsbyImageSharpFluid
             }
-            resize(width: 1200, quality: 90) {
-              src
             }
           }
         }
       }
     }
-  }
 `;

@@ -90,11 +90,7 @@ export const query = graphql`
           city
           localImageUrl {
             childImageSharp {
-              fluid(
-                maxWidth: 400
-                quality: 100
-              
-              ) {
+              fluid {
                 ...GatsbyImageSharpFluid
               }
             }

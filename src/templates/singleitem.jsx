@@ -142,8 +142,6 @@ export const query = graphql`
       localImageUrl {
         childImageSharp {
           fluid(
-            maxWidth: 1200
-            quality: 90
             duotone: { highlight: "#386eee", shadow: "#2323be", opacity: 60 }
           ) {
             ...GatsbyImageSharpFluid
@@ -159,7 +157,7 @@ export const query = graphql`
       profileimage
       localProfileImage {
           childImageSharp {
-            fluid (maxWidth: 100) {
+            fluid {
               ...GatsbyImageSharpFluid
             }
           }

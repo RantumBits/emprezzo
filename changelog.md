@@ -1,6 +1,9 @@
 # Change Log
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v0.7.6 2020.06.11
+change image settings to fix slow build/timeout issues
+
 ## v0.7.5 2020.06.10
 change page 'entries' to 'rankings'
 add 'rankings' to top menu

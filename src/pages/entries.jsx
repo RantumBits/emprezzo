@@ -102,7 +102,7 @@ export const query = graphql`
           followersperpost
           localProfileImage {
             childImageSharp {
-              fluid (maxWidth: 50) {
+              fluid {
                 ...GatsbyImageSharpFluid
               }
             }
