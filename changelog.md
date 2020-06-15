@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v0.8.0 2020.06.15
+cleaned up existing listings to remove bad data
+added new entries from research on black owned businesses [449 total]
+change image settings to fix slow build/timeout issues
+used netlify-cli to upload build with caching
+
 ## v0.7.6 2020.06.11
 change image settings to fix slow build/timeout issues
 
@@ -9,7 +15,7 @@ change page 'entries' to 'rankings'
 add 'rankings' to top menu
 
 ## v0.7.4 2020.06.10
-add entries page with rankings
+add 'entries' page with rankings
 clean up entries with better photos
 
 ## v0.7.3 2020.06.10
