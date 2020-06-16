@@ -52,6 +52,7 @@
     "gatsby-transformer-remark": "^2.6.21",
     "gatsby-transformer-sharp": "^2.2.13",
     "lodash": "^4.17.15",
+    "netlify-cli": "^2.54.0",
     "node-fetch": "^2.6.0",
     "prismjs": "^1.17.1",
     "prop-types": "^15.7.2",
