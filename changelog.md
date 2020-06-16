@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file. See [standa
 cleaned up existing listings to remove bad data
 added new entries from research on black owned businesses [449 total]
 change image settings to fix slow build/timeout issues
-used netlify-cli to upload build with caching
+used netlify-cli to upload build with caching 
 
 ## v0.7.6 2020.06.11
 change image settings to fix slow build/timeout issues
