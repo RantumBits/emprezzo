@@ -63,7 +63,7 @@ export const query = graphql`
             date(formatString: "MM.DD.YYYY")
             cover {
               childImageSharp {
-                fluid {
+                fluid (srcSetBreakpoints: [200, 400]) {
                   ...GatsbyImageSharpFluid
                 }
               }

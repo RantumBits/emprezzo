@@ -159,12 +159,8 @@ export const query = graphql`
             date(formatString: "MM.DD.YYYY")
             cover {
               childImageSharp {
-                fluid(
-                  maxWidth: 1000
-                  quality: 90
-                  traceSVG: { color: "#2B2B2F" }
-                ) {
-                  ...GatsbyImageSharpFluid_tracedSVG
+                fluid (srcSetBreakpoints: [200, 400]) {
+                  ...GatsbyImageSharpFluid
                 }
               }
             }
@@ -187,12 +183,8 @@ export const query = graphql`
           city
           localImageUrl {
             childImageSharp {
-              fluid(
-                maxWidth: 1000
-                quality: 100
-                traceSVG: { color: "#2B2B2F" }
-              ) {
-                ...GatsbyImageSharpFluid_tracedSVG
+              fluid (srcSetBreakpoints: [200, 400]) {
+                ...GatsbyImageSharpFluid
               }
             }
           }

@@ -142,6 +142,7 @@ export const query = graphql`
       localImageUrl {
         childImageSharp {
           fluid(
+            maxWidth: 1800,
             duotone: { highlight: "#386eee", shadow: "#2323be", opacity: 60 }
           ) {
             ...GatsbyImageSharpFluid

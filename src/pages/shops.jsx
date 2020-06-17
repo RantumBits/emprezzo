@@ -84,7 +84,7 @@ export const query = graphql`
           city
           localImageUrl {
             childImageSharp {
-              fluid {
+              fluid (srcSetBreakpoints: [200, 400]) {
                 ...GatsbyImageSharpFluid
               }
             }
