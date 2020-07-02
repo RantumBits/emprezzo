@@ -105,26 +105,46 @@ const Title = styled.h2`
   margin-bottom: 0.6rem;
 `;
 
-const PostList = ({ cover, path, date, title, excerpt }) => (
-  <Wrapper>
-    <Image>
+const PostList = ({ cover, path, date, title, excerpt, mysqldataview, instagramname }) => {
 
-      {typeof cover === 'object' &&
-        <Img fluid={cover} />
-      }
-      {typeof cover === 'string' &&
-        <img src={cover || {} || [] || ''} style={{objectFit: 'fill'}} />
-      }
-    </Image>
-    <StyledLink to={path}>
-      <Info>
-        <span>{date}</span>
-        <Title>{title}</Title>
-        <span>{excerpt}</span>
-      </Info>
-    </StyledLink>
-  </Wrapper>
-);
+  console.log("*********************************************")
+  console.log("*********** instagramname="+instagramname)
+  if(instagramname && mysqldataview) {
+    //Extracting Image from First post of MySQL Data
+    const maxPosts = 1;
+    const listPostEdges = [];
+    mysqldataview.map((edge) => {
+        if (listPostEdges.length < maxPosts && edge.node.UserName == instagramname) {
+            listPostEdges.push(edge);
+        }
+    })
+    if(listPostEdges && listPostEdges.length>0 && listPostEdges[0].node.UniquePhotoLink){
+      cover = listPostEdges[0].node.UniquePhotoLink
+      console.log("******** cover = "+cover)
+    }
+  }
+
+  return (
+    <Wrapper>
+      <Image>
+
+        {typeof cover === 'object' &&
+          <Img fluid={cover} />
+        }
+        {typeof cover === 'string' &&
+          <img src={cover || {} || [] || ''} style={{ objectFit: 'fill' }} />
+        }
+      </Image>
+      <StyledLink to={path}>
+        <Info>
+          <span>{date}</span>
+          <Title>{title}</Title>
+          <span>{excerpt}</span>
+        </Info>
+      </StyledLink>
+    </Wrapper>
+  );
+}
 
 export default PostList;
 

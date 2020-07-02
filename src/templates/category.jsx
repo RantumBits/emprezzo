@@ -45,6 +45,8 @@ const Category = ({ data, pageContext }) => {
     }
   })
 
+  const rowDataViewEdges = data.allMysqlDataView.edges;
+
   return (
     <Layout>
       <Helmet title={'Shop Independent ' + categoryHeading + ' | Discover direct-to-consumer' + categoryHeading } />
@@ -58,6 +60,8 @@ const Category = ({ data, pageContext }) => {
               path={`/shops/${node.slug}`}
               title={node.name}
               excerpt={node.about && node.about.substring(0,40)+"..."}
+              mysqldataview={rowDataViewEdges}
+              instagramname={node.instagramname}
             />
         ))}
       </CategoryWrapper>
@@ -76,6 +80,17 @@ export default Category;
 
 export const query = graphql`
   query($category: String!) {
+    allMysqlDataView {
+      edges {
+        node {
+          UserName
+          UniquePhotoLink
+          ProfilePicURL
+          Caption
+          ShortCodeURL
+        }
+      }
+    }
     allGoogleSheetListRow(filter: {category: {eq: $category}}) {
       edges {
         node {
@@ -88,6 +103,7 @@ export const query = graphql`
           country
           state
           city
+          instagramname
           localImageUrl {
             childImageSharp {
               fluid (srcSetBreakpoints: [200, 400]) {

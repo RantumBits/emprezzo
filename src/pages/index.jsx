@@ -56,14 +56,15 @@ const Index = ({ data }) => {
 
   //filtering home and food items maximum to 6 items
   rowEdges.map((edge) => {
-    if(edge.node.category && edge.node.category != "" && foodEdges.length<maxItems) {
+    if (edge.node.category && edge.node.category != "" && foodEdges.length < maxItems) {
       foodEdges.push(edge);
     }
-    else if(edge.node.category && edge.node.category == " " && homeEdges.length<maxItems) {
+    else if (edge.node.category && edge.node.category == " " && homeEdges.length < maxItems) {
       homeEdges.push(edge);
     }
-
   })
+
+  const rowDataViewEdges = data.allMysqlDataView.edges;
 
   return (
     <Layout>
@@ -72,10 +73,10 @@ const Index = ({ data }) => {
 
       {/* <p class="center"><a href ="/randomshop" class="button button">Discover a  shop</a></p> */}
       <div class="center">
-      🧐 Discover direct-to-consumer stores<br/>🛒 Shop & support independent businesseses
+        🧐 Discover direct-to-consumer stores<br />🛒 Shop & support independent businesseses
       </div>
-<div class="search_main">
-      <Search collapse homepage indices={searchIndices} />
+      <div class="search_main">
+        <Search collapse homepage indices={searchIndices} />
 
       </div>
 
@@ -90,7 +91,9 @@ const Index = ({ data }) => {
               cover={node.localImageUrl && node.localImageUrl.childImageSharp.fluid}
               path={`/shops/${node.slug}`}
               title={node.name}
-              excerpt={node.about && node.about.substring(0,40)+"..."}
+              excerpt={node.about && node.about.substring(0, 40) + "..."}
+              mysqldataview={rowDataViewEdges}
+              instagramname={node.instagramname}
             />
           );
         })}
@@ -105,7 +108,9 @@ const Index = ({ data }) => {
               cover={node.localImageUrl && node.localImageUrl.childImageSharp.fluid}
               path={`/shops/${node.slug}`}
               title={node.name}
-              excerpt={node.about.substring(0,40)+"..."}
+              excerpt={node.about.substring(0, 40) + "..."}
+              mysqldataview={rowDataViewEdges}
+              instagramname={node.instagramname}
             />
           );
         })}
@@ -169,6 +174,18 @@ export const query = graphql`
       }
     }
 
+    allMysqlDataView {
+      edges {
+        node {
+          UserName
+          UniquePhotoLink
+          ProfilePicURL
+          Caption
+          ShortCodeURL
+        }
+      }
+    }
+
     allGoogleSheetListRow {
       edges {
         node {
@@ -181,6 +198,7 @@ export const query = graphql`
           country
           state
           city
+          instagramname
           localImageUrl {
             childImageSharp {
               fluid (srcSetBreakpoints: [200, 400]) {

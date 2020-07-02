@@ -44,6 +44,30 @@ module.exports = {
     }
     },
     {
+      resolve: `gatsby-source-mysql`,
+      options: {
+        connectionDetails: {
+          host: '157.245.173.140',
+          user: 'instasql',
+          password: 'insta@sqlr;',
+          database: 'instagram',
+          connectTimeout: 100000
+        },
+        queries: [
+          {
+            statement: 'Select UserID, UserName, FullName, Biography, ProfilePicURL, PostsCount, FollowersCount, FollowingCount, IFNULL(PhotoLink,CONCAT("https://source.unsplash.com/1600x900/?abstract,pattern,macro",UserID)) AS UniquePhotoLink, ShortCode, CONCAT("https://instagram.com/p/",ShortCode) AS ShortCodeURL, LikesCount, CommentsCount, PostDate, Caption, CaptionHashtags, AlexaURL, GlobalRank, Reach, LocalRank, AlexaCountry, TOS FROM DataView WHERE UserName IS NOT NULL',
+            idFieldName: 'UniquePhotoLink',
+            name: 'DataView'
+          },
+          {
+            statement: 'SELECT * FROM ShopifyView WHERE UserName IS NOT NULL',
+            idFieldName: 'ProductURL',
+            name: 'ShopifyView'
+          }
+        ]
+      }
+    },
+    {
       resolve: `gatsby-plugin-remote-images`,
       options: {
         nodeType: 'googleSheetListRow',

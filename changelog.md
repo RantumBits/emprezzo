@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v0.8.4 2020.06.18
+remove product atom feed processing
+
+
 ## v0.8.3 2020.06.17
 removed extraneous thumbnail creation
 updated scripts for images, scores

@@ -61,7 +61,7 @@ const Header = ({ children, title, date, cover }) => (
       <h1>{title}</h1>
       <h3>{date}</h3>
 
-      {children && <Subtitle>{children}</Subtitle>}
+      {children && <Subtitle dangerouslySetInnerHTML={{ __html: children }} />}
     </Text>
   </Wrapper>
 );

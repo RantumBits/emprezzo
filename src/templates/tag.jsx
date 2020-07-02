@@ -33,7 +33,7 @@ const TagWrapper = styled.div`
   }
 `;
 
-const Tag = ({ pageContext }) => {
+const Tag = ({ data, pageContext }) => {
   const { posts, tagName } = pageContext;
   const upperTag = tagName.charAt(0).toUpperCase() + tagName.slice(1);
   const title = "Tag: " + tagName;
@@ -53,6 +53,8 @@ const Tag = ({ pageContext }) => {
     }
   })
 
+  const rowDataViewEdges = data.allMysqlDataView.edges;
+
   return (
     <Layout>
       <SEO
@@ -69,6 +71,8 @@ const Tag = ({ pageContext }) => {
               path={`/shops/${node.slug}`}
               title={node.name}
               excerpt={node.about && node.about.substring(0,40)+"..."}
+              mysqldataview={rowDataViewEdges}
+              instagramname={node.instagramname}
             />
           ))}
         </TagWrapper>
@@ -91,3 +95,20 @@ Tag.propTypes = {
     tagName: PropTypes.string,
   }),
 };
+
+export const query = graphql`
+  query {
+    allMysqlDataView {
+      edges {
+        node {
+          UserName
+          UniquePhotoLink
+          ProfilePicURL
+          Caption
+          ShortCodeURL
+        }
+      }
+    }
+  }
+`;
+

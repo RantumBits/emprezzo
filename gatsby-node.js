@@ -253,22 +253,22 @@ exports.onCreateNode = ({ node, actions }) => {
       && node.url.startsWith("http")
   ) {
     const feedurl = node.url+"/collections/all.atom";
-    console.log("******* Feed URL = "+feedurl);
+    //console.log("******* Feed URL = "+feedurl);
     var req = fetch(feedurl)
     var feedparser = new FeedParser();
     req.then(function (res) {
       if (res.status !== 200) {
-        console.log("** Bad status code '"+feedurl+"' : "+res.status)
+        //console.log("** Bad status code '"+feedurl+"' : "+res.status)
       }
       else {
         res.body.pipe(feedparser);
       }
     }, function (err) {
-      console.error("** Error while reading feed for '"+feedurl+"' : "+err)
+      //console.error("** Error while reading feed for '"+feedurl+"' : "+err)
     });
 
     feedparser.on('error', function (error) {
-      console.error("**** Feed Read Error = "+error);
+      //console.error("**** Feed Read Error = "+error);
     });
 
     feedparser.on('readable', function () {
