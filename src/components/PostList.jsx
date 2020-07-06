@@ -109,6 +109,7 @@ const PostList = ({ cover, path, date, title, excerpt, mysqldataview, instagramn
 
   console.log("*********************************************")
   console.log("*********** instagramname="+instagramname)
+  cover=null; //this is to not show any image is data is not found in mysql
   if(instagramname && mysqldataview) {
     //Extracting Image from First post of MySQL Data
     const maxPosts = 1;
@@ -127,11 +128,10 @@ const PostList = ({ cover, path, date, title, excerpt, mysqldataview, instagramn
   return (
     <Wrapper>
       <Image>
-
-        {typeof cover === 'object' &&
+        {cover && typeof cover === 'object' &&
           <Img fluid={cover} />
         }
-        {typeof cover === 'string' &&
+        {cover && typeof cover === 'string' &&
           <img src={cover || {} || [] || ''} style={{ objectFit: 'fill' }} />
         }
       </Image>
