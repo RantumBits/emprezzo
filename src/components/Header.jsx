@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import Img from 'gatsby-image';
 import PropTypes from 'prop-types';
+import { FaInstagram, FaFacebookSquare, FaPinterestSquare, FaTwitterSquare, FaYoutube } from 'react-icons/fa';
 
 const Wrapper = styled.header`
   -webkit-clip-path: polygon(100% 0, 0 0, 0 70%, 50% 100%, 100% 70%);
@@ -45,22 +46,48 @@ const Text = styled.div`
   }
 `;
 
+const SocialIcons = styled.div`
+  display: flex;
+  a {
+    margin-right: 10px;
+  }
+`;
+
 const Subtitle = styled.p`
   color: ${props => props.theme.colors.white.light};
 `;
 
-const Header = ({ children, title, date, cover }) => (
+const Header = ({ children, title, date, cover, socialDetails }) => (
   <Wrapper>
     {cover && typeof cover === 'object' &&
       <Img fluid={cover || {} || [] || ''} />
     }
-    {typeof cover === 'string' &&
-      <img src={cover || {} || [] || ''} style={{width: '100%', objectFit: 'fill', objectPosition: '50% 50%'}} />
+    {cover && typeof cover === 'string' &&
+      <img src={cover || {} || [] || ''} style={{ width: '100%', objectFit: 'fill', objectPosition: '50% 50%' }} />
     }
     <Text>
       <h1>{title}</h1>
       <h3>{date}</h3>
+      {socialDetails &&
+        <SocialIcons>
+          {socialDetails.InstagramLink &&
+            <a href={socialDetails.InstagramLink} target="_blank"><FaInstagram size="32" color="black" /></a>
+          }
+          {socialDetails.FacebookLink &&
+            <a href={socialDetails.FacebookLink} target="_blank"><FaFacebookSquare size="32" color="black" /></a>
+          }
+          {socialDetails.PinterestLink &&
+            <a href={socialDetails.PinterestLink} target="_blank"><FaPinterestSquare size="32" color="black" /></a>
+          }
+          {socialDetails.TwitterLink &&
+            <a href={socialDetails.TwitterLink} target="_blank"><FaTwitterSquare size="32" color="black" /></a>
+          }
+          {socialDetails.YouTubeLink &&
+            <a href={socialDetails.YouTubeLink} target="_blank"><FaYoutube size="32" color="black" /></a>
+          }
 
+        </SocialIcons>
+      }
       {children && <Subtitle dangerouslySetInnerHTML={{ __html: children }} />}
     </Text>
   </Wrapper>

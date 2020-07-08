@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import { Layout, Container, Content } from 'layouts';
 import { TagsBlock, Header, SEO } from 'components';
-import AtomFeedList from '../components/AtomFeedList';
+
 import '../styles/prism';
 
 const SuggestionBar = styled.div`
@@ -86,7 +86,7 @@ const SingleItem = ({ data, pageContext }) => {
   const image = localImageUrl ? localImageUrl.childImageSharp.fluid : null;
   const atomfeed = fields && fields.atomfeed ? fields.atomfeed : [];
 
-  console.log("*** instagramname used for matching = "+instagramname)
+  console.log("*** instagramname used for matching = " + instagramname)
 
   //Extracting Posts from MySQL Data
   const maxPosts = 3;
@@ -100,7 +100,36 @@ const SingleItem = ({ data, pageContext }) => {
   })
   const firstRowDataView = listPostEdges && listPostEdges.length ? listPostEdges[0] : null;
 
-  const subtitle = city + " " + state + "<br/> " + (firstRowDataView && firstRowDataView.node.AlexaCountry)
+  //Now filtering instagram posts if the image or caption is not present
+  const listInstaPostEdges = [];
+  listPostEdges.map((edge) => {
+    if (edge.node.UniquePhotoLink && edge.node.Caption) {
+      listInstaPostEdges.push(edge);
+    }
+  })
+
+  //Extracting Social IDs from MySQL Data
+  let socialDetails = null
+  const rowSocialIDEdges = data.allMysqlSocialIDs.edges;
+  rowSocialIDEdges.map((edge) => {
+    if (edge.node.Instagram == instagramname) {
+      socialDetails = {
+        "InstagramLink": edge.node.Instagram ? "https://www.instagram.com/" + edge.node.Instagram : null,
+        "FacebookLink": edge.node.Facebook ? "https://www.facebook.com/" + edge.node.Facebook : null,
+        "PinterestLink": edge.node.Pinterest ? "https://www.pinterest.com/" + edge.node.Pinterest : null,
+        "TikTokLink": edge.node.TikTok ? "https://www.tiktok.com/" + edge.node.TikTok : null,
+        "TwitterLink": edge.node.Twitter ? "https://www.twitter.com/" + edge.node.Twitter : null,
+        "YouTubeLink": edge.node.YouTube ? "https://www.youtube.com/c/" + edge.node.YouTube : null
+      }
+      console.log("+++++++++++++")
+      console.log(socialDetails)
+      console.log("+++++++++++++")
+    }
+  })
+
+  let subtitle = (city || "") + " " + (state || "")
+  subtitle += "<div>" + ((firstRowDataView && firstRowDataView.node.AlexaCountry) || "") + "</div>"
+
 
   //Extracting Products from MySQL Data
   const maxProducts = 5;
@@ -121,7 +150,7 @@ const SingleItem = ({ data, pageContext }) => {
         banner={image}
         pathname={url}
       />
-      <Header title={name} children={subtitle} date={date} cover={firstRowDataView && firstRowDataView.node.UniquePhotoLink} />
+      <Header title={name} children={subtitle} date={date} socialDetails={socialDetails} />
       <Container>
         <div className="profileimage" style={{ display: "flex" }}>
           {firstRowDataView && firstRowDataView.node.ProfilePicURL &&
@@ -129,18 +158,34 @@ const SingleItem = ({ data, pageContext }) => {
           }
           <div style={{ paddingLeft: "15px" }}>
             <Statistics>
-              <StatisticItem><a target="_blank" href={firstRowDataView && firstRowDataView.node.ShortCodeURL}><StatisticIcon src="/instagram_icon.png" alt={instagramname} width="15px" height="15px" max-width="25px" /></a></StatisticItem>
-              <StatisticItem>{firstRowDataView && firstRowDataView.node.activity} <br /><span className="stat_title" title="Instagram Activity Score">ACTIVITY</span></StatisticItem>
-              <StatisticItem>{firstRowDataView && firstRowDataView.node.FollowerRate} <br /><span className="stat_title" title="*Instagram Follower Rate">FFR</span></StatisticItem>
-              <StatisticItem>{firstRowDataView && firstRowDataView.node.PostRate} <br /><span className="stat_title" title="Instagram Post Rate">PFR</span></StatisticItem>
+              {firstRowDataView && (firstRowDataView.node.activity || firstRowDataView.node.FollowerRate || firstRowDataView.node.PostRate) &&
+                <StatisticItem><a target="_blank" href={firstRowDataView && firstRowDataView.node.ShortCodeURL}><StatisticIcon src="/instagram_icon.png" alt={instagramname} width="15px" height="15px" max-width="25px" /></a></StatisticItem>
+              }
+              {firstRowDataView && firstRowDataView.node.activity &&
+                <StatisticItem>{firstRowDataView.node.activity} <br /><span className="stat_title" title="Instagram Activity Score">ACTIVITY</span></StatisticItem>
+              }
+              {firstRowDataView && firstRowDataView.node.FollowerRate &&
+                <StatisticItem>{firstRowDataView.node.FollowerRate} <br /><span className="stat_title" title="*Instagram Follower Rate">FFR</span></StatisticItem>
+              }
+              {firstRowDataView && firstRowDataView.node.PostRate &&
+                <StatisticItem>{firstRowDataView.node.PostRate} <br /><span className="stat_title" title="Instagram Post Rate">PFR</span></StatisticItem>
+              }
             </Statistics>
 
 
             <Statistics>
-              <StatisticItem><StatisticIcon width="15px" height="15px" max-width="25px" /></StatisticItem>
-              <StatisticItem>{firstRowDataView && firstRowDataView.node.GlobalRank} <br /><span className="stat_title" title="Social Score">GLOBAL RANK</span></StatisticItem>
-              <StatisticItem>{firstRowDataView && firstRowDataView.node.LocalRank} <br /><span className="stat_title" title="">LOCAL RANK</span></StatisticItem>
-              <StatisticItem>{firstRowDataView && firstRowDataView.node.TOS} <br /><span className="stat_title" title="Time on Site">TIME ON SITE</span></StatisticItem>
+              {firstRowDataView && (firstRowDataView.node.GlobalRank || firstRowDataView.node.LocalRank || firstRowDataView.node.TOS) &&
+                <StatisticItem><StatisticIcon width="15px" height="15px" max-width="25px" /></StatisticItem>
+              }
+              {firstRowDataView && firstRowDataView.node.GlobalRank &&
+                <StatisticItem>{firstRowDataView.node.GlobalRank} <br /><span className="stat_title" title="Social Score">GLOBAL RANK</span></StatisticItem>
+              }
+              {firstRowDataView && firstRowDataView.node.LocalRank &&
+                <StatisticItem>{firstRowDataView.node.LocalRank} <br /><span className="stat_title" title="">LOCAL RANK</span></StatisticItem>
+              }
+              {firstRowDataView && firstRowDataView.node.TOS &&
+                <StatisticItem>{firstRowDataView.node.TOS} <br /><span className="stat_title" title="Time on Site">TIME ON SITE</span></StatisticItem>
+              }
             </Statistics>
 
 
@@ -165,7 +210,7 @@ const SingleItem = ({ data, pageContext }) => {
                 <small>${node.Price}</small>
                 <ViewInfo className="info">
                   <a href={node.ProductURL} target="_blank">
-                    {node.Title && node.Title.substring(0,50)}
+                    {node.Title && node.Title.substring(0, 50)}
                   </a>
                 </ViewInfo>
               </ViewCard>
@@ -174,9 +219,9 @@ const SingleItem = ({ data, pageContext }) => {
 
           <br />
           {/* List of Posts from MySQL View */}
-          {listPostEdges && listPostEdges.length > 0 && <h3>instagram posts</h3>}
+          {listInstaPostEdges && listInstaPostEdges.length > 0 && <h3>instagram posts</h3>}
           <ViewContainer>
-            {listPostEdges.map(({ node }) => {
+            {listInstaPostEdges.map(({ node }) => {
               return (
                 <ViewCard key={node.UniquePhotoLink} itemWidth="30%">
                   <a href={node.ShortCodeURL} target="_blank">
@@ -185,14 +230,13 @@ const SingleItem = ({ data, pageContext }) => {
                     </ViewImage>
                   </a>
                   <ViewInfo className="info">
-
-                    {node.Caption && node.Caption.substring(0,140)+"..."}
+                    {node.Caption && node.Caption.substring(0, 140) + "..."}
                   </ViewInfo>
                 </ViewCard>
               );
             })}
           </ViewContainer>
-        </ViewContainer><br/>
+        </ViewContainer><br />
         <a href="/randomshop" className="button ">Discover another shop</a>
 
 
@@ -251,6 +295,19 @@ export const query = graphql`
           ProductURL
           ImageURL
           Price
+        }
+      }
+    }
+    allMysqlSocialIDs {
+      edges {
+        node {
+          Instagram
+          Facebook
+          Pinterest
+          TikTok
+          Twitter
+          URL
+          YouTube
         }
       }
     }

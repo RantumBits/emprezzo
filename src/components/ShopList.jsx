@@ -119,7 +119,7 @@ const ShopList = ({ path, cover, title, date, excerpt, tags }) => (
           {cover && typeof cover === 'object' &&
             <Img fluid={cover || {} || [] || ''} />
           }
-          {typeof cover === 'string' &&
+          {cover && typeof cover === 'string' &&
             <img src={cover || {} || [] || ''} style={{height: '100%', objectFit: 'fill'}} />
           }
         </Link>

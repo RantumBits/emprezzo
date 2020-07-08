@@ -64,6 +64,16 @@ module.exports = {
             statement: 'SELECT * FROM ShopifyView WHERE UserName IS NOT NULL',
             idFieldName: 'ProductURL',
             name: 'ShopifyView'
+          },
+          {
+              statement: 'SELECT * FROM SocialIDs WHERE Instagram IS NOT NULL',
+              idFieldName: 'Instagram',
+              name: 'SocialIDs'
+          },
+          {
+            statement: 'SELECT * FROM ShopifyView WHERE ProductID IS NOT NULL',
+            idFieldName: 'ProductURL',
+            name: 'Products'
           }
         ]
       }
