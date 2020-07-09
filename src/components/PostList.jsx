@@ -107,6 +107,7 @@ const Title = styled.h2`
 
 const PostList = ({ cover, path, date, title, excerpt, mysqldataview, instagramname }) => {
 
+  /*
   console.log("*********************************************")
   console.log("*********** instagramname="+instagramname)
   cover=null; //this is to not show any image is data is not found in mysql
@@ -124,6 +125,7 @@ const PostList = ({ cover, path, date, title, excerpt, mysqldataview, instagramn
       console.log("******** cover = "+cover)
     }
   }
+  */
 
   return (
     <Wrapper>
