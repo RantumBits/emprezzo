@@ -57,7 +57,7 @@ const Subtitle = styled.p`
   color: ${props => props.theme.colors.white.light};
 `;
 
-const Header = ({ children, title, date, cover, socialDetails }) => (
+const Header = ({ children, title, date, subtitle, cover, socialDetails }) => (
   <Wrapper>
     {cover && typeof cover === 'object' &&
       <Img fluid={cover || {} || [] || ''} />
@@ -67,7 +67,7 @@ const Header = ({ children, title, date, cover, socialDetails }) => (
     }
     <Text>
       <h1>{title}</h1>
-      <h3>{date}</h3>
+      <h4>{subtitle}</h4>
       {socialDetails &&
         <SocialIcons>
           {socialDetails.InstagramLink &&
@@ -99,6 +99,11 @@ Header.propTypes = {
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.bool]),
   cover: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   date: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  subtitle: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object,
+    PropTypes.bool,
+  ]),
   title: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.object,
@@ -110,5 +115,6 @@ Header.defaultProps = {
   children: false,
   cover: false,
   date: false,
+  subtitle: false,
   title: false,
 };

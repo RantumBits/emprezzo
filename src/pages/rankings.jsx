@@ -41,16 +41,20 @@ const Entries = ({ data }) => {
 
   return (
     <Layout>
-      <Helmet title={'Store Rankings | Discover the best ecommerce stores'} />
-      <Header title="🧐 Discover direct-to-consumer stores"><span class="Header--Subtitle"></span></Header>
+      <Helmet title={'Top Shopify Stores'} />
+      <Header title="🧐 Discover the top Shopify stores" subtitle=""></Header>
 
       <ShopsWrapper>
-
+<div class="intro_text">
+<h3>Browse the most popular Shopify stores.</h3>
+<p>Discover top shoify sellers based upon organic search traffic and social media activity.</p>
+</div>
         <table>
           <thead>
             <tr>
               <th>Store</th>
               <th></th>
+
               <th>IFS</th>
               <th>IPS</th>
               <th>ESS</th>
@@ -62,12 +66,15 @@ const Entries = ({ data }) => {
                 <td>
                   {node.localProfileImage &&
                     <Link to={`/shops/${node.slug}`}>
-                      <Image fluid={node.localProfileImage.childImageSharp.fluid} class="profileimage" style={{ width: "50px" }} title={node.name}/>
+                      <Image fluid={node.localProfileImage.childImageSharp.fluid} class="profileimage" style={{ width: "50px" }} title={node.name} alt={node.about && node.about.substring(0, 140) }/>
 
                     </Link>
                   }
+
                 </td>
+
                   <td><Link to={`/shops/${node.slug}`}>{node.name}</Link></td>
+
                 <td>{node.followersperfollow}</td>
                 <td>{node.followersperpost}</td>
                 <td>{node.socialscore}</td>
@@ -75,6 +82,7 @@ const Entries = ({ data }) => {
             ))}
           </tbody>
         </table>
+
       </ShopsWrapper>
       {showMore && listEdges.length > 0 && listEdges.length < edges.length &&
         <div className="center">
@@ -83,6 +91,12 @@ const Entries = ({ data }) => {
             </a>
         </div>
       }
+      <ShopsWrapper>
+      <div class="intro_text">
+      <h3>Discover the best Shopify stores of 2020</h3>
+      <p>Find the top Shopify stores by traffic & social media activity.</p><p> Use the search box in headre to search for more Shopify stores or <a href="/randomshop">discover a shop</a></p>
+      </div>
+        </ShopsWrapper>
     </Layout>
   );
 };
@@ -100,6 +114,7 @@ export const query = graphql`
           socialscore
           followersperfollow
           followersperpost
+          about
           localProfileImage {
             childImageSharp {
               fluid {

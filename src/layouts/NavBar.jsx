@@ -149,6 +149,17 @@ const NavBar = () => {
       </StyledLink>
       <NavWrapper>
         <Nav>
+        <div className="dropdown">
+          <Link to="/shops">Discover </Link>
+          <div className="dropdown-content">
+
+
+
+              <Link key="shopify" to="/top-shopify-stores">Top Shopify Stores</Link>
+              <Link key="amazon-altenatives" to="/amazon-alternatives">Amazon Alternatives</Link>
+
+          </div>
+        </div>
         {/*
           <div className="dropdown">
             <Link to="/shops">Discover </Link>
@@ -161,7 +172,7 @@ const NavBar = () => {
             </div>
           </div>
           */}
-  <Link to="/rankings">Rankings </Link>
+
           <SearchWrapper>
             <Search collapse indices={searchIndices} variation={"light"} />
           </SearchWrapper>
