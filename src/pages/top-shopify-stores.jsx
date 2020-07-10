@@ -41,7 +41,7 @@ const Entries = ({ data }) => {
 
   return (
     <Layout>
-      <Helmet title={'Top Shopify Stores'} />
+      <Helmet title={'Top Shopify Stores | Shop the most popular stores'} />
       <Header title="🧐 Discover the top Shopify stores" subtitle=""></Header>
 
       <ShopsWrapper>
@@ -111,17 +111,8 @@ export const query = graphql`
           name
           url
           slug
-          socialscore
-          followersperfollow
-          followersperpost
           about
-          localProfileImage {
-            childImageSharp {
-              fluid {
-                ...GatsbyImageSharpFluid
-              }
-            }
-          }
+
         }
       }
     }

@@ -7,8 +7,6 @@ exports.createSchemaCustomization = ({ actions }) => {
   const { createTypes } = actions
   createTypes(`
     type googleSheetListRow implements Node {
-      localImageUrl: File @link(from: "localImageUrl___NODE")
-      localProfileImage: File @link(from: "localProfileImage___NODE")
       fields: fields
       instagramname: String
       alexarank: String
@@ -32,68 +30,11 @@ exports.createPages = ({ graphql, actions }) => {
 
   return new Promise((resolve, reject) => {
     const postTemplate = path.resolve('src/templates/post.jsx');
-    const shopTemplate = path.resolve('src/templates/shop.jsx');
+    const alltagsPage = path.resolve('src/templates/alltags.jsx');
+    const tagPosts = path.resolve('src/templates/tag.jsx');
+    const categoryTemplate = path.resolve('src/templates/category.jsx');
 
-    resolve(
-      graphql(
-        `
-          query {
-            allMysqlSocialIDs {
-              edges {
-                node {
-                id
-                mysqlId
-                Facebook
-                Instagram
-                Pinterest
-                TikTok
-                Twitter
-                URL
-                YouTube
-                }
-              }
-            }
-          }
-        `
-      ).then(result => {
-        if (result.errors) {
-          return reject(result.errors);
-        }
-
-        const mysqlRows = result.data.allMysqlSocialIDs.edges;
-
-        let createdPages = 0;
-        let skippedPages = 0;
-        //create shop pages
-        mysqlRows.forEach(({ node }, index) => {
-          if (!node.Instagram) skippedPages++;
-          if (node.Instagram) {
-            createdPages++;
-            const path = '/shop/' + node.Instagram;
-            const prev = index === 0 ? null : mysqlRows[index - 1].node;
-            const next = index === mysqlRows.length - 1 ? null : mysqlRows[index + 1].node;
-            createPage({
-              path,
-              component: shopTemplate,
-              context: {
-                pathSlug: node.Instagram,
-                prev,
-                next,
-              },
-            });
-          }
-        });
-        console.log("******* Total Rows from MySQL : "+mysqlRows.length)
-        console.log("******* Total Shop pages created : "+createdPages)
-        console.log("******* Total rows skipped due to Instagram=null : "+skippedPages)
-      })
-    );
-
-    /* COMMENTED AS PART OF MIGRATION FROM GOOGLESHEETS TO MYSQL
-    // const postsByTag = {};
-    //const alltagsPage = path.resolve('src/templates/alltags.jsx');
-    //const tagPosts = path.resolve('src/templates/tag.jsx');
-    //const categoryTemplate = path.resolve('src/templates/category.jsx');
+    const postsByTag = {};
 
     //Start of creating pages from Google Sheet Data
     const shopTemplate = path.resolve('src/templates/singleitem.jsx');
@@ -110,10 +51,8 @@ exports.createPages = ({ graphql, actions }) => {
                   category
                   tags
                   about
-                  country
                   state
                   city
-                  imageurl
                   instagramname
                 }
               }
@@ -191,7 +130,6 @@ exports.createPages = ({ graphql, actions }) => {
         });
       })
     );
-    */
     //End of creating pages from Google Sheet Data
 
     resolve(
@@ -220,7 +158,6 @@ exports.createPages = ({ graphql, actions }) => {
 
         const posts = result.data.allMarkdownRemark.edges;
 
-        /* COMMENTED AS PART OF MIGRATION FROM GOOGLESHEETS TO MYSQL
         // create tags page
         posts.forEach(({ node }) => {
           if (node.frontmatter.tags) {
@@ -258,7 +195,6 @@ exports.createPages = ({ graphql, actions }) => {
             },
           });
         });
-        */
 
         //create posts
         posts.forEach(({ node }, index) => {
@@ -309,11 +245,11 @@ exports.onCreateNode = ({ node, actions }) => {
     ]
   );
   if (node.internal
-    && node.internal.owner === 'gatsby-source-google-sheets'
-    && node.url
-    && node.url.startsWith("http")
+      && node.internal.owner === 'gatsby-source-google-sheets'
+      && node.url
+      && node.url.startsWith("http")
   ) {
-    const feedurl = node.url + "/collections/all.atom";
+    const feedurl = node.url+"/collections/all.atom";
     //console.log("******* Feed URL = "+feedurl);
     var req = fetch(feedurl)
     var feedparser = new FeedParser();

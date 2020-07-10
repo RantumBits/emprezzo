@@ -4,13 +4,13 @@ import Helmet from 'react-helmet';
 import { navigate } from "@reach/router"
 
 const RandomShop = ({ data }) => {
-  const { edges } = data.allMysqlSocialIDs;
+  const { edges } = data.allGoogleSheetListRow;
 
   console.log("Total Shops = "+edges.length);
   const randomnumber = Math.round(Math.random() * edges.length);
   console.log("Generated Random Number = "+randomnumber);
   const edge = edges[randomnumber-1] ? edges[randomnumber-1] : edges[0];
-  const randomshopurl = "/shop/"+edge.node.Instagram;
+  const randomshopurl = "/shops/"+edge.node.slug;
   console.log("Random URL = "+randomshopurl);
   navigate(randomshopurl);
 
@@ -24,10 +24,10 @@ export default RandomShop;
 
 export const query = graphql`
   query {
-    allMysqlSocialIDs {
+    allGoogleSheetListRow {
       edges {
         node {
-          Instagram
+          slug
         }
       }
     }

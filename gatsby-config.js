@@ -79,22 +79,6 @@ module.exports = {
       }
     },
     {
-      resolve: `gatsby-plugin-remote-images`,
-      options: {
-        nodeType: 'googleSheetListRow',
-        imagePath: 'imageurl',
-        name: 'localImageUrl',
-      },
-    },
-    {
-      resolve: `gatsby-plugin-remote-images`,
-      options: {
-        nodeType: 'googleSheetListRow',
-        imagePath: 'profileimage',
-        name: 'localProfileImage',
-      },
-    },
-    {
       resolve: 'gatsby-plugin-emotion',
       options: {
         autoLabel: process.env.NODE_ENV !== 'production',

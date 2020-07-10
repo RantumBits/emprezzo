@@ -79,7 +79,7 @@ const ViewInfo = styled.div`
 
 const SingleItem = ({ data, pageContext }) => {
   const { next, prev } = pageContext;
-  const { name, date, slug, imageurl, url, category, tags, localImageUrl, profileimage, localProfileImage, instagramname, instagramposts, instagramfollowers, instagramfollowing, alexalink, alexarank, alexatimeonsite, socialscore, about, country, state, city, like, fields } = data.googleSheetListRow
+  const { name, date, slug, imageurl, url, category, tags, localImageUrl, profileimage, localProfileImage, instagramname, instagramposts, instagramfollowers, instagramfollowing, alexarank, alexatimeonsite, socialscore, about, state, city, like, fields } = data.googleSheetListRow
 
   //converting comma seperated tags to tags map
   const tagsList = tags ? tags.split(',') : [];
@@ -313,42 +313,14 @@ export const query = graphql`
     }
     googleSheetListRow(slug: {eq: $pathSlug}) {
       name
-      imageurl
-      localImageUrl {
-        childImageSharp {
-          fluid(
-            maxWidth: 1800,
-            duotone: { highlight: "#386eee", shadow: "#2323be", opacity: 60 }
-          ) {
-            ...GatsbyImageSharpFluid
-          }
-
-        }
-      }
       url
       slug
       category
       tags
       about
-      profileimage
-      localProfileImage {
-          childImageSharp {
-            fluid {
-              ...GatsbyImageSharpFluid
-            }
-          }
-        }
       instagramname
-      instagramposts
-      instagramfollowers
-      instagramfollowing
-      followersperfollow
-      followersperpost
-      socialscore
-      alexalink
       alexarank
       alexatimeonsite
-      country
       state
       city
       fields {

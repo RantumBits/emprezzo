@@ -195,18 +195,9 @@ export const query = graphql`
           category
           tags
           about
-          country
           state
           city
           instagramname
-          localImageUrl {
-            childImageSharp {
-              fluid (srcSetBreakpoints: [200, 400]) {
-                ...GatsbyImageSharpFluid
-              }
-            }
-          }
-          imageurl
         }
       }
     }

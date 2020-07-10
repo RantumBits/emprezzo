@@ -41,7 +41,7 @@ const Entries = ({ data }) => {
 
   return (
     <Layout>
-      <Helmet title={'Amazon Alternatives'} />
+      <Helmet title={'Amazon Alternatives | Anti-Amazon Shopping Marketpace '} />
       <Header title="🧐 Discover great Amazon alternatives" subtitle=""></Header>
 
       <ShopsWrapper>
@@ -111,17 +111,7 @@ export const query = graphql`
           name
           url
           slug
-          socialscore
-          followersperfollow
-          followersperpost
           about
-          localProfileImage {
-            childImageSharp {
-              fluid {
-                ...GatsbyImageSharpFluid
-              }
-            }
-          }
         }
       }
     }
