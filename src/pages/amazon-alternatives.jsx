@@ -21,9 +21,8 @@ const ShopsWrapper = styled.div`
   }
 `;
 
-const Entries = ({ data }) => {
+const AmazonAlternatives = ({ data }) => {
   const { edges } = data.allGoogleSheetListRow;
-  const listEdges = [];
   const maxItems = 12;
   const [limit, setLimit] = React.useState(maxItems);
   const [showMore, setShowMore] = React.useState(true);
@@ -32,12 +31,34 @@ const Entries = ({ data }) => {
     setLimit(limit + maxItems);
   }
 
-  //filtering items as per limit
+  const rowDataViewEdges = data.allMysqlDataView.edges;
+  const combinedEdges = [];
+
+  //Creating a new dataset with original nodes and required columns from DataView
   edges.map((edge) => {
-    if (listEdges.length < limit) {
-      listEdges.push(edge);
+    const inputInstaID = edge.node.instagramname;
+    //filter to show only shops with DataView . AlexaCountry = United States
+    var resultData = _.filter(rowDataViewEdges, ({ node }) => (node.UserName == inputInstaID && node.AlexaCountry == "United States"))
+    var firstDataRow = null;
+    if (resultData.length > 0) {
+      firstDataRow = resultData[0]
+      let newNode = {
+        name: edge.node.name,
+        slug: edge.node.slug,
+        ...firstDataRow.node
+      }
+      combinedEdges.push(newNode);
     }
   })
+
+  //Now sorting (asc) based on LocalRank
+  var sortedEdges = _.sortBy(combinedEdges, obj => obj.LocalRank)
+
+  //Now limiting the items as per limit
+  const listEdges = _.slice(sortedEdges, 0, limit)
+
+  console.log("+++++++++++++++++++++++++++++")
+  console.log(listEdges)
 
   return (
     <Layout>
@@ -45,39 +66,38 @@ const Entries = ({ data }) => {
       <Header title="🧐 Discover great Amazon alternatives" subtitle=""></Header>
 
       <ShopsWrapper>
-<div class="intro_text">
-<h3>Browse shopping alternatives to Amazon</h3>
-<p>Independent online shops offer great alternatives to the Amazon marketplace.</p>
-</div>
+        <div class="intro_text">
+          <h3>Browse shopping alternatives to Amazon</h3>
+          <p>Independent online shops offer great alternatives to the Amazon marketplace.</p>
+        </div>
         <table>
           <thead>
             <tr>
               <th>Store</th>
               <th></th>
-
-              <th>IFS</th>
-              <th>IPS</th>
-              <th>ESS</th>
+              <th>LocalRank</th>
+              <th>TOS</th>
+              <th>FollowerRate</th>
+              <th>PostRate</th>
+              <th>Activity</th>
             </tr>
           </thead>
           <tbody>
-            {listEdges.map(({ node }) => (
-              <tr key={node.name}>
+            {listEdges.map((node, index) => (
+              <tr key={index}>
                 <td>
-                  {node.localProfileImage &&
+                  {node.ProfilePicURL &&
                     <Link to={`/shops/${node.slug}`}>
-                      <Image fluid={node.localProfileImage.childImageSharp.fluid} class="profileimage" style={{ width: "50px" }} title={node.name + 'is on Shopify'} alt={node.about && node.about.substring(0, 140) }/>
-
+                      <img src={node.ProfilePicURL} class="profileimage" style={{ width: "50px", margin: '0px' }} title={node.name + 'is on Shopify'} alt={node.name + 'is on Shopify'} />
                     </Link>
                   }
-
                 </td>
-
-                  <td><Link to={`/shops/${node.slug}`}>{node.name}</Link></td>
-
-                <td>{node.followersperfollow}</td>
-                <td>{node.followersperpost}</td>
-                <td>{node.socialscore}</td>
+                <td><Link to={`/shops/${node.slug}`}>{node.name}</Link></td>
+                <td>{node.LocalRank}</td>
+                <td>{node.TOS}</td>
+                <td>{node.FollowerRate}</td>
+                <td>{node.PostRate}</td>
+                <td>{node.activity}</td>
               </tr>
             ))}
           </tbody>
@@ -92,16 +112,16 @@ const Entries = ({ data }) => {
         </div>
       }
       <ShopsWrapper>
-      <div class="intro_text">
-      <h3>Discover the best Amazon marketplace alternatives for shoppping online</h3>
-      <p>Find some of the best anti-amazon shops and avoid the hassle of looking for amazon customer service.</p><p>Search for great Amazon shopping alternatives in header or <a href="/randomshop">discover a shop</a>.</p>
-      </div>
-        </ShopsWrapper>
+        <div class="intro_text">
+          <h3>Discover the best Amazon marketplace alternatives for shoppping online</h3>
+          <p>Find some of the best anti-amazon shops and avoid the hassle of looking for amazon customer service.</p><p>Search for great Amazon shopping alternatives in header or <a href="/randomshop">discover a shop</a>.</p>
+        </div>
+      </ShopsWrapper>
     </Layout>
   );
 };
 
-export default Entries;
+export default AmazonAlternatives;
 
 export const query = graphql`
   query {
@@ -112,6 +132,29 @@ export const query = graphql`
           url
           slug
           about
+          instagramname
+        }
+      }
+    }
+    allMysqlDataView {
+      edges {
+        node {
+          UserName
+          PostDate
+          AlexaCountry
+          UniquePhotoLink
+          PostsCount
+          FollowersCount
+          FollowingCount
+          GlobalRank
+          LocalRank
+          TOS
+          ProfilePicURL
+          Caption
+          ShortCodeURL
+          FollowerRate
+          PostRate
+          activity
         }
       }
     }

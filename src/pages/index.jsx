@@ -44,27 +44,49 @@ const ShopWrapper = styled.div`
 `;
 
 const Index = ({ data }) => {
-  const { edges } = data.allMarkdownRemark;
-  const rowEdges = data.allGoogleSheetListRow.edges;
-  const foodEdges = [];
-  const homeEdges = [];
+  const { edges } = data.allGoogleSheetListRow;
   const maxItems = 9;
+  const [limit, setLimit] = React.useState(maxItems);
+  const [showMore, setShowMore] = React.useState(true);
+
+  const increaseLimit = () => {
+    setLimit(limit + maxItems);
+  }
 
   const searchIndices = [
     { name: `uncommonry`, title: `Shops`, type: `shopHit` },
   ]
 
-  //filtering home and food items maximum to 6 items
-  rowEdges.map((edge) => {
-    if (edge.node.category && edge.node.category != "" && foodEdges.length < maxItems) {
-      foodEdges.push(edge);
-    }
-    else if (edge.node.category && edge.node.category == " " && homeEdges.length < maxItems) {
-      homeEdges.push(edge);
+  const rowDataViewEdges = data.allMysqlDataView.edges;
+  const combinedEdges = [];
+
+  //Creating a new dataset with original nodes and required columns from DataView
+  edges.map((edge) => {
+    const inputInstaID = edge.node.instagramname;
+    //filter to only show shops with AlexaURLs in DataView
+    var resultData = _.filter(rowDataViewEdges, ({ node }) => (node.UserName == inputInstaID && node.AlexaURL != null))
+    var firstDataRow = null;
+    if (resultData.length > 0) {
+      firstDataRow = resultData[0]
+      let newNode = {
+        name: edge.node.name,
+        slug: edge.node.slug,
+        about: edge.node.about,
+        instagramname: edge.node.instagramname,
+        ...firstDataRow.node
+      }
+      combinedEdges.push(newNode);
     }
   })
 
-  const rowDataViewEdges = data.allMysqlDataView.edges;
+  //Now sorting (desc) based on activity
+  var sortedEdges = _.sortBy(combinedEdges, obj => -obj.activity)
+
+  //Now limiting the items as per limit
+  const listEdges = _.slice(sortedEdges, 0, limit)
+
+  console.log("+++++++++++++++++++++++++++++")
+  console.log(listEdges)
 
   return (
     <Layout>
@@ -77,49 +99,29 @@ const Index = ({ data }) => {
       </div>
       <div class="search_main">
         <Search collapse homepage indices={searchIndices} />
-
       </div>
 
       <ShopSectionHeading></ShopSectionHeading>
 
       <ShopWrapper>
-
-        {foodEdges.map(({ node }) => {
-          return (
+        {listEdges.map((node, index) => (
             <PostList
-              key={node.name}
-              cover={node.localImageUrl && node.localImageUrl.childImageSharp.fluid}
+              key={node.index}
               path={`/shops/${node.slug}`}
               title={node.name}
               excerpt={node.about && node.about.substring(0, 40) + "..."}
               mysqldataview={rowDataViewEdges}
               instagramname={node.instagramname}
             />
-          );
-        })}
+        ))}
       </ShopWrapper>
-
-
-      <ShopWrapper>
-        {homeEdges.map(({ node }) => {
-          return (
-            <PostList
-              key={node.name}
-              cover={node.localImageUrl && node.localImageUrl.childImageSharp.fluid}
-              path={`/shops/${node.slug}`}
-              title={node.name}
-              excerpt={node.about.substring(0, 40) + "..."}
-              mysqldataview={rowDataViewEdges}
-              instagramname={node.instagramname}
-            />
-          );
-        })}
-      </ShopWrapper>
-
-
-
-
-
+      {showMore && listEdges.length > 0 && listEdges.length < edges.length &&
+        <div className="center">
+          <a className="button" onClick={increaseLimit} style={{ cursor: "pointer" }}>
+            Load More
+            </a>
+        </div>
+      }
     </Layout>
   );
 };
@@ -178,10 +180,22 @@ export const query = graphql`
       edges {
         node {
           UserName
+          PostDate
+          AlexaCountry
           UniquePhotoLink
+          PostsCount
+          FollowersCount
+          FollowingCount
+          GlobalRank
+          LocalRank
+          TOS
           ProfilePicURL
           Caption
           ShortCodeURL
+          FollowerRate
+          PostRate
+          activity
+          AlexaURL
         }
       }
     }

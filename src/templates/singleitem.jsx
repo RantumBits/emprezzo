@@ -204,7 +204,7 @@ const SingleItem = ({ data, pageContext }) => {
               <ViewCard key={node.ProductURL} itemWidth="18%">
                 <a href={node.ProductURL} target="_blank">
                   <ViewImage>
-                    <img src={node.ImageURL} style={{ height: "100px" }} />
+                    <img src={node.ImageURL} style={{ 'max-height': "150px" }} alt={node.Description}/>
                   </ViewImage>
                 </a>
                 <small>${node.Price}</small>
@@ -220,16 +220,16 @@ const SingleItem = ({ data, pageContext }) => {
           <br />
           {/* List of Posts from MySQL View */}
           {listInstaPostEdges && listInstaPostEdges.length > 0 && <h3>instagram posts</h3>}
-          <ViewContainer>
+          <ViewContainer style={{ 'width': "100%" }}>
             {listInstaPostEdges.map(({ node }) => {
               return (
-                <ViewCard key={node.UniquePhotoLink} itemWidth="30%">
+                <ViewCard key={node.UniquePhotoLink} itemWidth="30%" style={{ 'max-width': "300px" }} >
                   <a href={node.ShortCodeURL} target="_blank">
-                    <ViewImage>
-                      <img src={node.UniquePhotoLink} />
+                    <ViewImage >
+                      <img  src={node.UniquePhotoLink} alt={node.Caption}/>
                     </ViewImage>
                   </a>
-                  <ViewInfo className="info">
+                  <ViewInfo className="info" >
                     {node.Caption && node.Caption.substring(0, 140) + "..."}
                   </ViewInfo>
                 </ViewCard>
@@ -292,6 +292,7 @@ export const query = graphql`
         node {
           UserName
           Title
+          Description
           ProductURL
           ImageURL
           Price
