@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import { Layout, Container, Content } from 'layouts';
 import { TagsBlock, Header, SEO } from 'components';
+import _ from 'lodash';
 
 import '../styles/prism';
 
@@ -99,6 +100,8 @@ const SingleItem = ({ data, pageContext }) => {
     }
   })
   const firstRowDataView = listPostEdges && listPostEdges.length ? listPostEdges[0] : null;
+  console.log("*****++FirstRow+++********")
+  console.log(firstRowDataView)
 
   //Now filtering instagram posts if the image or caption is not present
   const listInstaPostEdges = [];
@@ -159,7 +162,7 @@ const SingleItem = ({ data, pageContext }) => {
           <div style={{ paddingLeft: "15px" }}>
             <Statistics>
               {firstRowDataView && (firstRowDataView.node.activity || firstRowDataView.node.FollowerRate || firstRowDataView.node.PostRate) &&
-                <StatisticItem><a target="_blank" href={firstRowDataView && firstRowDataView.node.ShortCodeURL}><StatisticIcon src="/instagram_icon.png" alt={instagramname} width="15px" height="15px" max-width="25px" /></a></StatisticItem>
+                <StatisticItem><a target="_blank" href={firstRowDataView && firstRowDataView.node.ShortCodeURL}><StatisticIcon src="/instagram_icon.png" alt={instagramname} width="15px" height="15px" maxWidth="25px" /></a></StatisticItem>
               }
               {firstRowDataView && firstRowDataView.node.activity &&
                 <StatisticItem>{firstRowDataView.node.activity} <br /><span className="stat_title" title="Instagram Activity Score">ACTIVITY</span></StatisticItem>
@@ -284,6 +287,9 @@ export const query = graphql`
           ProfilePicURL
           Caption
           ShortCodeURL
+          activity
+          FollowerRate
+          PostRate
         }
       }
     }

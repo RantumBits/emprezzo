@@ -9,15 +9,7 @@ module.exports = {
     ...config,
   },
   plugins: [
-  `gatsby-plugin-sitemap`,
-    {
-      resolve: 'gatsby-plugin-robots-txt',
-      options: {
-        host: 'https://emprezzo.com',
-        sitemap: 'https://emprezzo.com/sitemap.xml',
-        policy: [{ userAgent: '*', allow: '/' }]
-      }
-    },
+    'gatsby-plugin-sitemap',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-catch-links',
     {

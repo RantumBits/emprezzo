@@ -6,6 +6,7 @@ import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import { Header, BlogList } from 'components';
 import { Layout } from 'layouts';
+import _ from 'lodash';
 
 const ShopsWrapper = styled.div`
   display: flex;

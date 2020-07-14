@@ -5,7 +5,8 @@ import Helmet from 'react-helmet';
 import styled from '@emotion/styled';
 import { Header, PostList } from 'components';
 import { Layout } from 'layouts';
-import Search from 'components/search'
+import Search from 'components/search';
+import _ from 'lodash';
 
 const PostSectionHeading = styled.h1`
   margin-left: 4rem;
