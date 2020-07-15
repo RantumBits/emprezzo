@@ -90,26 +90,21 @@ const SingleItem = ({ data, pageContext }) => {
   console.log("*** instagramname used for matching = " + instagramname)
 
   //Extracting Posts from MySQL Data
-  const maxPosts = 3;
-  const listPostEdges = [];
+  const maxPosts = 3;  
   const rowDataViewEdges = data.allMysqlDataView.edges;
   //filtering top 3 for current instagram id
-  rowDataViewEdges.map((edge) => {
-    if (listPostEdges.length < maxPosts && edge.node.UserName == instagramname) {
-      listPostEdges.push(edge);
-    }
-  })
+  const filteredDataView = _.filter(rowDataViewEdges, ({ node }) => node.UserName == instagramname)
+  const listPostEdges = _.slice(filteredDataView,0,maxPosts);
   const firstRowDataView = listPostEdges && listPostEdges.length ? listPostEdges[0] : null;
   console.log("*****++FirstRow+++********")
   console.log(firstRowDataView)
+  console.log("*****++listPostEdges+++********")
+  console.log(listPostEdges)
 
   //Now filtering instagram posts if the image or caption is not present
-  const listInstaPostEdges = [];
-  listPostEdges.map((edge) => {
-    if (edge.node.UniquePhotoLink && edge.node.Caption) {
-      listInstaPostEdges.push(edge);
-    }
-  })
+  const listInstaPostEdges = _.filter(listPostEdges, ({ node }) => (node.UniquePhotoLink && node.Caption))
+  console.log("*****++listInstaPostEdges+++********")
+  console.log(listInstaPostEdges)
 
   //Extracting Social IDs from MySQL Data
   let socialDetails = null
@@ -136,20 +131,18 @@ const SingleItem = ({ data, pageContext }) => {
 
   //Extracting Products from MySQL Data
   const maxProducts = 5;
-  const listProductEdges = [];
   const rowShopifyViewEdges = data.allMysqlShopifyView.edges;
   //filtering top 3 for current instagram id
-  rowShopifyViewEdges.map((edge) => {
-    if (listProductEdges.length < maxProducts && edge.node.UserName == instagramname) {
-      listProductEdges.push(edge);
-    }
-  })
+  const filteredProductView = _.filter(rowShopifyViewEdges, ({ node }) => node.UserName == instagramname)
+  const listProductEdges = _.slice(filteredProductView,0,maxProducts);
+  console.log("*****++listProductEdges+++********")
+  console.log(listProductEdges)
 
   return (
     <Layout>
       <SEO
-        title={name}
-        description={about || ' '}
+        title={`Find ${name} & More ${category||''} online stores on emprezzo`}
+        description={`Find ${name} and discover great ${category||''} online stores on emprezzo. ${about}`}
         banner={image}
         pathname={url}
       />
@@ -202,7 +195,7 @@ const SingleItem = ({ data, pageContext }) => {
         {/* List of Products from MySQL View */}
         {listProductEdges && listProductEdges.length > 0 && <h3>shop {name}</h3>}
         <ViewContainer>
-          {listProductEdges.map(({ node }) => {
+          {listProductEdges.map(( {node} ) => {
             return (
               <ViewCard key={node.ProductURL} itemWidth="18%">
                 <a href={node.ProductURL} target="_blank">
@@ -224,7 +217,7 @@ const SingleItem = ({ data, pageContext }) => {
           {/* List of Posts from MySQL View */}
           {listInstaPostEdges && listInstaPostEdges.length > 0 && <h3>instagram posts</h3>}
           <ViewContainer style={{ 'width': "100%" }}>
-            {listInstaPostEdges.map(({ node }) => {
+            {listInstaPostEdges.map(( {node} ) => {
               return (
                 <ViewCard key={node.UniquePhotoLink} itemWidth="30%" style={{ 'max-width': "300px" }} >
                   <a href={node.ShortCodeURL} target="_blank">
@@ -241,15 +234,11 @@ const SingleItem = ({ data, pageContext }) => {
           </ViewContainer>
         </ViewContainer><br />
         <a href="/randomshop" className="button ">Discover another shop</a>
-
-
-
       </Container>
       <SuggestionBar>
         <PostSuggestion>
           {prev && (
             <Link to={`/shops/${prev.slug}`}>
-
               <p>&lt; {prev.name}</p>
             </Link>
           )}

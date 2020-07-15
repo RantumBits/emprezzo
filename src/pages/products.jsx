@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { Header, BlogList } from 'components';
 import { Layout } from 'layouts';
 import ProductList from '../components/ProductList';
+import _ from 'lodash';
 
 const ShopsWrapper = styled.div`
   display: flex;
