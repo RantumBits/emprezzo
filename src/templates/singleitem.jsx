@@ -90,7 +90,7 @@ const SingleItem = ({ data, pageContext }) => {
   console.log("*** instagramname used for matching = " + instagramname)
 
   //Extracting Posts from MySQL Data
-  const maxPosts = 3;  
+  const maxPosts = 3;
   const rowDataViewEdges = data.allMysqlDataView.edges;
   //filtering top 3 for current instagram id
   const filteredDataView = _.filter(rowDataViewEdges, ({ node }) => node.UserName == instagramname)
@@ -200,7 +200,7 @@ const SingleItem = ({ data, pageContext }) => {
               <ViewCard key={node.ProductURL} itemWidth="18%">
                 <a href={node.ProductURL} target="_blank">
                   <ViewImage>
-                    <img src={node.ImageURL} style={{ 'max-height': "150px" }} alt={node.Description}/>
+                    <img src={node.ImageURL} style={{ 'max-height': "150px" }} alt={node.Title}/>
                   </ViewImage>
                 </a>
                 <small>${node.Price}</small>
@@ -287,7 +287,6 @@ export const query = graphql`
         node {
           UserName
           Title
-          Description
           ProductURL
           ImageURL
           Price
