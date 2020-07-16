@@ -15,7 +15,7 @@ const shopHit = hit => (
 
 export default connectHits(function HitComp({ type, hits, onClick }) {
   const extend = { shopHit }[type]
-  console.log(hits)
+  //console.log(hits)
   //adding the excertp of 140 characters to all the hits
   hits.map(hit => {
       if(hit._highlightResult.about){

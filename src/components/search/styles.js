@@ -11,6 +11,8 @@ export const Root = styled.div`
 export const SearchIcon = styled(Search)`
   width: 1em;
   pointer-events: none;
+  color: ${props => ((props.variation && props.variation == "light") ? props.theme.colors.white.light :  props.theme.colors.primary.light)};
+  margin: 0.5em;
 `
 const focus = css`
   background: white;
