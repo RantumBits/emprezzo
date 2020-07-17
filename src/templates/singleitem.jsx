@@ -96,15 +96,15 @@ const SingleItem = ({ data, pageContext }) => {
   const filteredDataView = _.filter(rowDataViewEdges, ({ node }) => node.UserName == instagramname)
   const listPostEdges = _.slice(filteredDataView,0,maxPosts);
   const firstRowDataView = listPostEdges && listPostEdges.length ? listPostEdges[0] : null;
-  console.log("*****++FirstRow+++********")
-  console.log(firstRowDataView)
-  console.log("*****++listPostEdges+++********")
-  console.log(listPostEdges)
+  //console.log("*****++FirstRow+++********")
+  //console.log(firstRowDataView)
+  //console.log("*****++listPostEdges+++********")
+  //console.log(listPostEdges)
 
   //Now filtering instagram posts if the image or caption is not present
-  const listInstaPostEdges = _.filter(listPostEdges, ({ node }) => (node.UniquePhotoLink && node.Caption))
-  console.log("*****++listInstaPostEdges+++********")
-  console.log(listInstaPostEdges)
+  const listInstaPostEdges = _.filter(listPostEdges, ({ node }) => (node.UniquePhotoLink))
+  //console.log("*****++listInstaPostEdges+++********")
+  //console.log(listInstaPostEdges)
 
   //Extracting Social IDs from MySQL Data
   let socialDetails = null
@@ -119,9 +119,9 @@ const SingleItem = ({ data, pageContext }) => {
         "TwitterLink": edge.node.Twitter ? "https://www.twitter.com/" + edge.node.Twitter : null,
         "YouTubeLink": edge.node.YouTube ? "https://www.youtube.com/c/" + edge.node.YouTube : null
       }
-      console.log("+++++++++++++")
-      console.log(socialDetails)
-      console.log("+++++++++++++")
+      //console.log("+++++++++++++")
+      //console.log(socialDetails)
+      //console.log("+++++++++++++")
     }
   })
 
@@ -135,8 +135,8 @@ const SingleItem = ({ data, pageContext }) => {
   //filtering top 3 for current instagram id
   const filteredProductView = _.filter(rowShopifyViewEdges, ({ node }) => node.UserName == instagramname)
   const listProductEdges = _.slice(filteredProductView,0,maxProducts);
-  console.log("*****++listProductEdges+++********")
-  console.log(listProductEdges)
+  //console.log("*****++listProductEdges+++********")
+  //console.log(listProductEdges)
 
   return (
     <Layout>
@@ -219,7 +219,7 @@ const SingleItem = ({ data, pageContext }) => {
           <ViewContainer style={{ 'width': "100%" }}>
             {listInstaPostEdges.map(( {node} ) => {
               return (
-                <ViewCard key={node.UniquePhotoLink} itemWidth="30%" style={{ 'max-width': "300px" }} >
+                <ViewCard key={node.UniquePhotoLink} itemWidth="30%" style={{ 'maxWidth': "300px" }} >
                   <a href={node.ShortCodeURL} target="_blank">
                     <ViewImage >
                       <img  src={node.UniquePhotoLink} alt={node.Caption}/>

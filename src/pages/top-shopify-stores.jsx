@@ -51,6 +51,7 @@ const TopShopifyStores = ({ data }) => {
       let newNode = {
         name: edge.node.name,
         slug: edge.node.slug,
+        about: edge.node.about,
         ...firstDataRow.node
       }
       combinedEdges.push(newNode);
@@ -69,17 +70,18 @@ const TopShopifyStores = ({ data }) => {
   return (
     <Layout>
       <Helmet title={'Top Shopify Stores | Shop the most popular stores'} />
-      <Header title="🧐 Discover the top Shopify stores" subtitle=""></Header>
+      <Header title="🧐 Discover top Shopify stores" subtitle=""></Header>
 
       <ShopsWrapper>
         <div class="intro_text">
-          <h3>Browse the most popular Shopify stores</h3>
+          <h3>Browse top Shopify stores</h3>
           <p>Discover top Shopify sellers based upon organic search traffic and social media activity.</p>
         </div>
         <table>
           <thead>
             <tr>
               <th>Store</th>
+
               <th></th>
               <th>GlobalRank</th>
               <th>TOS</th>
@@ -94,11 +96,12 @@ const TopShopifyStores = ({ data }) => {
                 <td>
                   {node.ProfilePicURL &&
                     <Link to={`/shops/${node.slug}`}>
-                      <img src={node.ProfilePicURL} class="profileimage" style={{ width: "50px", margin: '0px' }} title={node.name + 'is on Shopify'} alt={node.name + 'is on Shopify'} />
+                      <img src={node.ProfilePicURL} class="profileimage" style={{ width: "50px", margin: '0px' }} title={node.name + ' is on Shopify'} alt={node.name + ' is on Shopify'} />
                     </Link>
                   }
                 </td>
-                <td><Link to={`/shops/${node.slug}`}>{node.name}</Link></td>
+                <td><Link to={`/shops/${node.slug}`} title={node.about}>{node.name}</Link></td>
+
                 <td>{node.GlobalRank}</td>
                 <td>{node.TOS}</td>
                 <td>{node.FollowerRate}</td>
