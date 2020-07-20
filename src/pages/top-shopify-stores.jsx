@@ -28,31 +28,32 @@ const TopShopifyStores = ({ data }) => {
   const [limit, setLimit] = React.useState(maxItems);
   const [showMore, setShowMore] = React.useState(true);
 
+  React.useEffect(()=>{
+      if(window && document) {
+        var postPointer = document.getElementById("post-"+(limit-maxItems));
+        if (postPointer) postPointer.scrollIntoView();
+        setTimeout(function(){ if (postPointer) {postPointer.scrollIntoView();} }, 1000);
+      }
+  });
+
   const increaseLimit = () => {
     setLimit(limit + maxItems);
   }
 
-  const rowShopifyViewEdges = data.allMysqlShopifyView.edges;
-  const rowDataViewEdges = data.allMysqlDataView.edges;
+  const rowRankViewEdges = data.allMysqlRankView.edges;
   const combinedEdges = [];
 
   //Creating a new dataset with original nodes and required columns from DataView
   edges.map((edge) => {
     const inputInstaID = edge.node.instagramname;
-    //filter to show only shops present in ShopifyView
-    var resultShopify = _.filter(rowShopifyViewEdges, ({ node }) => node.UserName == inputInstaID)
-    if (resultShopify.length > 0) {
-      //now finding corresponding data from DataView
-      var resultData = _.filter(rowDataViewEdges, ({ node }) => node.UserName == inputInstaID)
-      var firstDataRow = null;
-      if (resultData.length > 0) {
-        firstDataRow = resultData[0]
-      }
+    var resultRankView = _.filter(rowRankViewEdges, ({ node }) => node.UserName == inputInstaID)
+    if (resultRankView.length > 0) {
+      //now finding corresponding data from RankView
       let newNode = {
         name: edge.node.name,
         slug: edge.node.slug,
         about: edge.node.about,
-        ...firstDataRow.node
+        ...resultRankView[0].node
       }
       combinedEdges.push(newNode);
     }
@@ -62,7 +63,7 @@ const TopShopifyStores = ({ data }) => {
   var sortedEdges = _.sortBy(combinedEdges, obj => -obj.activity)
 
   //Now limiting the items as per limit
-  const listEdges = _.slice(sortedEdges,0,limit)
+  const listEdges = _.slice(sortedEdges, 0, limit)
 
   console.log("+++++++++++++++++++++++++++++")
   console.log(listEdges)
@@ -91,8 +92,8 @@ const TopShopifyStores = ({ data }) => {
             </tr>
           </thead>
           <tbody>
-            {listEdges.map(( node, index ) => (
-              <tr key={index}>
+            {listEdges.map((node, index) => (
+              <tr key={index} id={`post-${index}`}>
                 <td>
                   {node.ProfilePicURL &&
                     <Link to={`/shops/${node.slug}`}>
@@ -145,36 +146,18 @@ export const query = graphql`
         }
       }
     }
-    allMysqlDataView {
+    allMysqlRankView {
       edges {
         node {
           UserName
-          PostDate
-          AlexaCountry
-          UniquePhotoLink
-          PostsCount
-          FollowersCount
-          FollowingCount
+          AlexaURL
           GlobalRank
           LocalRank
           TOS
           ProfilePicURL
-          Caption
-          ShortCodeURL
           FollowerRate
           PostRate
           activity
-        }
-      }
-    }
-    allMysqlShopifyView {
-      edges {
-        node {
-          UserName
-          Title
-          ProductURL
-          ImageURL
-          Price
         }
       }
     }

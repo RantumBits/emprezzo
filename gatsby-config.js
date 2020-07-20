@@ -75,6 +75,11 @@ module.exports = {
             statement: 'SELECT * FROM ShopifyView WHERE ProductID IS NOT NULL',
             idFieldName: 'ProductURL',
             name: 'Products'
+          },
+          {
+            statement: 'SELECT * FROM RankView WHERE UserName IS NOT NULL',
+            idFieldName: 'UserName',
+            name: 'RankView'
           }
         ]
       }

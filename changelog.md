@@ -1,6 +1,44 @@
 # Change Log
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+
+
+
+## v0.12.0 2020.07.17
+implement new RankView for ranking pages, get updates on new scrapers
+revise page layouts
+update tags, add 'paypal alternatives'
+fix index, instagram db fix for 3 images, display instatram stats on page
+
+## v0.11.0 2020.07.10
+check layout updates to add social media IDs
+Change to show rate stats
+add social media links on each template
+Fix Instagram login issues
+add product search & display
+
+## v0.10.0 2020.07.04
+setup social media id database
+add social meida ids
+add rate stats from isntagram
+change layout of pages
+setup new rankings pages
+
+## v0.10.0 2020.07.04
+setup social media id database
+add social meida ids
+add rate stats from isntagram
+change layout of pages
+setup new rankings pages
+
+
+## v0.9.0 2020.06.26
+review progress of db integration, map fields, add product names & descriptions
+discuss data integration with harshna, add historical data for instagram profiles and alexa ranks
+revise database structure, clean up list
+configure/test mysql-gatsby integration
+
+
 ## v0.8.4 2020.06.18
 remove product atom feed processing
 

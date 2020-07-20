@@ -105,7 +105,7 @@ const Title = styled.h2`
   margin-bottom: 0.6rem;
 `;
 
-const PostList = ({ cover, path, date, title, excerpt, mysqldataview, instagramname }) => {
+const PostList = ({ id, cover, path, date, title, excerpt, mysqldataview, instagramname }) => {
 
   //console.log("*********************************************")
   //console.log("*********** instagramname="+instagramname)
@@ -126,7 +126,7 @@ const PostList = ({ cover, path, date, title, excerpt, mysqldataview, instagramn
   }
 
   return (
-    <Wrapper>
+    <Wrapper id={id}>
       <Image>
         {cover && typeof cover === 'object' &&
           <Img fluid={cover} />

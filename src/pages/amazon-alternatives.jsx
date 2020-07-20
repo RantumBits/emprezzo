@@ -28,6 +28,14 @@ const AmazonAlternatives = ({ data }) => {
   const [limit, setLimit] = React.useState(maxItems);
   const [showMore, setShowMore] = React.useState(true);
 
+  React.useEffect(()=>{
+      if(window && document) {
+        var postPointer = document.getElementById("post-"+(limit-maxItems));
+        if (postPointer) postPointer.scrollIntoView();
+        setTimeout(function(){ if (postPointer) {postPointer.scrollIntoView();} }, 1000);
+      }
+  });
+
   const increaseLimit = () => {
     setLimit(limit + maxItems);
   }
@@ -85,7 +93,7 @@ const AmazonAlternatives = ({ data }) => {
           </thead>
           <tbody>
             {listEdges.map((node, index) => (
-              <tr key={index}>
+              <tr key={index} id={`post-${index}`}>
                 <td>
                   {node.ProfilePicURL &&
                     <Link to={`/shops/${node.slug}`}>

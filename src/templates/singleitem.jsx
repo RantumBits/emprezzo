@@ -141,7 +141,7 @@ const SingleItem = ({ data, pageContext }) => {
   return (
     <Layout>
       <SEO
-        title={`Find ${name} & More ${category||''} online stores on emprezzo`}
+        title={`Find ${name} & other great ${category||''} stores on emprezzo`}
         description={`Find ${name} and discover great ${category||''} online stores on emprezzo. ${about}`}
         banner={image}
         pathname={url}
@@ -155,33 +155,23 @@ const SingleItem = ({ data, pageContext }) => {
           <div style={{ paddingLeft: "15px" }}>
             <Statistics>
               {firstRowDataView && (firstRowDataView.node.activity || firstRowDataView.node.FollowerRate || firstRowDataView.node.PostRate) &&
-                <StatisticItem><a target="_blank" href={firstRowDataView && firstRowDataView.node.ShortCodeURL}><StatisticIcon src="/instagram_icon.png" alt={instagramname} width="15px" height="15px" maxWidth="25px" /></a></StatisticItem>
+                <StatisticItem><a target="_blank" href={firstRowDataView && firstRowDataView.node.ShortCodeURL}></a></StatisticItem>
               }
               {firstRowDataView && firstRowDataView.node.activity &&
-                <StatisticItem>{firstRowDataView.node.activity} <br /><span className="stat_title" title="Instagram Activity Score">ACTIVITY</span></StatisticItem>
+                <StatisticItem>{(firstRowDataView.node.activity+firstRowDataView.node.FollowerRate+firstRowDataView.node.PostRate).toFixed(1)} <br /><span className="stat_title" title="Social Score">Social Score</span></StatisticItem>
               }
-              {firstRowDataView && firstRowDataView.node.FollowerRate &&
-                <StatisticItem>{firstRowDataView.node.FollowerRate} <br /><span className="stat_title" title="*Instagram Follower Rate">FFR</span></StatisticItem>
-              }
-              {firstRowDataView && firstRowDataView.node.PostRate &&
-                <StatisticItem>{firstRowDataView.node.PostRate} <br /><span className="stat_title" title="Instagram Post Rate">PFR</span></StatisticItem>
-              }
+
             </Statistics>
 
 
             <Statistics>
               {firstRowDataView && (firstRowDataView.node.GlobalRank || firstRowDataView.node.LocalRank || firstRowDataView.node.TOS) &&
-                <StatisticItem><StatisticIcon width="15px" height="15px" max-width="25px" /></StatisticItem>
+                <StatisticItem></StatisticItem>
               }
               {firstRowDataView && firstRowDataView.node.GlobalRank &&
-                <StatisticItem>{firstRowDataView.node.GlobalRank} <br /><span className="stat_title" title="Social Score">GLOBAL RANK</span></StatisticItem>
+                <StatisticItem>{firstRowDataView.node.GlobalRank.toLocaleString()} <br /><span className="stat_title" title="Social Score">Traffic Rank</span></StatisticItem>
               }
-              {firstRowDataView && firstRowDataView.node.LocalRank &&
-                <StatisticItem>{firstRowDataView.node.LocalRank} <br /><span className="stat_title" title="">LOCAL RANK</span></StatisticItem>
-              }
-              {firstRowDataView && firstRowDataView.node.TOS &&
-                <StatisticItem>{firstRowDataView.node.TOS} <br /><span className="stat_title" title="Time on Site">TIME ON SITE</span></StatisticItem>
-              }
+
             </Statistics>
 
 
@@ -189,7 +179,7 @@ const SingleItem = ({ data, pageContext }) => {
         </div>
         <Content input={about} /><br />
 
-
+{tagsList}
 
         {/*<AtomFeedList list={atomfeed} /><br />*/}
         {/* List of Products from MySQL View */}
@@ -200,7 +190,9 @@ const SingleItem = ({ data, pageContext }) => {
               <ViewCard key={node.ProductURL} itemWidth="18%">
                 <a href={node.ProductURL} target="_blank">
                   <ViewImage>
-                    <img src={node.ImageURL} style={{ 'max-height': "150px" }} alt={node.Title}/>
+                  <div style={{  width: '100%', height: '150px;' }}>
+                    <img src={node.ImageURL} style={{  'object-fit': 'cover','height': '150px', width: '100%', 'margin': 'auto'}} alt={node.Title}/>
+                    </div>
                   </ViewImage>
                 </a>
                 <small>${node.Price}</small>
@@ -219,10 +211,10 @@ const SingleItem = ({ data, pageContext }) => {
           <ViewContainer style={{ 'width': "100%" }}>
             {listInstaPostEdges.map(( {node} ) => {
               return (
-                <ViewCard key={node.UniquePhotoLink} itemWidth="30%" style={{ 'maxWidth': "300px" }} >
+                <ViewCard key={node.UniquePhotoLink} itemWidth="30%"  >
                   <a href={node.ShortCodeURL} target="_blank">
                     <ViewImage >
-                      <img  src={node.UniquePhotoLink} alt={node.Caption}/>
+                      <img  src={node.UniquePhotoLink} alt={node.Caption} style={{  'object-fit': 'cover','height': '200px', width: '100%', 'margin': 'auto'}}/>
                     </ViewImage>
                   </a>
                   <ViewInfo className="info" >
