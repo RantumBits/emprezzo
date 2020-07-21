@@ -28,14 +28,6 @@ const AmazonAlternatives = ({ data }) => {
   const [limit, setLimit] = React.useState(maxItems);
   const [showMore, setShowMore] = React.useState(true);
 
-  React.useEffect(()=>{
-      if(window && document) {
-        var postPointer = document.getElementById("post-"+(limit-maxItems));
-        if (postPointer) postPointer.scrollIntoView();
-        setTimeout(function(){ if (postPointer) {postPointer.scrollIntoView();} }, 1000);
-      }
-  });
-
   const increaseLimit = () => {
     setLimit(limit + maxItems);
   }
@@ -65,9 +57,6 @@ const AmazonAlternatives = ({ data }) => {
 
   //Now limiting the items as per limit
   const listEdges = _.slice(sortedEdges, 0, limit)
-
-  console.log("+++++++++++++++++++++++++++++")
-  console.log(listEdges)
 
   return (
     <Layout>
@@ -115,9 +104,9 @@ const AmazonAlternatives = ({ data }) => {
       </ShopsWrapper>
       {showMore && listEdges.length > 0 && listEdges.length < edges.length &&
         <div className="center">
-          <a className="button" onClick={increaseLimit} style={{ cursor: "pointer" }}>
+          <button className="button" onClick={increaseLimit}>
             Load More
-            </a>
+          </button>
         </div>
       }
       <ShopsWrapper>

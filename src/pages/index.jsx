@@ -50,14 +50,6 @@ const Index = ({ data }) => {
   const [limit, setLimit] = React.useState(maxItems);
   const [showMore, setShowMore] = React.useState(true);
 
-  React.useEffect(()=>{
-      if(window && document) {
-        //var postPointer = document.getElementById("post-"+(limit-maxItems));
-        var postPointer = document.getElementById("bottomPointer");
-        setTimeout(function(){ if (postPointer) {postPointer.scrollIntoView({behavior: 'smooth'});} }, 500);
-      }
-  });
-
   const increaseLimit = () => {
     setLimit(limit + maxItems);
   }
@@ -94,9 +86,6 @@ const Index = ({ data }) => {
   //Now limiting the items as per limit
   const listEdges = _.slice(sortedEdges, 0, limit)
 
-  console.log("+++++++++++++++++++++++++++++")
-  console.log(listEdges)
-
   return (
     <Layout>
       <Helmet title={'emprezzo'} />
@@ -127,10 +116,9 @@ const Index = ({ data }) => {
       </ShopWrapper>
       {showMore && listEdges.length > 0 && listEdges.length < edges.length &&
         <div className="center">
-          <div id="bottomPointer"/>
-          <a className="button" onClick={increaseLimit} style={{ cursor: "pointer" }}>
+          <button className="button" onClick={increaseLimit}>
             Load More
-            </a>
+          </button>
         </div>
       }
     </Layout>

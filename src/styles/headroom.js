@@ -37,6 +37,19 @@ a.buttonalt{
   opacity: 50%;
 }
 
+.button {
+    padding:0.7em 1.4em;
+    margin:0 0.3em 0.3em 0;
+    border-radius:0.15em;
+    box-sizing: border-box;
+    text-transform:uppercase;
+    font-weight:400;
+    font-size: .8em;
+    color:#FFFFFF;
+    background-color:#6f6add;
+    box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
+    cursor: pointer;
+}
 
 
 .Header--Subtitle {
