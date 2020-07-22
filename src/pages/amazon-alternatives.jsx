@@ -60,8 +60,8 @@ const AmazonAlternatives = ({ data }) => {
 
   return (
     <Layout>
-      <Helmet title={'Amazon Alternatives | Anti-Amazon Shopping Marketpace '} />
-      <Header title="🧐 Discover great Amazon alternatives" subtitle=""></Header>
+      <Helmet title={'Amazon Alternatives for Online Shopping'} description='Discover amazing alternatives to the Amazon marketplace. Shop directly to support independent online stores.'/>/>
+      <Header title="🧐 Discover great Amazon alternatives for online shopping" subtitle=""></Header>
 
       <ShopsWrapper>
         <div class="intro_text">
