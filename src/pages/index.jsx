@@ -88,8 +88,8 @@ const Index = ({ data }) => {
 
   return (
     <Layout>
-      <Helmet title={'emprezzo'} />
-      <Header title="Discover & Shop Independent Businesses"></Header>
+      <Helmet title={'emprezzo | Discover & Shop Independent Online Stores'} description="Discover great independent online stores. Shop directly and support great businesses. Find apparel, toys, food, and more on emprezzo." />
+      <Header title="Discover & Shop Independent Online Stores"></Header>
 
       {/* <p class="center"><a href ="/randomshop" class="button button">Discover a  shop</a></p> */}
       <div class="center">
@@ -121,6 +121,16 @@ const Index = ({ data }) => {
           </button>
         </div>
       }
+      <ShopWrapper>
+      <h3>Why shop directly from independent online stores?</h3>
+      <p>There are a number of reasons to shop directly, rather than making all purchases from large marketplaces or major retailers. There's a huge diversity of merchants and consumers online. What makes a product unique and exceptional is often lost when the brand is taken over by a large company.</p>
+      <p>Independent stores are free to run their shops in the best ways to connect with their customers. Rather than being restricted to the rules of a marketplace or vendor, stores are able to act in ways that best support their audience.</p>
+      <h3>What's the benefit for online stores></h3>
+      <p>Online stores benefit by connecting diretly with their customers and cutting out the fees paid to large markeplaces. Marketplaces typically charge sellers for marketing, fulfillment, commission, and additional fees making it hard for stores to turn a profit without increasing costs.</p>
+      <h3>How do consumers benefit></h3>
+      <p>By shopping directly with stores, customers know more of the money goes directly to the company, which in turn helps propel the company to stick around and create more great products. Many of the best brands aren't availalbe on major marketplace sites.</p>
+      <p>Brands often have exclusive offers, specialty products, and extra giveaways for customers that choose to shop directly.</p>
+    </ShopWrapper>
     </Layout>
   );
 };

@@ -60,13 +60,13 @@ const AmazonAlternatives = ({ data }) => {
 
   return (
     <Layout>
-      <Helmet title={'Amazon Alternatives for Online Shopping'} description='Discover amazing alternatives to the Amazon marketplace. Shop directly to support independent online stores.'/>
+      <Helmet title={'Amazon Alternatives for Online Shopping'} description='Discover amazing alternatives to the Amazon marketplace. Find amazon alernatives. Shop directly to support independent online stores.'/>
       <Header title="🧐 Discover great Amazon alternatives for online shopping" subtitle=""></Header>
 
       <ShopsWrapper>
         <div class="intro_text">
           <h3>Browse shopping alternatives to Amazon</h3>
-          <p>Independent online shops offer great alternatives to the Amazon marketplace.</p>
+          <p>Independent online shops offer great amazon alternatives for shopping directly</p>
         </div>
         <table>
           <thead>
@@ -113,6 +113,12 @@ const AmazonAlternatives = ({ data }) => {
         <div class="intro_text">
           <h3>Discover the best Amazon marketplace alternatives for shoppping online</h3>
           <p>Find some of the best anti-amazon shops and avoid the hassle of looking for amazon customer service.</p><p>Search for great Amazon shopping alternatives in header or <a href="/randomshop">discover a shop</a>.</p>
+          <h3>What makes a great alternative to the Amazon marketplace?</h3>
+          <p>The shops on this list are sell directly to customers via their online stores. Most offer free shipping, which is one of the major Amazon prime beneifts.</p>
+          <h3>How are the stores ranked?</h3>
+          <p>The stores are ranked based upon their SocialScore and overall web rank. The social score is derived from factors such as followers, fans, and activity on social media accounts. Web rank is based upon the websites estimated search engine ranking, as well as average time on site by visitors.</p>
+          <h3>Is this an anti-Amazon shopping list?</h3>
+          <p>This list of shopping alternatives is not intended to be anti-Amazon, per se. It exists to help find alternatives that consumers may not yet be aware.</p>
         </div>
       </ShopsWrapper>
     </Layout>

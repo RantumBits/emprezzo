@@ -6,6 +6,9 @@ import PropTypes from 'prop-types';
 import { Layout, Container, Content } from 'layouts';
 import { TagsBlock, Header, SEO } from 'components';
 import _ from 'lodash';
+import 'react-responsive-carousel/lib/styles/carousel.min.css'
+import { Carousel } from 'react-responsive-carousel'
+import { useMediaQuery } from 'react-responsive'
 
 import '../styles/prism';
 
@@ -62,20 +65,24 @@ const StatisticIcon = styled.img`
 
 const ViewContainer = styled.section`
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
+  width: 100%;
 `;
 const ViewCard = styled.div`
-  flex: 1 ${props => props.itemWidth ? props.itemWidth : '25%'};
-  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
   @media (max-width: ${props => props.theme.breakpoints.s}) {
-      flex: 1 96%;
+      flex: 2;
   }
 `;
 const ViewImage = styled.div`
   max-width: 100%;
 `;
 const ViewInfo = styled.div`
-  margin-top: auto;
+
 `;
 
 const SingleItem = ({ data, pageContext }) => {
@@ -88,6 +95,8 @@ const SingleItem = ({ data, pageContext }) => {
   const atomfeed = fields && fields.atomfeed ? fields.atomfeed : [];
 
   console.log("*** instagramname used for matching = " + instagramname)
+  const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
+  console.log("****** isMobile = "+isMobile)
 
   //Extracting Posts from MySQL Data
   const maxPosts = 3;
@@ -141,7 +150,7 @@ const SingleItem = ({ data, pageContext }) => {
   return (
     <Layout>
       <SEO
-        title={`Find ${name} & other great ${category||''} stores on emprezzo`}
+        title={`Find ${name} | ${category||''} `}
         description={`Find ${name} and discover great ${category||''} online stores on emprezzo. ${about}`}
         banner={image}
         pathname={url}
@@ -179,7 +188,6 @@ const SingleItem = ({ data, pageContext }) => {
         </div>
         <Content input={about} /><br />
 
-{tagsList}
 
         {/*<AtomFeedList list={atomfeed} /><br />*/}
         {/* List of Products from MySQL View */}
@@ -187,7 +195,7 @@ const SingleItem = ({ data, pageContext }) => {
         <ViewContainer>
           {listProductEdges.map(( {node} ) => {
             return (
-              <ViewCard key={node.ProductURL} itemWidth="18%">
+              <ViewCard key={node.ProductURL} style={{padding:"10px"}}>
                 <a href={node.ProductURL} target="_blank">
                   <ViewImage>
                   <div style={{  width: '100%', height: '150px;' }}>
@@ -200,31 +208,63 @@ const SingleItem = ({ data, pageContext }) => {
                   <a href={node.ProductURL} target="_blank">
                     {node.Title && node.Title.substring(0, 50)}
                   </a>
+                  <p>{node.Description && node.Description.substring(0, 150)}</p>
                 </ViewInfo>
               </ViewCard>
             );
           })}
-
+          </ViewContainer>
           <br />
           {/* List of Posts from MySQL View */}
           {listInstaPostEdges && listInstaPostEdges.length > 0 && <h3>instagram posts</h3>}
-          <ViewContainer style={{ 'width': "100%" }}>
-            {listInstaPostEdges.map(( {node} ) => {
-              return (
-                <ViewCard key={node.UniquePhotoLink} itemWidth="30%"  >
-                  <a href={node.ShortCodeURL} target="_blank">
-                    <ViewImage >
-                      <img  src={node.UniquePhotoLink} alt={node.Caption} style={{  'object-fit': 'cover','height': '200px', width: '100%', 'margin': 'auto'}}/>
-                    </ViewImage>
-                  </a>
-                  <ViewInfo className="info" >
-                    {node.Caption && node.Caption.substring(0, 140) + "..."}
-                  </ViewInfo>
-                </ViewCard>
-              );
-            })}
-          </ViewContainer>
-        </ViewContainer><br />
+
+          {/* Show carousel for mobile version */}
+          {isMobile &&
+            <Carousel
+              showThumbs={false}
+              infiniteLoop
+              showIndicators={false}
+              selectedItem={1}
+              showArrows={true}
+              showStatus={false}
+            >
+              {listInstaPostEdges.map(( {node} ) => {
+                return (
+                  <ViewCard key={node.UniquePhotoLink}  style={{padding:"15px"}}>
+                    <a href={node.ShortCodeURL} target="_blank">
+                      <ViewImage >
+                          <img src={node.UniquePhotoLink} alt={node.Caption} style={{  'object-fit': 'cover','height': '200px', width: '100%', 'margin': 'auto'}}/>
+                      </ViewImage>
+                    </a>
+                    <ViewInfo className="info" >
+                      {node.Caption && node.Caption.substring(0, 200) + "..."}
+                    </ViewInfo>
+                  </ViewCard>
+                );
+              })}
+            </Carousel>
+          }
+
+          {/* Show carousel for mobile version */}
+          {!isMobile &&
+            <ViewContainer>
+              {listInstaPostEdges.map(( {node} ) => {
+                return (
+                  <ViewCard key={node.UniquePhotoLink}  style={{padding:"15px"}}>
+                    <a href={node.ShortCodeURL} target="_blank">
+                      <ViewImage >
+                          <img src={node.UniquePhotoLink} alt={node.Caption} style={{  'object-fit': 'cover','height': '200px', width: '100%', 'margin': 'auto'}}/>
+                      </ViewImage>
+                    </a>
+                    <ViewInfo className="info" >
+                      {node.Caption && node.Caption.substring(0, 140) + "..."}
+                    </ViewInfo>
+                  </ViewCard>
+                );
+              })}
+           </ViewContainer>
+        }
+        <br />
         <a href="/randomshop" className="button ">Discover another shop</a>
       </Container>
       <SuggestionBar>
@@ -280,6 +320,7 @@ export const query = graphql`
           UserName
           Title
           ProductURL
+          Description
           ImageURL
           Price
         }

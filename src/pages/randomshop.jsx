@@ -1,18 +1,31 @@
 import React from 'react';
-import { graphql } from 'gatsby';
+import { graphql, navigate } from 'gatsby';
 import Helmet from 'react-helmet';
-import { navigate } from "@reach/router"
+import _ from 'lodash';
 
 const RandomShop = ({ data }) => {
   const { edges } = data.allGoogleSheetListRow;
+  const rowRankViewEdges = data.allMysqlRankView.edges;
 
-  console.log("Total Shops = "+edges.length);
-  const randomnumber = Math.round(Math.random() * edges.length);
+  const combinedEdges = [];
+  //Creating a new dataset with original nodes and required columns from DataView
+  edges.map((edge) => {
+    const inputInstaID = edge.node.instagramname;
+    var resultRankView = _.filter(rowRankViewEdges, ({ node }) => node.UserName == inputInstaID)
+    if (resultRankView.length > 0) {      
+      combinedEdges.push(edge);
+    }
+  })
+
+  console.log("Total Shops with Rank View = "+combinedEdges.length);
+  const randomnumber = Math.round(Math.random() * combinedEdges.length);
   console.log("Generated Random Number = "+randomnumber);
-  const edge = edges[randomnumber-1] ? edges[randomnumber-1] : edges[0];
+  const edge = combinedEdges[randomnumber-1] ? combinedEdges[randomnumber-1] : combinedEdges[0];
+  console.log("************")
+  console.log(edge)
   const randomshopurl = "/shops/"+edge.node.slug;
   console.log("Random URL = "+randomshopurl);
-  navigate(randomshopurl);
+  navigate(randomshopurl, { replace: true }); 
 
   return (
     <Helmet title={'Random Shop'} />
@@ -28,6 +41,14 @@ export const query = graphql`
       edges {
         node {
           slug
+          instagramname
+        }
+      }
+    }
+    allMysqlRankView {
+      edges {
+        node {
+          UserName
         }
       }
     }

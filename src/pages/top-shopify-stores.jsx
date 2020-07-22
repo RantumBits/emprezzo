@@ -114,6 +114,14 @@ const TopShopifyStores = ({ data }) => {
         <div class="intro_text">
           <h3>Discover top Shopify stores of 2020</h3>
           <p>Find the top Shopify stores by traffic & social media activity. See some of the best Shopify store examples.</p><p>Search in header for more Shopify stores or <a href="/randomshop">discover a shop</a></p>
+          <h3>How is the list of top Shopify stores ranked?</h3>
+          <p>The stores are ranked based upon their SocialScore and overall web rank. The social score is derived from factors such as followers, fans, and activity on social media accounts. Web rank is based upon the websites estimated search engine ranking, as well as average time on site by visitors.</p>
+          <h3>What are some great Shopify stores examples? </h3>
+          <p>This list is an excellent resource for seeing examples of Shopify stores. These are some of the most popular Shopify stores and are great for getting ideas for your own store.</p>
+          <h3>What are Shopify stores?</h3>
+          <p>Shpoify stores are online stores running on the Shopify ecommece platorm. They are typically indpendent businesses selling directly to customers. The sites are hosted by Shopify, which generally handles the payment as well, making Shopify sites safe and secure.</p>
+          <h3>How many Shopify stores are there?</h3>
+          <p>As of July 2020, there are approximately 1,422,815 live Shopify sites. 3.6% of the top 1M sites are powerd by Shopify. 5.29% of the top 10k sites are powered by Shopify. </p>
         </div>
       </ShopsWrapper>
     </Layout>
