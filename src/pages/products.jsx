@@ -86,7 +86,7 @@ const Products = ({ data }) => {
   return (
     <Layout>
       <Helmet title={'Top Shopify Products'} />
-      <Header title="Top Shopify Products"description='Discover the best Shopify products from hundreds of stores in one place'/></Header>
+      <Header title="Top Shopify Products" description="Discover the best Shopify products from hundreds of stores in one place"/>
       <FilterArea>
         Filter Products:{` `}
       <input
