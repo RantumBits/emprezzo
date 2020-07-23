@@ -59,8 +59,7 @@ const AmazonAlternatives = ({ data }) => {
   const listEdges = _.slice(sortedEdges, 0, limit)
 
   return (
-    <Layout>
-      <Helmet title={'Amazon Alternatives for Online Shopping'} description='Discover amazing alternatives to the Amazon marketplace. Find amazon alernatives. Shop directly to support independent online stores.'/>
+    <Layout title={'Amazon Alternatives for Online Shopping'} description='Discover amazing alternatives to the Amazon marketplace. Find amazon alernatives. Shop directly to support independent online stores.' >
       <Header title="🧐 Discover great Amazon alternatives for online shopping" subtitle=""></Header>
 
       <ShopsWrapper>

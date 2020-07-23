@@ -82,10 +82,9 @@ const Products = ({ data }) => {
     if (result.length > 0) path = "/shops/" + result[0].node.slug;
     return path;
   }
-
+  
   return (
-    <Layout>
-      <Helmet title={'Top Shopify Products'} description="A mini shopify marketplace. Discover the best Shopify products from hundreds of stores in one place." />
+    <Layout title={'Top Shopify Products'} description="A mini shopify marketplace. Discover the best Shopify products from hundreds of stores in one place.">
       <Header title="Top Shopify Products" />
       <FilterArea>
         Filter Products:{` `}
@@ -111,9 +110,9 @@ const Products = ({ data }) => {
       </ShopsWrapper>
       {showMore && listEdges.length > 0 && listEdges.length < edges.length &&
         <div className="center">
-          <a className="button" onClick={increaseLimit} style={{ cursor: "pointer" }}>
+          <button className="button" onClick={increaseLimit}>
             Load More
-            </a>
+          </button>
         </div>
       }
     </Layout>

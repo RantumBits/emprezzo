@@ -183,11 +183,11 @@ exports.createPages = ({ graphql, actions }) => {
         });
 
         //create tags
-        tags.forEach(tagName => {
+        tags.forEach(tagName => {          
           const posts = postsByTag[tagName];
-
+          
           createPage({
-            path: `/tags/${tagName}`,
+            path: `/tags/${tagName.trim()}`,
             component: tagPosts,
             context: {
               posts,

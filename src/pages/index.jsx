@@ -87,8 +87,7 @@ const Index = ({ data }) => {
   const listEdges = _.slice(sortedEdges, 0, limit)
 
   return (
-    <Layout>
-      <Helmet title={'emprezzo | Discover & Shop Independent Online Stores'} description="Discover great independent online stores. Shop directly and support great businesses. Find apparel, toys, food, and more on emprezzo." />
+    <Layout title={'emprezzo | Discover & Shop Independent Online Stores'} description="Discover great independent online stores. Shop directly and support great businesses. Find apparel, toys, food, and more on emprezzo." >
       <Header title="Discover & Shop Independent Online Stores"></Header>
 
       {/* <p class="center"><a href ="/randomshop" class="button button">Discover a  shop</a></p> */}

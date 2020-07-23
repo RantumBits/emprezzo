@@ -68,6 +68,7 @@ const ViewContainer = styled.section`
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
+  gap:10px;
 `;
 const ViewCard = styled.div`
   display: flex;
@@ -97,6 +98,7 @@ const SingleItem = ({ data, pageContext }) => {
   console.log("*** instagramname used for matching = " + instagramname)
   const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
   console.log("****** isMobile = "+isMobile)
+  console.log(tagsList)
 
   //Extracting Posts from MySQL Data
   const maxPosts = 3;
@@ -186,8 +188,8 @@ const SingleItem = ({ data, pageContext }) => {
 
           </div>
         </div>
+        <TagsBlock list={tagsList || []} />
         <Content input={about} /><br />
-
 
         {/*<AtomFeedList list={atomfeed} /><br />*/}
         {/* List of Products from MySQL View */}
@@ -195,7 +197,7 @@ const SingleItem = ({ data, pageContext }) => {
         <ViewContainer>
           {listProductEdges.map(( {node} ) => {
             return (
-              <ViewCard key={node.ProductURL} style={{padding:"10px"}}>
+              <ViewCard key={node.ProductURL}>
                 <a href={node.ProductURL} target="_blank">
                   <ViewImage>
                   <div style={{  width: '100%', height: '150px;' }}>
@@ -227,16 +229,21 @@ const SingleItem = ({ data, pageContext }) => {
               selectedItem={1}
               showArrows={true}
               showStatus={false}
-            >
-              {listInstaPostEdges.map(( {node} ) => {
+            >              
+              {listInstaPostEdges && listInstaPostEdges.map(( {node} ) => {
                 return (
                   <ViewCard key={node.UniquePhotoLink}  style={{padding:"15px"}}>
                     <a href={node.ShortCodeURL} target="_blank">
                       <ViewImage >
-                          <img src={node.UniquePhotoLink} alt={node.Caption} style={{  'object-fit': 'cover','height': '200px', width: '100%', 'margin': 'auto'}}/>
+                          {node.mysqlImage &&
+                            <Image fluid={node.mysqlImage.childImageSharp.fluid} alt={node.Caption} style={{  'height': '200px', width: '100%', 'margin': 'auto'}}/>
+                          }
+                          {!node.mysqlImage &&
+                            <img src={node.UniquePhotoLink} alt={node.Caption} style={{  'object-fit': 'cover','height': '200px', width: '100%', 'margin': 'auto'}}/>
+                          }
                       </ViewImage>
                     </a>
-                    <ViewInfo className="info" >
+                    <ViewInfo className="info" style={{color:"white"}}>
                       {node.Caption && node.Caption.substring(0, 200) + "..."}
                     </ViewInfo>
                   </ViewCard>
@@ -248,16 +255,21 @@ const SingleItem = ({ data, pageContext }) => {
           {/* Show carousel for mobile version */}
           {!isMobile &&
             <ViewContainer>
-              {listInstaPostEdges.map(( {node} ) => {
+              {listInstaPostEdges && listInstaPostEdges.map(( {node} ) => {
                 return (
                   <ViewCard key={node.UniquePhotoLink}  style={{padding:"15px"}}>
                     <a href={node.ShortCodeURL} target="_blank">
                       <ViewImage >
-                          <img src={node.UniquePhotoLink} alt={node.Caption} style={{  'object-fit': 'cover','height': '200px', width: '100%', 'margin': 'auto'}}/>
+                          {node.mysqlImage &&
+                            <Image fluid={node.mysqlImage.childImageSharp.fluid} alt={node.Caption} style={{  'height': '200px', width: '100%', 'margin': 'auto'}}/>
+                          }
+                          {!node.mysqlImage &&
+                            <img src={node.UniquePhotoLink} alt={node.Caption} style={{  'object-fit': 'cover','height': '200px', width: '100%', 'margin': 'auto'}}/>
+                          }
                       </ViewImage>
                     </a>
                     <ViewInfo className="info" >
-                      {node.Caption && node.Caption.substring(0, 140) + "..."}
+                      {node.Caption && node.Caption.substring(0, 200) + "..."}
                     </ViewInfo>
                   </ViewCard>
                 );
@@ -299,6 +311,13 @@ export const query = graphql`
           PostDate
           AlexaCountry
           UniquePhotoLink
+          mysqlImage {
+            childImageSharp {
+              fluid (srcSetBreakpoints: [200, 400]) {
+                ...GatsbyImageSharpFluid
+              }
+            }
+          }
           PostsCount
           FollowersCount
           FollowingCount

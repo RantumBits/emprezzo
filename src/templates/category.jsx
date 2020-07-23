@@ -48,8 +48,7 @@ const Category = ({ data, pageContext }) => {
   const rowDataViewEdges = data.allMysqlDataView.edges;
 
   return (
-    <Layout>
-      <Helmet title={'Shop Independent ' + categoryHeading + ' | Discover direct-to-consumer' + categoryHeading } />
+    <Layout title={'Shop Independent ' + categoryHeading + ' | Discover direct-to-consumer' + categoryHeading } >
       <Header title={categoryHeading}><span class="Header--Subtitle">discover exceptional independent {categoryHeading}</span></Header>
 
       <CategoryWrapper>
@@ -67,9 +66,9 @@ const Category = ({ data, pageContext }) => {
       </CategoryWrapper>
       {showMore && listEdges.length > 0 && listEdges.length < edges.length &&
         <div className="center">
-            <a className="button" onClick={increaseLimit} style={{cursor: "pointer"}}>
-                Load More
-            </a>
+            <button className="button" onClick={increaseLimit}>
+              Load More
+            </button>
         </div>
       }
     </Layout>

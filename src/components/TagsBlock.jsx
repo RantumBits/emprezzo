@@ -27,6 +27,7 @@ const TagsBlock = ({ list }) => (
   <TagsContainer>
     {list &&
       list.map(tag => {
+        tag = tag.trim();
         const upperTag = tag.charAt(0).toUpperCase() + tag.slice(1);
         return (
           <Link key={tag} to={`/tags/${tag}`}>

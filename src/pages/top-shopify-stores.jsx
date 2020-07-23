@@ -58,8 +58,7 @@ const TopShopifyStores = ({ data }) => {
   const listEdges = _.slice(sortedEdges, 0, limit)
 
   return (
-    <Layout>
-      <Helmet title={'Top Shopify Stores | Shop the most popular stores'} description='Discover top Shopify stores. Shop the best and most popular Shopify shop on emprezzo.'/>
+    <Layout title={'Top Shopify Stores | Shop the most popular stores'} description='Discover top Shopify stores. Shop the best and most popular Shopify shop on emprezzo.'>
       <Header title="🧐 Discover top Shopify stores" subtitle=""></Header>
 
       <ShopsWrapper>
