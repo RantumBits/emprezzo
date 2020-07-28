@@ -80,6 +80,16 @@ module.exports = {
             statement: 'SELECT * FROM RankView WHERE UserName IS NOT NULL',
             idFieldName: 'UserName',
             name: 'RankView'
+          },
+          {
+            statement: 'SELECT * FROM RankView_Paypal WHERE UserName IS NOT NULL',
+            idFieldName: 'UserName',
+            name: 'RankViewPaypal'
+          },
+          {
+            statement: 'SELECT * FROM RankView_PayLater WHERE UserName IS NOT NULL',
+            idFieldName: 'UserName',
+            name: 'RankViewPayLater'
           }
         ]
       }
