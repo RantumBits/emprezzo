@@ -4,9 +4,9 @@ import styled from '@emotion/styled';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import { Header } from 'components';
-import PostList5Col from '../components/PostList5Col';
+import PostList from '../components/PostList';
 import ProductList from '../components/ProductList';
-import { Layout } from 'layouts';
+import { Layout } from 'layouts';prod
 import _ from 'lodash';
 
 const CategoryHeading = styled.h1`
@@ -32,21 +32,21 @@ const Products = ({ data, pageContext }) => {
   const { category } = pageContext;
   const categoryHeading = category + " Shops";
   const categoryGroup = data.allGoogleSheetListRow.group;
-  console.log(categoryGroup)  
+  console.log(categoryGroup)
 
   const rowProductsEdges = data.allMysqlProducts.edges;
-  
+
   const checkEdgesInProductView = (allEdges) => {
     const filteredProducts = [];
     allEdges.map((edge)=>{
-      const inputInstaID = edge.node.instagramname;      
+      const inputInstaID = edge.node.instagramname;
       let result = _.filter(rowProductsEdges, ({ node }) => node.UserName == inputInstaID)
       //console.log(result)
       if(result.length>0) filteredProducts.push(result[0]);
     });
     return filteredProducts;
   }
-  
+
   const getProductVariant = (node) => {
     let productVariant = null;
     //if(node.VariantTitle && node.VariantTitle!=="Default Title") productVariant = node.VariantTitle;
@@ -70,7 +70,7 @@ const Products = ({ data, pageContext }) => {
 
   return (
     <Layout title={'Top Shopify Products'} description="A mini shopify marketplace. Discover the best Shopify products from hundreds of stores in one place.">
-      <Header title="Top Shopify Products" />      
+      <Header title="Top Shopify Products" />
         {categoryGroup.map((category, index) => {
           const allEdges = category.edges;
           const filteredProducts = checkEdgesInProductView(allEdges)
@@ -78,7 +78,7 @@ const Products = ({ data, pageContext }) => {
           return (
             <div key={index}>
               {listEdges.length>0 &&
-                <CategoryHeading>{category.fieldValue}</CategoryHeading> 
+                <CategoryHeading>{category.fieldValue}</CategoryHeading>
               }
               <CategoryWrapper>
                 {listEdges.map(({ node }) => (
@@ -95,7 +95,7 @@ const Products = ({ data, pageContext }) => {
               </CategoryWrapper>
             </div>
         )})}
-      
+
     </Layout>
   );
 };
