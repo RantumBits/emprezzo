@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { Header } from 'components';
 import PostList from '../components/PostList';
 import ProductList from '../components/ProductList';
-import { Layout } from 'layouts';prod
+import { Layout } from 'layouts';
 import _ from 'lodash';
 
 const CategoryHeading = styled.h1`

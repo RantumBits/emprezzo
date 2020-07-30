@@ -218,16 +218,6 @@ exports.createPages = ({ graphql, actions }) => {
   });
 };
 
-/* Allows named imports */
-exports.onCreateWebpackConfig = ({ actions }) => {
-  actions.setWebpackConfig({
-    resolve: {
-      modules: [path.resolve(__dirname, 'src'), 'node_modules'],
-    },
-  });
-};
-
-
 exports.onCreateNode = ({ node, actions }) => {
   const { createNodeField } = actions
   let entries = [];
@@ -283,4 +273,28 @@ exports.onCreateNode = ({ node, actions }) => {
       });
     });
   }
+};
+
+exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
+  if (stage === "build-html") {
+    actions.setWebpackConfig({
+      module: {
+        rules: [
+          {
+            test: /react-responsive|react-responsive-carousel/,
+            use: loaders.null(),
+          },
+        ],
+      },
+    })
+  }
+}
+
+/* Allows named imports */
+exports.onCreateWebpackConfig = ({ actions }) => {
+  actions.setWebpackConfig({
+    resolve: {
+      modules: [path.resolve(__dirname, 'src'), 'node_modules'],
+    },
+  });
 };
