@@ -281,7 +281,7 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
       module: {
         rules: [
           {
-            test: /react-responsive|react-responsive-carousel/,
+            test: /react-responsive-carousel|react-responsive/,
             use: loaders.null(),
           },
         ],

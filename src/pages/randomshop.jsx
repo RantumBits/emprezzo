@@ -12,7 +12,7 @@ const RandomShop = ({ data }) => {
   edges.map((edge) => {
     const inputInstaID = edge.node.instagramname;
     var resultRankView = _.filter(rowRankViewEdges, ({ node }) => node.UserName == inputInstaID)
-    if (resultRankView.length > 0) {      
+    if (resultRankView.length > 0) {
       combinedEdges.push(edge);
     }
   })
@@ -22,10 +22,10 @@ const RandomShop = ({ data }) => {
   console.log("Generated Random Number = "+randomnumber);
   const edge = combinedEdges[randomnumber-1] ? combinedEdges[randomnumber-1] : combinedEdges[0];
   console.log("************")
-  console.log(edge)
+  //console.log(edge)
   const randomshopurl = "/shops/"+edge.node.slug;
   console.log("Random URL = "+randomshopurl);
-  navigate(randomshopurl, { replace: true }); 
+  navigate(randomshopurl);
 
   return (
     <Helmet title={'Random Shop'} />
