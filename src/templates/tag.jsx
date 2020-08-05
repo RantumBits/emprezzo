@@ -66,21 +66,20 @@ const Tag = ({ data, pageContext }) => {
         <TagWrapper>
           {listEdges.map((node) => (
             <PostList
-              key={node.name}
-              cover={node.imageurl}
-              path={`/shops/${node.slug}`}
-              title={node.name}
-              excerpt={node.about && node.about.substring(0,40)+"..."}
+              key={node.UserName}
+              title={node.FullName}
+              excerpt={node.Biography}
+              path={`/shops/${node.UserName}`}
               mysqldataview={rowDataViewEdges}
-              instagramname={node.instagramname}
+              instagramname={node.UserName}
             />
           ))}
         </TagWrapper>
         {showMore && listEdges.length > 0 && listEdges.length < posts.length &&
           <div className="center">
-              <a className="button" onClick={increaseLimit} style={{cursor: "pointer"}}>
+              <button className="button" onClick={increaseLimit}>
                   Load More
-              </a>
+              </button>
           </div>
         }
     </Layout>
@@ -102,6 +101,7 @@ export const query = graphql`
       edges {
         node {
           UserName
+          FullName
           UniquePhotoLink
           ProfilePicURL
           Caption

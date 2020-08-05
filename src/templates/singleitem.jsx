@@ -88,120 +88,93 @@ const ViewInfo = styled.div`
 
 const SingleItem = ({ data, pageContext }) => {
   const { next, prev } = pageContext;
-  const { name, date, slug, imageurl, url, category, tags, localImageUrl, profileimage, localProfileImage, instagramname, instagramposts, instagramfollowers, instagramfollowing, alexarank, alexatimeonsite, socialscore, about, state, city, like, fields } = data.googleSheetListRow
+  const { AlexaURL, Facebook, FollowerRate, GlobalRank, Instagram, LocalRank, Pinterest, PostRate, ProfilePicURL, TOS, TikTok, Twitter, UserID, UserName, YouTube, activity, category, tags, FullName, Biography } = data.mysqlMainView;
+
+  const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
+  //console.log("****** isMobile = " + isMobile)
 
   //converting comma seperated tags to tags map
   const tagsList = tags ? tags.split(',') : [];
-  const image = localImageUrl ? localImageUrl.childImageSharp.fluid : null;
-  const atomfeed = fields && fields.atomfeed ? fields.atomfeed : [];
-
-  console.log("*** instagramname used for matching = " + instagramname)
-  const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
-  console.log("****** isMobile = "+isMobile)
-  console.log(tagsList)
 
   //Extracting Posts from MySQL Data
   const maxPosts = 3;
   const rowDataViewEdges = data.allMysqlDataView.edges;
   //filtering top 3 for current instagram id
-  const filteredDataView = _.filter(rowDataViewEdges, ({ node }) => node.UserName == instagramname)
-  const listPostEdges = _.slice(filteredDataView,0,maxPosts);
+  const filteredDataView = _.filter(rowDataViewEdges, ({ node }) => node.AlexaURL == AlexaURL)
+  const listPostEdges = _.slice(filteredDataView, 0, maxPosts);
   const firstRowDataView = listPostEdges && listPostEdges.length ? listPostEdges[0] : null;
-  //console.log("*****++FirstRow+++********")
-  //console.log(firstRowDataView)
-  //console.log("*****++listPostEdges+++********")
-  //console.log(listPostEdges)
-
   //Now filtering instagram posts if the image or caption is not present
   const listInstaPostEdges = _.filter(listPostEdges, ({ node }) => (node.UniquePhotoLink))
   //console.log("*****++listInstaPostEdges+++********")
   //console.log(listInstaPostEdges)
 
-  //Extracting Social IDs from MySQL Data
-  let socialDetails = null
-  const rowSocialIDEdges = data.allMysqlSocialIDs.edges;
-  rowSocialIDEdges.map((edge) => {
-    if (edge.node.Instagram == instagramname) {
-      socialDetails = {
-        "InstagramLink": edge.node.Instagram ? "https://www.instagram.com/" + edge.node.Instagram : null,
-        "FacebookLink": edge.node.Facebook ? "https://www.facebook.com/" + edge.node.Facebook : null,
-        "PinterestLink": edge.node.Pinterest ? "https://www.pinterest.com/" + edge.node.Pinterest : null,
-        "TikTokLink": edge.node.TikTok ? "https://www.tiktok.com/" + edge.node.TikTok : null,
-        "TwitterLink": edge.node.Twitter ? "https://www.twitter.com/" + edge.node.Twitter : null,
-        "YouTubeLink": edge.node.YouTube ? "https://www.youtube.com/c/" + edge.node.YouTube : null
-      }
-      //console.log("+++++++++++++")
-      //console.log(socialDetails)
-      //console.log("+++++++++++++")
-    }
-  })
-
-  let subtitle = (city || "") + " " + (state || "")
-  subtitle += "<div>" + ((firstRowDataView && firstRowDataView.node.AlexaCountry) || "") + "</div>"
-
-
   //Extracting Products from MySQL Data
   const maxProducts = 5;
   const rowShopifyViewEdges = data.allMysqlShopifyView.edges;
-  //filtering top 3 for current instagram id
-  const filteredProductView = _.filter(rowShopifyViewEdges, ({ node }) => node.UserName == instagramname)
-  const listProductEdges = _.slice(filteredProductView,0,maxProducts);
+  //filtering top 3 for current AlexaURL
+  const filteredProductView = _.filter(rowShopifyViewEdges, ({ node }) => node.AlexaURL == AlexaURL)
+  const listProductEdges = _.slice(filteredProductView, 0, maxProducts);
   //console.log("*****++listProductEdges+++********")
   //console.log(listProductEdges)
+
+  const socialDetails = {
+    "InstagramLink": Instagram ? "https://www.instagram.com/" + Instagram : null,
+    "FacebookLink": Facebook ? "https://www.facebook.com/" + Facebook : null,
+    "PinterestLink": Pinterest ? "https://www.pinterest.com/" + Pinterest : null,
+    "TikTokLink": TikTok ? "https://www.tiktok.com/" + TikTok : null,
+    "TwitterLink": Twitter ? "https://www.twitter.com/" + Twitter : null,
+    "YouTubeLink": YouTube ? "https://www.youtube.com/c/" + YouTube : null
+  }
+
+  let subtitle = "<div>" + ((firstRowDataView && firstRowDataView.node.AlexaCountry) || "") + "</div>"
+  let about = Biography
+  let name = FullName
 
   return (
     <Layout>
       <SEO
-        title={`Find ${name} | ${category||''} `}
-        description={`Find ${name} and discover great ${category||''} online stores on emprezzo. ${about}`}
-        banner={image}
-        pathname={url}
+        title={`Find ${name} | ${category || ''} `}
+        description={`Find ${name} and discover great ${category || ''} online stores on emprezzo. ${about}`}
+        pathname={AlexaURL}
       />
-      <Header title={name} children={subtitle} date={date} socialDetails={socialDetails} />
+      <Header title={name} children={subtitle} socialDetails={socialDetails} />
       <Container>
         <div className="profileimage" style={{ display: "flex" }}>
-          {firstRowDataView && firstRowDataView.node.ProfilePicURL &&
-            <img src={firstRowDataView.node.ProfilePicURL} alt={name} className="profileimage" style={{ width: "100px", height: "100px" }} />
+          {ProfilePicURL &&
+            <img src={ProfilePicURL} alt={name} className="profileimage" style={{ width: "100px", height: "100px" }} />
           }
           <div style={{ paddingLeft: "15px" }}>
             <Statistics>
-              {firstRowDataView && (firstRowDataView.node.activity || firstRowDataView.node.FollowerRate || firstRowDataView.node.PostRate) &&
+              {(activity || FollowerRate || PostRate) &&
                 <StatisticItem><a target="_blank" href={firstRowDataView && firstRowDataView.node.ShortCodeURL}></a></StatisticItem>
               }
-              {firstRowDataView && firstRowDataView.node.activity &&
-                <StatisticItem>{(firstRowDataView.node.activity+firstRowDataView.node.FollowerRate+firstRowDataView.node.PostRate).toFixed(1)} <br /><span className="stat_title" title="Social Score">Social Score</span></StatisticItem>
+              {activity &&
+                <StatisticItem>{(activity+FollowerRate+PostRate).toFixed(1)} <br /><span className="stat_title" title="Social Score">Social Score</span></StatisticItem>
               }
-
             </Statistics>
-
-
             <Statistics>
-              {firstRowDataView && (firstRowDataView.node.GlobalRank || firstRowDataView.node.LocalRank || firstRowDataView.node.TOS) &&
+              {(GlobalRank || LocalRank || TOS) &&
                 <StatisticItem></StatisticItem>
               }
-              {firstRowDataView && firstRowDataView.node.GlobalRank &&
-                <StatisticItem>{firstRowDataView.node.GlobalRank.toLocaleString()} <br /><span className="stat_title" title="Social Score">Traffic Rank</span></StatisticItem>
+              {GlobalRank &&
+                <StatisticItem>{GlobalRank.toLocaleString()} <br /><span className="stat_title" title="Social Score">Traffic Rank</span></StatisticItem>
               }
-
             </Statistics>
-
-
           </div>
         </div>
         <TagsBlock list={tagsList || []} />
         <Content input={about} /><br />
 
-        {/*<AtomFeedList list={atomfeed} /><br />*/}
         {/* List of Products from MySQL View */}
         {listProductEdges && listProductEdges.length > 0 && <h3>shop {name}</h3>}
         <ViewContainer>
-          {listProductEdges.map(( {node} ) => {
+          {listProductEdges.map(({ node }) => {
             return (
               <ViewCard key={node.ProductURL}>
                 <a href={node.ProductURL} target="_blank">
                   <ViewImage>
-                  <div style={{  width: '100%', height: '150px;' }}>
-                    <img src={node.ImageURL} style={{  'object-fit': 'cover','height': '150px', width: '100%', 'margin': 'auto'}} alt={node.Title}/>
+                    <div style={{ width: '100%', height: '150px' }}>
+                      <img src={node.ImageURL} style={{ objectFit: 'cover', height: '150px', width: '100%', margin: 'auto' }} alt={node.Title} />
                     </div>
                   </ViewImage>
                 </a>
@@ -215,66 +188,66 @@ const SingleItem = ({ data, pageContext }) => {
               </ViewCard>
             );
           })}
+        </ViewContainer>
+        <br />
+        {/* List of Posts from MySQL View */}
+        {listInstaPostEdges && listInstaPostEdges.length > 0 && <h3>instagram posts</h3>}
+
+        {/* Show carousel for mobile version */}
+        {isMobile &&
+          <Carousel
+            showThumbs={false}
+            infiniteLoop
+            showIndicators={false}
+            selectedItem={1}
+            showArrows={true}
+            showStatus={false}
+          >
+            {listInstaPostEdges && listInstaPostEdges.map(({ node }) => {
+              return (
+                <ViewCard key={node.UniquePhotoLink} style={{ padding: "15px" }}>
+                  <a href={node.ShortCodeURL} target="_blank">
+                    <ViewImage >
+                      {node.mysqlImage &&
+                        <Image fluid={node.mysqlImage.childImageSharp.fluid} alt={node.Caption} style={{ height: '200px', width: '100%', margin: 'auto' }} />
+                      }
+                      {!node.mysqlImage &&
+                        <img src={node.UniquePhotoLink} alt={node.Caption} style={{ objectFit: 'cover', height: '200px', width: '100%', margin: 'auto' }} />
+                      }
+                    </ViewImage>
+                  </a>
+                  <ViewInfo className="info" style={{ color: "white" }}>
+                    {node.Caption && node.Caption.substring(0, 200) + "..."}
+                  </ViewInfo>
+                </ViewCard>
+              );
+            })}
+          </Carousel>
+        }
+
+        {/* Show carousel for mobile version */}
+        {!isMobile &&
+          <ViewContainer>
+            {listInstaPostEdges && listInstaPostEdges.map(({ node }) => {
+              return (
+                <ViewCard key={node.UniquePhotoLink} style={{ padding: "15px" }}>
+                  <a href={node.ShortCodeURL} target="_blank">
+                    <ViewImage >
+                      {node.mysqlImage &&
+                        <Image fluid={node.mysqlImage.childImageSharp.fluid} alt={node.Caption} style={{ height: '200px', width: '100%', margin: 'auto' }} />
+                      }
+                      {!node.mysqlImage &&
+                        <img src={node.UniquePhotoLink} alt={node.Caption} style={{ objectFit: 'cover', height: '200px', width: '100%', margin: 'auto' }} />
+                      }
+                    </ViewImage>
+                  </a>
+                  <ViewInfo className="info" >
+                    {node.Caption && node.Caption.substring(0, 200) + "..."}
+                  </ViewInfo>
+                </ViewCard>
+              );
+            })}
           </ViewContainer>
-          <br />
-          {/* List of Posts from MySQL View */}
-          {listInstaPostEdges && listInstaPostEdges.length > 0 && <h3>instagram posts</h3>}
-
-          {/* Show carousel for mobile version */}
-          {isMobile &&
-            <Carousel
-              showThumbs={false}
-              infiniteLoop
-              showIndicators={false}
-              selectedItem={1}
-              showArrows={true}
-              showStatus={false}
-            >              
-              {listInstaPostEdges && listInstaPostEdges.map(( {node} ) => {
-                return (
-                  <ViewCard key={node.UniquePhotoLink}  style={{padding:"15px"}}>
-                    <a href={node.ShortCodeURL} target="_blank">
-                      <ViewImage >
-                          {node.mysqlImage &&
-                            <Image fluid={node.mysqlImage.childImageSharp.fluid} alt={node.Caption} style={{  'height': '200px', width: '100%', 'margin': 'auto'}}/>
-                          }
-                          {!node.mysqlImage &&
-                            <img src={node.UniquePhotoLink} alt={node.Caption} style={{  'object-fit': 'cover','height': '200px', width: '100%', 'margin': 'auto'}}/>
-                          }
-                      </ViewImage>
-                    </a>
-                    <ViewInfo className="info" style={{color:"white"}}>
-                      {node.Caption && node.Caption.substring(0, 200) + "..."}
-                    </ViewInfo>
-                  </ViewCard>
-                );
-              })}
-            </Carousel>
-          }
-
-          {/* Show carousel for mobile version */}
-          {!isMobile &&
-            <ViewContainer>
-              {listInstaPostEdges && listInstaPostEdges.map(( {node} ) => {
-                return (
-                  <ViewCard key={node.UniquePhotoLink}  style={{padding:"15px"}}>
-                    <a href={node.ShortCodeURL} target="_blank">
-                      <ViewImage >
-                          {node.mysqlImage &&
-                            <Image fluid={node.mysqlImage.childImageSharp.fluid} alt={node.Caption} style={{  'height': '200px', width: '100%', 'margin': 'auto'}}/>
-                          }
-                          {!node.mysqlImage &&
-                            <img src={node.UniquePhotoLink} alt={node.Caption} style={{  'object-fit': 'cover','height': '200px', width: '100%', 'margin': 'auto'}}/>
-                          }
-                      </ViewImage>
-                    </a>
-                    <ViewInfo className="info" >
-                      {node.Caption && node.Caption.substring(0, 200) + "..."}
-                    </ViewInfo>
-                  </ViewCard>
-                );
-              })}
-           </ViewContainer>
         }
         <br />
         <a href="/randomshop" className="button ">Discover another shop</a>
@@ -304,10 +277,35 @@ export default SingleItem;
 
 export const query = graphql`
   query($pathSlug: String!) {
-    allMysqlDataView {
+    mysqlMainView (AlexaURL: {eq: $pathSlug}) {
+      AlexaURL
+      Facebook
+      FollowerRate
+      GlobalRank
+      Instagram
+      LocalRank
+      Pinterest
+      PostRate
+      ProfilePicURL
+      TOS
+      TikTok
+      Twitter
+      UserID
+      UserName
+      YouTube
+      activity
+      category
+      tags
+      FullName
+      Biography
+    }
+    allMysqlDataView  (filter: {AlexaURL: {eq: $pathSlug}}) {
       edges {
         node {
+          AlexaURL
           UserName
+          FullName
+          Biography
           PostDate
           AlexaCountry
           UniquePhotoLink
@@ -333,48 +331,16 @@ export const query = graphql`
         }
       }
     }
-    allMysqlShopifyView {
+    allMysqlShopifyView (filter: {AlexaURL: {eq: $pathSlug}}) {
       edges {
         node {
+          AlexaURL
           UserName
           Title
           ProductURL
           Description
           ImageURL
           Price
-        }
-      }
-    }
-    allMysqlSocialIDs {
-      edges {
-        node {
-          Instagram
-          Facebook
-          Pinterest
-          TikTok
-          Twitter
-          URL
-          YouTube
-        }
-      }
-    }
-    googleSheetListRow(slug: {eq: $pathSlug}) {
-      name
-      url
-      slug
-      category
-      tags
-      about
-      instagramname
-      alexarank
-      alexatimeonsite
-      state
-      city
-      fields {
-        atomfeed {
-          guid
-          title
-          link
         }
       }
     }

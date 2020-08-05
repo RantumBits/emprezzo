@@ -18,7 +18,7 @@ export default connectHits(function HitComp({ type, hits, onClick }) {
   //console.log(hits)
   //adding the excertp of 140 characters to all the hits
   hits.map(hit => {
-      if(hit._highlightResult.about){
+      if(hit._highlightResult.about && hit._highlightResult.about.value){
         let text = hit._highlightResult.about.value;
         //remove the highlighting
         text = text.replace("<ais-highlight-0000000000>","");
@@ -31,7 +31,7 @@ export default connectHits(function HitComp({ type, hits, onClick }) {
   })
 
   return hits.map(hit => (
-    <div key={hit.objectID}>
+    <div key={hit.slug}>
       <Link to={`/shops/` + hit.slug} onClick={onClick}>
         <h4>
           <Highlight attribute="title" hit={hit} tagName="mark" />

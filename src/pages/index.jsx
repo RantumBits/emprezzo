@@ -45,7 +45,7 @@ const ShopWrapper = styled.div`
 `;
 
 const Index = ({ data }) => {
-  const { edges } = data.allGoogleSheetListRow;
+  const { edges } = data.allMysqlMainView;
   const maxItems = 9;
   const [limit, setLimit] = React.useState(maxItems);
   const [showMore, setShowMore] = React.useState(true);
@@ -63,21 +63,15 @@ const Index = ({ data }) => {
 
   //Creating a new dataset with original nodes and required columns from DataView
   edges.map((edge) => {
-    const inputInstaID = edge.node.instagramname;
-    //filter to only show shops with AlexaURLs in DataView
-    var resultData = _.filter(rowDataViewEdges, ({ node }) => (node.UserName == inputInstaID && node.AlexaURL != null))
-    var firstDataRow = null;
-    if (resultData.length > 0) {
-      firstDataRow = resultData[0]
       let newNode = {
-        name: edge.node.name,
-        slug: edge.node.slug,
-        about: edge.node.about,
-        instagramname: edge.node.instagramname,
-        ...firstDataRow.node
+        name: edge.node.FullName,
+        slug: edge.node.UserName,
+        about: edge.node.Biography,
+        instagramname: edge.node.UserName,
+        ...edge.node
       }
       combinedEdges.push(newNode);
-    }
+
   })
 
   //Now sorting (desc) based on activity
@@ -90,11 +84,11 @@ const Index = ({ data }) => {
     <Layout title={'emprezzo | Discover & Shop Independent Online Stores'} description="Discover great independent online stores. Shop directly and support great businesses. Find apparel, toys, food, and more on emprezzo." >
       <Header title="Discover & Shop Independent Online Stores"></Header>
 
-      {/* <p class="center"><a href ="/randomshop" class="button button">Discover a  shop</a></p> */}
-      <div class="center">
+      {/* <p className="center"><a href ="/randomshop" className="button button">Discover a  shop</a></p> */}
+      <div className="center">
         🧐 Discover direct-to-consumer stores<br />🛒 Shop & support independent businesseses
       </div>
-      <div class="search_main">
+      <div className="search_main">
         <Search collapse homepage indices={searchIndices} />
       </div>
 
@@ -136,54 +130,9 @@ const Index = ({ data }) => {
 
 export default Index;
 
-Index.propTypes = {
-  data: PropTypes.shape({
-    allMarkdownRemark: PropTypes.shape({
-      edges: PropTypes.arrayOf(
-        PropTypes.shape({
-          node: PropTypes.shape({
-            excerpt: PropTypes.string,
-            frontmatter: PropTypes.shape({
-              cover: PropTypes.object.isRequired,
-              path: PropTypes.string.isRequired,
-              title: PropTypes.string.isRequired,
-              date: PropTypes.string.isRequired,
-              tags: PropTypes.array,
-            }),
-          }),
-        }).isRequired
-      ),
-    }),
-  }),
-};
 
 export const query = graphql`
   query {
-    allMarkdownRemark(
-      limit: 9
-      sort: { order: ASC, fields: [frontmatter___date] }
-    ) {
-      edges {
-        node {
-          id
-          excerpt(pruneLength: 75)
-          frontmatter {
-            title
-            path
-            tags
-            date(formatString: "MM.DD.YYYY")
-            cover {
-              childImageSharp {
-                fluid (srcSetBreakpoints: [200, 400]) {
-                  ...GatsbyImageSharpFluid
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-
     allMysqlDataView {
       edges {
         node {
@@ -208,18 +157,29 @@ export const query = graphql`
       }
     }
 
-    allGoogleSheetListRow {
+    allMysqlMainView {
       edges {
         node {
-          name
-          url
-          slug
+          AlexaURL
+          Facebook
+          FollowerRate
+          GlobalRank
+          Instagram
+          LocalRank
+          Pinterest
+          PostRate
+          ProfilePicURL
+          TOS
+          TikTok
+          Twitter
+          UserID
+          UserName
+          YouTube
+          activity
           category
           tags
-          about
-          state
-          city
-          instagramname
+          FullName
+          Biography
         }
       }
     }

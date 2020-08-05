@@ -105,74 +105,20 @@ const SearchWrapper = styled.div`
 
 const NavBar = () => {
 
-  const { allGoogleSheetListRow } = useStaticQuery(
-    graphql`
-      query {
-        allGoogleSheetListRow {
-          edges {
-            node {
-              category
-            }
-          }
-        }
-      }
-    `
-  )
-
-  // extracting unique categories from the page
-  let uniqueCategories = []
-  allGoogleSheetListRow.edges.forEach(({ node }) => {
-    if (node.category) {
-      const categoryList = node.category.split(',')
-      categoryList.forEach(category => {
-        if (uniqueCategories.indexOf(category) === -1) {
-          uniqueCategories.push(category)
-        }
-      });
-    }
-  });
-
-  let uniqueCategoriesMap = []
-  uniqueCategories.forEach(cat => {
-    let item = {
-      text: cat,
-      url: cat.replace(/([a-z])([A-Z])/g, '$1-$2').replace(/\s+/g, '-').toLowerCase()
-    }
-    uniqueCategoriesMap.push(item)
-  })
-  console.log(uniqueCategoriesMap);
-
   return (
     <Headroom calcHeightOnResize disableInlineStyles>
       <StyledLink to="/">
-        <img src={logo} class="logo" title="emprezzo - discover & shop indepdent retailers & brands" alt="emprezzo - discover & shop indepdent retailers & brands" />
+        <img src={logo} className="logo" title="emprezzo - discover & shop indepdent retailers & brands" alt="emprezzo - discover & shop indepdent retailers & brands" />
       </StyledLink>
       <NavWrapper>
         <Nav>
         <div className="dropdown">
           <Link to="/shops">Discover </Link>
           <div className="dropdown-content">
-
-
-
               <Link key="shopify" to="/top-shopify-stores">Top Shopify Stores</Link>
               <Link key="amazon-altenatives" to="/amazon-alternatives">Amazon Alternatives</Link>
-
           </div>
-        </div>
-        {/*
-          <div className="dropdown">
-            <Link to="/shops">Discover </Link>
-            <div className="dropdown-content">
-
-              {uniqueCategoriesMap.map((item) => (
-
-                <Link key={item.url} to={`/category/${item.url}`} > {item.text}</Link>
-              ))}
-            </div>
-          </div>
-          */}
-
+        </div>    
           <SearchWrapper>
             <Search collapse indices={searchIndices} variation={"light"} />
           </SearchWrapper>

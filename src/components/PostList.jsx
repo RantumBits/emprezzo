@@ -108,8 +108,10 @@ const Title = styled.h2`
 const PostList = ({ id, cover, path, date, title, excerpt, mysqldataview, instagramname }) => {
 
   //console.log("*********************************************")
+  //console.log("title = "+title)
   //console.log("*********** instagramname="+instagramname)
   cover=null; //this is to not show any image is data is not found in mysql
+  let firstPostRow = null;
   if(instagramname && mysqldataview) {
     //Extracting Image from First post of MySQL Data
     const maxPosts = 1;
@@ -119,10 +121,13 @@ const PostList = ({ id, cover, path, date, title, excerpt, mysqldataview, instag
             listPostEdges.push(edge);
         }
     })
-    if(listPostEdges && listPostEdges.length>0 && listPostEdges[0].node.UniquePhotoLink){
-      cover = listPostEdges[0].node.UniquePhotoLink
-      //console.log("******** cover = "+cover)
+    if(listPostEdges && listPostEdges.length>0){
+        firstPostRow = listPostEdges[0];
     }
+    cover = firstPostRow && firstPostRow.node.UniquePhotoLink ? firstPostRow.node.UniquePhotoLink : null;
+    title = title || (firstPostRow && firstPostRow.node.FullName)
+    excerpt = excerpt || (firstPostRow && firstPostRow.node.Biography)
+    excerpt = excerpt?excerpt.substring(0,40)+"...":""
   }
 
   return (
@@ -147,11 +152,3 @@ const PostList = ({ id, cover, path, date, title, excerpt, mysqldataview, instag
 }
 
 export default PostList;
-
-PostList.propTypes = {
-  cover: PropTypes.object.isRequired,
-  path: PropTypes.string.isRequired,
-  excerpt: PropTypes.string,
-  date: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-};

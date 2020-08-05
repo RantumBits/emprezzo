@@ -23,7 +23,7 @@ const ShopsWrapper = styled.div`
 `;
 
 const AmazonAlternatives = ({ data }) => {
-  const { edges } = data.allGoogleSheetListRow;
+  const { edges } = data.allMysqlMainView;
   const maxItems = 12;
   const [limit, setLimit] = React.useState(maxItems);
   const [showMore, setShowMore] = React.useState(true);
@@ -37,15 +37,15 @@ const AmazonAlternatives = ({ data }) => {
 
   //Creating a new dataset with original nodes and required columns from DataView
   edges.map((edge) => {
-    const inputInstaID = edge.node.instagramname;
+    const inputID = edge.node.AlexaURL;
     //filter to show only shops with DataView . AlexaCountry = United States
-    var resultData = _.filter(rowDataViewEdges, ({ node }) => (node.UserName == inputInstaID && node.AlexaCountry == "United States"))
+    var resultData = _.filter(rowDataViewEdges, ({ node }) => (node.AlexaURL == inputID && node.AlexaCountry == "United States"))
     var firstDataRow = null;
     if (resultData.length > 0) {
       firstDataRow = resultData[0]
       let newNode = {
-        name: edge.node.name,
-        slug: edge.node.slug,
+        name: edge.node.FullName,
+        slug: edge.node.UserName,
         ...firstDataRow.node
       }
       combinedEdges.push(newNode);
@@ -63,7 +63,7 @@ const AmazonAlternatives = ({ data }) => {
       <Header title="🧐 Discover great Amazon alternatives for online shopping" subtitle=""></Header>
 
       <ShopsWrapper>
-        <div class="intro_text">
+        <div className="intro_text">
           <h3>Browse shopping alternatives to Amazon</h3>
           <p>Independent online shops offer great amazon alternatives for shopping directly</p>
         </div>
@@ -85,7 +85,7 @@ const AmazonAlternatives = ({ data }) => {
                 <td>
                   {node.ProfilePicURL &&
                     <Link to={`/shops/${node.slug}`}>
-                      <img src={node.ProfilePicURL} class="profileimage" style={{ width: "50px", margin: '0px' }} title={node.name + 'is on Shopify'} alt={node.name + 'is on Shopify'} />
+                      <img src={node.ProfilePicURL} className="profileimage" style={{ width: "50px", margin: '0px' }} title={node.name + 'is on Shopify'} alt={node.name + 'is on Shopify'} />
                     </Link>
                   }
                 </td>
@@ -109,7 +109,7 @@ const AmazonAlternatives = ({ data }) => {
         </div>
       }
       <ShopsWrapper>
-        <div class="intro_text">
+        <div className="intro_text">
           <h3>Discover the best Amazon marketplace alternatives for shoppping online</h3>
           <p>Find some of the best anti-amazon shops and avoid the hassle of looking for amazon customer service.</p><p>Search for great Amazon shopping alternatives in header or <a href="/randomshop">discover a shop</a>.</p>
           <h3>What makes a great alternative to the Amazon marketplace?</h3>
@@ -128,14 +128,12 @@ export default AmazonAlternatives;
 
 export const query = graphql`
   query {
-    allGoogleSheetListRow {
+    allMysqlMainView {
       edges {
         node {
-          name
-          url
-          slug
-          about
-          instagramname
+          AlexaURL
+          UserName
+          FullName
         }
       }
     }
@@ -143,8 +141,10 @@ export const query = graphql`
       edges {
         node {
           UserName
+          FullName
           PostDate
           AlexaCountry
+          AlexaURL
           UniquePhotoLink
           PostsCount
           FollowersCount

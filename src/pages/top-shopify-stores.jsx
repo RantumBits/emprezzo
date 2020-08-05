@@ -23,7 +23,7 @@ const ShopsWrapper = styled.div`
 `;
 
 const TopShopifyStores = ({ data }) => {
-  const { edges } = data.allGoogleSheetListRow;
+  const { edges } = data.allMysqlMainView;
   const maxItems = 12;
   const [limit, setLimit] = React.useState(maxItems);
   const [showMore, setShowMore] = React.useState(true);
@@ -32,23 +32,16 @@ const TopShopifyStores = ({ data }) => {
     setLimit(limit + maxItems);
   }
 
-  const rowRankViewEdges = data.allMysqlRankView.edges;
   const combinedEdges = [];
 
   //Creating a new dataset with original nodes and required columns from DataView
   edges.map((edge) => {
-    const inputInstaID = edge.node.instagramname;
-    var resultRankView = _.filter(rowRankViewEdges, ({ node }) => node.UserName == inputInstaID)
-    if (resultRankView.length > 0) {
-      //now finding corresponding data from RankView
-      let newNode = {
-        name: edge.node.name,
-        slug: edge.node.slug,
-        about: edge.node.about,
-        ...resultRankView[0].node
-      }
-      combinedEdges.push(newNode);
+    let newNode = {
+      name: edge.node.FullName,
+      slug: edge.node.UserName,
+      ...edge.node,
     }
+    combinedEdges.push(newNode);
   })
 
   //Now sorting (desc) based on activity
@@ -62,7 +55,7 @@ const TopShopifyStores = ({ data }) => {
       <Header title="🧐 Discover top Shopify stores" subtitle=""></Header>
 
       <ShopsWrapper>
-        <div class="intro_text">
+        <div className="intro_text">
           <h3>Browse top Shopify stores</h3>
           <p>Discover top Shopify sellers based upon organic search traffic and social media activity.</p>
         </div>
@@ -85,7 +78,7 @@ const TopShopifyStores = ({ data }) => {
                 <td>
                   {node.ProfilePicURL &&
                     <Link to={`/shops/${node.slug}`}>
-                      <img src={node.ProfilePicURL} class="profileimage" style={{ width: "50px", margin: '0px' }} title={node.name + ' is on Shopify'} alt={node.name + ' is on Shopify'} />
+                      <img src={node.ProfilePicURL} className="profileimage" style={{ width: "50px", margin: '0px' }} title={node.name + ' is on Shopify'} alt={node.name + ' is on Shopify'} />
                     </Link>
                   }
                 </td>
@@ -110,7 +103,7 @@ const TopShopifyStores = ({ data }) => {
         </div>
       }
       <ShopsWrapper>
-        <div class="intro_text">
+        <div className="intro_text">
           <h3>Discover top Shopify stores of 2020</h3>
           <p>Find the top Shopify stores by traffic & social media activity. See some of the best Shopify store examples.</p><p>Search in header for more Shopify stores or <a href="/randomshop">discover a shop</a></p>
           <h3>How is the list of top Shopify stores ranked?</h3>
@@ -131,29 +124,28 @@ export default TopShopifyStores;
 
 export const query = graphql`
   query {
-    allGoogleSheetListRow {
+    allMysqlMainView {
       edges {
         node {
-          name
-          url
-          slug
-          about
-          instagramname
-        }
-      }
-    }
-    allMysqlRankView {
-      edges {
-        node {
-          UserName
-          AlexaURL
-          GlobalRank
-          LocalRank
-          TOS
-          ProfilePicURL
-          FollowerRate
-          PostRate
-          activity
+            AlexaURL
+            Facebook
+            FollowerRate
+            GlobalRank
+            Instagram
+            LocalRank
+            Pinterest
+            PostRate
+            ProfilePicURL
+            TOS
+            TikTok
+            Twitter
+            UserID
+            UserName
+            YouTube
+            activity
+            category
+            tags
+            FullName
         }
       }
     }

@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import { Header } from 'components';
-import PostList from '../components/PostList';
+import PostList5Col from '../components/PostList5Col';
 import ProductList from '../components/ProductList';
 import { Layout } from 'layouts';
 import _ from 'lodash';
@@ -31,16 +31,16 @@ const CategoryWrapper = styled.div`
 const Products = ({ data, pageContext }) => {
   const { category } = pageContext;
   const categoryHeading = category + " Shops";
-  const categoryGroup = data.allGoogleSheetListRow.group;
-  console.log(categoryGroup)
+  const categoryGroup = data.allMysqlMainView.group;
+  //console.log(categoryGroup)
 
   const rowProductsEdges = data.allMysqlProducts.edges;
 
   const checkEdgesInProductView = (allEdges) => {
     const filteredProducts = [];
     allEdges.map((edge)=>{
-      const inputInstaID = edge.node.instagramname;
-      let result = _.filter(rowProductsEdges, ({ node }) => node.UserName == inputInstaID)
+      const inputID = edge.node.UserName;
+      let result = _.filter(rowProductsEdges, ({ node }) => node.UserName == inputID)
       //console.log(result)
       if(result.length>0) filteredProducts.push(result[0]);
     });
@@ -63,7 +63,7 @@ const Products = ({ data, pageContext }) => {
     let path = node.VendorURL; // if there is no shop with instagram id then path will be vendor URL
     //checking if the shop exists corresponding to this instagram id
     const inputInstaID = node.UserName;
-    var result = _.filter(rowProductsEdges, ({ node }) => node.instagramname == inputInstaID)
+    var result = _.filter(rowProductsEdges, ({ node }) => node.UserName == inputInstaID)
     if (result.length > 0) path = "/shops/" + result[0].node.slug;
     return path;
   }
@@ -73,15 +73,20 @@ const Products = ({ data, pageContext }) => {
       <Header title="Top Shopify Products" />
         {categoryGroup.map((category, index) => {
           const allEdges = category.edges;
+          //console.log(allEdges)
+          //console.log("****** filtered")
           const filteredProducts = checkEdgesInProductView(allEdges)
+          //console.log(filteredProducts)
+          //console.log("******* top 5")
           const listEdges = _.slice(filteredProducts,0,5)
+          //console.log(listEdges)
           return (
             <div key={index}>
-              {listEdges.length>0 &&
+              {listEdges.length>0 && category.fieldValue &&
                 <CategoryHeading>{category.fieldValue}</CategoryHeading>
               }
               <CategoryWrapper>
-                {listEdges.map(({ node }) => (
+                {category.fieldValue && listEdges.map(({ node }) => (
                   <ProductList
                     key={getProductImage(node)}
                     cover={getProductImage(node)}
@@ -119,20 +124,13 @@ export const query = graphql`
         }
       }
     }
-    allGoogleSheetListRow {
+    allMysqlMainView {
       group(field: category) {
         fieldValue
         edges {
           node {
-            name
-            slug
-            url
-            category
-            tags
-            about
-            state
-            city
-            instagramname
+            AlexaURL
+            UserName
           }
         }
       }

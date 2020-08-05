@@ -1,13 +1,12 @@
 const shopQuery = `{
-  shops: allGoogleSheetListRow {
+  shops: allMysqlMainView {
     edges {
       node {
-        objectID: slug
-        title: name
-        slug
-        date
+        objectID: UserName
+        title: FullName
+        slug: UserName
         tags
-        about
+        about: Biography
       }
     }
   }

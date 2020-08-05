@@ -22,7 +22,7 @@ const ShopsWrapper = styled.div`
 `;
 
 const Entries = ({ data }) => {
-  const { edges } = data.allGoogleSheetListRow;
+  const { edges } = data.allMysqlMainView;
   const listEdges = [];
   const maxItems = 12;
   const [limit, setLimit] = React.useState(maxItems);
@@ -42,7 +42,7 @@ const Entries = ({ data }) => {
   return (
     <Layout>
       <Helmet title={'Store Rankings | Discover the best ecommerce stores'} />
-      <Header title="🧐 Discover direct-to-consumer stores"><span class="Header--Subtitle"></span></Header>
+      <Header title="🧐 Discover direct-to-consumer stores"><span className="Header--Subtitle"></span></Header>
 
       <ShopsWrapper>
 
@@ -58,16 +58,15 @@ const Entries = ({ data }) => {
           </thead>
           <tbody>
             {listEdges.map(({ node }) => (
-              <tr key={node.name}>
+              <tr key={node.UserName}>
                 <td>
-                  {node.imageurl &&
-                    <Link to={`/shops/${node.slug}`}>
-                      <img src={node.imageurl} class="profileimage" style={{ width: "50px" }} title={node.name}/>
-
+                  {node.ProfilePicURL &&
+                    <Link to={`/shops/${node.UserName}`}>
+                      <img src={node.ProfilePicURL} className="profileimage" style={{ width: "50px" }} title={node.FullName}/>
                     </Link>
                   }
                 </td>
-                  <td><Link to={`/shops/${node.slug}`}>{node.name}</Link></td>
+                  <td><Link to={`/shops/${node.UserName}`}>{node.FullName}</Link></td>
               </tr>
             ))}
           </tbody>
@@ -88,12 +87,14 @@ export default Entries;
 
 export const query = graphql`
   query {
-    allGoogleSheetListRow {
+    allMysqlMainView {
       edges {
         node {
-          name
-          url
-          slug
+          AlexaURL
+          UserName
+          FullName
+          Biography
+          ProfilePicURL
         }
       }
     }

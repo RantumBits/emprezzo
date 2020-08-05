@@ -22,7 +22,7 @@ const ShopsWrapper = styled.div`
 `;
 
 const Shops = ({ data }) => {
-  const { edges } = data.allGoogleSheetListRow;
+  const { edges } = data.allMysqlMainView;
   const listEdges = [];
   const maxItems = 12;
   const [limit, setLimit] = React.useState(maxItems);
@@ -31,6 +31,8 @@ const Shops = ({ data }) => {
   const increaseLimit = () => {
       setLimit(limit + maxItems);
   }
+
+  const rowDataViewEdges = data.allMysqlDataView.edges;
 
   //filtering items as per limit
   edges.map((edge) => {
@@ -47,19 +49,20 @@ const Shops = ({ data }) => {
       <ShopsWrapper>
         {listEdges.map(({ node }) => (
           <PostList
-              key={node.name}
-              cover={node.localImageUrl && node.localImageUrl.childImageSharp.fluid}
-              path={`/shops/${node.slug}`}
-              title={node.name}
-              excerpt={node.about && node.about.substring(0,40)+"..."}
+              key={node.UsreName}
+              path={`/shops/${node.UserName}`}
+              title={node.FullName}
+              excerpt={node.Biography && node.Biography.substring(0,40)+"..."}
+              mysqldataview={rowDataViewEdges}
+              instagramname={node.UserName}
             />
         ))}
       </ShopsWrapper>
       {showMore && listEdges.length > 0 && listEdges.length < edges.length &&
         <div className="center">
-            <a className="button" onClick={increaseLimit} style={{cursor: "pointer"}}>
-                Load More
-            </a>
+            <button className="button" onClick={increaseLimit}>
+              Load More
+            </button>
         </div>
       }
     </Layout>
@@ -70,17 +73,25 @@ export default Shops;
 
 export const query = graphql`
   query {
-    allGoogleSheetListRow {
+    allMysqlMainView {
       edges {
         node {
-          name
-          url
-          slug
-          category
-          tags
-          about
-          state
-          city
+          AlexaURL
+          UserName
+          FullName
+          Biography
+        }
+      }
+    }
+    allMysqlDataView {
+      edges {
+        node {
+          UserName
+          FullName
+          UniquePhotoLink
+          ProfilePicURL
+          Caption
+          ShortCodeURL
         }
       }
     }

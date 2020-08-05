@@ -37,14 +37,6 @@ module.exports = {
       },
     },
     {
-    resolve: 'gatsby-source-google-sheets',
-    options: {
-        spreadsheetId: '1zQ3Uu8lS6HaEGBdG_V1FiEyyjTTemR0G_ri2330BVsU',
-        worksheetTitle: 'list',
-        credentials: require(`${__dirname}/client_secret.json`,)
-    }
-    },
-    {
       resolve: `gatsby-source-mysql`,
       options: {
         connectionDetails: {
@@ -62,13 +54,13 @@ module.exports = {
             ,remoteImageFieldNames: ['UniquePhotoLink']
           },
           {
-            statement: 'SELECT * FROM ShopifyView WHERE UserName IS NOT NULL',
+            statement: 'SELECT * FROM ShopifyView WHERE AlexaURL IS NOT NULL',
             idFieldName: 'ProductURL',
             name: 'ShopifyView'
           },
           {
-              statement: 'SELECT * FROM SocialIDs WHERE Instagram IS NOT NULL',
-              idFieldName: 'Instagram',
+              statement: 'SELECT * FROM SocialIDs WHERE URL IS NOT NULL',
+              idFieldName: 'URL',
               name: 'SocialIDs'
           },
           {
@@ -77,19 +69,34 @@ module.exports = {
             name: 'Products'
           },
           {
-            statement: 'SELECT * FROM RankView WHERE UserName IS NOT NULL',
-            idFieldName: 'UserName',
+            statement: 'SELECT * FROM RankView WHERE AlexaURL IS NOT NULL',
+            idFieldName: 'AlexaURL',
             name: 'RankView'
           },
           {
-            statement: 'SELECT * FROM RankView_Paypal WHERE UserName IS NOT NULL',
-            idFieldName: 'UserName',
+            statement: 'SELECT * FROM RankView_Paypal WHERE AlexaURL IS NOT NULL',
+            idFieldName: 'AlexaURL',
             name: 'RankViewPaypal'
           },
           {
-            statement: 'SELECT * FROM RankView_PayLater WHERE UserName IS NOT NULL',
-            idFieldName: 'UserName',
+            statement: 'SELECT * FROM RankView_PayLater WHERE AlexaURL IS NOT NULL',
+            idFieldName: 'AlexaURL',
             name: 'RankViewPayLater'
+          },
+          {
+            statement: 'SELECT * FROM RankView_Pages WHERE AlexaURL IS NOT NULL',
+            idFieldName: 'AlexaURL',
+            name: 'RankViewPages'
+          },
+          {
+            statement: 'SELECT * FROM Tags WHERE url IS NOT NULL',
+            idFieldName: 'url',
+            name: 'Tags'
+          },
+          {
+            statement: 'SELECT RankView_Pages.*, Tags.*, SocialIDs.* FROM RankView_Pages LEFT JOIN Tags ON RankView_Pages.AlexaURL = Tags.url LEFT JOIN SocialIDs ON RankView_Pages.AlexaURL = SocialIDs.URL',
+            idFieldName: 'AlexaURL',
+            name: 'MainView'
           }
         ]
       }
