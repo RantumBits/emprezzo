@@ -23,7 +23,7 @@ const RandomShop = ({ data }) => {
   //console.log("Generated Random Number = "+randomnumber);
   const edge = combinedEdges[randomnumber-1] ? combinedEdges[randomnumber-1] : combinedEdges[0];
   //console.log(edge)
-  const randomshopurl = "/shops/"+edge.node.slug;
+  const randomshopurl = "/shops/"+edge.node.UserName;
   console.log("Random URL = "+randomshopurl);
   navigate(randomshopurl);
 
