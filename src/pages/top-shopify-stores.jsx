@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { Header, BlogList } from 'components';
 import { Layout } from 'layouts';
 import _ from 'lodash';
+import { useMediaQuery } from 'react-responsive'
 
 const ShopsWrapper = styled.div`
   display: flex;
@@ -27,6 +28,8 @@ const TopShopifyStores = ({ data }) => {
   const maxItems = 12;
   const [limit, setLimit] = React.useState(maxItems);
   const [showMore, setShowMore] = React.useState(true);
+
+  const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
 
   const increaseLimit = () => {
     setLimit(limit + maxItems);
@@ -63,13 +66,16 @@ const TopShopifyStores = ({ data }) => {
           <thead>
             <tr>
               <th>Store</th>
-
               <th></th>
+              {!isMobile &&
+              <>
               <th>GlobalRank</th>
               <th>TOS</th>
               <th>FollowerRate</th>
               <th>PostRate</th>
-              <th>Activity</th>
+              </>
+}
+              <th>Activity</th>                
             </tr>
           </thead>
           <tbody>
@@ -83,11 +89,14 @@ const TopShopifyStores = ({ data }) => {
                   }
                 </td>
                 <td><Link to={`/shops/${node.slug}`} title={node.about}>{node.name}</Link></td>
-
+                {!isMobile &&
+                <>
                 <td>{node.GlobalRank}</td>
                 <td>{node.TOS}</td>
                 <td>{node.FollowerRate}</td>
                 <td>{node.PostRate}</td>
+                </>
+                }
                 <td>{node.activity}</td>
               </tr>
             ))}

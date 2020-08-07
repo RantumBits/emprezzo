@@ -87,190 +87,201 @@ const ViewInfo = styled.div`
 `;
 
 const SingleItem = ({ data, pageContext }) => {
-  const { next, prev } = pageContext;
-  const { AlexaURL, Facebook, FollowerRate, GlobalRank, Instagram, LocalRank, Pinterest, PostRate, ProfilePicURL, TOS, TikTok, Twitter, UserID, UserName, YouTube, activity, category, tags, FullName, Biography } = data.mysqlMainView;
+    const { next, prev } = pageContext;
+    const { AlexaURL, Facebook, FollowerRate, GlobalRank, Instagram, LocalRank, Pinterest, PostRate, ProfilePicURL, TOS, TikTok, Twitter, UserID, UserName, YouTube, activity, category, tags, FullName, Biography } = data.mysqlMainView;
 
-  const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
-  //console.log("****** isMobile = " + isMobile)
+    const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
+    //console.log("****** isMobile = " + isMobile)
 
-  //converting comma seperated tags to tags map
-  const tagsList = tags ? tags.split(',') : [];
+    //converting comma seperated tags to tags map
+    const tagsList = tags ? tags.split(',') : [];
 
-  //Extracting Posts from MySQL Data
-  const maxPosts = 3;
-  const rowDataViewEdges = data.allMysqlDataView.edges;
-  //filtering top 3 for current instagram id
-  const filteredDataView = _.filter(rowDataViewEdges, ({ node }) => node.AlexaURL == AlexaURL)
-  const listPostEdges = _.slice(filteredDataView, 0, maxPosts);
-  const firstRowDataView = listPostEdges && listPostEdges.length ? listPostEdges[0] : null;
-  //Now filtering instagram posts if the image or caption is not present
-  const listInstaPostEdges = _.filter(listPostEdges, ({ node }) => (node.UniquePhotoLink))
-  //console.log("*****++listInstaPostEdges+++********")
-  //console.log(listInstaPostEdges)
+    //Extracting Posts from MySQL Data
+    const maxPosts = 3;
+    const rowDataViewEdges = data.allMysqlDataView.edges;
+    //filtering top 3 for current instagram id
+    const filteredDataView = _.filter(rowDataViewEdges, ({ node }) => node.AlexaURL == AlexaURL)
+    const listPostEdges = _.slice(filteredDataView, 0, maxPosts);
+    const firstRowDataView = listPostEdges && listPostEdges.length ? listPostEdges[0] : null;
+    //Now filtering instagram posts if the image or caption is not present
+    const listInstaPostEdges = _.filter(listPostEdges, ({ node }) => (node.UniquePhotoLink))
+    //console.log("*****++listInstaPostEdges+++********")
+    //console.log(listInstaPostEdges)
 
-  //Extracting Products from MySQL Data
-  const maxProducts = 5;
-  const rowShopifyViewEdges = data.allMysqlShopifyView.edges;
-  //filtering top 3 for current AlexaURL
-  const filteredProductView = _.filter(rowShopifyViewEdges, ({ node }) => node.AlexaURL == AlexaURL)
-  const listProductEdges = _.slice(filteredProductView, 0, maxProducts);
-  //console.log("*****++listProductEdges+++********")
-  //console.log(listProductEdges)
+    //Extracting Products from MySQL Data
+    const maxProducts = 5;
+    const rowShopifyViewEdges = data.allMysqlShopifyView.edges;
+    //filtering top 3 for current AlexaURL
+    const filteredProductView = _.filter(rowShopifyViewEdges, ({ node }) => node.AlexaURL == AlexaURL)
+    const listProductEdges = _.slice(filteredProductView, 0, maxProducts);
+    //console.log("*****++listProductEdges+++********")
+    //console.log(listProductEdges)
 
-  const socialDetails = {
-    "InstagramLink": Instagram ? "https://www.instagram.com/" + Instagram : null,
-    "FacebookLink": Facebook ? "https://www.facebook.com/" + Facebook : null,
-    "PinterestLink": Pinterest ? "https://www.pinterest.com/" + Pinterest : null,
-    "TikTokLink": TikTok ? "https://www.tiktok.com/" + TikTok : null,
-    "TwitterLink": Twitter ? "https://www.twitter.com/" + Twitter : null,
-    "YouTubeLink": YouTube ? "https://www.youtube.com/c/" + YouTube : null
-  }
+    const socialDetails = {
+        "InstagramLink": Instagram ? "https://www.instagram.com/" + Instagram : null,
+        "FacebookLink": Facebook ? "https://www.facebook.com/" + Facebook : null,
+        "PinterestLink": Pinterest ? "https://www.pinterest.com/" + Pinterest : null,
+        "TikTokLink": TikTok ? "https://www.tiktok.com/" + TikTok : null,
+        "TwitterLink": Twitter ? "https://www.twitter.com/" + Twitter : null,
+        "YouTubeLink": YouTube ? "https://www.youtube.com/c/" + YouTube : null
+    }
 
-  let subtitle = "<div>" + ((firstRowDataView && firstRowDataView.node.AlexaCountry) || "") + "</div>"
-  let about = Biography
-  let name = FullName
+    let subtitle = "<div>" + ((firstRowDataView && firstRowDataView.node.AlexaCountry) || "") + "</div>"
+    let about = Biography
+    let name = FullName
 
-  return (
-    <Layout>
-      <SEO
-        title={`Find ${name} | ${category || ''} `}
-        description={`Find ${name} and discover great ${category || ''} online stores on emprezzo. ${about}`}
-        pathname={AlexaURL}
-      />
-      <Header title={name} children={subtitle} socialDetails={socialDetails} />
-      <Container>
-        <div className="profileimage" style={{ display: "flex" }}>
-          {ProfilePicURL &&
-            <img src={ProfilePicURL} alt={name} className="profileimage" style={{ width: "100px", height: "100px" }} />
-          }
-          <div style={{ paddingLeft: "15px" }}>
-            <Statistics>
-              {(activity || FollowerRate || PostRate) &&
-                <StatisticItem><a target="_blank" href={firstRowDataView && firstRowDataView.node.ShortCodeURL}></a></StatisticItem>
-              }
-              {activity &&
-                <StatisticItem>{(activity+FollowerRate+PostRate).toFixed(1)} <br /><span className="stat_title" title="Social Score">Social Score</span></StatisticItem>
-              }
-            </Statistics>
-            <Statistics>
-              {(GlobalRank || LocalRank || TOS) &&
-                <StatisticItem></StatisticItem>
-              }
-              {GlobalRank &&
-                <StatisticItem>{GlobalRank.toLocaleString()} <br /><span className="stat_title" title="Social Score">Traffic Rank</span></StatisticItem>
-              }
-            </Statistics>
-          </div>
-        </div>
-        <TagsBlock list={tagsList || []} />
-        <Content input={about} /><br />
-
-        {/* List of Products from MySQL View */}
-        {listProductEdges && listProductEdges.length > 0 && <h3>shop {name}</h3>}
-        <ViewContainer>
-          {listProductEdges.map(({ node }) => {
-            return (
-              <ViewCard key={node.ProductURL}>
+    const renderProduct = (node, ismobile) => {
+        return (
+            <ViewCard key={node.ProductURL} style={{ padding: (ismobile && "15px") }}>
                 <a href={node.ProductURL} target="_blank">
-                  <ViewImage>
-                    <div style={{ width: '100%', height: '150px' }}>
-                      <img src={node.ImageURL} style={{ objectFit: 'cover', height: '150px', width: '100%', margin: 'auto' }} alt={node.Title} />
-                    </div>
-                  </ViewImage>
+                    <ViewImage>
+                        <div style={{ width: '100%', height: '150px' }}>
+                            <img src={node.ImageURL} style={{ objectFit: 'cover', height: '150px', width: '100%', margin: 'auto' }} alt={node.Title} />
+                        </div>
+                    </ViewImage>
                 </a>
                 <small>${node.Price}</small>
                 <ViewInfo className="info">
-                  <a href={node.ProductURL} target="_blank">
-                    {node.Title && node.Title.substring(0, 50)}
-                  </a>
-                  <p>{node.Description && node.Description.substring(0, 150)}</p>
+                    <a href={node.ProductURL} target="_blank">
+                        {node.Title && node.Title.substring(0, 50)}
+                    </a>
+                    <p style={{ color: (ismobile && "white") }}>{node.Description && node.Description.substring(0, 150)}</p>
                 </ViewInfo>
-              </ViewCard>
-            );
-          })}
-        </ViewContainer>
-        <br />
-        {/* List of Posts from MySQL View */}
-        {listInstaPostEdges && listInstaPostEdges.length > 0 && <h3>instagram posts</h3>}
+            </ViewCard>
+        );
+    }
 
-        {/* Show carousel for mobile version */}
-        {isMobile &&
-          <Carousel
-            showThumbs={false}
-            infiniteLoop
-            showIndicators={false}
-            selectedItem={1}
-            showArrows={true}
-            showStatus={false}
-          >
-            {listInstaPostEdges && listInstaPostEdges.map(({ node }) => {
-              return (
-                <ViewCard key={node.UniquePhotoLink} style={{ padding: "15px" }}>
-                  <a href={node.ShortCodeURL} target="_blank">
+    const renderPost = (node, ismobile) => {
+        return (
+            <ViewCard key={node.UniquePhotoLink} style={{ padding: (ismobile && "15px"), width: (!ismobile && "30%") }}>
+                <a href={node.ShortCodeURL} target="_blank">
                     <ViewImage >
-                      {node.mysqlImage &&
-                        <Image fluid={node.mysqlImage.childImageSharp.fluid} alt={node.Caption} style={{ height: '200px', width: '100%', margin: 'auto' }} />
-                      }
-                      {!node.mysqlImage &&
-                        <img src={node.UniquePhotoLink} alt={node.Caption} style={{ objectFit: 'cover', height: '200px', width: '100%', margin: 'auto' }} />
-                      }
+                        {node.mysqlImage &&
+                            <Image fluid={node.mysqlImage.childImageSharp.fluid} alt={node.Caption} style={{ height: '200px', width: '100%', margin: 'auto' }} />
+                        }
+                        {!node.mysqlImage &&
+                            <img src={node.UniquePhotoLink} alt={node.Caption} style={{ objectFit: 'cover', height: '200px', width: '100%', margin: 'auto' }} />
+                        }
                     </ViewImage>
-                  </a>
-                  <ViewInfo className="info" style={{ color: "white" }}>
+                </a>
+                <ViewInfo className="info" style={{ color: (ismobile && "white") }}>
                     {node.Caption && node.Caption.substring(0, 200) + "..."}
-                  </ViewInfo>
-                </ViewCard>
-              );
-            })}
-          </Carousel>
-        }
+                </ViewInfo>
+            </ViewCard>
+        );
+    }
 
-        {/* Show carousel for mobile version */}
-        {!isMobile &&
-          <ViewContainer>
-            {listInstaPostEdges && listInstaPostEdges.map(({ node }) => {
-              return (
-                <ViewCard key={node.UniquePhotoLink} style={{ padding: "15px" }}>
-                  <a href={node.ShortCodeURL} target="_blank">
-                    <ViewImage >
-                      {node.mysqlImage &&
-                        <Image fluid={node.mysqlImage.childImageSharp.fluid} alt={node.Caption} style={{ height: '200px', width: '100%', margin: 'auto' }} />
-                      }
-                      {!node.mysqlImage &&
-                        <img src={node.UniquePhotoLink} alt={node.Caption} style={{ objectFit: 'cover', height: '200px', width: '100%', margin: 'auto' }} />
-                      }
-                    </ViewImage>
-                  </a>
-                  <ViewInfo className="info" >
-                    {node.Caption && node.Caption.substring(0, 200) + "..."}
-                  </ViewInfo>
-                </ViewCard>
-              );
-            })}
-          </ViewContainer>
-        }
-        <br />
-        <a href="/randomshop" className="button ">Discover another shop</a>
-      </Container>
-      <SuggestionBar>
-        <PostSuggestion>
-          {prev && (
-            <Link to={`/shops/${prev.slug}`}>
-              <p>&lt; {prev.name}</p>
-            </Link>
-          )}
-        </PostSuggestion>
-        <PostSuggestion>
-          {next && (
-            <Link to={`/shops/${next.slug}`}>
+    return (
+        <Layout>
+            <SEO
+                title={`Find ${name} | ${category || ''} `}
+                description={`Find ${name} and discover great ${category || ''} online stores on emprezzo. ${about}`}
+                pathname={AlexaURL}
+            />
+            <Header title={name} children={subtitle} socialDetails={socialDetails} />
+            <Container>
+                <div className="profileimage" style={{ display: "flex" }}>
+                    {ProfilePicURL &&
+                        <img src={ProfilePicURL} alt={name} className="profileimage" style={{ width: "100px", height: "100px" }} />
+                    }
+                    <div style={{ paddingLeft: "15px" }}>
+                        <Statistics>
+                            {(activity || FollowerRate || PostRate) &&
+                                <StatisticItem><a target="_blank" href={firstRowDataView && firstRowDataView.node.ShortCodeURL}></a></StatisticItem>
+                            }
+                            {activity &&
+                                <StatisticItem>{(activity + FollowerRate + PostRate).toFixed(1)} <br /><span className="stat_title" title="Social Score">Social Score</span></StatisticItem>
+                            }
+                        </Statistics>
+                        <Statistics>
+                            {(GlobalRank || LocalRank || TOS) &&
+                                <StatisticItem></StatisticItem>
+                            }
+                            {GlobalRank &&
+                                <StatisticItem>{GlobalRank.toLocaleString()} <br /><span className="stat_title" title="Social Score">Traffic Rank</span></StatisticItem>
+                            }
+                        </Statistics>
+                    </div>
+                </div>
+                <TagsBlock list={tagsList || []} />
+                <Content input={about} /><br />
+                {/* List of Products from MySQL View */}
+                {listProductEdges && listProductEdges.length > 0 && <h3>shop {name}</h3>}
 
-              <p>{next.name}	&gt;</p>
-            </Link>
-          )}
-        </PostSuggestion>
-      </SuggestionBar>
-    </Layout>
-  );
+                {/* Show carousel for mobile version */}
+                {isMobile &&
+                    <Carousel
+                        showThumbs={false}
+                        infiniteLoop
+                        showIndicators={false}
+                        selectedItem={1}
+                        showArrows={true}
+                        showStatus={false}
+                    >
+                        {listProductEdges && listProductEdges.map(({ node }) => {
+                            return renderProduct(node, true)
+                        })}
+                    </Carousel>
+                }
+
+                {/* Show carousel for mobile version */}
+                {!isMobile &&
+                    <ViewContainer>
+                        {listProductEdges.map(({ node }) => {
+                            return renderProduct(node)
+                        })}
+                    </ViewContainer>
+                }
+                <br />
+                {/* List of Posts from MySQL View */}
+                {listInstaPostEdges && listInstaPostEdges.length > 0 && <h3>instagram posts</h3>}
+
+                {/* Show carousel for mobile version */}
+                {isMobile &&
+                    <Carousel
+                        showThumbs={false}
+                        infiniteLoop
+                        showIndicators={false}
+                        selectedItem={1}
+                        showArrows={true}
+                        showStatus={false}
+                    >
+                        {listInstaPostEdges && listInstaPostEdges.map(({ node }) => {
+                            return renderPost(node, true)
+                        })}
+                    </Carousel>
+                }
+
+                {/* Show carousel for mobile version */}
+                {!isMobile &&
+                    <ViewContainer>
+                        {listInstaPostEdges && listInstaPostEdges.map(({ node }) => {
+                            return renderPost(node)
+                        })}
+                    </ViewContainer>
+                }
+                <br />
+                <a href="/randomshop" className="button ">Discover another shop</a>
+            </Container>
+            <SuggestionBar>
+                <PostSuggestion>
+                    {prev && (
+                        <Link to={`/shops/${prev.slug}`}>
+                            <p>&lt; {prev.name}</p>
+                        </Link>
+                    )}
+                </PostSuggestion>
+                <PostSuggestion>
+                    {next && (
+                        <Link to={`/shops/${next.slug}`}>
+
+                            <p>{next.name}	&gt;</p>
+                        </Link>
+                    )}
+                </PostSuggestion>
+            </SuggestionBar>
+        </Layout>
+    );
 };
 
 export default SingleItem;
