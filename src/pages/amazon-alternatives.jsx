@@ -23,6 +23,38 @@ const ShopsWrapper = styled.div`
   }
 `;
 
+const TableWrapper = styled.div`
+  width: 100%;
+  height: 800px;
+`;
+
+const StickyTableWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+`;
+
+const TableStickyHeader = styled.table`
+  display: table;
+
+  thead {
+    display: table-header-group;
+  }
+
+  thead>tr {
+    display: table-row;
+  }
+
+  thead>tr>th {
+    position: sticky;
+    display: table-cell;
+    top: 0px;
+    white-space: nowrap;
+    z-index: 2;
+    width: auto;
+  }
+`;
+
 const AmazonAlternatives = ({ data }) => {
   const { edges } = data.allMysqlMainView;
   const maxItems = 12;
@@ -70,9 +102,12 @@ const AmazonAlternatives = ({ data }) => {
           <h3>Browse shopping alternatives to Amazon</h3>
           <p>Independent online shops offer great amazon alternatives for shopping directly</p>
         </div>
-        <table>
+        <TableWrapper>
+          <StickyTableWrapper>
+            <TableStickyHeader>
           <thead>
             <tr>
+              <th>Rank</th>
               <th>Store</th>
               <th></th>
               {!isMobile && 
@@ -89,6 +124,7 @@ const AmazonAlternatives = ({ data }) => {
           <tbody>
             {listEdges.map((node, index) => (
               <tr key={index} id={`post-${index}`}>
+                <td>{index+1}</td>
                 <td>
                   {node.ProfilePicURL &&
                     <Link to={`/shops/${node.slug}`}>
@@ -109,7 +145,9 @@ const AmazonAlternatives = ({ data }) => {
               </tr>
             ))}
           </tbody>
-        </table>
+        </TableStickyHeader>
+          </StickyTableWrapper>
+        </TableWrapper>
 
       </ShopsWrapper>
       {showMore && listEdges.length > 0 && listEdges.length < edges.length &&

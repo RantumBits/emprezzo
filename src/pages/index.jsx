@@ -80,6 +80,20 @@ const Index = ({ data }) => {
   //Now limiting the items as per limit
   const listEdges = _.slice(sortedEdges, 0, limit)
 
+  const featuredShopEdges = _.filter(edges, ({ node }) => node.tags && node.tags.indexOf("featured")>=0)
+  const combinedFeatureShopEdges = [];
+  //Creating a new dataset with original nodes and required columns from DataView
+  featuredShopEdges.map((edge) => {
+      let newNode = {
+        name: edge.node.FullName,
+        slug: edge.node.UserName,
+        about: edge.node.Biography,
+        instagramname: edge.node.UserName,
+        ...edge.node
+      }
+      combinedFeatureShopEdges.push(newNode);
+  })
+
   return (
     <Layout title={'emprezzo | Discover & Shop Independent Online Stores'} description="Discover great independent online stores. Shop directly and support great businesses. Find apparel, toys, food, and more on emprezzo." >
       <Header title="Discover & Shop Independent Online Stores"></Header>
@@ -92,8 +106,22 @@ const Index = ({ data }) => {
         <Search collapse homepage indices={searchIndices} />
       </div>
 
-      <ShopSectionHeading></ShopSectionHeading>
+      <ShopSectionHeading>Featured Shops</ShopSectionHeading>
+      <ShopWrapper>
+        {combinedFeatureShopEdges.map((node, index) => (
+            <PostList
+              id={`post-${index}`}
+              key={index}
+              path={`/shops/${node.slug}`}
+              title={node.name}
+              excerpt={node.about && node.about.substring(0, 40) + "..."}
+              mysqldataview={rowDataViewEdges}
+              instagramname={node.instagramname}
+            />
+        ))}
+      </ShopWrapper>
 
+      <ShopSectionHeading></ShopSectionHeading>
       <ShopWrapper>
         {listEdges.map((node, index) => (
             <PostList

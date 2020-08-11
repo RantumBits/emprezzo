@@ -23,6 +23,38 @@ const ShopsWrapper = styled.div`
   }
 `;
 
+const TableWrapper = styled.div`
+  width: 100%;
+  height: 800px;
+`;
+
+const StickyTableWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+`;
+
+const TableStickyHeader = styled.table`
+  display: table;
+
+  thead {
+    display: table-header-group;
+  }
+
+  thead>tr {
+    display: table-row;
+  }
+
+  thead>tr>th {
+    position: sticky;
+    display: table-cell;
+    top: 0px;
+    white-space: nowrap;
+    z-index: 2;
+    width: auto;
+  }
+`;
+
 const TopShopifyStores = ({ data }) => {
   const { edges } = data.allMysqlMainView;
   const maxItems = 12;
@@ -62,46 +94,52 @@ const TopShopifyStores = ({ data }) => {
           <h3>Browse top Shopify stores</h3>
           <p>Discover top Shopify sellers based upon organic search traffic and social media activity.</p>
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Store</th>
-              <th></th>
-              {!isMobile &&
-              <>
-              <th>GlobalRank</th>
-              <th>TOS</th>
-              <th>FollowerRate</th>
-              <th>PostRate</th>
-              </>
-}
-              <th>Activity</th>                
-            </tr>
-          </thead>
-          <tbody>
-            {listEdges.map((node, index) => (
-              <tr key={index} id={`post-${index}`}>
-                <td>
-                  {node.ProfilePicURL &&
-                    <Link to={`/shops/${node.slug}`}>
-                      <img src={node.ProfilePicURL} className="profileimage" style={{ width: "50px", margin: '0px' }} title={node.name + ' is on Shopify'} alt={node.name + ' is on Shopify'} />
-                    </Link>
+        <TableWrapper>
+          <StickyTableWrapper>
+            <TableStickyHeader>
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Store</th>
+                  <th></th>
+                  {!isMobile &&
+                    <>
+                      <th>GlobalRank</th>
+                      <th>TOS</th>
+                      <th>FollowerRate</th>
+                      <th>PostRate</th>
+                    </>
                   }
-                </td>
-                <td><Link to={`/shops/${node.slug}`} title={node.about}>{node.name}</Link></td>
-                {!isMobile &&
-                <>
-                <td>{node.GlobalRank}</td>
-                <td>{node.TOS}</td>
-                <td>{node.FollowerRate}</td>
-                <td>{node.PostRate}</td>
-                </>
-                }
-                <td>{node.activity}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                  <th>Activity</th>
+                </tr>
+              </thead>
+              <tbody>
+                {listEdges.map((node, index) => (
+                  <tr key={index} id={`post-${index}`}>
+                    <td>{index+1}</td>
+                    <td>
+                      {node.ProfilePicURL &&
+                        <Link to={`/shops/${node.slug}`}>
+                          <img src={node.ProfilePicURL} className="profileimage" style={{ width: "50px", margin: '0px' }} title={node.name + ' is on Shopify'} alt={node.name + ' is on Shopify'} />
+                        </Link>
+                      }
+                    </td>
+                    <td><Link to={`/shops/${node.slug}`} title={node.about}>{node.name}</Link></td>
+                    {!isMobile &&
+                      <>
+                        <td>{node.GlobalRank}</td>
+                        <td>{node.TOS}</td>
+                        <td>{node.FollowerRate}</td>
+                        <td>{node.PostRate}</td>
+                      </>
+                    }
+                    <td>{node.activity}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </TableStickyHeader>
+          </StickyTableWrapper>
+        </TableWrapper>
 
       </ShopsWrapper>
       {showMore && listEdges.length > 0 && listEdges.length < edges.length &&

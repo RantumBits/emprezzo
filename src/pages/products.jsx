@@ -31,18 +31,15 @@ const CategoryWrapper = styled.div`
 const Products = ({ data, pageContext }) => {
   const { category } = pageContext;
   const categoryHeading = category + " Shops";
-  const categoryGroup = data.allMysqlMainView.group;
-  //console.log(categoryGroup)
 
   const rowProductsEdges = data.allMysqlProducts.edges;
 
   const checkEdgesInProductView = (allEdges) => {
-    const filteredProducts = [];
-    allEdges.map((edge)=>{
+    let filteredProducts = [];
+    allEdges.map((edge) => {
       const inputID = edge.node.UserName;
       let result = _.filter(rowProductsEdges, ({ node }) => node.UserName == inputID)
-      //console.log(result)
-      if(result.length>0) filteredProducts.push(result[0]);
+      filteredProducts = _.union(filteredProducts, result)
     });
     return filteredProducts;
   }
@@ -59,48 +56,30 @@ const Products = ({ data, pageContext }) => {
     return productImage;
   }
 
-  const getPath = (node) => {
-    let path = node.VendorURL; // if there is no shop with instagram id then path will be vendor URL
-    //checking if the shop exists corresponding to this instagram id
-    const inputInstaID = node.UserName;
-    var result = _.filter(rowProductsEdges, ({ node }) => node.UserName == inputInstaID)
-    if (result.length > 0) path = "/shops/" + result[0].node.slug;
-    return path;
-  }
+  const mainViewEdges = data.allMysqlMainView.edges;
+  //get featured shops
+  const featuredShopEdges = _.filter(mainViewEdges, ({ node }) => node.tags && node.tags.indexOf("featured")>=0)
+  const filteredProducts = checkEdgesInProductView(featuredShopEdges)
 
   return (
     <Layout title={'Top Shopify Products'} description="A mini shopify marketplace. Discover the best Shopify products from hundreds of stores in one place.">
       <Header title="Top Shopify Products" />
-        {categoryGroup.map((category, index) => {
-          const allEdges = category.edges;
-          //console.log(allEdges)
-          //console.log("****** filtered")
-          const filteredProducts = checkEdgesInProductView(allEdges)
-          //console.log(filteredProducts)
-          //console.log("******* top 5")
-          const listEdges = _.slice(filteredProducts,0,5)
-          //console.log(listEdges)
-          return (
-            <div key={index}>
-              {listEdges.length>0 && category.fieldValue &&
-                <CategoryHeading>{category.fieldValue}</CategoryHeading>
-              }
-              <CategoryWrapper>
-                {category.fieldValue && listEdges.map(({ node }) => (
-                  <ProductList
-                    key={getProductImage(node)}
-                    cover={getProductImage(node)}
-                    path={getPath(node)}
-                    vendorname={node.VendorName}
-                    title={node.Title}
-                    variant={getProductVariant(node)}
-                    price={node.Price}
-                  />
-                ))}
-              </CategoryWrapper>
-            </div>
-        )})}
-
+          <div>
+            <CategoryHeading>Featured Shops</CategoryHeading>
+            <CategoryWrapper>
+              {filteredProducts.map(({ node }, index) => (
+                <ProductList
+                  key={index}
+                  cover={getProductImage(node)}
+                  path={`/shops/${node.UserName}`}
+                  vendorname={node.VendorName}
+                  title={node.Title}
+                  variant={getProductVariant(node)}
+                  price={node.Price}
+                />
+              ))}
+            </CategoryWrapper>
+          </div>
     </Layout>
   );
 };
@@ -125,13 +104,11 @@ export const query = graphql`
       }
     }
     allMysqlMainView {
-      group(field: category) {
-        fieldValue
-        edges {
-          node {
-            AlexaURL
-            UserName
-          }
+      edges {
+        node {
+          AlexaURL
+          UserName
+          tags
         }
       }
     }
