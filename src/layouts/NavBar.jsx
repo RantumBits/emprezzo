@@ -115,10 +115,13 @@ const NavBar = () => {
         <div className="dropdown">
           <Link to="/shops">Discover </Link>
           <div className="dropdown-content">
-              <Link key="shopify" to="/top-shopify-stores">Top Shopify Stores</Link>
-              <Link key="amazon-altenatives" to="/amazon-alternatives">Amazon Alternatives</Link>
+              <Link key="2" to="/top-shopify-stores">Top Shopify stores</Link>
+              <Link key="3" to="/amazon-alternatives">Amazon alternatives</Link>
+              <Link key="4" to="/stores-that-accept-paypal">Stores that accept PaypLal</Link>
+              <Link key="5" to="/buynow-paylater-stores">Buy now, pay later stores </Link>
+              <Link key="6" to="/products">Shopify products</Link>
           </div>
-        </div>    
+        </div>
           <SearchWrapper>
             <Search collapse indices={searchIndices} variation={"light"} />
           </SearchWrapper>
