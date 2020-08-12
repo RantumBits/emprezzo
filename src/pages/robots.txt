@@ -1,5 +1,5 @@
 
 User-agent: *
-Disallow:
+Disallow: `/tags/*`, `/randomshop/`
 
 Sitemap: https://ecomloop.com/sitemap.xml

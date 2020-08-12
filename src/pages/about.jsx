@@ -12,9 +12,9 @@ const About = center => (
     <p>
     We help consumers discover, support& shop independent brands & retailers.
 </p>  <p>
-    Large platforms like Amazon and Target control an increasily large share of ecommerce sales. Platforms are convenient and great for deliveing basic goods. They are not good for find discovering the very best products
+    Large platforms like Amazon and Target control an increasily large share of ecommerce sales. Platforms are convenient and great for deliveing basic goods. They are not good for find discovering the very best products.
 </p>  <p>
-    Support innovation among indepndenent brands by shopping directly. 
+    Support innovation among indepndenent brands by shopping directly.
 </p>  <p>
     The list of shops is intended to grow over time, as is the functionality of the site. New submissions are always welcome.
 </p>
