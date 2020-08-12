@@ -79,7 +79,7 @@ const ViewInfo = styled.div`
 
 const SingleItem = ({ data, pageContext }) => {
   const { next, prev } = pageContext;
-  const { Facebook, Instagram, Pinterest, TikTok, Twitter, URL, YouTube } = data.mysqlSocialIDs
+  const { Facebook, Instagram, Pinterest, TikTok, Twitter, URL, YouTube } = data.mysqlSocialIdView
 
   //Creating Social IDs Data to pass to header for displaying
   let socialDetails = {
@@ -286,7 +286,7 @@ export const query = graphql`
         }
       }
     }
-    mysqlSocialIDs (Instagram: {eq: $pathSlug}) {
+    mysqlSocialIdView (Instagram: {eq: $pathSlug}) {
       Instagram
       Facebook
       Pinterest

@@ -52,6 +52,7 @@ const TableStickyHeader = styled.table`
     white-space: nowrap;
     z-index: 2;
     width: auto;
+    background-color: white;
   }
 `;
 
@@ -110,7 +111,7 @@ const AmazonAlternatives = ({ data }) => {
               <th>Rank</th>
               <th>Store</th>
               <th></th>
-              {!isMobile && 
+              {!isMobile &&
               <>
               <th>LocalRank</th>
               <th>TOS</th>
@@ -133,7 +134,7 @@ const AmazonAlternatives = ({ data }) => {
                   }
                 </td>
                 <td><Link to={`/shops/${node.slug}`}>{node.name}</Link></td>
-                {!isMobile && 
+                {!isMobile &&
                 <>
                 <td>{node.LocalRank}</td>
                 <td>{node.TOS}</td>

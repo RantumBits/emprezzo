@@ -52,6 +52,7 @@ const TableStickyHeader = styled.table`
     white-space: nowrap;
     z-index: 2;
     width: auto;
+    background-color: white;
   }
 `;
 

@@ -9,16 +9,7 @@ module.exports = {
     ...config,
   },
   plugins: [
-
-    {
-    resolve: `gatsby-plugin-sitemap`,
-    options: {
-      output: `/sitemap.xml`,
-      // Exclude specific pages or groups of pages using glob parameters
-      // See: https://github.com/isaacs/minimatch
-      // The example below will exclude the single `path/to/page` and all routes beginning with `category`
-      exclude: [`/tags/*`, `/randomshop/`],
-    },
+    'gatsby-plugin-sitemap',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-catch-links',
     {
@@ -68,9 +59,9 @@ module.exports = {
             name: 'ShopifyView'
           },
           {
-              statement: 'SELECT * FROM SocialIDs WHERE URL IS NOT NULL',
+              statement: 'SELECT * FROM SocialIDView WHERE URL IS NOT NULL',
               idFieldName: 'URL',
-              name: 'SocialIDs'
+              name: 'SocialIDView'
           },
           {
             statement: 'SELECT * FROM ShopifyView WHERE ProductID IS NOT NULL',
@@ -103,7 +94,7 @@ module.exports = {
             name: 'Tags'
           },
           {
-            statement: 'SELECT RankView_Pages.*, Tags.*, SocialIDs.* FROM RankView_Pages LEFT JOIN Tags ON RankView_Pages.AlexaURL = Tags.url LEFT JOIN SocialIDs ON RankView_Pages.AlexaURL = SocialIDs.URL',
+            statement: 'SELECT RankView_Pages.*, Tags.*, SocialIDView.* FROM RankView_Pages LEFT JOIN Tags ON RankView_Pages.AlexaURL = Tags.url LEFT JOIN SocialIDView ON RankView_Pages.AlexaURL = SocialIDView.URL',
             idFieldName: 'AlexaURL',
             name: 'MainView'
           }
