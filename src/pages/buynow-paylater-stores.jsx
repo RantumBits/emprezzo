@@ -58,13 +58,13 @@ const StoresWithPaylater = ({ data }) => {
   const listEdges = _.slice(sortedEdges, 0, limit)
 
   return (
-    <Layout title={'Top Shopify Stores | Shop the most popular stores'} description='Discover top Shopify stores. Shop the best and most popular Shopify shop on emprezzo.'>
-      <Header title="🧐 Discover top Shopify stores" subtitle=""></Header>
+    <Layout title={'Buy now, pay later stores | Find online stores that accept layaway payments'} description='Find online stores that offer buy now, pay later payment options like Klarna, Afteray, Affirm. Shop stores with layaway payment plans and flexible payment options. '>
+      <Header title="🧐 Buy now, pay later stores" subtitle=""></Header>
 
       <ShopsWrapper>
         <div className="intro_text">
-          <h3>Browse top Shopify stores</h3>
-          <p>Discover top Shopify sellers based upon organic search traffic and social media activity.</p>
+          <h3>Find Buy now, pay later stores</h3>
+          <p>Discover buy now, pay later stores that accept layaway payments like Klarna, Afterpay, Affirm </p>
         </div>
         <table>
           <thead>
@@ -111,16 +111,12 @@ const StoresWithPaylater = ({ data }) => {
       }
       <ShopsWrapper>
         <div className="intro_text">
-          <h3>Discover top Shopify stores of 2020</h3>
-          <p>Find the top Shopify stores by traffic & social media activity. See some of the best Shopify store examples.</p><p>Search in header for more Shopify stores or <a href="/randomshop">discover a shop</a></p>
-          <h3>How is the list of top Shopify stores ranked?</h3>
+          <h3>Discover sites with buy now, pay later payment options</h3>
+          <p>Find online stores that offer buy now, pay later payment options like Klarna, Afteray, Affirm. Shop stores with layaway payment plans and flexible payment options. </p>
+          <h3>How is the list of stores with buy now, pay later ranked?</h3>
           <p>The stores are ranked based upon their SocialScore and overall web rank. The social score is derived from factors such as followers, fans, and activity on social media accounts. Web rank is based upon the websites estimated search engine ranking, as well as average time on site by visitors.</p>
-          <h3>What are some great Shopify stores examples? </h3>
-          <p>This list is an excellent resource for seeing examples of Shopify stores. These are some of the most popular Shopify stores and are great for getting ideas for your own store.</p>
-          <h3>What are Shopify stores?</h3>
-          <p>Shpoify stores are online stores running on the Shopify ecommece platorm. They are typically indpendent businesses selling directly to customers. The sites are hosted by Shopify, which generally handles the payment as well, making Shopify sites safe and secure.</p>
-          <h3>How many Shopify stores are there?</h3>
-          <p>As of July 2020, there are approximately 1,422,815 live Shopify sites. 3.6% of the top 1M sites are powerd by Shopify. 5.29% of the top 10k sites are powered by Shopify. </p>
+          <h3>WHat are some examples of buy now, pay later payment options?</h3>
+          <p>Klarna, Affirm, and Afterpay are some examples of buy now, pay later.</p>
         </div>
       </ShopsWrapper>
     </Layout>

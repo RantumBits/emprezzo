@@ -62,10 +62,10 @@ const Products = ({ data, pageContext }) => {
   const filteredProducts = checkEdgesInProductView(featuredShopEdges)
 
   return (
-    <Layout title={'Top Shopify Products'} description="A mini shopify marketplace. Discover the best Shopify products from hundreds of stores in one place.">
-      <Header title="Top Shopify Products" />
+    <Layout title={'Shopify Products | Disover great products from Shopify stores'} description="Discover the best Shopify products from hundreds of stores in one place. It's like a mini-Shopify marketplace.">
+      <Header title="🧐 Disover great products from Shopify stores" />
           <div>
-            <CategoryHeading>Featured Shops</CategoryHeading>
+            <CategoryHeading>Shopify Products</CategoryHeading>
             <CategoryWrapper>
               {filteredProducts.map(({ node }, index) => (
                 <ProductList

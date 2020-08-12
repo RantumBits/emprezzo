@@ -58,13 +58,13 @@ const StoresWithPaypal = ({ data }) => {
   const listEdges = _.slice(sortedEdges, 0, limit)
 
   return (
-    <Layout title={'Top Shopify Stores | Shop the most popular stores'} description='Discover top Shopify stores. Shop the best and most popular Shopify shop on emprezzo.'>
+    <Layout title={'Stores that accept PayPal | Shop sites that accept PayPal'} description='Stores that accept PayPal make it easy to checkout when shopping. Venmo and Paypal users can checkout quickly on sites that accept PayPal.'>
       <Header title="🧐 Discover top Shopify stores" subtitle=""></Header>
 
       <ShopsWrapper>
         <div className="intro_text">
-          <h3>Browse top Shopify stores</h3>
-          <p>Discover top Shopify sellers based upon organic search traffic and social media activity.</p>
+          <h3>Stores that accept PayPal</h3>
+          <p>Stores that accept PayPal make it easy to checkout</p>
         </div>
         <table>
           <thead>
@@ -111,16 +111,11 @@ const StoresWithPaypal = ({ data }) => {
       }
       <ShopsWrapper>
         <div className="intro_text">
-          <h3>Discover top Shopify stores of 2020</h3>
-          <p>Find the top Shopify stores by traffic & social media activity. See some of the best Shopify store examples.</p><p>Search in header for more Shopify stores or <a href="/randomshop">discover a shop</a></p>
-          <h3>How is the list of top Shopify stores ranked?</h3>
+          <h3>Discover stores that accept PayPal on Emprezzo</h3>
+          <p>Find stores that accept PayPal by traffic & social media activity. See some of the best PayPal stores.</p>
+          <h3>How is the list of stores that accept PayPal ranked?</h3>
           <p>The stores are ranked based upon their SocialScore and overall web rank. The social score is derived from factors such as followers, fans, and activity on social media accounts. Web rank is based upon the websites estimated search engine ranking, as well as average time on site by visitors.</p>
-          <h3>What are some great Shopify stores examples? </h3>
-          <p>This list is an excellent resource for seeing examples of Shopify stores. These are some of the most popular Shopify stores and are great for getting ideas for your own store.</p>
-          <h3>What are Shopify stores?</h3>
-          <p>Shpoify stores are online stores running on the Shopify ecommece platorm. They are typically indpendent businesses selling directly to customers. The sites are hosted by Shopify, which generally handles the payment as well, making Shopify sites safe and secure.</p>
-          <h3>How many Shopify stores are there?</h3>
-          <p>As of July 2020, there are approximately 1,422,815 live Shopify sites. 3.6% of the top 1M sites are powerd by Shopify. 5.29% of the top 10k sites are powered by Shopify. </p>
+          
         </div>
       </ShopsWrapper>
     </Layout>

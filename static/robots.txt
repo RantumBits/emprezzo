@@ -1,4 +1,4 @@
 User-agent: *
-Disallow: */tags/
+Disallow: 
 
 sitemap: https://emprezzo.com/sitemap.xml

@@ -95,12 +95,12 @@ const Index = ({ data }) => {
   })
 
   return (
-    <Layout title={'emprezzo | Discover & Shop Independent Online Stores'} description="Discover great independent online stores. Shop directly and support great businesses. Find apparel, toys, food, and more on emprezzo." >
-      <Header title="Discover & Shop Independent Online Stores"></Header>
+    <Layout title={'emprezzo | Discover the best online shopping sites & direct-to-consumer brands'} description="Discover the best online shopping sites & direct to consumer brands." >
+      <Header title="Discover the best online shopping sites"></Header>
 
       {/* <p className="center"><a href ="/randomshop" className="button button">Discover a  shop</a></p> */}
       <div className="center">
-        🧐 Discover direct-to-consumer stores<br />🛒 Shop & support independent businesseses
+        🧐 Discover the best online shopping sites<br />🛒 Shop direct-to-consumer brands
       </div>
       <div className="search_main">
         <Search collapse homepage indices={searchIndices} />
@@ -143,14 +143,13 @@ const Index = ({ data }) => {
         </div>
       }
       <ShopWrapper>
-      <h3>Why shop directly from independent online stores?</h3>
-      <p>There are a number of reasons to shop directly, rather than making all purchases from large marketplaces or major retailers. There's a huge diversity of merchants and consumers online. What makes a product unique and exceptional is often lost when the brand is taken over by a large company.</p>
-      <p>Independent stores are free to run their shops in the best ways to connect with their customers. Rather than being restricted to the rules of a marketplace or vendor, stores are able to act in ways that best support their audience.</p>
-      <h3>What's the benefit for online stores></h3>
-      <p>Online stores benefit by connecting diretly with their customers and cutting out the fees paid to large markeplaces. Marketplaces typically charge sellers for marketing, fulfillment, commission, and additional fees making it hard for stores to turn a profit without increasing costs.</p>
-      <h3>How do consumers benefit></h3>
-      <p>By shopping directly with stores, customers know more of the money goes directly to the company, which in turn helps propel the company to stick around and create more great products. Many of the best brands aren't availalbe on major marketplace sites.</p>
-      <p>Brands often have exclusive offers, specialty products, and extra giveaways for customers that choose to shop directly.</p>
+      <h3>Discover the best online shopping sites at Emprezzo</h3>
+      <p>There are endless options when shopping online, yet nothing seems like the right fit. Discover the best direct to consumer brands at Emprezzo.</p>
+
+      <h3>What's the benefit of shopping direct-to-consumer brands?</h3>
+      <p>Direct to consumers stores connect diretly with their customer, which helps reduce costs paid to large reatilers and makertplaces. Marketplaces typically charge sellers for marketing, fulfillment, commission, and additional fees making it hard for stores to turn a profit without increasing costs.</p>
+      <h3>What are the best online shopping sites?</h3>
+      <p>Our lists are comprised of stores based on data from social media data, traffic data, and our own analysis. </p>
     </ShopWrapper>
     </Layout>
   );
