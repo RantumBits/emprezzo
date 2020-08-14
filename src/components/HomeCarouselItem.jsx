@@ -6,35 +6,19 @@ import PropTypes from 'prop-types';
 import theme from '../../config/theme';
 
 const Wrapper = styled.article`
-  margin-bottom: 2rem;
+  margin: 0.7rem;
   position: relative;
   z-index: 100;
   border-radius: ${props => props.theme.borderRadius.default};
   box-shadow: ${props => props.theme.shadow.feature.small.default};
   transition: ${props => props.theme.transitions.boom.transition};
   height: 17rem;
-  flex-basis: calc(99.9% * 1 / 5 - 1rem);
-  max-width: calc(99.9% * 1 / 5 - 1rem);
-  width: calc(99.9% * 1 / 5 - 1rem);
 
   &:hover {
     box-shadow: ${props => props.theme.shadow.feature.small.hover};
     transform: scale(1.04);
   }
 
-  @media (max-width: 1000px) {
-    flex-basis: calc(99.9% * 1 / 2 - 1rem);
-    max-width: calc(99.9% * 1 / 2 - 1rem);
-    width: calc(99.9% * 1 / 2 - 1rem);
-    height: 18rem;
-  }
-
-  @media (max-width: 700px) {
-    flex-basis: 100%;
-    max-width: 100%;
-    width: 100%;
-    height: 15rem;
-  }
 `;
 
 const StyledLink = styled(Link)`
@@ -81,6 +65,7 @@ const Image = styled.div`
   bottom: 0;
   z-index: 1;
   object-fit: cover;
+  text-align: center;
   border-radius: ${props => props.theme.borderRadius.default};
   img {
     border-radius: ${props => props.theme.borderRadius.default};

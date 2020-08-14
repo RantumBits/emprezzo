@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { Header, BlogList } from 'components';
 import { Layout } from 'layouts';
 import _ from 'lodash';
+import { useMediaQuery } from 'react-responsive'
 
 const ShopsWrapper = styled.div`
   display: flex;
@@ -22,11 +23,46 @@ const ShopsWrapper = styled.div`
   }
 `;
 
+const TableWrapper = styled.div`
+  width: 100%;
+  height: 800px;
+`;
+
+const StickyTableWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+`;
+
+const TableStickyHeader = styled.table`
+  display: table;
+
+  thead {
+    display: table-header-group;
+  }
+
+  thead>tr {
+    display: table-row;
+  }
+
+  thead>tr>th {
+    position: sticky;
+    display: table-cell;
+    top: 0px;
+    white-space: nowrap;
+    z-index: 2;
+    width: auto;
+    background-color: white;
+  }
+`;
+
 const StoresWithPaylater = ({ data }) => {
   const { edges } = data.allMysqlMainView;
   const maxItems = 12;
   const [limit, setLimit] = React.useState(maxItems);
   const [showMore, setShowMore] = React.useState(true);
+
+  const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
 
   const increaseLimit = () => {
     setLimit(limit + maxItems);
@@ -40,14 +76,12 @@ const StoresWithPaylater = ({ data }) => {
     const inputID = edge.node.AlexaURL;
     var resultRankView = _.filter(rowRankViewEdges, ({ node }) => node.AlexaURL == inputID)
     if (resultRankView.length > 0) {
-        //now finding corresponding data from RankView
-        let newNode = {
-            name: edge.node.FullName,
-            slug: edge.node.UserName,
-            about: edge.node.about,
-            ...resultRankView[0].node
-        }
-        combinedEdges.push(newNode);
+      //now finding corresponding data from RankView
+      let newNode = {
+        ...edge.node,
+        ...resultRankView[0].node
+      }
+      combinedEdges.push(newNode);
     }
   })
 
@@ -66,40 +100,56 @@ const StoresWithPaylater = ({ data }) => {
           <h3>Find Buy now, pay later stores</h3>
           <p>Discover buy now, pay later stores that accept layaway payments like Klarna, Afterpay, Affirm </p>
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Store</th>
-
-              <th></th>
-              <th>GlobalRank</th>
-              <th>TOS</th>
-              <th>FollowerRate</th>
-              <th>PostRate</th>
-              <th>Activity</th>
-            </tr>
-          </thead>
-          <tbody>
-            {listEdges.map((node, index) => (
-              <tr key={index} id={`post-${index}`}>
-                <td>
-                  {node.ProfilePicURL &&
-                    <Link to={`/shops/${node.slug}`}>
-                      <img src={node.ProfilePicURL} className="profileimage" style={{ width: "50px", margin: '0px' }} title={node.name + ' is on Shopify'} alt={node.name + ' is on Shopify'} />
-                    </Link>
+        <TableWrapper>
+          <StickyTableWrapper>
+            <TableStickyHeader>
+              <thead>
+                <tr>
+                  <th>Store</th>
+                  <th></th>
+                  {!isMobile &&
+                    <>
+                      <th>GlobalRank</th>
+                      <th>Pinterest</th>
+                      <th>Instagram</th>
+                      <th>Twitter</th>
+                      <th>Facebook</th>
+                      <th>Tiktok</th>
+                      <th>Youtube</th>
+                    </>
                   }
-                </td>
-                <td><Link to={`/shops/${node.slug}`} title={node.about}>{node.name}</Link></td>
-
-                <td>{node.GlobalRank}</td>
-                <td>{node.TOS}</td>
-                <td>{node.FollowerRate}</td>
-                <td>{node.PostRate}</td>
-                <td>{node.activity}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                  <th>Activity</th>
+                </tr>
+              </thead>
+              <tbody>
+                {listEdges.map((node, index) => (
+                  <tr key={index} id={`post-${index}`}>
+                    <td>
+                      {node.ProfilePicURL &&
+                        <Link to={`/shops/${node.slug}`}>
+                          <img src={node.ProfilePicURL} className="profileimage" style={{ width: "50px", margin: '0px' }} title={node.name + ' is on Shopify'} alt={node.name + ' is on Shopify'} />
+                        </Link>
+                      }
+                    </td>
+                    <td><Link to={`/shops/${node.slug}`} title={node.about}>{node.name}</Link></td>
+                    {!isMobile &&
+                      <>
+                        <td>{node.GlobalRank}</td>
+                        <td>{node.PinFollowers || "-"}</td>
+                        <td>{node.FollowersCount || "-"}</td>
+                        <td>{node.TwitterFollowers || "-"}</td>
+                        <td>{node.FBLikes || "-"}</td>
+                        <td>{node.TTFollowers || "-"}</td>
+                        <td>{node.YTSubs || "-"}</td>
+                      </>
+                    }
+                    <td>{node.activity}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </TableStickyHeader>
+          </StickyTableWrapper>
+        </TableWrapper>
 
       </ShopsWrapper>
       {showMore && listEdges.length > 0 && listEdges.length < edges.length &&
@@ -130,9 +180,15 @@ export const query = graphql`
     allMysqlMainView {
       edges {
         node {
-            AlexaURL
-            UserName
-            FullName
+          AlexaURL
+          UserName
+          FullName
+          FollowersCount
+          FBLikes
+          PinFollowers
+          TTFollowers
+          TwitterFollowers
+          YTSubs
         }
       }
     }

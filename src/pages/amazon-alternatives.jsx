@@ -80,8 +80,7 @@ const AmazonAlternatives = ({ data }) => {
     if (resultData.length > 0) {
       firstDataRow = resultData[0]
       let newNode = {
-        name: edge.node.FullName,
-        slug: edge.node.UserName,
+        ...edge.node,
         ...firstDataRow.node
       }
       combinedEdges.push(newNode);
@@ -106,47 +105,53 @@ const AmazonAlternatives = ({ data }) => {
         <TableWrapper>
           <StickyTableWrapper>
             <TableStickyHeader>
-          <thead>
-            <tr>
-              <th>Rank</th>
-              <th>Store</th>
-              <th></th>
-              {!isMobile &&
-              <>
-              <th>LocalRank</th>
-              <th>TOS</th>
-              <th>FollowerRate</th>
-              <th>PostRate</th>
-              </>
-              }
-              <th>Activity</th>
-            </tr>
-          </thead>
-          <tbody>
-            {listEdges.map((node, index) => (
-              <tr key={index} id={`post-${index}`}>
-                <td>{index+1}</td>
-                <td>
-                  {node.ProfilePicURL &&
-                    <Link to={`/shops/${node.slug}`}>
-                      <img src={node.ProfilePicURL} className="profileimage" style={{ width: "50px", margin: '0px' }} title={node.name + 'is on Shopify'} alt={node.name + 'is on Shopify'} />
-                    </Link>
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Store</th>
+                  <th></th>
+                  {!isMobile &&
+                    <>
+                      <th>LocalRank</th>
+                      <th>Pinterest</th>
+                      <th>Instagram</th>
+                      <th>Twitter</th>
+                      <th>Facebook</th>
+                      <th>Tiktok</th>
+                      <th>Youtube</th>
+                    </>
                   }
-                </td>
-                <td><Link to={`/shops/${node.slug}`}>{node.name}</Link></td>
-                {!isMobile &&
-                <>
-                <td>{node.LocalRank}</td>
-                <td>{node.TOS}</td>
-                <td>{node.FollowerRate}</td>
-                <td>{node.PostRate}</td>
-                </>
-                }
-                <td>{node.activity}</td>
-              </tr>
-            ))}
-          </tbody>
-        </TableStickyHeader>
+                  <th>Activity</th>
+                </tr>
+              </thead>
+              <tbody>
+                {listEdges.map((node, index) => (
+                  <tr key={index} id={`post-${index}`}>
+                    <td>{index + 1}</td>
+                    <td>
+                      {node.ProfilePicURL &&
+                        <Link to={`/shops/${node.slug}`}>
+                          <img src={node.ProfilePicURL} className="profileimage" style={{ width: "50px", margin: '0px' }} title={node.name + 'is on Shopify'} alt={node.name + 'is on Shopify'} />
+                        </Link>
+                      }
+                    </td>
+                    <td><Link to={`/shops/${node.slug}`}>{node.name}</Link></td>
+                    {!isMobile &&
+                      <>
+                        <td>{node.LocalRank}</td>
+                        <td>{node.PinFollowers || "-"}</td>
+                        <td>{node.FollowersCount || "-"}</td>
+                        <td>{node.TwitterFollowers || "-"}</td>
+                        <td>{node.FBLikes || "-"}</td>
+                        <td>{node.TTFollowers || "-"}</td>
+                        <td>{node.YTSubs || "-"}</td>
+                      </>
+                    }
+                    <td>{node.activity}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </TableStickyHeader>
           </StickyTableWrapper>
         </TableWrapper>
 
@@ -184,6 +189,11 @@ export const query = graphql`
           AlexaURL
           UserName
           FullName
+          FBLikes
+          PinFollowers
+          TTFollowers
+          TwitterFollowers
+          YTSubs
         }
       }
     }

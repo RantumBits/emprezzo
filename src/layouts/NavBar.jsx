@@ -108,7 +108,7 @@ const NavBar = () => {
   return (
     <Headroom calcHeightOnResize disableInlineStyles>
       <StyledLink to="/">
-        <img src={logo} className="logo" title="emprezzo - discover & shop indepdent retailers & brands" alt="emprezzo - discover & shop indepdent retailers & brands" />
+        <img src={logo} className="logo" title="emprezzo - Discover the best online shopping sites & direct to consumer brands" alt="emprezzo - Discover the best online shopping sites & direct to consumer brands" />
       </StyledLink>
       <NavWrapper>
         <Nav>
@@ -117,7 +117,7 @@ const NavBar = () => {
           <div className="dropdown-content">
               <Link key="2" to="/top-shopify-stores">Top Shopify stores</Link>
               <Link key="3" to="/amazon-alternatives">Amazon alternatives</Link>
-              <Link key="4" to="/stores-that-accept-paypal">Stores that accept PaypLal</Link>
+              <Link key="4" to="/stores-that-accept-paypal">Stores that accept Paypal</Link>
               <Link key="5" to="/buynow-paylater-stores">Buy now, pay later stores </Link>
               <Link key="6" to="/products">Shopify products</Link>
           </div>

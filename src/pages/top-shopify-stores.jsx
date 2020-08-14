@@ -106,9 +106,12 @@ const TopShopifyStores = ({ data }) => {
                   {!isMobile &&
                     <>
                       <th>GlobalRank</th>
-                      <th>TOS</th>
-                      <th>FollowerRate</th>
-                      <th>PostRate</th>
+                      <th>Pinterest</th>
+                      <th>Instagram</th>
+                      <th>Twitter</th>
+                      <th>Facebook</th>
+                      <th>Tiktok</th>
+                      <th>Youtube</th>
                     </>
                   }
                   <th>Activity</th>
@@ -129,9 +132,12 @@ const TopShopifyStores = ({ data }) => {
                     {!isMobile &&
                       <>
                         <td>{node.GlobalRank}</td>
-                        <td>{node.TOS}</td>
-                        <td>{node.FollowerRate}</td>
-                        <td>{node.PostRate}</td>
+                        <td>{node.PinFollowers || "-"}</td>
+                        <td>{node.FollowersCount || "-"}</td>
+                        <td>{node.TwitterFollowers || "-"}</td>
+                        <td>{node.FBLikes || "-"}</td>
+                        <td>{node.TTFollowers || "-"}</td>
+                        <td>{node.YTSubs || "-"}</td>
                       </>
                     }
                     <td>{node.activity}</td>
@@ -194,6 +200,12 @@ export const query = graphql`
             category
             tags
             FullName
+            FollowersCount
+            FBLikes
+            PinFollowers
+            TTFollowers
+            TwitterFollowers
+            YTSubs
         }
       }
     }

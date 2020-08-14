@@ -4,9 +4,12 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import styled from '@emotion/styled';
 import { Header, PostList } from 'components';
+import HomeCarouselItem from '../components/HomeCarouselItem';
 import { Layout } from 'layouts';
 import Search from 'components/search';
 import _ from 'lodash';
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 
 const PostSectionHeading = styled.h1`
   margin-left: 4rem;
@@ -46,9 +49,27 @@ const ShopWrapper = styled.div`
 
 const Index = ({ data }) => {
   const { edges } = data.allMysqlMainView;
-  const maxItems = 9;
+  const maxItems = 15;
   const [limit, setLimit] = React.useState(maxItems);
   const [showMore, setShowMore] = React.useState(true);
+
+  const responsive = {
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 5,
+      slidesToSlide: 5 // optional, default to 1.
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 2,
+      slidesToSlide: 2 // optional, default to 1.
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1,
+      slidesToSlide: 1 // optional, default to 1.
+    }
+  };
 
   const increaseLimit = () => {
     setLimit(limit + maxItems);
@@ -63,14 +84,14 @@ const Index = ({ data }) => {
 
   //Creating a new dataset with original nodes and required columns from DataView
   edges.map((edge) => {
-      let newNode = {
-        name: edge.node.FullName,
-        slug: edge.node.UserName,
-        about: edge.node.Biography,
-        instagramname: edge.node.UserName,
-        ...edge.node
-      }
-      combinedEdges.push(newNode);
+    let newNode = {
+      name: edge.node.FullName,
+      slug: edge.node.UserName,
+      about: edge.node.Biography,
+      instagramname: edge.node.UserName,
+      ...edge.node
+    }
+    combinedEdges.push(newNode);
 
   })
 
@@ -80,19 +101,20 @@ const Index = ({ data }) => {
   //Now limiting the items as per limit
   const listEdges = _.slice(sortedEdges, 0, limit)
 
-  const featuredShopEdges = _.filter(edges, ({ node }) => node.tags && node.tags.indexOf("featured")>=0)
+  const featuredShopEdges = _.filter(edges, ({ node }) => node.tags && node.tags.indexOf("featured") >= 0)
   const combinedFeatureShopEdges = [];
   //Creating a new dataset with original nodes and required columns from DataView
   featuredShopEdges.map((edge) => {
-      let newNode = {
-        name: edge.node.FullName,
-        slug: edge.node.UserName,
-        about: edge.node.Biography,
-        instagramname: edge.node.UserName,
-        ...edge.node
-      }
-      combinedFeatureShopEdges.push(newNode);
+    let newNode = {
+      name: edge.node.FullName,
+      slug: edge.node.UserName,
+      about: edge.node.Biography,
+      instagramname: edge.node.UserName,
+      ...edge.node
+    }
+    combinedFeatureShopEdges.push(newNode);
   })
+  console.log(combinedFeatureShopEdges)
 
   return (
     <Layout title={'emprezzo | Discover the best online shopping sites & direct-to-consumer brands'} description="Discover the best online shopping sites & direct to consumer brands." >
@@ -107,35 +129,41 @@ const Index = ({ data }) => {
       </div>
 
       <ShopSectionHeading>Featured Shops</ShopSectionHeading>
-      <ShopWrapper>
+      <Carousel
+        swipeable={false}
+        draggable={false}
+        showDots={false}
+        responsive={responsive}
+        keyBoardControl={true}
+      >
         {combinedFeatureShopEdges.map((node, index) => (
-            <PostList
-              id={`post-${index}`}
-              key={index}
-              path={`/shops/${node.slug}`}
-              title={node.name}
-              excerpt={node.about && node.about.substring(0, 40) + "..."}
-              mysqldataview={rowDataViewEdges}
-              instagramname={node.instagramname}
-            />
+          <HomeCarouselItem
+            id={`post-${index}`}
+            key={index}
+            path={`/shops/${node.slug}`}
+            title={node.name}
+            cover={node.ProfilePicURL}
+            excerpt={node.about && node.about.substring(0, 40) + "..."}
+          />
         ))}
-      </ShopWrapper>
+      </Carousel>
 
       <ShopSectionHeading></ShopSectionHeading>
       <ShopWrapper>
         {listEdges.map((node, index) => (
-            <PostList
-              id={`post-${index}`}
-              key={index}
-              path={`/shops/${node.slug}`}
-              title={node.name}
-              excerpt={node.about && node.about.substring(0, 40) + "..."}
-              mysqldataview={rowDataViewEdges}
-              instagramname={node.instagramname}
-            />
+          <PostList
+            id={`post-${index}`}
+            key={index}
+            path={`/shops/${node.slug}`}
+            title={node.name}
+            excerpt={node.about && node.about.substring(0, 40) + "..."}
+            mysqldataview={rowDataViewEdges}
+            instagramname={node.instagramname}
+          />
         ))}
       </ShopWrapper>
-      {showMore && listEdges.length > 0 && listEdges.length < edges.length &&
+      {
+        showMore && listEdges.length > 0 && listEdges.length < edges.length &&
         <div className="center">
           <button className="button" onClick={increaseLimit}>
             Load More
@@ -143,15 +171,15 @@ const Index = ({ data }) => {
         </div>
       }
       <ShopWrapper>
-      <h3>Discover the best online shopping sites at Emprezzo</h3>
-      <p>There are endless options when shopping online, yet nothing seems like the right fit. Discover the best direct to consumer brands at Emprezzo.</p>
+        <h3>Discover the best online shopping sites at Emprezzo</h3>
+        <p>There are endless options when shopping online, yet nothing seems like the right fit. Discover the best direct to consumer brands at Emprezzo.</p>
 
-      <h3>What's the benefit of shopping direct-to-consumer brands?</h3>
-      <p>Direct to consumers stores connect diretly with their customer, which helps reduce costs paid to large reatilers and makertplaces. Marketplaces typically charge sellers for marketing, fulfillment, commission, and additional fees making it hard for stores to turn a profit without increasing costs.</p>
-      <h3>What are the best online shopping sites?</h3>
-      <p>Our lists are comprised of stores based on data from social media data, traffic data, and our own analysis. </p>
-    </ShopWrapper>
-    </Layout>
+        <h3>What's the benefit of shopping direct-to-consumer brands?</h3>
+        <p>Direct to consumers stores connect diretly with their customer, which helps reduce costs paid to large reatilers and makertplaces. Marketplaces typically charge sellers for marketing, fulfillment, commission, and additional fees making it hard for stores to turn a profit without increasing costs.</p>
+        <h3>What are the best online shopping sites?</h3>
+        <p>Our lists are compiled based on thousands of data points from social media platforms, trafic data, API tools, and our own research. We present our findings and listed based upon the data retreived. </p>
+      </ShopWrapper>
+    </Layout >
   );
 };
 

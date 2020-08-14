@@ -9,7 +9,7 @@ import _ from 'lodash';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import { Carousel } from 'react-responsive-carousel'
 import { useMediaQuery } from 'react-responsive'
-import { FaFacebookSquare, FaPinterestSquare, FaTwitterSquare, FaYoutube } from 'react-icons/fa';
+import { FaInstagram, FaFacebookSquare, FaPinterestSquare, FaTwitterSquare, FaYoutube } from 'react-icons/fa';
 
 import '../styles/prism';
 
@@ -106,6 +106,8 @@ const SingleItem = ({ data, pageContext }) => {
   const filteredDataView = _.filter(rowDataViewEdges, ({ node }) => node.AlexaURL == AlexaURL)
   const listPostEdges = _.slice(filteredDataView, 0, maxPosts);
   const firstRowDataView = listPostEdges && listPostEdges.length ? listPostEdges[0] : null;
+  //console.log("*********** firstRowDataView")
+  //console.log(firstRowDataView)
   //Now filtering instagram posts if the image or caption is not present
   const listInstaPostEdges = _.filter(listPostEdges, ({ node }) => (node.UniquePhotoLink))
   //console.log("*****++listInstaPostEdges+++********")
@@ -136,6 +138,7 @@ const SingleItem = ({ data, pageContext }) => {
   const renderProduct = (node, ismobile) => {
     return (
       <ViewCard key={node.ProductURL} style={{ padding: (ismobile && "15px") }}>
+        <h5 style={{textTransform: "capitalize"}}>{node.FreeShipText}</h5>
         <a href={node.ProductURL} target="_blank">
           <ViewImage>
             <div style={{ width: '100%', height: '150px' }}>
@@ -213,65 +216,98 @@ const SingleItem = ({ data, pageContext }) => {
         <Statistics>
           {FBLikes &&
             <StatisticItem>
-              <FaFacebookSquare size="32" color="black" />
+              <a href={socialDetails.FacebookLink} target="_blank"><FaFacebookSquare size="32" color="black" /></a>
+            </StatisticItem>
+          }
+          {FBLikes &&
+            <StatisticItem>
               <h5>{FBLikes}</h5>
               <h6>likes</h6>
             </StatisticItem>
           }
+          {(PinFollowers||PinFollowing) &&
+            <StatisticItem>
+              <a href={socialDetails.PinterestLink} target="_blank"><FaPinterestSquare size="32" color="black" /></a>
+            </StatisticItem>
+          }
           {PinFollowers &&
             <StatisticItem>
-              <FaPinterestSquare size="32" color="black" />
               <h5>{PinFollowers}</h5>
               <h6>followers</h6>
             </StatisticItem>
           }
           {PinFollowing &&
             <StatisticItem>
-              <FaPinterestSquare size="32" color="black" />
               <h5>{PinFollowing}</h5>
               <h6>following</h6>
             </StatisticItem>
           }
+          {(TTFollowers||TTFollowing||TTLikes) &&
+            <StatisticItem>
+              <a href={socialDetails.TikTokLink} target="_blank"><svg stroke="currentColor" fill="currentColor" style={{color:"black"}} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="32" height="32"><path fill="currentColor" d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"></path></svg></a>
+            </StatisticItem>
+          }
           {TTFollowers &&
             <StatisticItem>
-              <svg ariaHidden="true" focusable="false" dataPrefix="fab" dataIcon="tiktok" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="-200 0 900 512" className="svg-inline--fa fa-tiktok fa-w-14"><path fill="currentColor" d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"></path></svg>
               <h5>{TTFollowers}</h5>
               <h6>followers</h6>
             </StatisticItem>
           }
           {TTFollowing &&
             <StatisticItem>
-              <svg ariaHidden="true" focusable="false" dataPrefix="fab" dataIcon="tiktok" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="-200 0 900 512" className="svg-inline--fa fa-tiktok fa-w-14"><path fill="currentColor" d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"></path></svg>
               <h5>{TTFollowing}</h5>
               <h6>following</h6>
             </StatisticItem>
           }
           {TTLikes &&
             <StatisticItem>
-              <svg ariaHidden="true" focusable="false" dataPrefix="fab" dataIcon="tiktok" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="-200 0 900 512" className="svg-inline--fa fa-tiktok fa-w-14"><path fill="currentColor" d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"></path></svg>
               <h5>{TTLikes}</h5>
               <h6>likes</h6>
             </StatisticItem>
           }
+          {(TwitterFollowers||TwitterFollowing) &&
+            <StatisticItem>
+              <a href={socialDetails.TwitterLink} target="_blank"><FaTwitterSquare size="32" color="black" /></a>
+            </StatisticItem>
+          }
           {TwitterFollowers &&
             <StatisticItem>
-              <FaTwitterSquare size="32" color="black" />
               <h5>{TwitterFollowers}</h5>
               <h6>followers</h6>
             </StatisticItem>
           }
           {TwitterFollowing &&
             <StatisticItem>
-              <FaTwitterSquare size="32" color="black" />
               <h5>{TwitterFollowing}</h5>
               <h6>following</h6>
             </StatisticItem>
           }
           {YTSubs &&
             <StatisticItem>
-              <FaYoutube size="32" color="black" />
+              <a href={socialDetails.YouTubeLink} target="_blank"><FaYoutube size="32" color="black" /></a>
+            </StatisticItem>
+          }
+          {YTSubs &&
+            <StatisticItem>
               <h5>{YTSubs}</h5>
               <h6>subscribers</h6>
+            </StatisticItem>
+          }
+          {firstRowDataView && (firstRowDataView.node.FollowersCount||firstRowDataView.node.FollowingCount) &&
+            <StatisticItem>
+              <a href={socialDetails.InstagramLink} target="_blank"><FaInstagram size="32" color="black" /></a>
+            </StatisticItem>
+          }
+          {firstRowDataView && firstRowDataView.node.FollowersCount &&
+            <StatisticItem>
+              <h5>{firstRowDataView.node.FollowersCount}</h5>
+              <h6>followers</h6>
+            </StatisticItem>
+          }
+          {firstRowDataView && firstRowDataView.node.FollowingCount &&
+            <StatisticItem>
+              <h5>{firstRowDataView.node.FollowingCount}</h5>
+              <h6>following</h6>
             </StatisticItem>
           }
         </Statistics>
@@ -432,6 +468,7 @@ export const query = graphql`
           Description
           ImageURL
           Price
+          FreeShipText
         }
       }
     }
