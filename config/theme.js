@@ -1,23 +1,23 @@
 export const colors = {
   white: {
-    base: '#fff',
-    light: '#f0f0f0',
+    base: '#F3E8EE',
+    light: '#F3E8EE',
     grey: '#cecece',
-    dark: '#a0afd7',
+    dark: '#CCBCBC',
   },
   black: {
-    base: '#333438',
-    light: '#4b4e57',
-    blue: '#6f6add',
+    base: '#4B2840',
+    light: '#F1E3E4',
+    blue: '#C04CFD',
   },
   primary: {
-    base: '#6f6add',
-    light: '#3e5fbc',
-    dark: '#284187',
+    base: '#4B2840',
+    light: '#605b56',
+    dark: '#2b4162',
   },
   background: {
-    light: '#deddff',
-    dark: '#6f6add',
+    light: '#C04CFD',
+    dark: '#4B2840',
   },
 };
 

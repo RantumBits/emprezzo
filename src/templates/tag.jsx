@@ -37,9 +37,9 @@ const Tag = ({ data, pageContext }) => {
   const { posts, tagName } = pageContext;
   const upperTag = tagName.charAt(0).toUpperCase() + tagName.slice(1);
   const title = "Tag: " + tagName;
-  const description = `shop ${tagName} stores. What are the best ${tagName} online stores? Discover the most popular direct to consumer ${tagName} stores on emprezzo.`
+  const description = `Discover the most popular direct to consumer ${tagName} stores on emprezzo.`
   const listEdges = [];
-  const maxItems = 12;
+  const maxItems = 15;
   const [limit, setLimit] = React.useState(maxItems);
   const [showMore, setShowMore] = React.useState(true);
 
@@ -113,4 +113,3 @@ export const query = graphql`
     }
   }
 `;
-

@@ -113,7 +113,7 @@ const NavBar = () => {
       <NavWrapper>
         <Nav>
         <div className="dropdown">
-          <Link to="/shops">Discover </Link>
+          <Link to="">Discover </Link>
           <div className="dropdown-content">
               <Link key="2" to="/top-shopify-stores">Top Shopify stores</Link>
               <Link key="3" to="/amazon-alternatives">Amazon alternatives</Link>

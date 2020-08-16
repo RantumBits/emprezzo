@@ -64,6 +64,7 @@ const Image = styled.div`
   left: 0;
   bottom: 0;
   z-index: 1;
+  padding: 10%;
   object-fit: cover;
   text-align: center;
   border-radius: ${props => props.theme.borderRadius.default};

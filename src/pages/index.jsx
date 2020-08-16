@@ -59,7 +59,7 @@ const CarouselWrapper = styled.div`
 
 const Index = ({ data }) => {
   const { edges } = data.allMysqlMainView;
-  const maxItems = 15;
+  const maxItems = 25;
   const [limit, setLimit] = React.useState(maxItems);
   const [showMore, setShowMore] = React.useState(true);
 
@@ -132,14 +132,20 @@ const Index = ({ data }) => {
 
       {/* <p className="center"><a href ="/randomshop" className="button button">Discover a  shop</a></p> */}
       <div className="center">
-        🧐 Discover the best online shopping sites<br />🛒 Shop direct-to-consumer brands
+        🧐 Discover the best online shopping sites<br />🛒 Shop direct-to-consumer brands<br/>
+
+      </div>
+      <div className="center">
+
+          <a href="/randomshop/" className="button ">Discover a shop</a>
       </div>
       <div className="search_main">
         <Search collapse homepage indices={searchIndices} />
       </div>
 
-      <ShopSectionHeading>Featured Shops</ShopSectionHeading>
+
       <CarouselWrapper>
+      <h3>Featured Shops</h3>
         <Carousel
           swipeable={false}
           draggable={false}
@@ -160,8 +166,11 @@ const Index = ({ data }) => {
         </Carousel>
       </CarouselWrapper>
 
-      <ShopSectionHeading></ShopSectionHeading>
+
+
       <CarouselWrapper>
+      <h3>Popular Shopify stores</h3>
+      Discover some of the <a href="/top-shopify-stores">top Shopify stores</a> by social medial follower counts
         <Carousel
           swipeable={false}
           draggable={false}
@@ -181,14 +190,7 @@ const Index = ({ data }) => {
           ))}
         </Carousel>
       </CarouselWrapper>
-      {
-        showMore && listEdges.length > 0 && listEdges.length < edges.length &&
-        <div className="center">
-          <button className="button" onClick={increaseLimit}>
-            Load More
-          </button>
-        </div>
-      }
+
       <ShopWrapper>
         <h3>Discover the best online shopping sites at Emprezzo</h3>
         <p>There are endless options when shopping online, yet nothing seems like the right fit. Discover the best direct to consumer brands at Emprezzo.</p>

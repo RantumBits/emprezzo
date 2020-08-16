@@ -40,6 +40,7 @@ const Subtitle = styled.h5`
   @media (max-width: ${props => props.theme.breakpoints.s}) {
     font-size: 0.7rem;
   }
+  font-family: 'Overpass Mono','Consolas','Open Sans',-apple-system,'BlinkMacSystemFont','Segoe UI','Roboto','Helvetica','Arial',sans-serif;
 `;
 
 const Statistics = styled.div`
@@ -62,6 +63,8 @@ const StatisticItem = styled.div`
   }
   h5, h6 {
     margin: 0px;
+    font-size: .7em;
+    font-family: 'Overpass Mono','Consolas','Open Sans',-apple-system,'BlinkMacSystemFont','Segoe UI','Roboto','Helvetica','Arial',sans-serif;
   }
 `;
 
@@ -224,7 +227,7 @@ const SingleItem = ({ data, pageContext }) => {
           {FBLikes &&
             <StatisticItem>
               <h5>{FBLikes}</h5>
-              <h6>likes</h6>
+              <h6>fans</h6>
             </StatisticItem>
           }
           {(PinFollowers || PinFollowing) &&
