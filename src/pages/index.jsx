@@ -47,6 +47,16 @@ const ShopWrapper = styled.div`
   }
 `;
 
+const CarouselWrapper = styled.div`
+  margin: 1rem 4rem 1rem 3rem;
+  @media (max-width: 1000px) {
+    margin: 1rem;
+  }
+  @media (max-width: 700px) {
+    margin: 1rem;
+  }
+`;
+
 const Index = ({ data }) => {
   const { edges } = data.allMysqlMainView;
   const maxItems = 15;
@@ -129,39 +139,48 @@ const Index = ({ data }) => {
       </div>
 
       <ShopSectionHeading>Featured Shops</ShopSectionHeading>
-      <Carousel
-        swipeable={false}
-        draggable={false}
-        showDots={false}
-        responsive={responsive}
-        keyBoardControl={true}
-      >
-        {combinedFeatureShopEdges.map((node, index) => (
-          <HomeCarouselItem
-            id={`post-${index}`}
-            key={index}
-            path={`/shops/${node.slug}`}
-            title={node.name}
-            cover={node.ProfilePicURL}
-            excerpt={node.about && node.about.substring(0, 40) + "..."}
-          />
-        ))}
-      </Carousel>
+      <CarouselWrapper>
+        <Carousel
+          swipeable={false}
+          draggable={false}
+          showDots={false}
+          responsive={responsive}
+          keyBoardControl={true}
+        >
+          {combinedFeatureShopEdges.map((node, index) => (
+            <HomeCarouselItem
+              id={`post-${index}`}
+              key={index}
+              path={`/shops/${node.UserName}`}
+              title={node.name}
+              cover={node.ProfilePicURL}
+              excerpt={node.about && node.about.substring(0, 40) + "..."}
+            />
+          ))}
+        </Carousel>
+      </CarouselWrapper>
 
       <ShopSectionHeading></ShopSectionHeading>
-      <ShopWrapper>
-        {listEdges.map((node, index) => (
-          <PostList
-            id={`post-${index}`}
-            key={index}
-            path={`/shops/${node.slug}`}
-            title={node.name}
-            excerpt={node.about && node.about.substring(0, 40) + "..."}
-            mysqldataview={rowDataViewEdges}
-            instagramname={node.instagramname}
-          />
-        ))}
-      </ShopWrapper>
+      <CarouselWrapper>
+        <Carousel
+          swipeable={false}
+          draggable={false}
+          showDots={false}
+          responsive={responsive}
+          keyBoardControl={true}
+        >
+          {listEdges.map((node, index) => (
+            <HomeCarouselItem
+              id={`post-${index}`}
+              key={index}
+              path={`/shops/${node.slug}`}
+              title={node.name}
+              cover={node.ProfilePicURL}
+              excerpt={node.about && node.about.substring(0, 40) + "..."}
+            />
+          ))}
+        </Carousel>
+      </CarouselWrapper>
       {
         showMore && listEdges.length > 0 && listEdges.length < edges.length &&
         <div className="center">

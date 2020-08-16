@@ -46,6 +46,9 @@ const Statistics = styled.div`
   display: flex;
   margin-bottom: 15px;
   padding: 5px;
+  @media (max-width: ${props => props.theme.breakpoints.s}) {
+    display: block;
+  }
 `;
 
 const StatisticItem = styled.div`
@@ -55,6 +58,7 @@ const StatisticItem = styled.div`
   @media (max-width: ${props => props.theme.breakpoints.s}) {
     font-size: 1rem;
     margin-right: 10px;
+    padding-bottom: 5px;
   }
   h5, h6 {
     margin: 0px;
@@ -69,7 +73,7 @@ const StatisticIcon = styled.img`
 const ViewContainer = styled.section`
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   width: 100%;
   gap:10px;
 `;
@@ -91,7 +95,7 @@ const ViewInfo = styled.div`
 
 const SingleItem = ({ data, pageContext }) => {
   const { next, prev } = pageContext;
-  const { AlexaURL, Facebook, FollowerRate, GlobalRank, Instagram, LocalRank, Pinterest, PostRate, ProfilePicURL, TOS, TikTok, Twitter, UserID, UserName, YouTube, activity, category, tags, FullName, Biography, FBLikes, PinFollowers, PinFollowing, TTFollowers, TTFollowing, TTLikes, TwitterFollowers, TwitterFollowing, YTSubs } = data.mysqlMainView;
+  const { AlexaURL, Facebook, FollowerRate, GlobalRank, Instagram, LocalRank, Pinterest, PostRate, ProfilePicURL, TOS, TikTok, Twitter, UserID, UserName, YouTube, activity, category, tags, FullName, Biography, FBLikes, PinFollowers, PinFollowing, TTFollowers, TTFollowing, TTLikes, TwitterFollowers, TwitterFollowing, YTSubs, name, about, promos } = data.mysqlMainView;
 
   const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
   //console.log("****** isMobile = " + isMobile)
@@ -132,13 +136,11 @@ const SingleItem = ({ data, pageContext }) => {
   }
 
   let subtitle = "<div>" + ((firstRowDataView && firstRowDataView.node.AlexaCountry) || "") + "</div>"
-  let about = Biography
-  let name = FullName
+  let FreeShipText = "";
 
   const renderProduct = (node, ismobile) => {
     return (
       <ViewCard key={node.ProductURL} style={{ padding: (ismobile && "15px") }}>
-        <h5 style={{textTransform: "capitalize"}}>{node.FreeShipText}</h5>
         <a href={node.ProductURL} target="_blank">
           <ViewImage>
             <div style={{ width: '100%', height: '150px' }}>
@@ -225,7 +227,7 @@ const SingleItem = ({ data, pageContext }) => {
               <h6>likes</h6>
             </StatisticItem>
           }
-          {(PinFollowers||PinFollowing) &&
+          {(PinFollowers || PinFollowing) &&
             <StatisticItem>
               <a href={socialDetails.PinterestLink} target="_blank"><FaPinterestSquare size="32" color="black" /></a>
             </StatisticItem>
@@ -242,9 +244,9 @@ const SingleItem = ({ data, pageContext }) => {
               <h6>following</h6>
             </StatisticItem>
           }
-          {(TTFollowers||TTFollowing||TTLikes) &&
+          {(TTFollowers || TTFollowing || TTLikes) &&
             <StatisticItem>
-              <a href={socialDetails.TikTokLink} target="_blank"><svg stroke="currentColor" fill="currentColor" style={{color:"black"}} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="32" height="32"><path fill="currentColor" d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"></path></svg></a>
+              <a href={socialDetails.TikTokLink} target="_blank"><svg stroke="currentColor" fill="currentColor" style={{ color: "black" }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="32" height="32"><path fill="currentColor" d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"></path></svg></a>
             </StatisticItem>
           }
           {TTFollowers &&
@@ -265,7 +267,7 @@ const SingleItem = ({ data, pageContext }) => {
               <h6>likes</h6>
             </StatisticItem>
           }
-          {(TwitterFollowers||TwitterFollowing) &&
+          {(TwitterFollowers || TwitterFollowing) &&
             <StatisticItem>
               <a href={socialDetails.TwitterLink} target="_blank"><FaTwitterSquare size="32" color="black" /></a>
             </StatisticItem>
@@ -293,7 +295,7 @@ const SingleItem = ({ data, pageContext }) => {
               <h6>subscribers</h6>
             </StatisticItem>
           }
-          {firstRowDataView && (firstRowDataView.node.FollowersCount||firstRowDataView.node.FollowingCount) &&
+          {firstRowDataView && (firstRowDataView.node.FollowersCount || firstRowDataView.node.FollowingCount) &&
             <StatisticItem>
               <a href={socialDetails.InstagramLink} target="_blank"><FaInstagram size="32" color="black" /></a>
             </StatisticItem>
@@ -315,6 +317,10 @@ const SingleItem = ({ data, pageContext }) => {
         {/* List of Products from MySQL View */}
         {listProductEdges && listProductEdges.length > 0 && <h3>shop {name}</h3>}
 
+        {promos && promos.toLowerCase()!="n/a" &&
+          <><Content input={promos} /><br /></>
+        }
+
         {/* Show carousel for mobile version */}
         {isMobile &&
           <Carousel
@@ -326,7 +332,8 @@ const SingleItem = ({ data, pageContext }) => {
             showStatus={false}
           >
             {listProductEdges && listProductEdges.map(({ node }) => {
-              return renderProduct(node, true)
+              FreeShipText = node.FreeShipText;
+              return renderProduct(node, true);
             })}
           </Carousel>
         }
@@ -335,13 +342,17 @@ const SingleItem = ({ data, pageContext }) => {
         {!isMobile &&
           <ViewContainer>
             {listProductEdges.map(({ node }) => {
-              return renderProduct(node)
+              FreeShipText = node.FreeShipText;
+              return renderProduct(node);
             })}
           </ViewContainer>
         }
+        <h5 style={{ textTransform: "capitalize" }}>{FreeShipText}</h5>
         <br />
+
         {/* List of Posts from MySQL View */}
         {listInstaPostEdges && listInstaPostEdges.length > 0 && <h3>instagram posts</h3>}
+        <Content input={Biography} /><br />
 
         {/* Show carousel for mobile version */}
         {isMobile &&
@@ -425,6 +436,9 @@ export const query = graphql`
       TwitterFollowers
       TwitterFollowing
       YTSubs
+      name
+      about
+      promos
     }
     allMysqlDataView  (filter: {AlexaURL: {eq: $pathSlug}}) {
       edges {

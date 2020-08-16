@@ -4,12 +4,12 @@ import styled from '@emotion/styled';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import { Header } from 'components';
-import PostList5Col from '../components/PostList5Col';
-import ProductList from '../components/ProductList';
+import ProductCategoryItem from '../components/ProductCategoryItem';
 import { Layout } from 'layouts';
 import _ from 'lodash';
-import 'react-responsive-carousel/lib/styles/carousel.min.css'
-import { Carousel } from 'react-responsive-carousel'
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
+
 import { useMediaQuery } from 'react-responsive'
 
 const CategoryHeading = styled.h1`
@@ -46,12 +46,40 @@ const SearchWrapper = styled.div`
   }
 `;
 
+const CarouselWrapper = styled.div`
+  margin: 1rem 4rem 1rem 3rem;
+  @media (max-width: 1000px) {
+    margin: 1rem;
+  }
+  @media (max-width: 700px) {
+    margin: 1rem;
+  }
+`;
+
 const Products = ({ data, pageContext }) => {
   const rowProductsEdges = data.allMysqlProducts.edges;
   const maxItems = 9;
   const [limit, setLimit] = React.useState(maxItems);
   const [filter, setFilter] = React.useState([]);
   const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
+
+  const responsive = {
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 5,
+      slidesToSlide: 5 // optional, default to 1.
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 2,
+      slidesToSlide: 2 // optional, default to 1.
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1,
+      slidesToSlide: 1 // optional, default to 1.
+    }
+  };
   
   const increaseLimit = (allEdges) => {
     setLimit(limit + maxItems);
@@ -87,7 +115,9 @@ const Products = ({ data, pageContext }) => {
   const mainViewEdges = data.allMysqlMainView.edges;
   //get featured shops
   const featuredShopEdges = _.filter(mainViewEdges, ({ node }) => node.tags && node.tags.indexOf("featured")>=0)
-  const filteredProducts = checkEdgesInProductView(featuredShopEdges)
+  
+  //if filter is present then filter and show from all products, else just show products from featured shops
+  const filteredProducts = (filter && filter.length>3)?checkEdgesInProductView(mainViewEdges):checkEdgesInProductView(featuredShopEdges);
 
   //Now limiting the items as per limit
   const visibleProducts = _.slice(filteredProducts, 0, limit);
@@ -106,18 +136,16 @@ const Products = ({ data, pageContext }) => {
                 }}
               />
             </SearchWrapper>
-            {/* Show carousel for mobile version */}
-            {isMobile &&
+            <CarouselWrapper>
               <Carousel
-                showThumbs={false}
-                infiniteLoop
-                showIndicators={false}
-                selectedItem={1}
-                showArrows={true}
-                showStatus={false}
-              >
+                swipeable={false}
+                draggable={false}
+                showDots={false}
+                responsive={responsive}
+                keyBoardControl={true}
+                >
                 {visibleProducts.map(({ node }, index) => (
-                  <ProductList
+                  <ProductCategoryItem
                     key={index}
                     cover={getProductImage(node)}
                     path={`/shops/${node.UserName}`}
@@ -128,24 +156,7 @@ const Products = ({ data, pageContext }) => {
                   />
                 ))}
               </Carousel>
-            }
-
-            {/* Show normal version */}
-            {!isMobile &&
-              <CategoryWrapper>
-                {visibleProducts.map(({ node }, index) => (
-                  <ProductList
-                    key={index}
-                    cover={getProductImage(node)}
-                    path={`/shops/${node.UserName}`}
-                    vendorname={node.VendorName}
-                    title={node.Title}
-                    variant={getProductVariant(node)}
-                    price={node.Price}
-                  />
-                ))}
-              </CategoryWrapper>
-            }
+            </CarouselWrapper>
             {visibleProducts.length > 0 && visibleProducts.length < filteredProducts.length &&
               <div className="center">
                 <button className="button" onClick={increaseLimit}>

@@ -53,6 +53,17 @@ const TableStickyHeader = styled.table`
     z-index: 2;
     width: auto;
     background-color: white;
+    @media (max-width: ${props => props.theme.breakpoints.s}) {
+      padding-left: 0.2rem;
+      padding-right: 0.2rem;
+    }    
+  }
+
+  tbody>tr>td {
+    @media (max-width: ${props => props.theme.breakpoints.s}) {
+      padding-left: 0.2rem;
+      padding-right: 0.2rem;
+    }
   }
 `;
 
@@ -106,6 +117,7 @@ const StoresWithPaypal = ({ data }) => {
             <TableStickyHeader>
               <thead>
                 <tr>
+                  <th>#</th>
                   <th>Store</th>
                   <th></th>
                   {!isMobile &&
@@ -125,14 +137,15 @@ const StoresWithPaypal = ({ data }) => {
               <tbody>
                 {listEdges.map((node, index) => (
                   <tr key={index} id={`post-${index}`}>
+                    <td>{index + 1}</td>
                     <td>
                       {node.ProfilePicURL &&
-                        <Link to={`/shops/${node.slug}`}>
+                        <Link to={`/shops/${node.UserName}`}>
                           <img src={node.ProfilePicURL} className="profileimage" style={{ width: "50px", margin: '0px' }} title={node.name + ' is on Shopify'} alt={node.name + ' is on Shopify'} />
                         </Link>
                       }
                     </td>
-                    <td><Link to={`/shops/${node.slug}`} title={node.about}>{node.name}</Link></td>
+                    <td><Link to={`/shops/${node.UserName}`} title={node.FullName}>{node.FullName}</Link></td>
                     {!isMobile &&
                       <>
                         <td>{node.GlobalRank}</td>

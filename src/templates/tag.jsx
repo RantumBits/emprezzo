@@ -37,6 +37,7 @@ const Tag = ({ data, pageContext }) => {
   const { posts, tagName } = pageContext;
   const upperTag = tagName.charAt(0).toUpperCase() + tagName.slice(1);
   const title = "Tag: " + tagName;
+  const description = `shop ${tagName} stores. What are the best ${tagName} online stores? Discover the most popular direct to consumer ${tagName} stores on emprezzo.`
   const listEdges = [];
   const maxItems = 12;
   const [limit, setLimit] = React.useState(maxItems);
@@ -59,9 +60,10 @@ const Tag = ({ data, pageContext }) => {
     <Layout>
       <SEO
         title={`${title} | ${config.title}`}
+        description={description}
       />
       <Header title={upperTag}>
-        Browse indepent online {upperTag} stores selling directly to consumers
+        {description}
       </Header>
         <TagWrapper>
           {listEdges.map((node) => (

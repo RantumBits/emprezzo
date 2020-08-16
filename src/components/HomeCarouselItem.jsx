@@ -90,7 +90,7 @@ const Title = styled.h2`
   margin-bottom: 0.6rem;
 `;
 
-const PostList5Col = ({ id, cover, path, date, title, excerpt }) => {
+const HomeCarouselItem = ({ id, cover, path, date, title, excerpt }) => {
 
   return (
     <Wrapper id={id}>
@@ -113,4 +113,4 @@ const PostList5Col = ({ id, cover, path, date, title, excerpt }) => {
   );
 }
 
-export default PostList5Col;
+export default HomeCarouselItem;

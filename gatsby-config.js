@@ -94,7 +94,7 @@ module.exports = {
             name: 'Tags'
           },
           {
-            statement: 'SELECT RankView_Pages.*, Tags.*, SocialIDView.* FROM RankView_Pages LEFT JOIN Tags ON RankView_Pages.AlexaURL = Tags.url LEFT JOIN SocialIDView ON RankView_Pages.AlexaURL = SocialIDView.URL',
+            statement: "SELECT RankView_Pages.*, Tags.*, SocialIDView.* FROM RankView_Pages LEFT JOIN Tags ON TRIM(TRAILING '/' FROM RankView_Pages.AlexaURL) = TRIM(TRAILING '/' FROM Tags.url) LEFT JOIN SocialIDView ON TRIM(TRAILING '/' FROM RankView_Pages.AlexaURL) = TRIM(TRAILING '/' FROM SocialIDView.URL)",
             idFieldName: 'AlexaURL',
             name: 'MainView'
           }
