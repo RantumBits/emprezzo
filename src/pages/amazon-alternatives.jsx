@@ -56,7 +56,7 @@ const TableStickyHeader = styled.table`
     @media (max-width: ${props => props.theme.breakpoints.s}) {
       padding-left: 0.2rem;
       padding-right: 0.2rem;
-    }    
+    }
   }
 
   tbody>tr>td {
@@ -122,8 +122,11 @@ const AmazonAlternatives = ({ data }) => {
                   <th>Store</th>
                   <th></th>
                   {!isMobile &&
+                    <th>TrafficRank</th>
+                  }
+                  <th>SocialScore</th>
+                  {!isMobile &&
                     <>
-                      <th>LocalRank</th>
                       <th>Pinterest</th>
                       <th>Instagram</th>
                       <th>Twitter</th>
@@ -132,7 +135,6 @@ const AmazonAlternatives = ({ data }) => {
                       <th>Youtube</th>
                     </>
                   }
-                  <th>Activity</th>
                 </tr>
               </thead>
               <tbody>
@@ -146,10 +148,13 @@ const AmazonAlternatives = ({ data }) => {
                         </Link>
                       }
                     </td>
-                    <td><Link to={`/shops/${node.UserName}`}>{node.FullName}</Link></td>
+                    <td><Link to={`/shops/${node.UserName}`}>{node.name}</Link></td>
+                    {!isMobile &&
+                      <td>{node.LocalRank}</td>
+                    }
+                    <td>{node.activity}</td>
                     {!isMobile &&
                       <>
-                        <td>{node.LocalRank}</td>
                         <td>{node.PinFollowers || "-"}</td>
                         <td>{node.FollowersCount || "-"}</td>
                         <td>{node.TwitterFollowers || "-"}</td>
@@ -158,7 +163,6 @@ const AmazonAlternatives = ({ data }) => {
                         <td>{node.YTSubs || "-"}</td>
                       </>
                     }
-                    <td>{node.activity}</td>
                   </tr>
                 ))}
               </tbody>
@@ -205,6 +209,7 @@ export const query = graphql`
           TTFollowers
           TwitterFollowers
           YTSubs
+          name
         }
       }
     }

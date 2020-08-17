@@ -116,9 +116,7 @@ const Index = ({ data }) => {
   //Creating a new dataset with original nodes and required columns from DataView
   featuredShopEdges.map((edge) => {
     let newNode = {
-      name: edge.node.FullName,
       slug: edge.node.UserName,
-      about: edge.node.Biography,
       instagramname: edge.node.UserName,
       ...edge.node
     }
@@ -256,6 +254,8 @@ export const query = graphql`
           tags
           FullName
           Biography
+          name
+          about
         }
       }
     }

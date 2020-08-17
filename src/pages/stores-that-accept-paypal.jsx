@@ -56,7 +56,7 @@ const TableStickyHeader = styled.table`
     @media (max-width: ${props => props.theme.breakpoints.s}) {
       padding-left: 0.2rem;
       padding-right: 0.2rem;
-    }    
+    }
   }
 
   tbody>tr>td {
@@ -121,8 +121,11 @@ const StoresWithPaypal = ({ data }) => {
                   <th>Store</th>
                   <th></th>
                   {!isMobile &&
+                    <th>TrafficRank</th>
+                  }
+                  <th>SocialScore</th>
+                  {!isMobile &&
                     <>
-                      <th>GlobalRank</th>
                       <th>Pinterest</th>
                       <th>Instagram</th>
                       <th>Twitter</th>
@@ -131,7 +134,6 @@ const StoresWithPaypal = ({ data }) => {
                       <th>Youtube</th>
                     </>
                   }
-                  <th>Activity</th>
                 </tr>
               </thead>
               <tbody>
@@ -145,10 +147,13 @@ const StoresWithPaypal = ({ data }) => {
                         </Link>
                       }
                     </td>
-                    <td><Link to={`/shops/${node.UserName}`} title={node.FullName}>{node.FullName}</Link></td>
+                    <td><Link to={`/shops/${node.UserName}`} title={node.name}>{node.name}</Link></td>
+                    {!isMobile &&
+                      <td>{node.GlobalRank}</td>
+                    }
+                    <td>{node.activity}</td>
                     {!isMobile &&
                       <>
-                        <td>{node.GlobalRank}</td>
                         <td>{node.PinFollowers || "-"}</td>
                         <td>{node.FollowersCount || "-"}</td>
                         <td>{node.TwitterFollowers || "-"}</td>
@@ -157,7 +162,6 @@ const StoresWithPaypal = ({ data }) => {
                         <td>{node.YTSubs || "-"}</td>
                       </>
                     }
-                    <td>{node.activity}</td>
                   </tr>
                 ))}
               </tbody>
@@ -202,6 +206,7 @@ export const query = graphql`
             TTFollowers
             TwitterFollowers
             YTSubs
+            name
         }
       }
     }

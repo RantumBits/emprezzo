@@ -121,7 +121,7 @@ const ProductCategoryItem = ({ path, cover, title, vendorname, variant, price })
                     <Img fluid={cover || {} || [] || ''} />
                 }
                 {cover && typeof cover === 'string' &&
-                    <img src={cover || {} || [] || ''} style={{ height: '100%', objectFit: 'fill' }} />
+                    <img src={cover || {} || [] || ''} style={{ objectFit: 'fill' }} />
                 }
             </a>
         </Image>

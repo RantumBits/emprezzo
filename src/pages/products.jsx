@@ -58,10 +58,11 @@ const CarouselWrapper = styled.div`
 
 const Products = ({ data, pageContext }) => {
   const rowProductsEdges = data.allMysqlProducts.edges;
-  const maxItems = 9;
-  const [limit, setLimit] = React.useState(maxItems);
+  const maxFeaturedItems = 9;
+  const [limit, setLimit] = React.useState(maxFeaturedItems);
   const [filter, setFilter] = React.useState([]);
   const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
+  const maxItems = 15;
 
   const responsive = {
     desktop: {
@@ -80,18 +81,18 @@ const Products = ({ data, pageContext }) => {
       slidesToSlide: 1 // optional, default to 1.
     }
   };
-  
+
   const increaseLimit = (allEdges) => {
-    setLimit(limit + maxItems);
+    setLimit(limit + maxFeaturedItems);
   }
 
   const checkEdgesInProductView = (allEdges) => {
     let filteredProducts = [];
     allEdges.map((edge) => {
       const inputID = edge.node.UserName;
-      const result = _.filter(rowProductsEdges, ({ node }) => node.UserName == inputID)      
+      const result = _.filter(rowProductsEdges, ({ node }) => node.UserName == inputID && node.Price > 20 && node.Title.toLowerCase().indexOf("gift") < 0 && node.Title.toLowerCase().indexOf("test") < 0 && node.Title.toLowerCase().indexOf("shipping") < 0)
       const max2Results = _.slice(result,0,2);//max 2 products from a store
-      filteredProducts = _.union(filteredProducts, max2Results) 
+      filteredProducts = _.union(filteredProducts, max2Results)
     });
     //apply filtertext if its greater than 3 characters
     if(filter && filter.length>3){
@@ -115,11 +116,16 @@ const Products = ({ data, pageContext }) => {
   const mainViewEdges = data.allMysqlMainView.edges;
   //get featured shops
   const featuredShopEdges = _.filter(mainViewEdges, ({ node }) => node.tags && node.tags.indexOf("featured")>=0)
-  
-  //if filter is present then filter and show from all products, else just show products from featured shops
-  const filteredProducts = (filter && filter.length>3)?checkEdgesInProductView(mainViewEdges):checkEdgesInProductView(featuredShopEdges);
 
-  //Now limiting the items as per limit
+  //if filter is present then filter and show from all products, else just show products from featured shops
+  const filteredFeaturedProducts = (filter && filter.length>3)?checkEdgesInProductView(mainViewEdges):checkEdgesInProductView(featuredShopEdges);
+
+  //Now limiting the featured items as per limit
+  const visibleFeaturedProducts = _.slice(filteredFeaturedProducts, 0, limit);
+
+  const filteredProducts = checkEdgesInProductView(mainViewEdges);
+
+  //Now limiting the featured items as per limit
   const visibleProducts = _.slice(filteredProducts, 0, limit);
 
   return (
@@ -128,14 +134,37 @@ const Products = ({ data, pageContext }) => {
           <div>
             <CategoryHeading>Shopify Products</CategoryHeading>
             <SearchWrapper>
-              Search 
-              <input 
-                placeholder="filter products"  
+              Search
+              <input
+                placeholder="filter products"
                 onChange={({ target: { value } }) => {
                   setFilter(value);
                 }}
               />
             </SearchWrapper>
+            <CarouselWrapper>
+              <Carousel
+                swipeable={false}
+                draggable={false}
+                showDots={false}
+                responsive={responsive}
+                keyBoardControl={true}
+                >
+                {visibleFeaturedProducts.map(({ node }, index) => (
+                  <ProductCategoryItem
+                    key={index}
+                    cover={getProductImage(node)}
+                    path={`/shops/${node.UserName}`}
+                    vendorname={node.VendorName}
+                    title={node.Title}
+                    variant={getProductVariant(node)}
+                    price={node.Price}
+                  />
+                ))}
+              </Carousel>
+            </CarouselWrapper>
+
+            <CategoryHeading>Recent Products</CategoryHeading>
             <CarouselWrapper>
               <Carousel
                 swipeable={false}
@@ -157,13 +186,6 @@ const Products = ({ data, pageContext }) => {
                 ))}
               </Carousel>
             </CarouselWrapper>
-            {visibleProducts.length > 0 && visibleProducts.length < filteredProducts.length &&
-              <div className="center">
-                <button className="button" onClick={increaseLimit}>
-                  Load More
-                </button>
-              </div>
-            }
           </div>
     </Layout>
   );
