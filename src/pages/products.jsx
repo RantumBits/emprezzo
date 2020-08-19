@@ -58,11 +58,11 @@ const CarouselWrapper = styled.div`
 
 const Products = ({ data, pageContext }) => {
   const rowProductsEdges = data.allMysqlProducts.edges;
-  const maxFeaturedItems = 9;
+  const maxFeaturedItems = 25;
   const [limit, setLimit] = React.useState(maxFeaturedItems);
   const [filter, setFilter] = React.useState([]);
   const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
-  const maxItems = 15;
+  const maxItems = 25;
 
   const responsive = {
     desktop: {
