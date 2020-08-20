@@ -1,6 +1,17 @@
 const path = require('path');
 const _ = require("lodash");
 
+/*
+exports.createSchemaCustomization = ({ actions }) => {
+  const { createTypes } = actions
+  createTypes(`
+    type MysqlDataView implements Node {
+      mysqlImage: File
+    }
+  `)
+}
+*/
+
 exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions;
 
@@ -92,12 +103,21 @@ exports.createPages = ({ graphql, actions }) => {
         });
         const tags = Object.keys(postsByTag);
 
+        //Create All Tags page
+        createPage({
+          path: '/alltags',
+          component: alltagsPage,
+          context: {
+            tags: tags.sort(),
+          },
+        });
+
         //create tags
         tags.forEach(tagName => {
           const posts = postsByTag[tagName];
 
           createPage({
-            path: `/tags/${tagName.trim()}`,
+            path: `/tags/${_.kebabCase(tagName.trim())}`,
             component: tagPosts,
             context: {
               posts,
