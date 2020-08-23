@@ -7,6 +7,7 @@ import { Layout, Container } from 'layouts';
 import { Header, SEO } from 'components';
 import PostList from '../components/PostList';
 import config from '../../config/site';
+import _ from 'lodash';
 
 const StyledLink = styled(Link)`
   color: ${props => props.theme.colors.white.light};
@@ -47,8 +48,11 @@ const Tag = ({ data, pageContext }) => {
       setLimit(limit + maxItems);
   }
 
+  //Now sorting (desc) based on FollowerRate
+  var sortedEdges = _.sortBy(posts, obj => -obj.FollowerRate)
+
   //filtering as per limit
-  posts.map((node) => {
+  sortedEdges.map((node) => {
     if (listEdges.length < limit) {
       listEdges.push(node);
     }
@@ -69,8 +73,8 @@ const Tag = ({ data, pageContext }) => {
           {listEdges.map((node) => (
             <PostList
               key={node.UserName}
-              title={node.FullName}
-              excerpt={node.Biography}
+              title={node.name}
+              excerpt={node.about}
               path={`/shops/${node.UserName}`}
               mysqldataview={rowDataViewEdges}
               instagramname={node.UserName}

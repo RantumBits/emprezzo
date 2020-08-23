@@ -99,7 +99,7 @@ const AmazonAlternatives = ({ data }) => {
   })
 
   //Now sorting (asc) based on LocalRank
-  var sortedEdges = _.sortBy(combinedEdges, obj => obj.LocalRank)
+  var sortedEdges = _.sortBy(combinedEdges, obj => -obj.FollowerRate)
 
   //Now limiting the items as per limit
   const listEdges = _.slice(sortedEdges, 0, limit)
@@ -124,7 +124,7 @@ const AmazonAlternatives = ({ data }) => {
                   {!isMobile &&
                     <th>TrafficRank</th>
                   }
-                  <th>SocialScore</th>
+                  <th>FollowerRate</th>
                   {!isMobile &&
                     <>
                       <th>Pinterest</th>
@@ -152,7 +152,7 @@ const AmazonAlternatives = ({ data }) => {
                     {!isMobile &&
                       <td>{node.LocalRank}</td>
                     }
-                    <td>{node.activity}</td>
+                    <td>{node.FollowerRate}</td>
                     {!isMobile &&
                       <>
                         <td>{node.PinFollowers || "-"}</td>

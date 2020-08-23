@@ -95,9 +95,9 @@ const Index = ({ data }) => {
   //Creating a new dataset with original nodes and required columns from DataView
   edges.map((edge) => {
     let newNode = {
-      name: edge.node.FullName,
+      name: edge.node.name,
       slug: edge.node.UserName,
-      about: edge.node.Biography,
+      about: edge.node.about,
       instagramname: edge.node.UserName,
       ...edge.node
     }
@@ -105,8 +105,8 @@ const Index = ({ data }) => {
 
   })
 
-  //Now sorting (desc) based on activity
-  var sortedEdges = _.sortBy(combinedEdges, obj => -obj.activity)
+  //Now sorting (desc) based on FollowerRate
+  var sortedEdges = _.sortBy(combinedEdges, obj => -obj.FollowerRate)
 
   //Now limiting the items as per limit
   const listEdges = _.slice(sortedEdges, 0, limit)

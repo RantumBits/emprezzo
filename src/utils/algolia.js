@@ -3,10 +3,10 @@ const shopQuery = `{
     edges {
       node {
         objectID: UserName
-        title: FullName
+        title: name
         slug: UserName
-        tags
-        about: Biography
+        tags: tags
+        about: about
       }
     }
   }

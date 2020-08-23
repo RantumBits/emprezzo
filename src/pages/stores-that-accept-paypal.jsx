@@ -98,7 +98,7 @@ const StoresWithPaypal = ({ data }) => {
   })
 
   //Now sorting (desc) based on activity
-  var sortedEdges = _.sortBy(combinedEdges, obj => -obj.activity)
+  var sortedEdges = _.sortBy(combinedEdges, obj => -obj.FollowerRate)
 
   //Now limiting the items as per limit
   const listEdges = _.slice(sortedEdges, 0, limit)
@@ -123,7 +123,7 @@ const StoresWithPaypal = ({ data }) => {
                   {!isMobile &&
                     <th>TrafficRank</th>
                   }
-                  <th>SocialScore</th>
+                  <th>FollowerRate</th>
                   {!isMobile &&
                     <>
                       <th>Pinterest</th>
@@ -151,7 +151,7 @@ const StoresWithPaypal = ({ data }) => {
                     {!isMobile &&
                       <td>{node.GlobalRank}</td>
                     }
-                    <td>{node.activity}</td>
+                    <td>{node.FollowerRate}</td>
                     {!isMobile &&
                       <>
                         <td>{node.PinFollowers || "-"}</td>

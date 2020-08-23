@@ -36,16 +36,47 @@ const Tags = ({ pageContext, data }) => {
   const { tags } = pageContext;
   const { edges } = data.allMysqlMainView;
 
+  const [countFilter, setCountFilter] = React.useState()
+
   const title = "All Tags Page";
 
+  const lowerList = _.mapValues(tags, _.method('toLowerCase'));
+  const trimedList = _.mapValues(lowerList, _.method('trim'))
+  const uniqueList = _.uniq(Object.values(trimedList))
+  const orderdList = _.orderBy(uniqueList)
   //remove blank tags
-  const filteredList = _.filter(tags, (tag) => (tag != null && tag.trim().length > 0))
+  const filteredList = _.filter(orderdList, (tag) => (tag != null && tag.trim().length > 0))
 
   const getPostsByTag = (tag) => {
-    const filteredPosts = _.filter(edges, ({ node }) => node.tags && node.tags.indexOf(tag) >= 0)
-    //console.log("********* filteredPosts")
-    //console.log(filteredPosts)
+    //filter from trimmed and lowercase
+    const filteredPosts = _.filter(edges, ({ node }) => node.tags && node.tags.toLowerCase().indexOf(tag) >= 0)
     return filteredPosts
+  }
+
+  //creating map of tags and its posts counts
+  let tagList = [];
+  const countList = [];
+  filteredList.map((tag) => {
+    const count = getPostsByTag(tag.trim()).length;
+    const newItem = {
+      tag: tag,
+      count: count
+    }
+    tagList.push(newItem)
+    countList.push(count)
+  });
+
+  const finalCountList = _.orderBy(_.uniq(countList))
+
+  const handleChange = (event) => {
+    let selectedOption = event.target.value;
+    setCountFilter(selectedOption)
+    //console.log(`Option selected:`, selectedOption);
+  }
+
+  //if countFilter is set then filter finaltag list
+  if (countFilter && countFilter.length > 0) {
+    tagList = _.filter(tagList, (item) => item.count == countFilter)
   }
 
   return (
@@ -55,12 +86,21 @@ const Tags = ({ pageContext, data }) => {
       />
       <Header title={title}>All Tags</Header>
       <Container>
+        <div style={{ display: "flex", verticalAlign: "middle" }}>
+          Filter based on count : {` `}
+          <select style={{ padding: "0.5rem" }} onChange={event => handleChange(event)}>
+            <option value=""></option>
+            {finalCountList.map((count) =>
+              <option key={count}>{count}</option>
+            )}
+          </select>
+        </div>
         <TagsContainer>
-          {filteredList && filteredList.map((tag, index) => {
-            const upperTag = tag.charAt(0).toUpperCase() + tag.slice(1);
+          {tagList && tagList.map((item, index) => {
+            //const upperTag = tag.charAt(0).toUpperCase() + tag.slice(1);
             return (
-              <Link key={index} to={`/tags/${_.kebabCase(tag.trim())}`}>
-                <span>{upperTag} - </span><span className="count">{getPostsByTag(tag.trim()).length}</span>
+              <Link key={index} to={`/tags/${_.kebabCase(item.tag.trim())}`}>
+                <span>{item.tag} - </span><span className="count">{item.count}</span>
               </Link>
             );
           })}

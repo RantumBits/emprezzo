@@ -52,6 +52,9 @@ exports.createPages = ({ graphql, actions }) => {
                   tags
                   FullName
                   Biography
+                  name
+                  about
+                  promos
                 }
               }
             }
