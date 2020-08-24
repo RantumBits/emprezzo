@@ -132,7 +132,7 @@ const Products = ({ data, pageContext }) => {
     <Layout title={'Shopify Products | Disover great products from Shopify stores'} description="Discover the best Shopify products from hundreds of stores in one place. It's like a mini-Shopify marketplace.">
       <Header title="🧐 Disover great products from Shopify stores" />
           <div>
-            <CategoryHeading>Shopify Products</CategoryHeading>
+            <CategoryHeading>Featured Shopify Products</CategoryHeading>
             <SearchWrapper>
               Search
               <input
@@ -164,7 +164,7 @@ const Products = ({ data, pageContext }) => {
               </Carousel>
             </CarouselWrapper>
 
-            <CategoryHeading>Recent Products</CategoryHeading>
+            <CategoryHeading>New Shopify Products</CategoryHeading>
             <CarouselWrapper>
               <Carousel
                 swipeable={false}

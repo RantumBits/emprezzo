@@ -218,7 +218,7 @@ const SingleItem = ({ data, pageContext }) => {
             </Statistics>
           </div>
         </div>
-        <TagsBlock list={tagsList || []} />
+
         <Content input={about} /><br />
 
         {/* Social Statistics Section */}
@@ -419,7 +419,10 @@ const SingleItem = ({ data, pageContext }) => {
           </ViewContainer>
         }
         <br />
-        <a href="/randomshop" className="button ">Discover another shop</a>
+
+
+        <a href="/randomshop" className="button ">Discover another shop</a><br/><br/>
+        See more stores tagged:  <TagsBlock list={tagsList || []} />
       </Container>
       <SuggestionBar>
         <PostSuggestion>
