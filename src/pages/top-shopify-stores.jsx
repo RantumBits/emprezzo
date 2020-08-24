@@ -141,7 +141,7 @@ const TopShopifyStores = ({ data }) => {
                         </Link>
                       }
                     </td>
-                    <td><Link to={`/shops/${node.UserName}`} title={node.FullName}>{node.FullName}</Link></td>
+                    <td><Link to={`/shops/${node.UserName}`} title={node.name}>{node.name}</Link></td>
                     {!isMobile &&
                       <td>{node.GlobalRank}</td>
                     }

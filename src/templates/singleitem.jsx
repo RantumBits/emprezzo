@@ -102,7 +102,7 @@ const ViewInfo = styled.div`
 
 const SingleItem = ({ data, pageContext }) => {
   const { next, prev } = pageContext;
-  const { AlexaURL, Facebook, FollowerRate, GlobalRank, Instagram, LocalRank, Pinterest, PostRate, ProfilePicURL, TOS, TikTok, Twitter, UserID, UserName, YouTube, activity, category, tags, FullName, Biography, FBLikes, PinFollowers, PinFollowing, TTFollowers, TTFollowing, TTLikes, TwitterFollowers, TwitterFollowing, YTSubs, name, about, promos } = data.mysqlMainView;
+  const { AlexaURL, Facebook, FollowerRate,FollowersCount, GlobalRank, Instagram, LocalRank, Pinterest, PostRate, ProfilePicURL, TOS, TikTok, Twitter, UserID, UserName, YouTube, activity, category, tags, FullName, Biography, FBLikes, PinFollowers, PinFollowing, TTFollowers, TTFollowing, TTLikes, TwitterFollowers, TwitterFollowing, YTSubs, name, about, promos } = data.mysqlMainView;
 
   const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
   //console.log("****** isMobile = " + isMobile)
@@ -223,9 +223,9 @@ const SingleItem = ({ data, pageContext }) => {
 
         {/* Social Statistics Section */}
         <Statistics>
-          {GlobalRank &&
+          {FollowersCount &&
             <StatisticItem>
-              <h5>{GlobalRank.toLocaleString()}</h5>
+              <h5>{FollowersCount.toLocaleString()}</h5>
               <h6>TotalFollowers</h6>
             </StatisticItem>
           }
@@ -453,6 +453,7 @@ export const query = graphql`
       AlexaURL
       Facebook
       FollowerRate
+      FollowersCount
       GlobalRank
       Instagram
       LocalRank

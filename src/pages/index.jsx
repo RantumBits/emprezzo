@@ -5,6 +5,7 @@ import Helmet from 'react-helmet';
 import styled from '@emotion/styled';
 import { Header, PostList } from 'components';
 import HomeCarouselItem from '../components/HomeCarouselItem';
+import ProductCategoryItem from '../components/ProductCategoryItem';
 import { Layout } from 'layouts';
 import Search from 'components/search';
 import _ from 'lodash';
@@ -59,6 +60,7 @@ const CarouselWrapper = styled.div`
 
 const Index = ({ data }) => {
   const { edges } = data.allMysqlMainView;
+  const rowProductsEdges = data.allMysqlProducts.edges;
   const maxItems = 25;
   const [limit, setLimit] = React.useState(maxItems);
   const [showMore, setShowMore] = React.useState(true);
@@ -88,6 +90,23 @@ const Index = ({ data }) => {
   const searchIndices = [
     { name: `uncommonry`, title: `Shops`, type: `shopHit` },
   ]
+
+  const checkEdgesInProductView = (allEdges) => {
+    let filteredProducts = [];
+    allEdges.map((edge) => {
+      const inputID = edge.node.UserName;
+      const result = _.filter(rowProductsEdges, ({ node }) => node.UserName == inputID && node.Price > 20 && node.Title.toLowerCase().indexOf("gift") < 0 && node.Title.toLowerCase().indexOf("test") < 0 && node.Title.toLowerCase().indexOf("shipping") < 0)
+      const max2Results = _.slice(result,0,2);//max 2 products from a store
+      filteredProducts = _.union(filteredProducts, max2Results)
+    });
+    return filteredProducts;
+  }
+
+  const getProductImage = (node) => {
+    let productImage = node.VariantImageURL;
+    if (!productImage) productImage = node.ImageURL;
+    return productImage;
+  }
 
   const rowDataViewEdges = data.allMysqlDataView.edges;
   const combinedEdges = [];
@@ -122,8 +141,13 @@ const Index = ({ data }) => {
     }
     combinedFeatureShopEdges.push(newNode);
   })
-  console.log(combinedFeatureShopEdges)
+  //console.log(combinedFeatureShopEdges)
 
+  //getting newly added products
+  const newlyAddedProducts = checkEdgesInProductView(edges);
+  //Now limiting the items as per limit
+  const visibleNewlyAddedProducts = _.slice(newlyAddedProducts, 0, limit);
+  
   return (
     <Layout title={'emprezzo | Discover the best online shopping sites & direct-to-consumer brands'} description="Discover the best online shopping sites & direct to consumer brands." >
       <Header title="Discover the best online shopping sites"></Header>
@@ -189,6 +213,28 @@ const Index = ({ data }) => {
         </Carousel>
       </CarouselWrapper>
 
+      <CarouselWrapper>
+      <h3>New Shopify Products</h3>
+        <Carousel
+          swipeable={false}
+          draggable={false}
+          showDots={false}
+          responsive={responsive}
+          keyBoardControl={true}
+        >
+          {visibleNewlyAddedProducts.map(({node}, index) => (
+            <ProductCategoryItem
+                key={index}
+                cover={getProductImage(node)}
+                path={`/shops/${node.UserName}`}
+                vendorname={node.VendorName}
+                title={node.Title}                
+                price={node.Price}
+            />
+          ))}
+        </Carousel>
+      </CarouselWrapper>
+
       <ShopWrapper>
         <h3>Discover the best online shopping sites at Emprezzo</h3>
         <p>There are endless options when shopping online, yet nothing seems like the right fit. Discover the best direct to consumer brands at Emprezzo.</p>
@@ -227,6 +273,22 @@ export const query = graphql`
           PostRate
           activity
           AlexaURL
+        }
+      }
+    }
+
+    allMysqlProducts {
+      edges {
+        node {
+          UserName
+          VendorName
+          VendorURL
+          Title
+          VariantTitle
+          ProductURL
+          ImageURL
+          VariantImageURL
+          Price
         }
       }
     }
