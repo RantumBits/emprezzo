@@ -270,7 +270,7 @@ const SingleItem = ({ data, pageContext }) => {
           {activity &&
             <StatisticItem>
               <h5>{(FollowerRate).toFixed(1)} </h5>
-              <h6>social rate</h6>
+              <h6>fan rate</h6>
             </StatisticItem>
           }
 
@@ -433,12 +433,12 @@ const SingleItem = ({ data, pageContext }) => {
             </>
           </ViewContainer>
         }
-        {FreeShipText.length > 0 && <h3>free shipping info</h3>}
+        {FreeShipText && FreeShipText.length > 0 && <h3>free shipping info</h3>}
         <h5 style={{ textTransform: "capitalize" }}>{get100Words(FreeShipText)}</h5>
         <br />
 
         {/* List of Posts from MySQL View */}
-        {listInstaPostEdges && listInstaPostEdges.length > 0 && <h3>instagram posts</h3>}
+        {listInstaPostEdges && listInstaPostEdges.length > 0 && <h3>recent {name} instagram posts</h3>}
         <Content input={Biography} /><br />
 
         {/* Show carousel for mobile version */}
