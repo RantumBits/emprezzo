@@ -47,8 +47,8 @@ const Statistics = styled.div`
   display: flex;
   margin-bottom: 15px;
   padding: 5px;
+  flex-wrap: wrap;
   @media (max-width: ${props => props.theme.breakpoints.s}) {
-    flex-wrap: wrap;
     .break {
         flex-basis: 100%;
         height: 0;
@@ -102,7 +102,7 @@ const ViewInfo = styled.div`
 
 const SingleItem = ({ data, pageContext }) => {
   const { next, prev } = pageContext;
-  const { AlexaURL, Facebook, FollowerRate,FollowersCount, GlobalRank, Instagram, LocalRank, Pinterest, PostRate, ProfilePicURL, TOS, TikTok, Twitter, UserID, UserName, YouTube, activity, category, tags, FullName, Biography, FBLikes, PinFollowers, PinFollowing, TTFollowers, TTFollowing, TTLikes, TwitterFollowers, TwitterFollowing, YTSubs, name, about, promos } = data.mysqlMainView;
+  const { AlexaURL, Facebook, FollowerRate, FollowersCount, GlobalRank, Instagram, LocalRank, Pinterest, PostRate, ProfilePicURL, TOS, TikTok, Twitter, UserID, UserName, YouTube, activity, category, tags, FullName, Biography, FBLikes, PinFollowers, PinFollowing, TTFollowers, TTFollowing, TTLikes, TwitterFollowers, TwitterFollowing, YTSubs, name, about, promos } = data.mysqlMainView;
 
   const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
   //console.log("****** isMobile = " + isMobile)
@@ -144,6 +144,11 @@ const SingleItem = ({ data, pageContext }) => {
 
   let subtitle = "<div>" + ((firstRowDataView && firstRowDataView.node.AlexaCountry) || "") + "</div>"
   let FreeShipText = "";
+
+  const get100Words = (text) => {
+    let calculatedText = _.join(_.split(text,' ',100),' ')
+    return calculatedText;
+  }
 
   const renderProduct = (node, ismobile) => {
     return (
@@ -204,8 +209,18 @@ const SingleItem = ({ data, pageContext }) => {
               {(activity || FollowerRate || PostRate) &&
                 <StatisticItem><a target="_blank" href={firstRowDataView && firstRowDataView.node.ShortCodeURL}></a></StatisticItem>
               }
+              {FollowersCount &&
+                <StatisticItem>
+                  {FollowersCount.toLocaleString()}<br /><span className="stat_title">TotalFollowers</span>
+                </StatisticItem>
+              }
               {activity &&
-                <StatisticItem>{(activity + FollowerRate + PostRate).toFixed(1)} <br /><span className="stat_title" title="Social Score">Social Score</span></StatisticItem>
+                <StatisticItem>
+                  {(activity + FollowerRate + PostRate).toFixed(1)}<br /><span className="stat_title">FollowerRatio</span>
+                </StatisticItem>
+              }
+              {activity &&
+                <StatisticItem>{(activity + FollowerRate + PostRate).toFixed(1)} <br /><span className="stat_title" title="Social Score">Emprezzo Social Score</span></StatisticItem>
               }
             </Statistics>
             <Statistics>
@@ -213,7 +228,10 @@ const SingleItem = ({ data, pageContext }) => {
                 <StatisticItem></StatisticItem>
               }
               {GlobalRank &&
-                <StatisticItem>{GlobalRank.toLocaleString()} <br /><span className="stat_title" title="Social Score">Traffic Rank</span></StatisticItem>
+                <StatisticItem>{GlobalRank.toLocaleString()} <br /><span className="stat_title" title="Social Score">Global Traffic Rank</span></StatisticItem>
+              }
+              {firstRowDataView && firstRowDataView.node.AlexaRankOrder &&
+                <StatisticItem>{firstRowDataView.node.AlexaRankOrder} <br /><span className="stat_title" title="Social Score">Emprezzo Traffic Rank</span></StatisticItem>
               }
             </Statistics>
           </div>
@@ -222,19 +240,8 @@ const SingleItem = ({ data, pageContext }) => {
         <Content input={about} /><br />
 
         {/* Social Statistics Section */}
+        <h3>social media stats</h3>
         <Statistics>
-          {FollowersCount &&
-            <StatisticItem>
-              <h5>{FollowersCount.toLocaleString()}</h5>
-              <h6>TotalFollowers</h6>
-            </StatisticItem>
-          }
-          {activity &&
-            <StatisticItem>
-              <h5>{(activity + FollowerRate + PostRate).toFixed(1)}</h5>
-              <h6>FollowerRatio</h6>
-            </StatisticItem>
-          }
           {FBLikes &&
             <>
               <span className="break" />
@@ -387,7 +394,8 @@ const SingleItem = ({ data, pageContext }) => {
             </>
           </ViewContainer>
         }
-        <h5 style={{ textTransform: "capitalize" }}>{FreeShipText}</h5>
+        <h3>free shipping info</h3>
+        <h5 style={{ textTransform: "capitalize" }}>{get100Words(FreeShipText)}</h5>
         <br />
 
         {/* List of Posts from MySQL View */}
@@ -421,7 +429,7 @@ const SingleItem = ({ data, pageContext }) => {
         <br />
 
 
-        <a href="/randomshop" className="button ">Discover another shop</a><br/><br/>
+        <a href="/randomshop" className="button ">Discover another shop</a><br /><br />
         See more stores tagged:  <TagsBlock list={tagsList || []} />
       </Container>
       <SuggestionBar>
@@ -494,6 +502,7 @@ export const query = graphql`
           PostDate
           AlexaCountry
           UniquePhotoLink
+          AlexaRankOrder
           mysqlImage {
             childImageSharp {
               fluid (srcSetBreakpoints: [200, 400]) {

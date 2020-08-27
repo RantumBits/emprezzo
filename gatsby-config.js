@@ -16,7 +16,7 @@ module.exports = {
         // Exclude specific pages or groups of pages using glob parameters
         // See: https://github.com/isaacs/minimatch
         // The example below will exclude the single `path/to/page` and all routes beginning with `category`
-        exclude: [`/tags/tgd*`],
+        exclude: [`/tags/*`],
       }
     },
     'gatsby-plugin-react-helmet',
@@ -57,7 +57,7 @@ module.exports = {
         },
         queries: [
           {
-            statement: 'Select CONCAT(UserName,FLOOR(RAND()*10000)) AS UniqueKey, UserID, UserName, FullName, Biography, ProfilePicURL, PostsCount, FollowersCount, FollowingCount, PostRate, FollowerRate, Activity, PhotoLink AS UniquePhotoLink, ShortCode, CONCAT("https://instagram.com/p/",ShortCode) AS ShortCodeURL, LikesCount, CommentsCount, PostDate, Caption, CaptionHashtags, AlexaURL, GlobalRank, Reach, LocalRank, AlexaCountry, TOS FROM DataView WHERE UserName IS NOT NULL ORDER BY activity DESC',
+            statement: 'Select CONCAT(UserName,FLOOR(RAND()*10000)) AS UniqueKey, UserID, UserName, FullName, Biography, ProfilePicURL, AlexaRankOrder, PostsCount, FollowersCount, FollowingCount, PostRate, FollowerRate, Activity, PhotoLink AS UniquePhotoLink, ShortCode, CONCAT("https://instagram.com/p/",ShortCode) AS ShortCodeURL, LikesCount, CommentsCount, PostDate, Caption, CaptionHashtags, AlexaURL, GlobalRank, Reach, LocalRank, AlexaCountry, TOS FROM DataView WHERE UserName IS NOT NULL ORDER BY activity DESC',
             idFieldName: 'UniqueKey',
             name: 'DataView'
             ,remoteImageFieldNames: ['UniquePhotoLink']
@@ -125,7 +125,6 @@ module.exports = {
       },
     },
     'gatsby-plugin-sharp',
-    'gatsby-plugin-sitemap',
     {
       resolve: `gatsby-plugin-algolia`,
       options: {

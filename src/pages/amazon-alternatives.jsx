@@ -120,9 +120,11 @@ const AmazonAlternatives = ({ data }) => {
                 <tr>
                   <th>#</th>
                   <th>Store</th>
-                  <th></th>
                   {!isMobile &&
+                    <>
+                    <th></th>
                     <th>TrafficRank</th>
+                    </>
                   }
                   <th>FollowerRate</th>
                   {!isMobile &&
@@ -144,13 +146,15 @@ const AmazonAlternatives = ({ data }) => {
                     <td>
                       {node.ProfilePicURL &&
                         <Link to={`/shops/${node.UserName}`}>
-                          <img src={node.ProfilePicURL} className="profileimage" style={{ width: "50px", margin: '0px' }} title={node.name + 'is on Shopify'} alt={node.name + 'is on Shopify'} />
+                          <img src={node.ProfilePicURL} className="profileimage" style={{ width: "50px", margin: '0px' }} title={node.about} alt={node.about} />
                         </Link>
                       }
                     </td>
-                    <td><Link to={`/shops/${node.UserName}`}>{node.name}</Link></td>
                     {!isMobile &&
+                      <>
+                      <td><Link to={`/shops/${node.UserName}`}>{node.name}</Link></td>
                       <td>{node.LocalRank}</td>
+                      </>
                     }
                     <td>{node.FollowerRate}</td>
                     {!isMobile &&
@@ -210,6 +214,7 @@ export const query = graphql`
           TwitterFollowers
           YTSubs
           name
+          about
         }
       }
     }
