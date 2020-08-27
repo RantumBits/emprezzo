@@ -9,7 +9,7 @@ import _ from 'lodash';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import { Carousel } from 'react-responsive-carousel'
 import { useMediaQuery } from 'react-responsive'
-import { FaInstagram, FaFacebookSquare, FaPinterestSquare, FaTwitterSquare, FaYoutube } from 'react-icons/fa';
+import { FaInstagram, FaFacebookSquare, FaPinterestSquare, FaTwitterSquare, FaYoutube, FaRegLaugh, FaChartLine } from 'react-icons/fa';
 
 import '../styles/prism';
 
@@ -142,7 +142,7 @@ const SingleItem = ({ data, pageContext }) => {
     "YouTubeLink": YouTube ? "https://www.youtube.com/c/" + YouTube : null
   }
 
-  let subtitle = "<div>" + ((firstRowDataView && firstRowDataView.node.AlexaCountry) || "") + "</div>"
+  let subtitle = "<div>" + "</div>"
   let FreeShipText = "";
 
   const get100Words = (text) => {
@@ -198,7 +198,7 @@ const SingleItem = ({ data, pageContext }) => {
         description={`Find ${name} and discover great ${category || ''} online stores on emprezzo. ${about}`}
         pathname={AlexaURL}
       />
-      <Header title={name} children={subtitle} socialDetails={socialDetails} />
+      <Header title={name} children={subtitle}  />
       <Container>
         <div className="profileimage" style={{ display: "flex" }}>
           {ProfilePicURL &&
@@ -211,37 +211,76 @@ const SingleItem = ({ data, pageContext }) => {
               }
               {FollowersCount &&
                 <StatisticItem>
-                  {FollowersCount.toLocaleString()}<br /><span className="stat_title">TotalFollowers</span>
+                  {FollowersCount.toLocaleString()}<br /><span className="stat_title">Total Fans</span>
                 </StatisticItem>
               }
-              {activity &&
-                <StatisticItem>
-                  {(activity + FollowerRate + PostRate).toFixed(1)}<br /><span className="stat_title">FollowerRatio</span>
-                </StatisticItem>
-              }
-              {activity &&
-                <StatisticItem>{(activity + FollowerRate + PostRate).toFixed(1)} <br /><span className="stat_title" title="Social Score">Emprezzo Social Score</span></StatisticItem>
-              }
+
+
             </Statistics>
             <Statistics>
-              {(GlobalRank || LocalRank || TOS) &&
-                <StatisticItem></StatisticItem>
-              }
-              {GlobalRank &&
-                <StatisticItem>{GlobalRank.toLocaleString()} <br /><span className="stat_title" title="Social Score">Global Traffic Rank</span></StatisticItem>
-              }
+
+
+
+
+
               {firstRowDataView && firstRowDataView.node.AlexaRankOrder &&
-                <StatisticItem>{firstRowDataView.node.AlexaRankOrder} <br /><span className="stat_title" title="Social Score">Emprezzo Traffic Rank</span></StatisticItem>
+                <StatisticItem>{firstRowDataView.node.AlexaRankOrder} <br /><span className="stat_title" title="Emprezzo Traffic Rank">Traffic Rank</span></StatisticItem>
               }
+
             </Statistics>
           </div>
         </div>
-
+      <div style={{ margin: "2rem" }}>
+        <a href={AlexaURL} className="button" target="_blank">shop {name}</a> <a href="/randomshop" className="button buttonalt">Discover another shop</a>
+    </div>
         <Content input={about} /><br />
 
         {/* Social Statistics Section */}
-        <h3>social media stats</h3>
+        <h3>{name}  stats</h3>
         <Statistics>
+        <StatisticItem>
+        <FaChartLine size="32" color="black" title="web traffic"/>
+        </StatisticItem>
+
+        <StatisticItem>
+          <h5>{GlobalRank.toLocaleString()}</h5>
+          <h6>global rank</h6>
+        </StatisticItem>
+
+            {activity &&
+            <StatisticItem>
+            <FaRegLaugh size="32" color="black" />
+            </StatisticItem>
+          }
+
+
+
+
+
+
+
+
+
+
+          <StatisticItem>
+          <h5>{(activity + FollowerRate + PostRate).toFixed(1)} </h5>
+          <h6>social score</h6>
+
+          </StatisticItem>
+          {activity &&
+            <StatisticItem>
+              <h5>{(FollowerRate).toFixed(1)} </h5>
+              <h6>social rate</h6>
+            </StatisticItem>
+          }
+
+
+
+
+
+
+
+
           {FBLikes &&
             <>
               <span className="break" />
@@ -394,7 +433,7 @@ const SingleItem = ({ data, pageContext }) => {
             </>
           </ViewContainer>
         }
-        <h3>free shipping info</h3>
+        {FreeShipText.length > 0 && <h3>free shipping info</h3>}
         <h5 style={{ textTransform: "capitalize" }}>{get100Words(FreeShipText)}</h5>
         <br />
 
