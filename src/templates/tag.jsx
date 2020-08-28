@@ -59,6 +59,9 @@ const Tag = ({ data, pageContext }) => {
   })
 
   const rowDataViewEdges = data.allMysqlDataView.edges;
+  const rowPages = data.allMysqlPages.edges;
+  const filteredPage = _.filter(rowPages, ({node}) => _.kebabCase(node.TOPIC).trim()==tagName.trim())
+  const TagDescription = filteredPage && filteredPage.length>0?filteredPage[0].node.TOPIC_DESCRIPTION : "";
 
   return (
     <Layout>
@@ -70,6 +73,7 @@ const Tag = ({ data, pageContext }) => {
         {description}
       </Header>
         <TagWrapper>
+          <h3>{TagDescription}</h3>
           {listEdges.map((node) => (
             <PostList
               key={node.UserName}
@@ -112,6 +116,14 @@ export const query = graphql`
           ProfilePicURL
           Caption
           ShortCodeURL
+        }
+      }
+    }
+    allMysqlPages {
+      edges {
+        node {
+          TOPIC
+          TOPIC_DESCRIPTION
         }
       }
     }

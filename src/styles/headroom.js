@@ -78,7 +78,7 @@ a.buttonalt{
 }
 font-size: 0.6rem;
 .logo{
-  max-width: 40px;
+  max-width: 240px;
 }
 .center{
   text-align: center;
@@ -123,17 +123,17 @@ a.button:hover{
     position: fixed;
     transform: translateY(0);
     transition: ${theme.transitions.headroom.transition};
-    background-color: ${theme.colors.white.light};
+    background-color: ${theme.colors.background.light};
     box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
     nav {
       a {
-        color: ${theme.colors.black.base};
+        color: ${theme.colors.white.base};
         &:hover {
           border-color: ${theme.colors.black.base};
-          color: ${theme.colors.black.base};
+          color: ${theme.colors.primary.base};
         }
         &:focus {
-          color: ${theme.colors.black.base};
+          color: ${theme.colors.white.base};
         }
       }
       .dropdown {
@@ -147,11 +147,11 @@ a.button:hover{
         }
       }
       input {
-        border-color: ${theme.colors.black.base};
-        color: ${theme.colors.black.base};
+        border-color: ${theme.colors.white.base};
+        color: ${theme.colors.white.base};
       }
       svg {
-        color: ${theme.colors.black.base} !important;
+        color: ${theme.colors.white.base} !important;
       }
     }
     padding-top: 0.75rem;
@@ -159,7 +159,7 @@ a.button:hover{
     svg {
       height: 2.5rem;
       g {
-        fill: ${theme.colors.black.base};
+        fill: ${theme.colors.white.base};
       }
     }
     span {

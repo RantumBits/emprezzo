@@ -57,12 +57,6 @@ module.exports = {
         },
         queries: [
           {
-            statement: 'Select CONCAT(UserName,FLOOR(RAND()*10000)) AS UniqueKey, UserID, UserName, FullName, Biography, ProfilePicURL, AlexaRankOrder, PostsCount, FollowersCount, FollowingCount, PostRate, FollowerRate, Activity, PhotoLink AS UniquePhotoLink, ShortCode, CONCAT("https://instagram.com/p/",ShortCode) AS ShortCodeURL, LikesCount, CommentsCount, PostDate, Caption, CaptionHashtags, AlexaURL, GlobalRank, Reach, LocalRank, AlexaCountry, TOS FROM DataView WHERE UserName IS NOT NULL ORDER BY activity DESC',
-            idFieldName: 'UniqueKey',
-            name: 'DataView'
-            ,remoteImageFieldNames: ['UniquePhotoLink']
-          },
-          {
             statement: 'SELECT * FROM ShopifyView WHERE AlexaURL IS NOT NULL',
             idFieldName: 'ProductURL',
             name: 'ShopifyView'
@@ -103,9 +97,25 @@ module.exports = {
             name: 'Tags'
           },
           {
+            statement: 'SELECT CONCAT(TOPIC,FLOOR(RAND()*10000)) AS UniqueKey,Pages.* FROM Pages',
+            idFieldName: 'UniqueKey',
+            name: 'Pages'
+          },
+          {
+            statement: 'SELECT * FROM RankHistory',
+            idFieldName: 'username',
+            name: 'RankHistory'
+          },
+          {
             statement: "SELECT RankView_Pages.*, Tags.*, SocialIDView.* FROM RankView_Pages LEFT JOIN Tags ON TRIM(TRAILING '/' FROM RankView_Pages.AlexaURL) = TRIM(TRAILING '/' FROM Tags.url) LEFT JOIN SocialIDView ON TRIM(TRAILING '/' FROM RankView_Pages.AlexaURL) = TRIM(TRAILING '/' FROM SocialIDView.URL)",
             idFieldName: 'AlexaURL',
             name: 'MainView'
+          },
+          {
+            statement: 'Select CONCAT(UserName,FLOOR(RAND()*10000)) AS UniqueKey, UserID, UserName, FullName, Biography, ProfilePicURL, AlexaRankOrder, PostsCount, FollowersCount, FollowingCount, PostRate, FollowerRate, Activity, PhotoLink AS UniquePhotoLink, ShortCode, CONCAT("https://instagram.com/p/",ShortCode) AS ShortCodeURL, LikesCount, CommentsCount, PostDate, Caption, CaptionHashtags, AlexaURL, GlobalRank, Reach, LocalRank, AlexaCountry, TOS FROM DataView WHERE UserName IS NOT NULL ORDER BY activity DESC',
+            idFieldName: 'UniqueKey',
+            name: 'DataView'
+            ,remoteImageFieldNames: ['UniquePhotoLink']
           }
         ]
       }

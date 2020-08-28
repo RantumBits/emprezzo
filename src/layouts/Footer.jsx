@@ -28,10 +28,9 @@ const Footer = () => (
     <Text>
       <div>
 
-        <img src={logo} width="30px" alt="emprezzo | Discover the best online shopping sites & direct to consumer brands" />
-        <div>💌<Link to="/submit_shop"> sumit a shop</Link> |
-          🛒<Link to="/contact"> contact </Link> <br/>
-        ⚒ by <a href="https://ecomloop.com" target="_blank">ecomloop</a></div>
+        <img src={logo} width="200px" alt="emprezzo | Discover the best online shopping sites & direct to consumer brands" />
+        <div><Link to="/submit_shop">💌 submit a shop </Link> <Link to="/contact"> 🛒 contact </Link> <br/><br/>
+         <a href="https://ecomloop.com"style={{ 'font-size': "13px" }} target="_blank">⚒ by ecomloop</a></div>
 
       </div>
     </Text>

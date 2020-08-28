@@ -8,15 +8,15 @@ export const colors = {
   black: {
     base: '#4B2840',
     light: '#F1E3E4',
-    blue: '#C04CFD',
+    blue: '#8c52ff',
   },
   primary: {
     base: '#4B2840',
     light: '#605b56',
-    dark: '#2b4162',
+    dark: '#8c52ff',
   },
   background: {
-    light: '#C04CFD',
+    light: '#8c52ff',
     dark: '#4B2840',
   },
 };
