@@ -78,7 +78,7 @@ a.buttonalt{
 }
 font-size: 0.6rem;
 .logo{
-  max-width: 80px;
+  max-width: 50px;
 }
 .center{
   text-align: center;

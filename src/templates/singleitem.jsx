@@ -11,7 +11,8 @@ import { Carousel } from 'react-responsive-carousel'
 import { useMediaQuery } from 'react-responsive'
 import ReactFrappeChart from "react-frappe-charts";
 import { FaInstagram, FaFacebookSquare, FaPinterestSquare, FaTwitterSquare, FaYoutube, FaRegLaugh, FaChartLine } from 'react-icons/fa';
-
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
 import '../styles/prism';
 
 const SuggestionBar = styled.div`
@@ -101,6 +102,10 @@ const ViewInfo = styled.div`
 
 `;
 
+const TabStyle = {
+  marginBottom : "0px"
+}
+
 const SingleItem = ({ data, pageContext }) => {
   const { next, prev } = pageContext;
   const { AlexaURL, Facebook, FollowerRate, FollowersCount, GlobalRank, Instagram, LocalRank, Pinterest, PostRate, ProfilePicURL, TOS, TikTok, Twitter, UserID, UserName, YouTube, activity, category, tags, FullName, Biography, FBLikes, PinFollowers, PinFollowing, TTFollowers, TTFollowing, TTLikes, TwitterFollowers, TwitterFollowing, YTSubs, name, about, promos } = data.mysqlMainView;
@@ -134,21 +139,45 @@ const SingleItem = ({ data, pageContext }) => {
   //console.log("*****++listProductEdges+++********")
   //console.log(listProductEdges)
 
+  //Extracting bestseller products
+  const rowShopifyBestSellersEdges = data.allMysqlShopifyBestSellers.edges;
+  //filtering top 3 for current AlexaURL
+  const filteredShopifyBestSellers = _.filter(rowShopifyBestSellersEdges, ({ node }) => node.VendorURL == AlexaURL)
+  const listShopifyBestSellersEdges = _.slice(filteredShopifyBestSellers, 0, maxProducts);
+
+
   //Generating the data for chart
   const rowRankHistoryEdges = data.allMysqlRankHistory.edges;
   const filteredRankHistoryEdges = _.filter(rowRankHistoryEdges, ({ node }) => node.username == UserName)
-  let chartData = null;
-  if (filteredRankHistoryEdges && filteredRankHistoryEdges.length > 0 && filteredRankHistoryEdges[0].node.GlobalRank_Dates && filteredRankHistoryEdges[0].node.GlobalRank_List) {
-    chartData = {
-      labels: _.split(filteredRankHistoryEdges[0].node.GlobalRank_Dates, ','),
-      datasets: [
-        {
-          name: 'Rank Data',
-          type: 'line',
-          values: _.split(filteredRankHistoryEdges[0].node.GlobalRank_List, ',')
-        }
-      ]
-    };
+  let chartRankData = null;
+  let chartTOSData = null;
+  if (filteredRankHistoryEdges && filteredRankHistoryEdges.length > 0 && filteredRankHistoryEdges[0].node.GlobalRank_Dates) {
+    //Rank data
+    if(filteredRankHistoryEdges[0].node.GlobalRank_List){
+      chartRankData = {
+        labels: _.split(filteredRankHistoryEdges[0].node.GlobalRank_Dates, ','),
+        datasets: [
+          {
+            name: 'Rank Data',
+            type: 'line',
+            values: _.split(filteredRankHistoryEdges[0].node.GlobalRank_List, ',')
+          }
+        ]
+      };
+    }
+    //TOS data
+    if(filteredRankHistoryEdges[0].node.TOS_List){
+      chartTOSData = {
+        labels: _.split(filteredRankHistoryEdges[0].node.GlobalRank_Dates, ','),
+        datasets: [
+          {
+            name: 'TOS Data',
+            type: 'line',
+            values: _.split(filteredRankHistoryEdges[0].node.TOS_List, ',')
+          }
+        ]
+      };
+    }
   }
 
   const socialDetails = {
@@ -232,19 +261,11 @@ const SingleItem = ({ data, pageContext }) => {
                   {FollowersCount.toLocaleString()}<br /><span className="stat_title">Total Fans</span>
                 </StatisticItem>
               }
-
-
             </Statistics>
             <Statistics>
-
-
-
-
-
               {firstRowDataView && firstRowDataView.node.AlexaRankOrder &&
                 <StatisticItem>{firstRowDataView.node.AlexaRankOrder} <br /><span className="stat_title" title="Emprezzo Traffic Rank">Traffic Rank</span></StatisticItem>
               }
-
             </Statistics>
           </div>
         </div>
@@ -252,7 +273,7 @@ const SingleItem = ({ data, pageContext }) => {
       <div style={{ margin: "2rem" }}>
         <a href={AlexaURL} className="button" target="_blank">shop {name}</a> <a href="/randomshop" className="button buttonalt">Discover another shop</a>
     </div>
-<Content input={about} /><br />
+    <Content input={about} /><br />
     {/* List of Products from MySQL View */}
     {listProductEdges && listProductEdges.length > 0 && <h3>shop {name}</h3>}
 
@@ -260,51 +281,88 @@ const SingleItem = ({ data, pageContext }) => {
       <><Content input={promos} /><br /></>
     }
 
-    {/* Show carousel for mobile version */}
-    {isMobile &&
-      <Carousel
-        showThumbs={false}
-        infiniteLoop
-        showIndicators={false}
-        selectedItem={1}
-        showArrows={true}
-        showStatus={false}
-      >
-        {listProductEdges && listProductEdges.map(({ node }) => {
-          FreeShipText = node.FreeShipText;
-          return renderProduct(node, true);
-        })}
-      </Carousel>
-    }
+    <Tabs>
+        <TabList>
+            {listShopifyBestSellersEdges && listShopifyBestSellersEdges.length>0 &&
+              <Tab style={TabStyle}>Best sellers</Tab>
+            }
+            <Tab style={TabStyle}>Classics</Tab>
+        </TabList>
+        {listShopifyBestSellersEdges && listShopifyBestSellersEdges.length>0 &&
+        <TabPanel>
+            <ViewContainer>
+                {listShopifyBestSellersEdges.map(({ node }) => {
+                    return renderProduct(node);
+                })}
+            </ViewContainer>
+        </TabPanel>
+        }
+        <TabPanel>
+            {/* Show carousel for mobile version */}
+            {isMobile &&
+            <Carousel
+                showThumbs={false}
+                infiniteLoop
+                showIndicators={false}
+                selectedItem={1}
+                showArrows={true}
+                showStatus={false}
+            >
+                {listProductEdges && listProductEdges.map(({ node }) => {
+                FreeShipText = node.FreeShipText;
+                return renderProduct(node, true);
+                })}
+            </Carousel>
+            }
 
-    {/* Show carousel for mobile version */}
-    {!isMobile &&
-      <ViewContainer>
-        <>
-          <span>&nbsp;</span>
-          {listProductEdges.map(({ node }) => {
-            FreeShipText = node.FreeShipText;
-            return renderProduct(node);
-          })}
-        </>
-      </ViewContainer>
-    }
+            {/* Show carousel for mobile version */}
+            {!isMobile &&
+            <ViewContainer>
+                <>
+                <span>&nbsp;</span>
+                {listProductEdges.map(({ node }) => {
+                    FreeShipText = node.FreeShipText;
+                    return renderProduct(node);
+                })}
+                </>
+            </ViewContainer>
+            }
+        </TabPanel>
+    </Tabs>
+
     {FreeShipText && FreeShipText.length > 0 && <h3>get free shipping at {name}</h3>}
     <p>{get100Words(FreeShipText)}</p>
     <br />
-
-
         {/* Social Statistics Section */}
         <h3>{name} site traffic</h3>
-        {chartData &&
-          <ReactFrappeChart
-            type="axis-mixed"
-            colors={["#743ee2"]}
-            height={250}
-            axisOptions={{ xAxisMode: "tick", xIsSeries: 1 }}
-            data={chartData}
-          />
-        }
+        <Tabs>
+            <TabList>
+                <Tab style={TabStyle}>Traffic rank</Tab>
+                <Tab style={TabStyle}>Time on site</Tab>
+            </TabList>
+            <TabPanel>
+                {chartRankData &&
+                    <ReactFrappeChart
+                        type="axis-mixed"
+                        colors={["#743ee2"]}
+                        height={250}
+                        axisOptions={{ xAxisMode: "tick", xIsSeries: 1 }}
+                        data={chartRankData}
+                    />
+                }
+            </TabPanel>
+            <TabPanel>
+                {chartTOSData &&
+                    <ReactFrappeChart
+                        type="axis-mixed"
+                        colors={["#743ee2"]}
+                        height={250}
+                        axisOptions={{ xAxisMode: "tick", xIsSeries: 1 }}
+                        data={chartTOSData}
+                    />
+                }
+            </TabPanel>
+        </Tabs>
 
           <h3>{name} social media stats</h3>
         <Statistics>
@@ -578,6 +636,7 @@ export const query = graphql`
           GlobalRank_Change
           GlobalRank_Dates
           GlobalRank_List
+          TOS_List
           username
           url
         }
@@ -594,6 +653,21 @@ export const query = graphql`
           ImageURL
           Price
           FreeShipText
+        }
+      }
+    }
+    allMysqlShopifyBestSellers {
+      edges {
+        node {
+          ImageURL
+          MaxPrice
+          Position
+          Price
+          ProductID
+          ProductURL
+          Title
+          VariantImageURL
+          VendorURL
         }
       }
     }

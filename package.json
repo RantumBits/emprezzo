@@ -68,6 +68,7 @@
     "react-multi-carousel": "^2.5.5",
     "react-responsive": "^8.1.0",
     "react-responsive-carousel": "^3.2.9",
+    "react-tabs": "^3.1.1",
     "react-typeform-embed": "^0.2.1",
     "react-typography": "^0.16.19",
     "styled-components": "^5.1.0",

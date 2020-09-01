@@ -107,6 +107,11 @@ module.exports = {
             name: 'RankHistory'
           },
           {
+            statement: 'SELECT CONCAT(ProductID,FLOOR(RAND()*10000)) AS UniqueKey,ShopifyBestSellers.* FROM ShopifyBestSellers',
+            idFieldName: 'UniqueKey',
+            name: 'ShopifyBestSellers'
+          },
+          {
             statement: "SELECT RankView_Pages.*, Tags.*, SocialIDView.* FROM RankView_Pages LEFT JOIN Tags ON TRIM(TRAILING '/' FROM RankView_Pages.AlexaURL) = TRIM(TRAILING '/' FROM Tags.url) LEFT JOIN SocialIDView ON TRIM(TRAILING '/' FROM RankView_Pages.AlexaURL) = TRIM(TRAILING '/' FROM SocialIDView.URL)",
             idFieldName: 'AlexaURL',
             name: 'MainView'
