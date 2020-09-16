@@ -314,8 +314,6 @@ export const query = graphql`
           activity
           category
           tags
-          FullName
-          Biography
           name
           about
         }

@@ -60,8 +60,8 @@ const Tag = ({ data, pageContext }) => {
 
   const rowDataViewEdges = data.allMysqlDataView.edges;
   const rowPages = data.allMysqlPages.edges;
-  const filteredPage = _.filter(rowPages, ({node}) => _.kebabCase(node.TOPIC).trim()==tagName.trim())
-  const TagDescription = filteredPage && filteredPage.length>0?filteredPage[0].node.TOPIC_DESCRIPTION : "";
+  const filteredPage = _.filter(rowPages, ({node}) => _.kebabCase(node.topic).trim()==tagName.trim())
+  const TagDescription = filteredPage && filteredPage.length>0?filteredPage[0].node.topicDescription : "";
 
   return (
     <Layout>
@@ -122,8 +122,8 @@ export const query = graphql`
     allMysqlPages {
       edges {
         node {
-          TOPIC
-          TOPIC_DESCRIPTION
+          topic
+          topicDescription
         }
       }
     }

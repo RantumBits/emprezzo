@@ -49,10 +49,11 @@ module.exports = {
       resolve: `gatsby-source-mysql`,
       options: {
         connectionDetails: {
-          host: process.env.MYSQL_HOST,
-          user:  process.env.MYSQL_USER,
-          password:  process.env.MYSQL__PASSWD,
-          database:  process.env.MYSQL_DB,
+          host: 'db-emp22-do-user-7599813-0.a.db.ondigitalocean.com',
+          port: '25060',
+          user:  'emp22-dbuser',
+          password:  'qkjxw1eigibsha4w',
+          database:  'emp22-db-primary',
           connectTimeout: 100000
         },
         queries: [
@@ -103,7 +104,7 @@ module.exports = {
           },
           {
             statement: 'SELECT * FROM RankHistory',
-            idFieldName: 'username',
+            idFieldName: 'UserName',
             name: 'RankHistory'
           },
           {
@@ -117,7 +118,7 @@ module.exports = {
             name: 'MainView'
           },
           {
-            statement: 'Select CONCAT(UserName,FLOOR(RAND()*10000)) AS UniqueKey, UserID, UserName, FullName, Biography, ProfilePicURL, AlexaRankOrder, PostsCount, FollowersCount, FollowingCount, PostRate, FollowerRate, Activity, PhotoLink AS UniquePhotoLink, ShortCode, CONCAT("https://instagram.com/p/",ShortCode) AS ShortCodeURL, LikesCount, CommentsCount, PostDate, Caption, CaptionHashtags, AlexaURL, GlobalRank, Reach, LocalRank, AlexaCountry, TOS FROM DataView WHERE UserName IS NOT NULL ORDER BY activity DESC',
+            statement: "Select CONCAT(UserName,FLOOR(RAND()*10000)) AS UniqueKey, UserID, UserName, FullName, Biography, ProfilePicURL, AlexaRankOrder, PostsCount, FollowersCount, FollowingCount, PostRate, FollowerRate, Activity, PhotoLink AS UniquePhotoLink, ShortCode, CONCAT('https://instagram.com/p/',ShortCode) AS ShortCodeURL, LikesCount, CommentsCount, PostDate, Caption, CaptionHashtags, AlexaURL, GlobalRank, Reach, LocalRank, AlexaCountry, TOS FROM DataView WHERE UserName IS NOT NULL ORDER BY activity DESC",
             idFieldName: 'UniqueKey',
             name: 'DataView'
             ,remoteImageFieldNames: ['UniquePhotoLink']

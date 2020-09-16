@@ -207,7 +207,6 @@ export const query = graphql`
         node {
           AlexaURL
           UserName
-          FullName
           FBLikes
           PinFollowers
           TTFollowers

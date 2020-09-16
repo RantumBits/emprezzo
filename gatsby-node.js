@@ -1,7 +1,7 @@
 const path = require('path');
 const _ = require("lodash");
 
-/*
+
 exports.createSchemaCustomization = ({ actions }) => {
   const { createTypes } = actions
   createTypes(`
@@ -9,8 +9,16 @@ exports.createSchemaCustomization = ({ actions }) => {
       mysqlImage: File
     }
   `)
+  createTypes(`
+    type MysqlRankViewPayLater implements Node {
+      ProfilePicURL: String
+      FollowerRate: Int
+      PostRate: Int
+      activity: Int
+    }
+  `)  
 }
-*/
+
 
 exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions;
@@ -50,11 +58,9 @@ exports.createPages = ({ graphql, actions }) => {
                   activity
                   category
                   tags
-                  FullName
-                  Biography
                   name
                   about
-                  promos
+                  signup_promos
                 }
               }
             }

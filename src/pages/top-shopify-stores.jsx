@@ -84,7 +84,7 @@ const TopShopifyStores = ({ data }) => {
   //Creating a new dataset with original nodes and required columns from DataView
   edges.map((edge) => {
     let newNode = {
-      name: edge.node.FullName,
+      name: edge.node.name,
       slug: edge.node.UserName,
       ...edge.node,
     }
@@ -153,7 +153,7 @@ const TopShopifyStores = ({ data }) => {
                     {!isMobile &&
                       <>
                         <td>{node.PinFollowers || "-"}</td>
-                        <td>{node.FollowersCount || "-"}</td>
+                        <td>{node.InstaFollowers || "-"}</td>
                         <td>{node.TwitterFollowers || "-"}</td>
                         <td>{node.FBLikes || "-"}</td>
                         <td>{node.TTFollowers || "-"}</td>
@@ -218,8 +218,7 @@ export const query = graphql`
             activity
             category
             tags
-            FullName
-            FollowersCount
+            InstaFollowers
             FBLikes
             PinFollowers
             TTFollowers

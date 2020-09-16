@@ -159,7 +159,7 @@ const StoresWithPaypal = ({ data }) => {
                     {!isMobile &&
                       <>
                         <td>{node.PinFollowers || "-"}</td>
-                        <td>{node.FollowersCount || "-"}</td>
+                        <td>{node.InstaFollowers || "-"}</td>
                         <td>{node.TwitterFollowers || "-"}</td>
                         <td>{node.FBLikes || "-"}</td>
                         <td>{node.TTFollowers || "-"}</td>
@@ -203,8 +203,7 @@ export const query = graphql`
           node {
           AlexaURL
             UserName
-            FullName
-            FollowersCount
+            InstaFollowers
             FBLikes
             PinFollowers
             TTFollowers

@@ -108,7 +108,7 @@ const TabStyle = {
 
 const SingleItem = ({ data, pageContext }) => {
   const { next, prev } = pageContext;
-  const { AlexaURL, Facebook, FollowerRate, FollowersCount, GlobalRank, Instagram, LocalRank, Pinterest, PostRate, ProfilePicURL, TOS, TikTok, Twitter, UserID, UserName, YouTube, activity, category, tags, FullName, Biography, FBLikes, PinFollowers, PinFollowing, TTFollowers, TTFollowing, TTLikes, TwitterFollowers, TwitterFollowing, YTSubs, name, about, promos } = data.mysqlMainView;
+  const { AlexaURL, Facebook, FollowerRate, InstaFollowers, GlobalRank, Instagram, LocalRank, Pinterest, PostRate, ProfilePicURL, TOS, TikTok, Twitter, UserID, UserName, YouTube, activity, category, tags, FBLikes, PinFollowers, PinFollowing, TTFollowers, TTFollowing, TTLikes, TwitterFollowers, TwitterFollowing, YTSubs, name, about, signup_promos } = data.mysqlMainView;
 
   const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
   //console.log("****** isMobile = " + isMobile)
@@ -148,7 +148,7 @@ const SingleItem = ({ data, pageContext }) => {
 
   //Generating the data for chart
   const rowRankHistoryEdges = data.allMysqlRankHistory.edges;
-  const filteredRankHistoryEdges = _.filter(rowRankHistoryEdges, ({ node }) => node.username == UserName)
+  const filteredRankHistoryEdges = _.filter(rowRankHistoryEdges, ({ node }) => node.UserName == UserName)
   let chartRankData = null;
   let chartTOSData = null;
   if (filteredRankHistoryEdges && filteredRankHistoryEdges.length > 0 && filteredRankHistoryEdges[0].node.GlobalRank_Dates) {
@@ -256,9 +256,9 @@ const SingleItem = ({ data, pageContext }) => {
               {(activity || FollowerRate || PostRate) &&
                 <StatisticItem><a target="_blank" href={firstRowDataView && firstRowDataView.node.ShortCodeURL}></a></StatisticItem>
               }
-              {FollowersCount &&
+              {InstaFollowers &&
                 <StatisticItem>
-                  {FollowersCount.toLocaleString()}<br /><span className="stat_title">Total Fans</span>
+                  {InstaFollowers.toLocaleString()}<br /><span className="stat_title">Total Fans</span>
                 </StatisticItem>
               }
             </Statistics>
@@ -277,8 +277,8 @@ const SingleItem = ({ data, pageContext }) => {
     {/* List of Products from MySQL View */}
     {listProductEdges && listProductEdges.length > 0 && <h3>shop {name}</h3>}
 
-    {promos && promos.toLowerCase() != "n/a" &&
-      <><Content input={promos} /><br /></>
+    {signup_promos && signup_promos.toLowerCase() != "n/a" &&
+      <><Content input={signup_promos} /><br /></>
     }
 
     <Tabs>
@@ -505,7 +505,7 @@ const SingleItem = ({ data, pageContext }) => {
 
         {/* List of Posts from MySQL View */}
         {listInstaPostEdges && listInstaPostEdges.length > 0 && <h3>instagram posts</h3>}
-        <Content input={Biography} /><br />
+        <Content input={firstRowDataView.node.Biography} /><br />
 
         {/* Show carousel for mobile version */}
         {isMobile &&
@@ -566,7 +566,7 @@ export const query = graphql`
       AlexaURL
       Facebook
       FollowerRate
-      FollowersCount
+      InstaFollowers
       GlobalRank
       Instagram
       LocalRank
@@ -582,8 +582,6 @@ export const query = graphql`
       activity
       category
       tags
-      FullName
-      Biography
       FBLikes
       PinFollowers
       PinFollowing
@@ -595,7 +593,7 @@ export const query = graphql`
       YTSubs
       name
       about
-      promos
+      signup_promos
     }
     allMysqlDataView  (filter: {AlexaURL: {eq: $pathSlug}}) {
       edges {
@@ -637,7 +635,7 @@ export const query = graphql`
           GlobalRank_Dates
           GlobalRank_List
           TOS_List
-          username
+          UserName
           url
         }
       }
