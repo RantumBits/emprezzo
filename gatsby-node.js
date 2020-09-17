@@ -12,13 +12,12 @@ exports.createSchemaCustomization = ({ actions }) => {
   createTypes(`
     type MysqlRankViewPayLater implements Node {
       ProfilePicURL: String
-      FollowerRate: Int
-      PostRate: Int
-      activity: Int
+      FollowerRate: Float
+      PostRate: Float
+      activity: Float
     }
   `)  
 }
-
 
 exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions;
