@@ -113,6 +113,16 @@ module.exports = {
             name: 'ShopifyBestSellers'
           },
           {
+            statement: 'SELECT CONCAT(ProductID,FLOOR(RAND()*10000)) AS UniqueKey,ShopifyClassicProducts.* FROM ShopifyClassicProducts',
+            idFieldName: 'UniqueKey',
+            name: 'ShopifyClassicProducts'
+          },
+          {
+            statement: 'SELECT CONCAT(ProductID,FLOOR(RAND()*10000)) AS UniqueKey,ShopifyNewProducts.* FROM ShopifyNewProducts',
+            idFieldName: 'UniqueKey',
+            name: 'ShopifyNewProducts'
+          },
+          {
             statement: "SELECT RankView_Pages.*, Tags.*, SocialIDView.* FROM RankView_Pages LEFT JOIN Tags ON TRIM(TRAILING '/' FROM RankView_Pages.AlexaURL) = TRIM(TRAILING '/' FROM Tags.url) LEFT JOIN SocialIDView ON TRIM(TRAILING '/' FROM RankView_Pages.AlexaURL) = TRIM(TRAILING '/' FROM SocialIDView.URL)",
             idFieldName: 'AlexaURL',
             name: 'MainView'
@@ -121,7 +131,7 @@ module.exports = {
             statement: "Select CONCAT(UserName,FLOOR(RAND()*10000)) AS UniqueKey, UserID, UserName, FullName, Biography, ProfilePicURL, AlexaRankOrder, PostsCount, FollowersCount, FollowingCount, PostRate, FollowerRate, Activity, PhotoLink AS UniquePhotoLink, ShortCode, CONCAT('https://instagram.com/p/',ShortCode) AS ShortCodeURL, LikesCount, CommentsCount, PostDate, Caption, CaptionHashtags, AlexaURL, GlobalRank, Reach, LocalRank, AlexaCountry, TOS FROM DataView WHERE UserName IS NOT NULL ORDER BY activity DESC",
             idFieldName: 'UniqueKey',
             name: 'DataView'
-            ,remoteImageFieldNames: ['UniquePhotoLink']
+            //,remoteImageFieldNames: ['UniquePhotoLink']
           }
         ]
       }

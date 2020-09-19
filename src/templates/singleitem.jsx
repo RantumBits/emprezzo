@@ -103,12 +103,12 @@ const ViewInfo = styled.div`
 `;
 
 const TabStyle = {
-  marginBottom : "0px"
+  marginBottom: "0px"
 }
 
 const SingleItem = ({ data, pageContext }) => {
   const { next, prev } = pageContext;
-  const { AlexaURL, Facebook, FollowerRate, InstaFollowers, GlobalRank, Instagram, LocalRank, Pinterest, PostRate, ProfilePicURL, TOS, TikTok, Twitter, UserID, UserName, YouTube, activity, category, tags, FBLikes, PinFollowers, PinFollowing, TTFollowers, TTFollowing, TTLikes, TwitterFollowers, TwitterFollowing, YTSubs, name, about, signup_promos } = data.mysqlMainView;
+  const { AlexaURL, Facebook, FollowerRate, InstaFollowers, TotalFollowers, GlobalRank, Instagram, LocalRank, Pinterest, PostRate, ProfilePicURL, TOS, TikTok, Twitter, UserID, UserName, YouTube, activity, category, tags, FBLikes, PinFollowers, PinFollowing, TTFollowers, TTFollowing, TTLikes, TwitterFollowers, TwitterFollowing, YTSubs, name, about, signup_promos } = data.mysqlMainView;
 
   const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
   //console.log("****** isMobile = " + isMobile)
@@ -145,6 +145,17 @@ const SingleItem = ({ data, pageContext }) => {
   const filteredShopifyBestSellers = _.filter(rowShopifyBestSellersEdges, ({ node }) => node.VendorURL == AlexaURL)
   const listShopifyBestSellersEdges = _.slice(filteredShopifyBestSellers, 0, maxProducts);
 
+  //Extracting classic products
+  const rowShopifyClassicProductsEdges = data.allMysqlShopifyClassicProducts.edges;
+  //filtering top 3 for current AlexaURL
+  const filteredShopifyClassicProducts = _.filter(rowShopifyClassicProductsEdges, ({ node }) => node.VendorURL == AlexaURL)
+  const listShopifyClassicProductsEdges = _.slice(filteredShopifyClassicProducts, 0, maxProducts);
+
+  //Extracting new products
+  const rowShopifyNewProductsEdges = data.allMysqlShopifyNewProducts.edges;
+  //filtering top 3 for current AlexaURL
+  const filteredShopifyNewProducts = _.filter(rowShopifyNewProductsEdges, ({ node }) => node.VendorURL == AlexaURL)
+  const listShopifyNewProductsEdges = _.slice(filteredShopifyNewProducts, 0, maxProducts);
 
   //Generating the data for chart
   const rowRankHistoryEdges = data.allMysqlRankHistory.edges;
@@ -153,7 +164,7 @@ const SingleItem = ({ data, pageContext }) => {
   let chartTOSData = null;
   if (filteredRankHistoryEdges && filteredRankHistoryEdges.length > 0 && filteredRankHistoryEdges[0].node.GlobalRank_Dates) {
     //Rank data
-    if(filteredRankHistoryEdges[0].node.GlobalRank_List){
+    if (filteredRankHistoryEdges[0].node.GlobalRank_List) {
       chartRankData = {
         labels: _.split(filteredRankHistoryEdges[0].node.GlobalRank_Dates, ','),
         datasets: [
@@ -166,7 +177,7 @@ const SingleItem = ({ data, pageContext }) => {
       };
     }
     //TOS data
-    if(filteredRankHistoryEdges[0].node.TOS_List){
+    if (filteredRankHistoryEdges[0].node.TOS_List) {
       chartTOSData = {
         labels: _.split(filteredRankHistoryEdges[0].node.GlobalRank_Dates, ','),
         datasets: [
@@ -245,7 +256,7 @@ const SingleItem = ({ data, pageContext }) => {
         description={`Find best sellers and popular products from ${name} on emprezzo. See social media growth, search popularity, and more stats online stores selling ${tagsList}. `}
         pathname={AlexaURL}
       />
-      <Header title={name} children={subtitle}  />
+      <Header title={name} children={subtitle} />
       <Container>
         <div className="profileimage" style={{ display: "flex" }}>
           {ProfilePicURL &&
@@ -256,9 +267,9 @@ const SingleItem = ({ data, pageContext }) => {
               {(activity || FollowerRate || PostRate) &&
                 <StatisticItem><a target="_blank" href={firstRowDataView && firstRowDataView.node.ShortCodeURL}></a></StatisticItem>
               }
-              {InstaFollowers &&
+              {TotalFollowers &&
                 <StatisticItem>
-                  {InstaFollowers.toLocaleString()}<br /><span className="stat_title">Total Fans</span>
+                  {TotalFollowers.toLocaleString()}<br /><span className="stat_title">Total Fans</span>
                 </StatisticItem>
               }
             </Statistics>
@@ -270,112 +281,126 @@ const SingleItem = ({ data, pageContext }) => {
           </div>
         </div>
 
-      <div style={{ margin: "2rem" }}>
-        <a href={AlexaURL} className="button" target="_blank">shop {name}</a> <a href="/randomshop" className="button buttonalt">Discover another shop</a>
-    </div>
-    <Content input={about} /><br />
-    {/* List of Products from MySQL View */}
-    {listProductEdges && listProductEdges.length > 0 && <h3>shop {name}</h3>}
+        <div style={{ margin: "2rem" }}>
+          <a href={AlexaURL} className="button" target="_blank">shop {name}</a> <a href="/randomshop" className="button buttonalt">Discover another shop</a>
+        </div>
+        <Content input={about} /><br />
+        {/* List of Products from MySQL View */}
+        {listProductEdges && listProductEdges.length > 0 && <h3>shop {name}</h3>}
 
-    {signup_promos && signup_promos.toLowerCase() != "n/a" &&
-      <><Content input={signup_promos} /><br /></>
-    }
+        {signup_promos && signup_promos.toLowerCase() != "n/a" &&
+          <><Content input={signup_promos} /><br /></>
+        }
 
-    <Tabs>
-        <TabList>
-            {listShopifyBestSellersEdges && listShopifyBestSellersEdges.length>0 &&
+        <Tabs>
+          <TabList>
+            {listShopifyBestSellersEdges && listShopifyBestSellersEdges.length > 0 &&
               <Tab style={TabStyle}>Best sellers</Tab>
             }
             <Tab style={TabStyle}>Classics</Tab>
-        </TabList>
-        {listShopifyBestSellersEdges && listShopifyBestSellersEdges.length>0 &&
-        <TabPanel>
-            <ViewContainer>
+            {listShopifyNewProductsEdges && listShopifyNewProductsEdges.length > 0 &&
+              <Tab style={TabStyle}>New products</Tab>
+            }
+          </TabList>
+          {listShopifyBestSellersEdges && listShopifyBestSellersEdges.length > 0 &&
+            <TabPanel>
+              <ViewContainer>
                 {listShopifyBestSellersEdges.map(({ node }) => {
-                    return renderProduct(node);
+                  return renderProduct(node);
                 })}
-            </ViewContainer>
-        </TabPanel>
-        }
-        <TabPanel>
+              </ViewContainer>
+            </TabPanel>
+          }
+          <TabPanel>
             {/* Show carousel for mobile version */}
             {isMobile &&
-            <Carousel
+              <Carousel
                 showThumbs={false}
                 infiniteLoop
                 showIndicators={false}
                 selectedItem={1}
                 showArrows={true}
                 showStatus={false}
-            >
-                {listProductEdges && listProductEdges.map(({ node }) => {
-                FreeShipText = node.FreeShipText;
-                return renderProduct(node, true);
+              >
+                {listShopifyClassicProductsEdges && listShopifyClassicProductsEdges.map(({ node }) => {
+                  return renderProduct(node, true);
                 })}
-            </Carousel>
+              </Carousel>
             }
 
             {/* Show carousel for mobile version */}
             {!isMobile &&
-            <ViewContainer>
+              <ViewContainer>
                 <>
-                <span>&nbsp;</span>
-                {listProductEdges.map(({ node }) => {
-                    FreeShipText = node.FreeShipText;
+                  <span>&nbsp;</span>
+                  {listShopifyClassicProductsEdges && listShopifyClassicProductsEdges.map(({ node }) => {
                     return renderProduct(node);
-                })}
+                  })}
                 </>
-            </ViewContainer>
+              </ViewContainer>
             }
-        </TabPanel>
-    </Tabs>
+          </TabPanel>
+          {listShopifyNewProductsEdges && listShopifyNewProductsEdges.length > 0 &&
+            <TabPanel>
+              <ViewContainer>
+                {listShopifyNewProductsEdges.map(({ node }) => {
+                  return renderProduct(node);
+                })}
+              </ViewContainer>
+            </TabPanel>
+          }
+        </Tabs>
 
-    {FreeShipText && FreeShipText.length > 0 && <h3>get free shipping at {name}</h3>}
-    <p>{get100Words(FreeShipText)}</p>
-    <br />
+        {listProductEdges && listProductEdges.map(({ node }) => {
+          FreeShipText = node.FreeShipText;
+        })}
+
+        {FreeShipText && FreeShipText.length > 0 && <h3>get free shipping at {name}</h3>}
+        <p>{get100Words(FreeShipText)}</p>
+        <br />
         {/* Social Statistics Section */}
         <h3>{name} site traffic</h3>
         <Tabs>
-            <TabList>
-                <Tab style={TabStyle}>Traffic rank</Tab>
-                <Tab style={TabStyle}>Time on site</Tab>
-            </TabList>
-            <TabPanel>
-                {chartRankData &&
-                    <ReactFrappeChart
-                        type="axis-mixed"
-                        colors={["#743ee2"]}
-                        height={250}
-                        axisOptions={{ xAxisMode: "tick", xIsSeries: 1 }}
-                        data={chartRankData}
-                    />
-                }
-            </TabPanel>
-            <TabPanel>
-                {chartTOSData &&
-                    <ReactFrappeChart
-                        type="axis-mixed"
-                        colors={["#743ee2"]}
-                        height={250}
-                        axisOptions={{ xAxisMode: "tick", xIsSeries: 1 }}
-                        data={chartTOSData}
-                    />
-                }
-            </TabPanel>
+          <TabList>
+            <Tab style={TabStyle}>Traffic rank</Tab>
+            <Tab style={TabStyle}>Time on site</Tab>
+          </TabList>
+          <TabPanel>
+            {chartRankData &&
+              <ReactFrappeChart
+                type="axis-mixed"
+                colors={["#743ee2"]}
+                height={250}
+                axisOptions={{ xAxisMode: "tick", xIsSeries: 1 }}
+                data={chartRankData}
+              />
+            }
+          </TabPanel>
+          <TabPanel>
+            {chartTOSData &&
+              <ReactFrappeChart
+                type="axis-mixed"
+                colors={["#743ee2"]}
+                height={250}
+                axisOptions={{ xAxisMode: "tick", xIsSeries: 1 }}
+                data={chartTOSData}
+              />
+            }
+          </TabPanel>
         </Tabs>
 
-          <h3>{name} social media stats</h3>
+        <h3>{name} social media stats</h3>
         <Statistics>
 
-            {activity &&
+          {activity &&
             <StatisticItem>
-            <FaRegLaugh size="32" color="black" />
+              <FaRegLaugh size="32" color="black" />
             </StatisticItem>
           }
 
           <StatisticItem>
-          <h5>{(activity + FollowerRate + PostRate).toFixed(1)} </h5>
-          <h6>social score</h6>
+            <h5>{(activity + FollowerRate + PostRate).toFixed(1)} </h5>
+            <h6>social score</h6>
 
           </StatisticItem>
           {activity &&
@@ -590,6 +615,8 @@ export const query = graphql`
       TTLikes
       TwitterFollowers
       TwitterFollowing
+      TotalFollowers
+      TotalFollowing
       YTSubs
       name
       about
@@ -651,6 +678,32 @@ export const query = graphql`
           ImageURL
           Price
           FreeShipText
+        }
+      }
+    }
+    allMysqlShopifyClassicProducts {
+      edges {
+        node {
+          ProductURL
+          ImageURL
+          Title
+          Price
+          VendorName
+          VariantTitle
+          VendorURL
+        }
+      }
+    }
+    allMysqlShopifyNewProducts {
+      edges {
+        node {
+          ProductURL
+          ImageURL
+          Title
+          Price
+          VendorName
+          VariantTitle
+          VendorURL
         }
       }
     }
