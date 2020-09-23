@@ -53,8 +53,7 @@ module.exports = {
           port: '25060',
           user:  'emp22-dbuser',
           password:  'qkjxw1eigibsha4w',
-          database:  'emp22-db-primary',
-          connectTimeout: 100000
+          database:  'emp22-db-primary'
         },
         queries: [
           {

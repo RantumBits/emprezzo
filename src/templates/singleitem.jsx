@@ -252,7 +252,7 @@ const SingleItem = ({ data, pageContext }) => {
   return (
     <Layout>
       <SEO
-        title={`Discover ${name}: products, stats & deals `}
+        title={`Discover ${name}: Best Sellers, Coupons, & Stats `}
         description={`Find best sellers and popular products from ${name} on emprezzo. See social media growth, search popularity, and more stats online stores selling ${tagsList}. `}
         pathname={AlexaURL}
       />
