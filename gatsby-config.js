@@ -130,7 +130,7 @@ module.exports = {
             statement: "Select CONCAT(UserName,FLOOR(RAND()*10000)) AS UniqueKey, UserID, UserName, FullName, Biography, ProfilePicURL, AlexaRankOrder, PostsCount, FollowersCount, FollowingCount, PostRate, FollowerRate, Activity, PhotoLink AS UniquePhotoLink, ShortCode, CONCAT('https://instagram.com/p/',ShortCode) AS ShortCodeURL, LikesCount, CommentsCount, PostDate, Caption, CaptionHashtags, AlexaURL, GlobalRank, Reach, LocalRank, AlexaCountry, TOS FROM DataView WHERE UserName IS NOT NULL ORDER BY activity DESC",
             idFieldName: 'UniqueKey',
             name: 'DataView'
-            //,remoteImageFieldNames: ['UniquePhotoLink']
+            ,remoteImageFieldNames: ['UniquePhotoLink']
           }
         ]
       }

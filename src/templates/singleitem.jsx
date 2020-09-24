@@ -564,19 +564,10 @@ const SingleItem = ({ data, pageContext }) => {
       </Container>
       <SuggestionBar>
         <PostSuggestion>
-          {prev && (
-            <Link to={`/shops/${prev.UserName}`}>
-              <p>&lt; {prev.name}</p>
-            </Link>
-          )}
+
         </PostSuggestion>
         <PostSuggestion>
-          {next && (
-            <Link to={`/shops/${next.UserName}`}>
 
-              <p>{next.name}	&gt;</p>
-            </Link>
-          )}
         </PostSuggestion>
       </SuggestionBar>
     </Layout>
