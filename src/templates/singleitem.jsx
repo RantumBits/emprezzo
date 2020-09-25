@@ -414,142 +414,8 @@ const SingleItem = ({ data, pageContext }) => {
         </Tabs>
 
         <h3>{name} social media stats</h3>
-        <Statistics>
 
-          {activity &&
-            <StatisticItem>
-              <FaRegLaugh size="32" color="black" />
-            </StatisticItem>
-          }
-
-          <StatisticItem>
-            <h5>{(activity + FollowerRate + PostRate).toFixed(1)} </h5>
-            <h6>social score</h6>
-
-          </StatisticItem>
-          {activity &&
-            <StatisticItem>
-              <h5>{(FollowerRate).toFixed(1)} </h5>
-              <h6>social rate</h6>
-            </StatisticItem>
-          }
-          {/*
-          {FBLikes &&
-            <>
-              <span className="break" />
-              <StatisticItem>
-                <a href={socialDetails.FacebookLink} target="_blank"><FaFacebookSquare size="32" color="black" /></a>
-              </StatisticItem>
-            </>
-          }
-          {FBLikes &&
-            <StatisticItem>
-              <h5>{FBLikes}</h5>
-              <h6>fans</h6>
-            </StatisticItem>
-          }
-          {(PinFollowers || PinFollowing) &&
-            <>
-              <span className="break" />
-              <StatisticItem>
-                <a href={socialDetails.PinterestLink} target="_blank"><FaPinterestSquare size="32" color="black" /></a>
-              </StatisticItem>
-            </>
-          }
-          {PinFollowers &&
-            <StatisticItem>
-              <h5>{PinFollowers}</h5>
-              <h6>followers</h6>
-            </StatisticItem>
-          }
-          {PinFollowing &&
-            <StatisticItem>
-              <h5>{PinFollowing}</h5>
-              <h6>following</h6>
-            </StatisticItem>
-          }
-          {(TTFollowers || TTFollowing || TTLikes) &&
-            <>
-              <span className="break" />
-              <StatisticItem>
-                <a href={socialDetails.TikTokLink} target="_blank"><svg stroke="currentColor" fill="currentColor" style={{ color: "black" }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="32" height="32"><path fill="currentColor" d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"></path></svg></a>
-              </StatisticItem>
-            </>
-          }
-          {TTFollowers &&
-            <StatisticItem>
-              <h5>{TTFollowers}</h5>
-              <h6>followers</h6>
-            </StatisticItem>
-          }
-          {TTFollowing &&
-            <StatisticItem>
-              <h5>{TTFollowing}</h5>
-              <h6>following</h6>
-            </StatisticItem>
-          }
-          {TTLikes &&
-            <StatisticItem>
-              <h5>{TTLikes}</h5>
-              <h6>likes</h6>
-            </StatisticItem>
-          }
-          {(TwitterFollowers || TwitterFollowing) &&
-            <>
-              <span className="break" />
-              <StatisticItem>
-                <a href={socialDetails.TwitterLink} target="_blank"><FaTwitterSquare size="32" color="black" /></a>
-              </StatisticItem>
-            </>
-          }
-          {TwitterFollowers &&
-            <StatisticItem>
-              <h5>{TwitterFollowers}</h5>
-              <h6>followers</h6>
-            </StatisticItem>
-          }
-          {TwitterFollowing &&
-            <StatisticItem>
-              <h5>{TwitterFollowing}</h5>
-              <h6>following</h6>
-            </StatisticItem>
-          }
-          {YTSubs &&
-            <>
-              <span className="break" />
-              <StatisticItem>
-                <a href={socialDetails.YouTubeLink} target="_blank"><FaYoutube size="32" color="black" /></a>
-              </StatisticItem>
-            </>
-          }
-          {YTSubs &&
-            <StatisticItem>
-              <h5>{YTSubs}</h5>
-              <h6>subscribers</h6>
-            </StatisticItem>
-          }
-          {firstRowDataView && (firstRowDataView.node.FollowersCount || firstRowDataView.node.FollowingCount) &&
-            <>
-              <span className="break" />
-              <StatisticItem>
-                <a href={socialDetails.InstagramLink} target="_blank"><FaInstagram size="32" color="black" /></a>
-              </StatisticItem>
-            </>
-          }
-          {firstRowDataView && firstRowDataView.node.FollowersCount &&
-            <StatisticItem>
-              <h5>{firstRowDataView.node.FollowersCount}</h5>
-              <h6>followers</h6>
-            </StatisticItem>
-          }
-          {firstRowDataView && firstRowDataView.node.FollowingCount &&
-            <StatisticItem>
-              <h5>{firstRowDataView.node.FollowingCount}</h5>
-              <h6>following</h6>
-            </StatisticItem>
-          }
-        </Statistics>
-        */}
+        }
         {chartSocialData &&
           <ReactFrappeChart
             type="axis-mixed"
@@ -656,7 +522,6 @@ export const query = graphql`
           FullName
           Biography
           PostDate
-          AlexaCountry
           UniquePhotoLink
           AlexaRankOrder
           mysqlImage {
@@ -666,18 +531,8 @@ export const query = graphql`
               }
             }
           }
-          PostsCount
-          FollowersCount
-          FollowingCount
-          GlobalRank
-          LocalRank
-          TOS
-          ProfilePicURL
           Caption
           ShortCodeURL
-          activity
-          FollowerRate
-          PostRate
         }
       }
     }
