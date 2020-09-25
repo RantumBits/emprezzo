@@ -108,7 +108,7 @@ const TabStyle = {
 
 const SingleItem = ({ data, pageContext }) => {
   const { next, prev } = pageContext;
-  const { AlexaURL, Facebook, FollowerRate, InstaFollowers, TotalFollowers, GlobalRank, Instagram, LocalRank, Pinterest, PostRate, ProfilePicURL, TOS, TikTok, Twitter, UserID, UserName, YouTube, activity, category, tags, FBLikes, PinFollowers, PinFollowing, TTFollowers, TTFollowing, TTLikes, TwitterFollowers, TwitterFollowing, YTSubs, name, about, signup_promos } = data.mysqlMainView;
+  const { AlexaURL, Facebook, FollowerRate, InstaFollowers,InstaFollowing, TotalFollowers, GlobalRank, Instagram, LocalRank, Pinterest, PostRate, ProfilePicURL, TOS, TikTok, Twitter, UserID, UserName, YouTube, activity, category, tags, FBLikes, PinFollowers, PinFollowing, TTFollowers, TTFollowing, TTLikes, TwitterFollowers, TwitterFollowing, YTSubs, name, about, signup_promos } = data.mysqlMainView;
 
   const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
   //console.log("****** isMobile = " + isMobile)
@@ -190,6 +190,30 @@ const SingleItem = ({ data, pageContext }) => {
       };
     }
   }
+
+  //Social chart data
+  const chartSocialData = {
+    labels: [
+      "Instagram",
+      "Facebook",
+      "Twitter",
+      "Youtube",
+      "Pinterest",
+      "TikTok"
+    ],
+    datasets: [
+      {
+        name: "following",
+        chartType: "bar",
+        values: [(InstaFollowing || 0), 0, (TwitterFollowing || 0), 0, (PinFollowing || 0), (TTFollowing || 0)]
+      },
+      {
+        name: "followers",
+        chartType: "bar",
+        values: [(InstaFollowers || 0), (FBLikes || 0), (TwitterFollowers || 0), (YTSubs || 0), (PinFollowers || 0), (TTFollowers || 0)]
+      }
+    ]
+  };
 
   const socialDetails = {
     "InstagramLink": Instagram ? "https://www.instagram.com/" + Instagram : null,
@@ -409,7 +433,7 @@ const SingleItem = ({ data, pageContext }) => {
               <h6>social rate</h6>
             </StatisticItem>
           }
-
+          {/*
           {FBLikes &&
             <>
               <span className="break" />
@@ -525,7 +549,17 @@ const SingleItem = ({ data, pageContext }) => {
             </StatisticItem>
           }
         </Statistics>
-
+        */}
+        {chartSocialData &&
+          <ReactFrappeChart
+            type="axis-mixed"
+            colors={["blue", "purple"]}
+            height={250}
+            axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
+            barOptions={{ stacked: 1 }}
+            data={chartSocialData}
+          />
+        }
 
 
         {/* List of Posts from MySQL View */}
@@ -583,6 +617,7 @@ export const query = graphql`
       Facebook
       FollowerRate
       InstaFollowers
+      InstaFollowing
       GlobalRank
       Instagram
       LocalRank
