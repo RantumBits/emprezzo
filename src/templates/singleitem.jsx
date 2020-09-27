@@ -108,7 +108,7 @@ const TabStyle = {
 
 const SingleItem = ({ data, pageContext }) => {
   const { next, prev } = pageContext;
-  const { AlexaURL, Facebook, FollowerRate, InstaFollowers,InstaFollowing, TotalFollowers, GlobalRank, Instagram, LocalRank, Pinterest, PostRate, ProfilePicURL, TOS, TikTok, Twitter, UserID, UserName, YouTube, activity, category, tags, FBLikes, PinFollowers, PinFollowing, TTFollowers, TTFollowing, TTLikes, TwitterFollowers, TwitterFollowing, YTSubs, name, about, signup_promos } = data.mysqlMainView;
+  const { AlexaURL, Facebook, FollowerRate, InstaFollowers, InstaFollowing, TotalFollowers, GlobalRank, Instagram, LocalRank, Pinterest, PostRate, ProfilePicURL, TOS, TikTok, Twitter, UserID, UserName, YouTube, activity, category, tags, FBLikes, PinFollowers, PinFollowing, TTFollowers, TTFollowing, TTLikes, TwitterFollowers, TwitterFollowing, YTSubs, name, about, signup_promos } = data.mysqlMainView;
 
   const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
   //console.log("****** isMobile = " + isMobile)
@@ -126,7 +126,7 @@ const SingleItem = ({ data, pageContext }) => {
   //console.log("*********** firstRowDataView")
   //console.log(firstRowDataView)
   //Now filtering instagram posts if the image or caption is not present
-  const listInstaPostEdges = _.filter(listPostEdges, ({ node }) => (node.UniquePhotoLink))
+  const listInstaPostEdges = _.filter(listPostEdges, ({ node }) => (node.PhotoLink))
   //console.log("*****++listInstaPostEdges+++********")
   //console.log(listInstaPostEdges)
 
@@ -158,41 +158,37 @@ const SingleItem = ({ data, pageContext }) => {
   const listShopifyNewProductsEdges = _.slice(filteredShopifyNewProducts, 0, maxProducts);
 
   //Generating the data for chart
-  const rowRankHistoryEdges = data.allMysqlRankHistory.edges;
-  const filteredRankHistoryEdges = _.filter(rowRankHistoryEdges, ({ node }) => node.UserName == UserName)
   let chartRankData = null;
   let chartTOSData = null;
-  if (filteredRankHistoryEdges && filteredRankHistoryEdges.length > 0 && filteredRankHistoryEdges[0].node.GlobalRank_Dates) {
-    //Rank data
-    if (filteredRankHistoryEdges[0].node.GlobalRank_List) {
-      chartRankData = {
-        labels: _.split(filteredRankHistoryEdges[0].node.GlobalRank_Dates, ','),
-        datasets: [
-          {
-            name: 'Rank Data',
-            type: 'line',
-            values: _.split(filteredRankHistoryEdges[0].node.GlobalRank_List, ',')
-          }
-        ]
-      };
-    }
-    //TOS data
-    if (filteredRankHistoryEdges[0].node.TOS_List) {
-      chartTOSData = {
-        labels: _.split(filteredRankHistoryEdges[0].node.GlobalRank_Dates, ','),
-        datasets: [
-          {
-            name: 'TOS Data',
-            type: 'line',
-            values: _.split(filteredRankHistoryEdges[0].node.TOS_List, ',')
-          }
-        ]
-      };
-    }
+  //Rank data
+  if (data.mysqlMainView.GlobalRank_List) {
+    chartRankData = {
+      labels: _.split(data.mysqlMainView.GlobalRank_Dates, ','),
+      datasets: [
+        {
+          name: 'Rank Data',
+          type: 'line',
+          values: _.split(data.mysqlMainView.GlobalRank_List, ',')
+        }
+      ]
+    };
+  }
+  //TOS data
+  if (data.mysqlMainView.TOS_List) {
+    chartTOSData = {
+      labels: _.split(data.mysqlMainView.GlobalRank_Dates, ','),
+      datasets: [
+        {
+          name: 'TOS Data',
+          type: 'line',
+          values: _.split(data.mysqlMainView.TOS_List, ',')
+        }
+      ]
+    };
   }
 
   //Social chart data
-  const chartSocialData = {
+  const chartSocialFollowingData = {
     labels: [
       "Instagram",
       "Facebook",
@@ -204,12 +200,23 @@ const SingleItem = ({ data, pageContext }) => {
     datasets: [
       {
         name: "following",
-        chartType: "bar",
         values: [(InstaFollowing || 0), 0, (TwitterFollowing || 0), 0, (PinFollowing || 0), (TTFollowing || 0)]
-      },
+      }
+    ]
+  };
+
+  const chartSocialFollowerData = {
+    labels: [
+      "Instagram",
+      "Facebook",
+      "Twitter",
+      "Youtube",
+      "Pinterest",
+      "TikTok"
+    ],
+    datasets: [
       {
         name: "followers",
-        chartType: "bar",
         values: [(InstaFollowers || 0), (FBLikes || 0), (TwitterFollowers || 0), (YTSubs || 0), (PinFollowers || 0), (TTFollowers || 0)]
       }
     ]
@@ -255,14 +262,14 @@ const SingleItem = ({ data, pageContext }) => {
 
   const renderPost = (node, ismobile) => {
     return (
-      <ViewCard key={node.UniquePhotoLink} style={{ padding: (ismobile && "15px"), width: (!ismobile && "30%") }}>
+      <ViewCard key={node.PhotoLink} style={{ padding: (ismobile && "15px"), width: (!ismobile && "30%") }}>
         <a href={node.ShortCodeURL} target="_blank">
           <ViewImage >
             {node.mysqlImage &&
               <Image fluid={node.mysqlImage.childImageSharp.fluid} alt={node.Caption} style={{ height: '200px', width: '100%', margin: 'auto' }} />
             }
             {!node.mysqlImage &&
-              <img src={node.UniquePhotoLink} alt={node.Caption} style={{ objectFit: 'cover', height: '200px', width: '100%', margin: 'auto' }} />
+              <img src={node.PhotoLink} alt={node.Caption} style={{ objectFit: 'cover', height: '200px', width: '100%', margin: 'auto' }} />
             }
           </ViewImage>
         </a>
@@ -415,18 +422,26 @@ const SingleItem = ({ data, pageContext }) => {
 
         <h3>{name} social media stats</h3>
 
-        }
-        {chartSocialData &&
+        {chartSocialFollowingData &&
           <ReactFrappeChart
-            type="axis-mixed"
-            colors={["blue", "purple"]}
+            type="donut"
+            title="Followings"
             height={250}
             axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
             barOptions={{ stacked: 1 }}
-            data={chartSocialData}
+            data={chartSocialFollowingData}
           />
         }
-
+        {chartSocialFollowerData &&
+          <ReactFrappeChart
+            type="pie"
+            title="Followers"
+            height={250}
+            axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
+            barOptions={{ stacked: 1 }}
+            data={chartSocialFollowerData}
+          />
+        }
 
         {/* List of Posts from MySQL View */}
         {listInstaPostEdges && listInstaPostEdges.length > 0 && <h3>instagram posts</h3>}
@@ -513,6 +528,10 @@ export const query = graphql`
       name
       about
       signup_promos
+      GlobalRank_Change
+      GlobalRank_Dates
+      GlobalRank_List
+      TOS_List
     }
     allMysqlDataView  (filter: {AlexaURL: {eq: $pathSlug}}) {
       edges {
@@ -522,7 +541,7 @@ export const query = graphql`
           FullName
           Biography
           PostDate
-          UniquePhotoLink
+          PhotoLink
           AlexaRankOrder
           mysqlImage {
             childImageSharp {
@@ -536,18 +555,7 @@ export const query = graphql`
         }
       }
     }
-    allMysqlRankHistory {
-      edges {
-        node {
-          GlobalRank_Change
-          GlobalRank_Dates
-          GlobalRank_List
-          TOS_List
-          UserName
-          url
-        }
-      }
-    }
+
     allMysqlShopifyView (filter: {AlexaURL: {eq: $pathSlug}}) {
       edges {
         node {

@@ -124,7 +124,7 @@ const PostList = ({ id, cover, path, date, title, excerpt, mysqldataview, instag
     if(listPostEdges && listPostEdges.length>0){
         firstPostRow = listPostEdges[0];
     }
-    cover = firstPostRow && firstPostRow.node.UniquePhotoLink ? firstPostRow.node.UniquePhotoLink : null;
+    cover = firstPostRow && firstPostRow.node.PhotoLink ? firstPostRow.node.PhotoLink : null;
     title = title || (firstPostRow && firstPostRow.node.FullName)
     excerpt = excerpt || (firstPostRow && firstPostRow.node.Biography)
     excerpt = excerpt?excerpt.substring(0,40)+"...":""

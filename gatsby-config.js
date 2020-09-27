@@ -60,17 +60,7 @@ module.exports = {
             statement: 'SELECT * FROM ShopifyView WHERE AlexaURL IS NOT NULL',
             idFieldName: 'ProductURL',
             name: 'ShopifyView'
-          },
-          {
-              statement: 'SELECT * FROM SocialIDView WHERE URL IS NOT NULL',
-              idFieldName: 'URL',
-              name: 'SocialIDView'
-          },
-          {
-            statement: 'SELECT * FROM ShopifyView WHERE ProductID IS NOT NULL',
-            idFieldName: 'ProductURL',
-            name: 'Products'
-          },
+          },                    
           {
             statement: 'SELECT * FROM RankView WHERE AlexaURL IS NOT NULL',
             idFieldName: 'AlexaURL',
@@ -85,12 +75,7 @@ module.exports = {
             statement: 'SELECT * FROM RankView_PayLater WHERE AlexaURL IS NOT NULL',
             idFieldName: 'AlexaURL',
             name: 'RankViewPayLater'
-          },
-          {
-            statement: 'SELECT * FROM RankView_Pages WHERE AlexaURL IS NOT NULL',
-            idFieldName: 'AlexaURL',
-            name: 'RankViewPages'
-          },
+          },          
           {
             statement: 'SELECT * FROM Tags WHERE url IS NOT NULL',
             idFieldName: 'url',
@@ -100,11 +85,6 @@ module.exports = {
             statement: 'SELECT CONCAT(TOPIC,FLOOR(RAND()*10000)) AS UniqueKey,Pages.* FROM Pages',
             idFieldName: 'UniqueKey',
             name: 'Pages'
-          },
-          {
-            statement: 'SELECT * FROM RankHistory',
-            idFieldName: 'UserName',
-            name: 'RankHistory'
           },
           {
             statement: 'SELECT CONCAT(ProductID,FLOOR(RAND()*10000)) AS UniqueKey,ShopifyBestSellers.* FROM ShopifyBestSellers',
@@ -122,12 +102,12 @@ module.exports = {
             name: 'ShopifyNewProducts'
           },
           {
-            statement: "SELECT RankView_Pages.*, Tags.*, SocialIDView.* FROM RankView_Pages LEFT JOIN Tags ON TRIM(TRAILING '/' FROM RankView_Pages.AlexaURL) = TRIM(TRAILING '/' FROM Tags.url) LEFT JOIN SocialIDView ON TRIM(TRAILING '/' FROM RankView_Pages.AlexaURL) = TRIM(TRAILING '/' FROM SocialIDView.URL)",
+            statement: "SELECT RankView_Pages.*, Tags.*, SocialIDView.*, RankHistory.* FROM RankView_Pages LEFT JOIN Tags ON TRIM(TRAILING '/' FROM RankView_Pages.AlexaURL) = TRIM(TRAILING '/' FROM Tags.url) LEFT JOIN SocialIDView ON TRIM(TRAILING '/' FROM RankView_Pages.AlexaURL) = TRIM(TRAILING '/' FROM SocialIDView.URL) LEFT JOIN RankHistory ON RankView_Pages.UserName = RankHistory.UserName",
             idFieldName: 'AlexaURL',
             name: 'MainView'
           },
           {
-            statement: "Select CONCAT(UserName,FLOOR(RAND()*10000)) AS UniqueKey, UserID, UserName, FullName, Biography, ProfilePicURL, AlexaRankOrder, PostsCount, FollowersCount, FollowingCount, PostRate, FollowerRate, Activity, PhotoLink AS UniquePhotoLink, ShortCode, CONCAT('https://instagram.com/p/',ShortCode) AS ShortCodeURL, LikesCount, CommentsCount, PostDate, Caption, CaptionHashtags, AlexaURL, GlobalRank, Reach, LocalRank, AlexaCountry, TOS FROM DataView WHERE UserName IS NOT NULL ORDER BY activity DESC",
+            statement: "Select CONCAT(UserName,FLOOR(RAND()*10000)) AS UniqueKey, DataView.*,CONCAT('https://instagram.com/p/',DataView.ShortCode) AS ShortCodeURL FROM DataView WHERE UserName IS NOT NULL ORDER BY activity DESC",
             idFieldName: 'UniqueKey',
             name: 'DataView'
             ,remoteImageFieldNames: ['UniquePhotoLink']

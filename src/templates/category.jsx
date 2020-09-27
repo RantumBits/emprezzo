@@ -99,7 +99,7 @@ export const query = graphql`
       edges {
         node {
           UserName
-          UniquePhotoLink
+          PhotoLink
           ProfilePicURL
           Caption
           ShortCodeURL

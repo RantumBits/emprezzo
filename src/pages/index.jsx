@@ -60,7 +60,7 @@ const CarouselWrapper = styled.div`
 
 const Index = ({ data }) => {
   const { edges } = data.allMysqlMainView;
-  const rowProductsEdges = data.allMysqlProducts.edges;
+  const rowProductsEdges = data.allMysqlShopifyView.edges;
   const maxItems = 25;
   const [limit, setLimit] = React.useState(maxItems);
   const [showMore, setShowMore] = React.useState(true);
@@ -259,7 +259,7 @@ export const query = graphql`
           UserName
           PostDate
           AlexaCountry
-          UniquePhotoLink
+          PhotoLink
           PostsCount
           FollowersCount
           FollowingCount
@@ -277,7 +277,7 @@ export const query = graphql`
       }
     }
 
-    allMysqlProducts {
+    allMysqlShopifyView {
       edges {
         node {
           UserName

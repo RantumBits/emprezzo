@@ -34,7 +34,7 @@ const Products = ({ data, pageContext }) => {
   const categoryGroup = data.allMysqlMainView.group;
   //console.log(categoryGroup)  
 
-  const rowProductsEdges = data.allMysqlProducts.edges;
+  const rowProductsEdges = data.allMysqlShopifyView.edges;
   
   const checkEdgesInProductView = (allEdges) => {
     const filteredProducts = [];
@@ -109,7 +109,7 @@ export default Products;
 
 export const query = graphql`
   query {
-    allMysqlProducts {
+    allMysqlShopifyView {
       edges {
         node {
           UserName

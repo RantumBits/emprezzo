@@ -112,7 +112,7 @@ export const query = graphql`
         node {
           UserName
           FullName
-          UniquePhotoLink
+          PhotoLink
           ProfilePicURL
           Caption
           ShortCodeURL

@@ -79,21 +79,7 @@ const ViewInfo = styled.div`
 
 const SingleItem = ({ data, pageContext }) => {
   const { next, prev } = pageContext;
-  const { Facebook, Instagram, Pinterest, TikTok, Twitter, URL, YouTube } = data.mysqlSocialIdView
-
-  //Creating Social IDs Data to pass to header for displaying
-  let socialDetails = {
-    "InstagramLink": Instagram ? "https://www.instagram.com/" + Instagram : null,
-    "FacebookLink": Facebook ? "https://www.facebook.com/" + Facebook : null,
-    "PinterestLink": Pinterest ? "https://www.pinterest.com/" + Pinterest : null,
-    "TikTokLink": TikTok ? "https://www.tiktok.com/" + TikTok : null,
-    "TwitterLink": Twitter ? "https://www.twitter.com/" + Twitter : null,
-    "YouTubeLink": YouTube ? "https://www.youtube.com/c/" + YouTube : null
-  }
-  console.log("+++++++++++++")
-  console.log(socialDetails)
-  console.log("+++++++++++++")
-
+  
   //Extracting Posts from MySQL Data
   const maxPosts = 3;
   const listPostEdges = [];
@@ -109,7 +95,7 @@ const SingleItem = ({ data, pageContext }) => {
   //Now filtering instagram posts if the image or caption is not present
   const listInstaPostEdges = [];
   listPostEdges.map((edge) => {
-    if (edge.node.UniquePhotoLink && edge.node.Caption) {
+    if (edge.node.PhotoLink && edge.node.Caption) {
       listInstaPostEdges.push(edge);
     }
   })
@@ -130,6 +116,19 @@ const SingleItem = ({ data, pageContext }) => {
   const name = ((firstRowDataView && firstRowDataView.node.FullName) || "")
   const url = ((firstRowDataView && firstRowDataView.node.AlexaURL) || "")
   const image = (firstRowDataView && firstRowDataView.node.ProfilePicURL);
+
+  //Creating Social IDs Data to pass to header for displaying
+  let socialDetails = {
+    "InstagramLink": (firstRowDataView && firstRowDataView.node.Instagram) ? "https://www.instagram.com/" + (firstRowDataView && firstRowDataView.node.Instagram) : null,
+    "FacebookLink": (firstRowDataView && firstRowDataView.node.Facebook) ? "https://www.facebook.com/" + (firstRowDataView && firstRowDataView.node.Facebook) : null,
+    "PinterestLink": (firstRowDataView && firstRowDataView.node.Pinterest) ? "https://www.pinterest.com/" + (firstRowDataView && firstRowDataView.node.Pinterest) : null,
+    "TikTokLink": (firstRowDataView && firstRowDataView.node.TikTok) ? "https://www.tiktok.com/" + (firstRowDataView && firstRowDataView.node.TikTok) : null,
+    "TwitterLink": (firstRowDataView && firstRowDataView.node.Twitter) ? "https://www.twitter.com/" + (firstRowDataView && firstRowDataView.node.Twitter) : null,
+    "YouTubeLink": (firstRowDataView && firstRowDataView.node.YouTube) ? "https://www.youtube.com/c/" + (firstRowDataView && firstRowDataView.node.YouTube) : null
+  }
+  console.log("+++++++++++++")
+  console.log(socialDetails)
+  console.log("+++++++++++++")
 
   return (
     <Layout>
@@ -208,10 +207,10 @@ const SingleItem = ({ data, pageContext }) => {
           <ViewContainer>
             {listInstaPostEdges.map(({ node }) => {
               return (
-                <ViewCard key={node.UniquePhotoLink} itemWidth="30%">
+                <ViewCard key={node.PhotoLink} itemWidth="30%">
                   <a href={node.ShortCodeURL} target="_blank">
                     <ViewImage>
-                      <img src={node.UniquePhotoLink} />
+                      <img src={node.PhotoLink} />
                     </ViewImage>
                   </a>
                   <ViewInfo className="info">
@@ -261,7 +260,7 @@ export const query = graphql`
           PostDate
           AlexaCountry
           AlexaURL
-          UniquePhotoLink
+          PhotoLink
           PostsCount
           FollowersCount
           FollowingCount
@@ -285,16 +284,7 @@ export const query = graphql`
           Price
         }
       }
-    }
-    mysqlSocialIdView (Instagram: {eq: $pathSlug}) {
-      Instagram
-      Facebook
-      Pinterest
-      TikTok
-      Twitter
-      URL
-      YouTube
-    }
+    }    
 
   }
 `;

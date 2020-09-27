@@ -57,7 +57,7 @@ const CarouselWrapper = styled.div`
 `;
 
 const Products = ({ data, pageContext }) => {
-  const rowProductsEdges = data.allMysqlProducts.edges;
+  const rowProductsEdges = data.allMysqlShopifyView.edges;
   const maxFeaturedItems = 25;
   const [limit, setLimit] = React.useState(maxFeaturedItems);
   const [filter, setFilter] = React.useState([]);
@@ -195,7 +195,7 @@ export default Products;
 
 export const query = graphql`
   query {
-    allMysqlProducts {
+    allMysqlShopifyView {
       edges {
         node {
           UserName
