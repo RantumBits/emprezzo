@@ -60,7 +60,7 @@ module.exports = {
             statement: 'SELECT * FROM ShopifyView WHERE AlexaURL IS NOT NULL',
             idFieldName: 'ProductURL',
             name: 'ShopifyView'
-          },                    
+          },
           {
             statement: 'SELECT * FROM RankView WHERE AlexaURL IS NOT NULL',
             idFieldName: 'AlexaURL',
@@ -75,7 +75,7 @@ module.exports = {
             statement: 'SELECT * FROM RankView_PayLater WHERE AlexaURL IS NOT NULL',
             idFieldName: 'AlexaURL',
             name: 'RankViewPayLater'
-          },          
+          },
           {
             statement: 'SELECT * FROM Tags WHERE url IS NOT NULL',
             idFieldName: 'url',
@@ -102,7 +102,7 @@ module.exports = {
             name: 'ShopifyNewProducts'
           },
           {
-            statement: "SELECT RankView_Pages.*, Tags.*, SocialIDView.*, RankHistory.* FROM RankView_Pages LEFT JOIN Tags ON TRIM(TRAILING '/' FROM RankView_Pages.AlexaURL) = TRIM(TRAILING '/' FROM Tags.url) LEFT JOIN SocialIDView ON TRIM(TRAILING '/' FROM RankView_Pages.AlexaURL) = TRIM(TRAILING '/' FROM SocialIDView.URL) LEFT JOIN RankHistory ON RankView_Pages.UserName = RankHistory.UserName",
+            statement: "SELECT CONCAT(RankView_Pages.AlexaURL,FLOOR(RAND()*10000)) AS UniqueKey,RankView_Pages.*, Tags.*, SocialIDView.*, RankHistory.* FROM RankView_Pages LEFT JOIN Tags ON TRIM(TRAILING '/' FROM RankView_Pages.AlexaURL) = TRIM(TRAILING '/' FROM Tags.url) LEFT JOIN SocialIDView ON TRIM(TRAILING '/' FROM RankView_Pages.AlexaURL) = TRIM(TRAILING '/' FROM SocialIDView.URL) LEFT JOIN RankHistory ON TRIM(TRAILING '/' FROM RankView_Pages.AlexaURL) = TRIM(TRAILING '/' FROM RankHistory.url)",
             idFieldName: 'AlexaURL',
             name: 'MainView'
           },

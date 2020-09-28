@@ -2,7 +2,7 @@ const shopQuery = `{
   shops: allMysqlMainView {
     edges {
       node {
-        objectID: UserName
+        objectID: UniqueKey
         title: name
         slug: UserName
         tags: tags
