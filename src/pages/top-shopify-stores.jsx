@@ -8,6 +8,8 @@ import { Header, BlogList } from 'components';
 import { Layout } from 'layouts';
 import _ from 'lodash';
 import { useMediaQuery } from 'react-responsive'
+import { Dialog } from "@reach/dialog";
+import "@reach/dialog/styles.css";
 
 const ShopsWrapper = styled.div`
   display: flex;
@@ -72,7 +74,9 @@ const TopShopifyStores = ({ data }) => {
   const maxItems = 12;
   const [limit, setLimit] = React.useState(maxItems);
   const [showMore, setShowMore] = React.useState(true);
-
+  const [showDialog, setShowDialog] = React.useState(false);
+  const [dialogText, setDialogText] = React.useState();
+  
   const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
 
   const increaseLimit = () => {
@@ -91,16 +95,30 @@ const TopShopifyStores = ({ data }) => {
     combinedEdges.push(newNode);
   })
 
-  //Now sorting (desc) based on FollowerRate
-  var sortedEdges = _.sortBy(combinedEdges, obj => -obj.FollowerRate)
+  //Now sorting (desc) based on TotalFollowers
+  var sortedEdges = _.sortBy(combinedEdges, obj => -obj.TotalFollowers)
 
   //Now limiting the items as per limit
   const listEdges = _.slice(sortedEdges, 0, limit)
 
+  const openMoreDialog = (text) => {
+    setDialogText(text||"No Description Available");
+    setShowDialog(true);
+    //alert(text)
+  }
+
+  const closeMoreDialog = () => setShowDialog(false);
+
+
   return (
     <Layout title={'Top Shopify Stores | Shop the most popular stores'} description='Discover top Shopify stores. Shop the best and most popular Shopify shop on emprezzo.'>
       <Header title="🧐 Discover top Shopify stores" subtitle=""></Header>
-
+      <Dialog isOpen={showDialog} onDismiss={closeMoreDialog}>        
+        <p>{dialogText}</p>
+        <button onClick={closeMoreDialog}>
+          Close
+        </button>
+      </Dialog>
       <ShopsWrapper>
         <div className="intro_text">
           <h3>Browse top Shopify stores</h3>
@@ -112,6 +130,8 @@ const TopShopifyStores = ({ data }) => {
               <thead>
                 <tr>
                   <th>#</th>
+                  <th></th>
+                      
                   <th>Store</th>
                   {!isMobile &&
                     <>
@@ -119,7 +139,7 @@ const TopShopifyStores = ({ data }) => {
                       <th>TrafficRank</th>
                     </>
                   }
-                  <th>FollowerRate</th>
+                  <th>TotalFollowers</th>
                   {!isMobile &&
                     <>
                       <th>Pinterest</th>
@@ -136,6 +156,7 @@ const TopShopifyStores = ({ data }) => {
                 {listEdges.map((node, index) => (
                   <tr key={index} id={`post-${index}`}>
                     <td>{index + 1}</td>
+                    <td><a href="javascript:void(0)" onClick={()=>openMoreDialog(node.about)}>&gt;&gt;</a></td>
                     <td>
                       {node.ProfilePicURL &&
                         <Link to={`/shops/${node.UserName}`}>
@@ -149,7 +170,7 @@ const TopShopifyStores = ({ data }) => {
                         <td>{node.GlobalRank}</td>
                       </>
                     }
-                    <td>{node.FollowerRate}</td>
+                    <td>{node.TotalFollowers}</td>
                     {!isMobile &&
                       <>
                         <td>{node.PinFollowers || "-"}</td>
@@ -223,6 +244,7 @@ export const query = graphql`
             PinFollowers
             TTFollowers
             TwitterFollowers
+            TotalFollowers
             YTSubs
             name
             about

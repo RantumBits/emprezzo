@@ -160,10 +160,16 @@ const SingleItem = ({ data, pageContext }) => {
   //Generating the data for chart
   let chartRankData = null;
   let chartTOSData = null;
+  let globalRank_Dates = _.split(data.mysqlMainView.GlobalRank_Dates, ',') || [];
+  let globalRank_Dates_NoTime = _.map(globalRank_Dates, (el) => {
+    let datetime = _.split(el.trim(), ' ')
+    return (datetime && datetime.length > 0) ? datetime[0] : el;
+  });
+  
   //Rank data
   if (data.mysqlMainView.GlobalRank_List) {
     chartRankData = {
-      labels: _.split(data.mysqlMainView.GlobalRank_Dates, ','),
+      labels: globalRank_Dates_NoTime,
       datasets: [
         {
           name: 'Rank Data',
@@ -176,7 +182,7 @@ const SingleItem = ({ data, pageContext }) => {
   //TOS data
   if (data.mysqlMainView.TOS_List) {
     chartTOSData = {
-      labels: _.split(data.mysqlMainView.GlobalRank_Dates, ','),
+      labels: globalRank_Dates_NoTime,
       datasets: [
         {
           name: 'TOS Data',
@@ -188,23 +194,6 @@ const SingleItem = ({ data, pageContext }) => {
   }
 
   //Social chart data
-  const chartSocialFollowingData = {
-    labels: [
-      "Instagram",
-      "Facebook",
-      "Twitter",
-      "Youtube",
-      "Pinterest",
-      "TikTok"
-    ],
-    datasets: [
-      {
-        name: "following",
-        values: [(InstaFollowing || 0), 0, (TwitterFollowing || 0), 0, (PinFollowing || 0), (TTFollowing || 0)]
-      }
-    ]
-  };
-
   const chartSocialFollowerData = {
     labels: [
       "Instagram",
@@ -221,6 +210,79 @@ const SingleItem = ({ data, pageContext }) => {
       }
     ]
   };
+
+  //Extracting social history  
+  const rowSocialHistoryEdges = data.allMysqlSocialHistory.edges;
+  //filtering top 3 for current AlexaURL
+  const filteredSocialHistory = _.filter(rowSocialHistoryEdges, ({ node }) => node.URL == AlexaURL);
+  let facebookChartData = null;
+  let instagramChartData = null;
+  let pinterestChartData = null;
+  let tiktokChartData = null;
+  let twitterChartData = null;
+  let youtubeChartData = null;  
+  if (filteredSocialHistory && filteredSocialHistory.length>0) {
+    facebookChartData = {
+      labels: _.split(filteredSocialHistory[0].node.FacebookCreateDates, ','),
+      datasets: [
+        {
+          name: 'Facebook',
+          type: 'line',
+          values: _.split(filteredSocialHistory[0].node.FacebookLikesList, ',')
+        }
+      ]
+    };
+    instagramChartData = {
+      labels: _.split(filteredSocialHistory[0].node.InstagramCreateDates, ','),
+      datasets: [
+        {
+          name: 'Instagram',
+          type: 'line',
+          values: _.split(filteredSocialHistory[0].node.InstagramFollowersList, ',')
+        }
+      ]
+    };
+    pinterestChartData = {
+      labels: _.split(filteredSocialHistory[0].node.PinterestCreateDates, ','),
+      datasets: [
+        {
+          name: 'Pinterest',
+          type: 'line',
+          values: _.split(filteredSocialHistory[0].node.PinterestFollowersList, ',')
+        }
+      ]
+    };
+    tiktokChartData = {
+      labels: _.split(filteredSocialHistory[0].node.TiktokCreateDates, ','),
+      datasets: [
+        {
+          name: 'Tiktok',
+          type: 'line',
+          values: _.split(filteredSocialHistory[0].node.TiktokFollowersList, ',')
+        }
+      ]
+    };
+    twitterChartData = {
+      labels: _.split(filteredSocialHistory[0].node.TwitterCreateDates, ','),
+      datasets: [
+        {
+          name: 'Twitter',
+          type: 'line',
+          values: _.split(filteredSocialHistory[0].node.TwitterFollowersList, ',')
+        }
+      ]
+    };
+    youtubeChartData = {
+      labels: _.split(filteredSocialHistory[0].node.YoutubeCreateDates, ','),
+      datasets: [
+        {
+          name: 'Youtube',
+          type: 'line',
+          values: _.split(filteredSocialHistory[0].node.YoutubeSubscribersList, ',')
+        }
+      ]
+    };
+  }
 
   const socialDetails = {
     "InstagramLink": Instagram ? "https://www.instagram.com/" + Instagram : null,
@@ -422,16 +484,67 @@ const SingleItem = ({ data, pageContext }) => {
 
         <h3>{name} social media stats</h3>
 
-        {chartSocialFollowingData &&
+        {facebookChartData &&
           <ReactFrappeChart
-            type="donut"
-            title="Followings"
+          type="axis-mixed"
+            title="Facebook"
             height={250}
             axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
             barOptions={{ stacked: 1 }}
-            data={chartSocialFollowingData}
+            data={facebookChartData}
           />
         }
+        {instagramChartData &&
+          <ReactFrappeChart
+          type="axis-mixed"
+            title="Instagram"
+            height={250}
+            axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
+            barOptions={{ stacked: 1 }}
+            data={instagramChartData}
+          />
+        }
+        {pinterestChartData &&
+          <ReactFrappeChart
+          type="axis-mixed"
+            title="Pinterest"
+            height={250}
+            axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
+            barOptions={{ stacked: 1 }}
+            data={pinterestChartData}
+          />
+        }
+        {tiktokChartData &&
+          <ReactFrappeChart
+          type="axis-mixed"
+            title="Tiktok"
+            height={250}
+            axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
+            barOptions={{ stacked: 1 }}
+            data={tiktokChartData}
+          />
+        }
+        {twitterChartData &&
+          <ReactFrappeChart
+          type="axis-mixed"
+            title="Twitter"
+            height={250}
+            axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
+            barOptions={{ stacked: 1 }}
+            data={twitterChartData}
+          />
+        }
+        {youtubeChartData &&
+          <ReactFrappeChart
+          type="axis-mixed"
+            title="Youtube"
+            height={250}
+            axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
+            barOptions={{ stacked: 1 }}
+            data={youtubeChartData}
+          />
+        }
+        
         {chartSocialFollowerData &&
           <ReactFrappeChart
             type="pie"
@@ -556,6 +669,32 @@ export const query = graphql`
       }
     }
 
+    allMysqlSocialHistory {
+      edges {
+        node {
+          Facebook
+          FacebookCreateDates
+          FacebookLikesList
+          Instagram
+          InstagramCreateDates
+          InstagramFollowersList
+          Pinterest
+          PinterestCreateDates
+          PinterestFollowersList
+          Tiktok
+          TiktokCreateDates
+          TiktokFollowersList
+          TwitterCreateDates
+          TwitterFollowersList
+          TwitterUsername
+          URL
+          Youtube
+          YoutubeCreateDates
+          YoutubeSubscribersList
+        }
+      }
+    }
+
     allMysqlShopifyView (filter: {AlexaURL: {eq: $pathSlug}}) {
       edges {
         node {
@@ -570,46 +709,6 @@ export const query = graphql`
         }
       }
     }
-    allMysqlShopifyClassicProducts {
-      edges {
-        node {
-          ProductURL
-          ImageURL
-          Title
-          Price
-          VendorName
-          VariantTitle
-          VendorURL
-        }
-      }
-    }
-    allMysqlShopifyNewProducts {
-      edges {
-        node {
-          ProductURL
-          ImageURL
-          Title
-          Price
-          VendorName
-          VariantTitle
-          VendorURL
-        }
-      }
-    }
-    allMysqlShopifyBestSellers {
-      edges {
-        node {
-          ImageURL
-          MaxPrice
-          Position
-          Price
-          ProductID
-          ProductURL
-          Title
-          VariantImageURL
-          VendorURL
-        }
-      }
-    }
+    
   }
 `;
