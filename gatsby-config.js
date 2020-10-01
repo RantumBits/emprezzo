@@ -19,6 +19,12 @@ module.exports = {
         exclude: [`/tags/*`],
       }
     },
+    {
+    resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        trackingId: "UA-86276502-5",
+      },
+    },
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-catch-links',
     {
@@ -105,7 +111,7 @@ module.exports = {
             statement: 'SELECT CONCAT(URL,FLOOR(RAND()*10000)) AS UniqueKey,SocialHistory.* FROM SocialHistory',
             idFieldName: 'UniqueKey',
             name: 'SocialHistory'
-          },          
+          },
           {
             statement: "SELECT CONCAT(RankView_Pages.AlexaURL,FLOOR(RAND()*10000)) AS UniqueKey,RankView_Pages.*, Tags.*, SocialIDView.*, RankHistory.* FROM RankView_Pages LEFT JOIN Tags ON TRIM(TRAILING '/' FROM RankView_Pages.AlexaURL) = TRIM(TRAILING '/' FROM Tags.url) LEFT JOIN SocialIDView ON TRIM(TRAILING '/' FROM RankView_Pages.AlexaURL) = TRIM(TRAILING '/' FROM SocialIDView.URL) LEFT JOIN RankHistory ON TRIM(TRAILING '/' FROM RankView_Pages.AlexaURL) = TRIM(TRAILING '/' FROM RankHistory.url)",
             idFieldName: 'AlexaURL',
