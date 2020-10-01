@@ -165,7 +165,7 @@ const SingleItem = ({ data, pageContext }) => {
     let datetime = _.split(el.trim(), ' ')
     return (datetime && datetime.length > 0) ? datetime[0] : el;
   });
-  
+
   //Rank data
   if (data.mysqlMainView.GlobalRank_List) {
     chartRankData = {
@@ -211,7 +211,7 @@ const SingleItem = ({ data, pageContext }) => {
     ]
   };
 
-  //Extracting social history  
+  //Extracting social history
   const rowSocialHistoryEdges = data.allMysqlSocialHistory.edges;
   //filtering top 3 for current AlexaURL
   const filteredSocialHistory = _.filter(rowSocialHistoryEdges, ({ node }) => node.URL == AlexaURL);
@@ -220,7 +220,7 @@ const SingleItem = ({ data, pageContext }) => {
   let pinterestChartData = null;
   let tiktokChartData = null;
   let twitterChartData = null;
-  let youtubeChartData = null;  
+  let youtubeChartData = null;
   if (filteredSocialHistory && filteredSocialHistory.length>0) {
     facebookChartData = {
       labels: _.split(filteredSocialHistory[0].node.FacebookCreateDates, ','),
@@ -484,77 +484,101 @@ const SingleItem = ({ data, pageContext }) => {
 
         <h3>{name} social media stats</h3>
 
-        {facebookChartData &&
-          <ReactFrappeChart
-          type="axis-mixed"
-            title="Facebook"
-            height={250}
-            axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
-            barOptions={{ stacked: 1 }}
-            data={facebookChartData}
-          />
-        }
-        {instagramChartData &&
-          <ReactFrappeChart
-          type="axis-mixed"
-            title="Instagram"
-            height={250}
-            axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
-            barOptions={{ stacked: 1 }}
-            data={instagramChartData}
-          />
-        }
-        {pinterestChartData &&
-          <ReactFrappeChart
-          type="axis-mixed"
-            title="Pinterest"
-            height={250}
-            axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
-            barOptions={{ stacked: 1 }}
-            data={pinterestChartData}
-          />
-        }
-        {tiktokChartData &&
-          <ReactFrappeChart
-          type="axis-mixed"
-            title="Tiktok"
-            height={250}
-            axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
-            barOptions={{ stacked: 1 }}
-            data={tiktokChartData}
-          />
-        }
-        {twitterChartData &&
-          <ReactFrappeChart
-          type="axis-mixed"
-            title="Twitter"
-            height={250}
-            axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
-            barOptions={{ stacked: 1 }}
-            data={twitterChartData}
-          />
-        }
-        {youtubeChartData &&
-          <ReactFrappeChart
-          type="axis-mixed"
-            title="Youtube"
-            height={250}
-            axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
-            barOptions={{ stacked: 1 }}
-            data={youtubeChartData}
-          />
-        }
-        
         {chartSocialFollowerData &&
           <ReactFrappeChart
-            type="pie"
+            type="bar"
             title="Followers"
             height={250}
             axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
-            barOptions={{ stacked: 1 }}
+            barOptions={{ stacked: 0 }}
             data={chartSocialFollowerData}
           />
         }
+        <Tabs>
+          <TabList>
+            <Tab style={TabStyle}>Facebook</Tab>
+            <Tab style={TabStyle}>Instagram</Tab>
+            <Tab style={TabStyle}>Pinterest</Tab>
+            <Tab style={TabStyle}>TikTok</Tab>
+            <Tab style={TabStyle}>Twitter</Tab>
+            <Tab style={TabStyle}>Youtube</Tab>
+          </TabList>
+          <TabPanel>
+          {facebookChartData &&
+            <ReactFrappeChart
+            type="axis-mixed"
+              title="Facebook"
+              height={250}
+              axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
+              data={facebookChartData}
+            />
+          }
+          </TabPanel>
+          <TabPanel>
+          {instagramChartData &&
+            <ReactFrappeChart
+            type="axis-mixed"
+              title="Instagram"
+              height={250}
+              axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
+              data={instagramChartData}
+            />
+          }
+          </TabPanel>
+          <TabPanel>
+          {pinterestChartData &&
+            <ReactFrappeChart
+            type="axis-mixed"
+              title="Pinterest"
+              height={250}
+              axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
+              data={pinterestChartData}
+            />
+          }
+          </TabPanel>
+          <TabPanel>
+          {tiktokChartData &&
+            <ReactFrappeChart
+            type="axis-mixed"
+              title="Tiktok"
+              height={250}
+              axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
+              data={tiktokChartData}
+            />
+          }
+          </TabPanel>
+          <TabPanel>
+          {twitterChartData &&
+            <ReactFrappeChart
+            type="axis-mixed"
+              title="Twitter"
+              height={250}
+              axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
+              data={twitterChartData}
+            />
+          }
+          </TabPanel>
+          <TabPanel>
+          {youtubeChartData &&
+            <ReactFrappeChart
+            type="axis-mixed"
+              title="Youtube"
+              height={250}
+              axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
+              data={youtubeChartData}
+            />
+          }
+          </TabPanel>
+        </Tabs>
+
+
+
+
+
+
+
+
+
 
         {/* List of Posts from MySQL View */}
         {listInstaPostEdges && listInstaPostEdges.length > 0 && <h3>instagram posts</h3>}
@@ -709,6 +733,6 @@ export const query = graphql`
         }
       }
     }
-    
+
   }
 `;
