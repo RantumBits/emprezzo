@@ -76,7 +76,12 @@ const TopShopifyStores = ({ data }) => {
   const [showMore, setShowMore] = React.useState(true);
   const [showDialog, setShowDialog] = React.useState(false);
   const [dialogText, setDialogText] = React.useState();
-  
+
+  const [filterPaypalShopID, setFilterPaypalShopID] = React.useState(false);
+  const [filterFreeShipText, setFilterFreeShipText] = React.useState(false);
+  const [filterPayPalVenmoSupport, setFilterPayPalVenmoSupport] = React.useState(false);
+  const [filterBuyNowPayLater, setFilterBuyNowPayLater] = React.useState(false);
+
   const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
 
   const increaseLimit = () => {
@@ -85,24 +90,46 @@ const TopShopifyStores = ({ data }) => {
 
   const combinedEdges = [];
 
-  //Creating a new dataset with original nodes and required columns from DataView
+  //Creating a new dataset with original nodes and required columns from PayNShip
   edges.map((edge) => {
-    let newNode = {
-      name: edge.node.name,
-      slug: edge.node.UserName,
-      ...edge.node,
+    const inputID = edge.node.AlexaURL;
+    const rowPayNShipEdges = data.allMysqlPayNShip.edges;
+    var resultData = _.filter(rowPayNShipEdges, ({ node }) => (node.URL == inputID))
+    var firstDataRow = null;
+    if (resultData.length > 0) {
+      firstDataRow = resultData[0]
+      let newNode = {
+        name: edge.node.name,
+        slug: edge.node.UserName,
+        ...edge.node,
+        ...firstDataRow.node
+      }
+      combinedEdges.push(newNode);
     }
-    combinedEdges.push(newNode);
   })
 
   //Now sorting (desc) based on TotalFollowers
   var sortedEdges = _.sortBy(combinedEdges, obj => -obj.TotalFollowers)
 
   //Now limiting the items as per limit
-  const listEdges = _.slice(sortedEdges, 0, limit)
+  let listEdges = _.slice(sortedEdges, 0, limit)
+  
+  //Apply filters if any of them is checked
+  if (filterPaypalShopID) {
+    listEdges = _.filter(listEdges, item => item.PaypalShopID != null)
+  }
+  if (filterFreeShipText) {
+    listEdges = _.filter(listEdges, item => item.FreeShipText != null && item.FreeShipText.trim().length > 0)
+  }
+  if (filterPayPalVenmoSupport) {
+    listEdges = _.filter(listEdges, item => item.PayPalVenmoSupport != null)
+  }
+  if (filterBuyNowPayLater) {
+    listEdges = _.filter(listEdges, item => item.AfterPay == 1 || item.Klarna == 1 || item.Affirm == 1)
+  }
 
   const openMoreDialog = (text) => {
-    setDialogText(text||"No Description Available");
+    setDialogText(text || "No Description Available");
     setShowDialog(true);
     //alert(text)
   }
@@ -113,7 +140,7 @@ const TopShopifyStores = ({ data }) => {
   return (
     <Layout title={'Top Shopify Stores | Shop the most popular stores'} description='Discover top Shopify stores. Shop the best and most popular Shopify shop on emprezzo.'>
       <Header title="🧐 Discover top Shopify stores" subtitle=""></Header>
-      <Dialog isOpen={showDialog} onDismiss={closeMoreDialog}>        
+      <Dialog isOpen={showDialog} onDismiss={closeMoreDialog}>
         <p>{dialogText}</p>
         <button onClick={closeMoreDialog}>
           Close
@@ -124,6 +151,36 @@ const TopShopifyStores = ({ data }) => {
           <h3>Browse top Shopify stores</h3>
           <p>Discover top Shopify sellers based upon organic search traffic and social media activity.</p>
         </div>
+        <div style={{ display: "flex" }}>
+          <label>
+            <input type="checkbox" style={{ margin: "0.5rem" }}
+              checked={filterPaypalShopID}
+              onChange={() => setFilterPaypalShopID(!filterPaypalShopID)}
+            />
+          PayPal
+        </label>
+          <label>
+            <input type="checkbox" style={{ margin: "0.5rem" }}
+              checked={filterFreeShipText}
+              onChange={() => setFilterFreeShipText(!filterFreeShipText)}
+            />
+          Free Shipping
+        </label>
+          <label>
+            <input type="checkbox" style={{ margin: "0.5rem" }}
+              checked={filterPayPalVenmoSupport}
+              onChange={() => setFilterPayPalVenmoSupport(!filterPayPalVenmoSupport)}
+            />
+          Venmo
+        </label>
+          <label>
+            <input type="checkbox" style={{ margin: "0.5rem" }}
+              checked={filterBuyNowPayLater}
+              onChange={() => setFilterBuyNowPayLater(!filterBuyNowPayLater)}
+            />
+          Buy now, pay later
+        </label>
+        </div>
         <TableWrapper>
           <StickyTableWrapper>
             <TableStickyHeader>
@@ -131,7 +188,7 @@ const TopShopifyStores = ({ data }) => {
                 <tr>
                   <th>#</th>
                   <th></th>
-                      
+
                   <th>Store</th>
                   {!isMobile &&
                     <>
@@ -156,7 +213,7 @@ const TopShopifyStores = ({ data }) => {
                 {listEdges.map((node, index) => (
                   <tr key={index} id={`post-${index}`}>
                     <td>{index + 1}</td>
-                    <td><a href="javascript:void(0)" onClick={()=>openMoreDialog(node.about)}>&gt;&gt;</a></td>
+                    <td><a href="javascript:void(0)" onClick={() => openMoreDialog(node.about)}>&gt;&gt;</a></td>
                     <td>
                       {node.ProfilePicURL &&
                         <Link to={`/shops/${node.UserName}`}>
@@ -188,8 +245,8 @@ const TopShopifyStores = ({ data }) => {
           </StickyTableWrapper>
         </TableWrapper>
 
-      </ShopsWrapper>
-      {showMore && listEdges.length > 0 && listEdges.length < edges.length &&
+      </ShopsWrapper >
+      { showMore && listEdges.length > 0 && listEdges.length < edges.length &&
         <div className="center">
           <button className="button" onClick={increaseLimit}>
             Load More
@@ -210,7 +267,7 @@ const TopShopifyStores = ({ data }) => {
           <p>As of July 2020, there are approximately 1,422,815 live Shopify sites. 3.6% of the top 1M sites are powerd by Shopify. 5.29% of the top 10k sites are powered by Shopify. </p>
         </div>
       </ShopsWrapper>
-    </Layout>
+    </Layout >
   );
 };
 
@@ -248,6 +305,21 @@ export const query = graphql`
             YTSubs
             name
             about
+        }
+      }
+    }
+    allMysqlPayNShip {
+      edges {
+        node {
+            URL
+            Shipping
+            PaypalShopID
+            PaypalCurrency
+            PaypalVenmoSupport
+            AfterPay
+            Klarna
+            Affirm
+            FreeShipText
         }
       }
     }

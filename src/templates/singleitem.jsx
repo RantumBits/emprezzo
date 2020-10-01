@@ -140,19 +140,19 @@ const SingleItem = ({ data, pageContext }) => {
   //console.log(listProductEdges)
 
   //Extracting bestseller products
-  const rowShopifyBestSellersEdges = data.allMysqlShopifyBestSellers.edges;
+  const rowShopifyBestSellersEdges = data.allMysqlShopifyBestSellers ? data.allMysqlShopifyBestSellers.edges : [];
   //filtering top 3 for current AlexaURL
   const filteredShopifyBestSellers = _.filter(rowShopifyBestSellersEdges, ({ node }) => node.VendorURL == AlexaURL)
   const listShopifyBestSellersEdges = _.slice(filteredShopifyBestSellers, 0, maxProducts);
 
   //Extracting classic products
-  const rowShopifyClassicProductsEdges = data.allMysqlShopifyClassicProducts.edges;
+  const rowShopifyClassicProductsEdges = data.allMysqlShopifyClassicProducts ? data.allMysqlShopifyClassicProducts.edges : [];
   //filtering top 3 for current AlexaURL
   const filteredShopifyClassicProducts = _.filter(rowShopifyClassicProductsEdges, ({ node }) => node.VendorURL == AlexaURL)
   const listShopifyClassicProductsEdges = _.slice(filteredShopifyClassicProducts, 0, maxProducts);
 
   //Extracting new products
-  const rowShopifyNewProductsEdges = data.allMysqlShopifyNewProducts.edges;
+  const rowShopifyNewProductsEdges = data.allMysqlShopifyNewProducts ? data.allMysqlShopifyNewProducts.edges : [];
   //filtering top 3 for current AlexaURL
   const filteredShopifyNewProducts = _.filter(rowShopifyNewProductsEdges, ({ node }) => node.VendorURL == AlexaURL)
   const listShopifyNewProductsEdges = _.slice(filteredShopifyNewProducts, 0, maxProducts);

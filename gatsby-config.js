@@ -113,6 +113,11 @@ module.exports = {
             name: 'SocialHistory'
           },
           {
+            statement: 'SELECT CONCAT(URL,FLOOR(RAND()*10000)) AS UniqueKey,PayNShip.* FROM PayNShip',
+            idFieldName: 'UniqueKey',
+            name: 'PayNShip'
+          },
+          {
             statement: "SELECT CONCAT(RankView_Pages.AlexaURL,FLOOR(RAND()*10000)) AS UniqueKey,RankView_Pages.*, Tags.*, SocialIDView.*, RankHistory.* FROM RankView_Pages LEFT JOIN Tags ON TRIM(TRAILING '/' FROM RankView_Pages.AlexaURL) = TRIM(TRAILING '/' FROM Tags.url) LEFT JOIN SocialIDView ON TRIM(TRAILING '/' FROM RankView_Pages.AlexaURL) = TRIM(TRAILING '/' FROM SocialIDView.URL) LEFT JOIN RankHistory ON TRIM(TRAILING '/' FROM RankView_Pages.AlexaURL) = TRIM(TRAILING '/' FROM RankHistory.url)",
             idFieldName: 'AlexaURL',
             name: 'MainView'

@@ -8,6 +8,22 @@ exports.createSchemaCustomization = ({ actions }) => {
     type MysqlDataView implements Node {
       mysqlImage: File
     }
+  `)  
+  createTypes(`
+    type MysqlMainView implements Node {
+      TikTok: String
+      TTFollowers: Float
+      TTFollowing: Float
+      TTLikes : Float
+    }
+  `)
+  createTypes(`
+    type MysqlPayNShip implements Node {
+      PaypalVenmoSupport: Int
+      AfterPay: Int
+      Klarna: Int
+      Affirm: Int
+    }
   `)
   createTypes(`
     type MysqlRankViewPayLater implements Node {
