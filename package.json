@@ -55,6 +55,7 @@
     "gatsby-plugin-sharp": "^2.6.36",
     "gatsby-plugin-sitemap": "^2.4.11",
     "gatsby-plugin-styled-components": "^3.3.1",
+    "gatsby-plugin-tidio-chat": "^1.0.0",
     "gatsby-plugin-typography": "^2.3.6",
     "gatsby-remark-images": "^3.1.20",
     "gatsby-remark-prismjs": "^3.3.12",

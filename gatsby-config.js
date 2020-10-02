@@ -25,6 +25,13 @@ module.exports = {
         trackingId: "UA-86276502-5",
       },
     },
+    {
+    resolve: 'gatsby-plugin-tidio-chat',
+    options: {
+      tidioKey: 'ojbejcxntjb7yiu3yvg4irvqevffemvu',
+      enableDuringDevelop: true, // Optional. Disables Tidio chat widget when running Gatsby dev server. Defaults to true.
+    },
+  },
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-catch-links',
     {
