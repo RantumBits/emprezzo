@@ -130,6 +130,11 @@ module.exports = {
             name: 'MainView'
           },
           {
+            statement: 'SELECT * FROM SocialIDView WHERE URL IS NOT NULL',
+            idFieldName: 'URL',
+            name: 'SocialIDView'
+          },
+          {
             statement: "Select CONCAT(UserName,FLOOR(RAND()*10000)) AS UniqueKey, DataView.*,CONCAT('https://instagram.com/p/',DataView.ShortCode) AS ShortCodeURL FROM DataView WHERE UserName IS NOT NULL ORDER BY activity DESC",
             idFieldName: 'UniqueKey',
             name: 'DataView'

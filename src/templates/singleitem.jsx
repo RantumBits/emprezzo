@@ -108,7 +108,24 @@ const TabStyle = {
 
 const SingleItem = ({ data, pageContext }) => {
   const { next, prev } = pageContext;
-  const { AlexaURL, Facebook, FollowerRate, InstaFollowers, InstaFollowing, TotalFollowers, GlobalRank, Instagram, LocalRank, Pinterest, PostRate, ProfilePicURL, TOS, TikTok, Twitter, UserID, UserName, YouTube, activity, category, tags, FBLikes, PinFollowers, PinFollowing, TTFollowers, TTFollowing, TTLikes, TwitterFollowers, TwitterFollowing, YTSubs, name, about, signup_promos } = data.mysqlMainView;
+  const { AlexaURL, FollowerRate, InstaFollowers, InstaFollowing, TotalFollowers, GlobalRank, LocalRank, PostRate, ProfilePicURL, TOS, UserID, UserName, activity, category, tags, FBLikes, PinFollowers, PinFollowing, TTFollowers, TTFollowing, TTLikes, TwitterFollowers, TwitterFollowing, YTSubs, name, about, signup_promos } = data.mysqlMainView;
+
+  const rowSocialIDViewEdges = data.allMysqlSocialIdView.edges;
+  const filteredSocialIDView = _.filter(rowSocialIDViewEdges, ({ node }) => node.Instagram == UserName);
+  const { Facebook, Instagram, Pinterest, TikTok, Twitter, URL, YouTube } = filteredSocialIDView.length>0?filteredSocialIDView[0].node:[];
+
+  //Creating Social IDs Data to pass to header for displaying
+  let socialDetails = {
+    "InstagramLink": Instagram ? "https://www.instagram.com/" + Instagram : null,
+    "FacebookLink": Facebook ? "https://www.facebook.com/" + Facebook : null,
+    "PinterestLink": Pinterest ? "https://www.pinterest.com/" + Pinterest : null,
+    "TikTokLink": TikTok ? "https://www.tiktok.com/" + TikTok : null,
+    "TwitterLink": Twitter ? "https://www.twitter.com/" + Twitter : null,
+    "YouTubeLink": YouTube ? "https://www.youtube.com/c/" + YouTube : null
+  }
+  //console.log("+++++++++++++")
+  //console.log(socialDetails)
+  //console.log("+++++++++++++")
 
   const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
   //console.log("****** isMobile = " + isMobile)
@@ -194,19 +211,39 @@ const SingleItem = ({ data, pageContext }) => {
   }
 
   //Social chart data
+  const chartSocialLabels = [];
+  const chartSocialValues = [];  
+  if(InstaFollowers && InstaFollowers != 0) {
+    chartSocialLabels.push("Instagram")
+    chartSocialValues.push(InstaFollowers)
+  }
+  if(FBLikes && FBLikes != 0) {
+    chartSocialLabels.push("Facebook")
+    chartSocialValues.push(FBLikes)
+  }
+  if(TwitterFollowers && TwitterFollowers != 0) {
+    chartSocialLabels.push("Twitter")
+    chartSocialValues.push(TwitterFollowers)
+  }
+  if(YTSubs && YTSubs != 0) {
+    chartSocialLabels.push("Youtube")
+    chartSocialValues.push(YTSubs)
+  }
+  if(PinFollowers && PinFollowers != 0) {
+    chartSocialLabels.push("Pinterest")
+    chartSocialValues.push(PinFollowers)
+  }
+  if(TTFollowers && TTFollowers != 0) {
+    chartSocialLabels.push("TikTok")
+    chartSocialValues.push(TTFollowers)
+  }
+
   const chartSocialFollowerData = {
-    labels: [
-      "Instagram",
-      "Facebook",
-      "Twitter",
-      "Youtube",
-      "Pinterest",
-      "TikTok"
-    ],
+    labels: chartSocialLabels,
     datasets: [
       {
         name: "followers",
-        values: [(InstaFollowers || 0), (FBLikes || 0), (TwitterFollowers || 0), (YTSubs || 0), (PinFollowers || 0), (TTFollowers || 0)]
+        values: chartSocialValues
       }
     ]
   };
@@ -214,7 +251,7 @@ const SingleItem = ({ data, pageContext }) => {
   //Extracting social history
   const rowSocialHistoryEdges = data.allMysqlSocialHistory.edges;
   //filtering top 3 for current AlexaURL
-  const filteredSocialHistory = _.filter(rowSocialHistoryEdges, ({ node }) => node.URL == AlexaURL);
+  const filteredSocialHistory = _.filter(rowSocialHistoryEdges, ({ node }) => node.Instagram == UserName);
   let facebookChartData = null;
   let instagramChartData = null;
   let pinterestChartData = null;
@@ -284,15 +321,6 @@ const SingleItem = ({ data, pageContext }) => {
     };
   }
 
-  const socialDetails = {
-    "InstagramLink": Instagram ? "https://www.instagram.com/" + Instagram : null,
-    "FacebookLink": Facebook ? "https://www.facebook.com/" + Facebook : null,
-    "PinterestLink": Pinterest ? "https://www.pinterest.com/" + Pinterest : null,
-    "TikTokLink": TikTok ? "https://www.tiktok.com/" + TikTok : null,
-    "TwitterLink": Twitter ? "https://www.twitter.com/" + Twitter : null,
-    "YouTubeLink": YouTube ? "https://www.youtube.com/c/" + YouTube : null
-  }
-
   let subtitle = "<div>" + "</div>"
   let FreeShipText = "";
 
@@ -349,7 +377,7 @@ const SingleItem = ({ data, pageContext }) => {
         description={`Find best sellers and popular products from ${name} on emprezzo. See social media growth, search popularity, and more stats online stores selling ${tagsList}. `}
         pathname={AlexaURL}
       />
-      <Header title={name} children={subtitle} />
+      <Header title={name} children={subtitle} socialDetails={socialDetails}/>
       <Container>
         <div className="profileimage" style={{ display: "flex" }}>
           {ProfilePicURL &&
@@ -632,36 +660,25 @@ export const query = graphql`
   query($pathSlug: String!) {
     mysqlMainView (AlexaURL: {eq: $pathSlug}) {
       AlexaURL
-      Facebook
       FollowerRate
-      InstaFollowers
-      InstaFollowing
       GlobalRank
-      Instagram
       LocalRank
-      Pinterest
       PostRate
       ProfilePicURL
       TOS
-      TikTok
-      Twitter
       UserID
       UserName
-      YouTube
       activity
       category
       tags
-      FBLikes
-      PinFollowers
-      PinFollowing
-      TTFollowers
-      TTFollowing
-      TTLikes
-      TwitterFollowers
-      TwitterFollowing
       TotalFollowers
       TotalFollowing
+      FBLikes
+      InstaFollowers
+      TwitterFollowers
       YTSubs
+      PinFollowers
+      TTFollowers
       name
       about
       signup_promos
@@ -730,6 +747,20 @@ export const query = graphql`
           ImageURL
           Price
           FreeShipText
+        }
+      }
+    }
+
+    allMysqlSocialIdView {
+      edges {
+        node {
+          Instagram
+          Facebook
+          Pinterest
+          TikTok
+          Twitter
+          URL
+          YouTube
         }
       }
     }

@@ -56,20 +56,14 @@ exports.createPages = ({ graphql, actions }) => {
               edges {
                 node {
                   AlexaURL
-                  Facebook
                   FollowerRate
                   GlobalRank
-                  Instagram
                   LocalRank
-                  Pinterest
                   PostRate
                   ProfilePicURL
                   TOS
-                  TikTok
-                  Twitter
                   UserID
                   UserName
-                  YouTube
                   activity
                   category
                   tags
