@@ -18,14 +18,6 @@ exports.createSchemaCustomization = ({ actions }) => {
     }
   `)
   createTypes(`
-    type MysqlPayNShip implements Node {
-      PaypalVenmoSupport: Int
-      AfterPay: Int
-      Klarna: Int
-      Affirm: Int
-    }
-  `)
-  createTypes(`
     type MysqlRankViewPayLater implements Node {
       ProfilePicURL: String
       FollowerRate: Float

@@ -100,28 +100,23 @@ module.exports = {
             name: 'Pages'
           },
           {
-            statement: 'SELECT CONCAT(ProductID,FLOOR(RAND()*10000)) AS UniqueKey,ShopifyBestSellers.* FROM ShopifyBestSellers',
+            statement: 'SELECT CONCAT(VendorURL,FLOOR(RAND()*10000)) AS UniqueKey,ShopifyProductsAll.* FROM ShopifyProductsAll',
             idFieldName: 'UniqueKey',
-            name: 'ShopifyBestSellers'
+            name: 'ShopifyProductsAll'
           },
           {
-            statement: 'SELECT CONCAT(ProductID,FLOOR(RAND()*10000)) AS UniqueKey,ShopifyClassicProducts.* FROM ShopifyClassicProducts',
+            statement: 'SELECT CONCAT(VendorURL,FLOOR(RAND()*10000)) AS UniqueKey,ShopifyProductSummary.* FROM ShopifyProductSummary',
             idFieldName: 'UniqueKey',
-            name: 'ShopifyClassicProducts'
-          },
-          {
-            statement: 'SELECT CONCAT(ProductID,FLOOR(RAND()*10000)) AS UniqueKey,ShopifyNewProducts.* FROM ShopifyNewProducts',
-            idFieldName: 'UniqueKey',
-            name: 'ShopifyNewProducts'
-          },
+            name: 'ShopifyProductSummary'
+          },          
           {
             statement: 'SELECT CONCAT(URL,FLOOR(RAND()*10000)) AS UniqueKey,SocialHistory.* FROM SocialHistory',
             idFieldName: 'UniqueKey',
             name: 'SocialHistory'
           },
           {
-            statement: 'SELECT CONCAT(URL,FLOOR(RAND()*10000)) AS UniqueKey,PayNShip.* FROM PayNShip',
-            idFieldName: 'UniqueKey',
+            statement: "SELECT URL,Shipping,PaypalShopID,PaypalCurrency,IF(PaypalVenmoSupport=1,'true',null) as PaypalVenmoSupport,IF(AfterPay=1,'true',null) as AfterPay,IF(Klarna=1,'true',null) as Klarna,IF(Affirm=1,'true',null) as Affirm,FreeShipText,CreateDate,UpdateDate FROM PayNShip",
+            idFieldName: 'URL',
             name: 'PayNShip'
           },
           {

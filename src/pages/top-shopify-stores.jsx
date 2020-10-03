@@ -128,8 +128,13 @@ const TopShopifyStores = ({ data }) => {
     listEdges = _.filter(listEdges, item => item.AfterPay == 1 || item.Klarna == 1 || item.Affirm == 1)
   }
 
-  const openMoreDialog = (text) => {
-    setDialogText(text || "No Description Available");
+  const openMoreDialog = (node) => {
+    let dialogContent = "";
+    dialogContent += "<h1>"+node.name+"</h1>";
+    dialogContent += "<p>"+(node.about||"No Description Available")+"</p>";
+    dialogContent += "<p>"+(node.tags||"")+"</p>";
+    dialogContent += "<a href='"+node.AlexaURL+"'>Go to "+node.name+"</a><br/><br/>";
+    setDialogText(dialogContent);
     setShowDialog(true);
     //alert(text)
   }
@@ -141,7 +146,7 @@ const TopShopifyStores = ({ data }) => {
     <Layout title={'Top Shopify Stores | Shop the most popular stores'} description='Discover top Shopify stores. Shop the best and most popular Shopify shop on emprezzo.'>
       <Header title="🧐 Discover top Shopify stores" subtitle=""></Header>
       <Dialog isOpen={showDialog} onDismiss={closeMoreDialog}>
-        <p>{dialogText}</p>
+        <span dangerouslySetInnerHTML={{ __html: dialogText }} />
         <button onClick={closeMoreDialog}>
           Close
         </button>
@@ -151,7 +156,7 @@ const TopShopifyStores = ({ data }) => {
           <h3>Browse top Shopify stores</h3>
           <p>Discover top Shopify sellers based upon organic search traffic and social media activity.</p>
         </div>
-        <div style={{ display: "flex" }}>
+        <div style={{ display: "flex", width: "100%" }}>
           <label>
             <input type="checkbox" style={{ margin: "0.5rem" }}
               checked={filterPaypalShopID}
@@ -186,25 +191,25 @@ const TopShopifyStores = ({ data }) => {
             <TableStickyHeader>
               <thead>
                 <tr>
-                  <th>#</th>
-                  <th></th>
+                  <td><strong>#</strong></td>
+                  <td></td>
 
-                  <th>Store</th>
+                  <td><strong>Store</strong></td>
                   {!isMobile &&
                     <>
-                      <th></th>
-                      <th>TrafficRank</th>
+                      <td></td>
+                      <td><strong>TrafficRank</strong></td>
                     </>
                   }
-                  <th>TotalFollowers</th>
+                  <td><strong>TotalFollowers</strong></td>
                   {!isMobile &&
                     <>
-                      <th>Pinterest</th>
-                      <th>Instagram</th>
-                      <th>Twitter</th>
-                      <th>Facebook</th>
-                      <th>Tiktok</th>
-                      <th>Youtube</th>
+                      <td><strong>Pinterest</strong></td>
+                      <td><strong>Instagram</strong></td>
+                      <td><strong>Twitter</strong></td>
+                      <td><strong>Facebook</strong></td>
+                      <td><strong>Tiktok</strong></td>
+                      <td><strong>Youtube</strong></td>
                     </>
                   }
                 </tr>
@@ -213,7 +218,7 @@ const TopShopifyStores = ({ data }) => {
                 {listEdges.map((node, index) => (
                   <tr key={index} id={`post-${index}`}>
                     <td>{index + 1}</td>
-                    <td><a href="javascript:void(0)" onClick={() => openMoreDialog(node.about)}>&gt;&gt;</a></td>
+                    <td><a href="javascript:void(0)" onClick={() => openMoreDialog(node)}>&gt;&gt;</a></td>
                     <td>
                       {node.ProfilePicURL &&
                         <Link to={`/shops/${node.UserName}`}>

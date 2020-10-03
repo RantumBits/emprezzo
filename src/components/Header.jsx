@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import Img from 'gatsby-image';
 import PropTypes from 'prop-types';
 import { FaInstagram, FaFacebookSquare, FaPinterestSquare, FaTwitterSquare, FaYoutube } from 'react-icons/fa';
+import Helmet from 'react-helmet';
 
 const Wrapper = styled.header`
   -webkit-clip-path: polygon(100% 0, 0 0, 0 70%, 50% 100%, 100% 70%);
@@ -59,6 +60,9 @@ const Subtitle = styled.p`
 
 const Header = ({ children, title, date, subtitle, cover, socialDetails }) => (
   <Wrapper>
+    <Helmet>
+      <script src="//w.likebtn.com/js/w/widget.js"></script>
+    </Helmet>
     {cover && typeof cover === 'object' &&
       <Img fluid={cover || {} || [] || ''} />
     }
@@ -85,9 +89,33 @@ const Header = ({ children, title, date, subtitle, cover, socialDetails }) => (
           {socialDetails.YouTubeLink &&
             <a href={socialDetails.YouTubeLink} target="_blank"><FaYoutube size="32" color="black" /></a>
           }
-
         </SocialIcons>
       }
+      <span 
+        className="likebtn-wrapper" 
+        datatheme="custom" 
+        dataicon_l="str2-o" 
+        dataicon_d="alrt2" 
+        dataicon_l_c_v="#ff4f00" 
+        databg_c="rgba(255,255,255,0)" 
+        dataicon_d_c_v="#ff4f00" 
+        dataf_family="Courier New" 
+        datalabel_fs="r" 
+        datai18n_like="favorite" 
+        dataef_voting="heartbeat" 
+        datawhite_label="true" 
+        datarich_snippet="true" 
+        dataidentifier="@STORE_NAME" 
+        dataitem_url="@PAGE_URL" 
+        dataitem_title="@STORE_NAME" 
+        dataitem_image="@PROFILE_IMAGE" 
+        datalazy_load="true" 
+        datatooltip_enabled="false" 
+        datai18n_dislike="warning" 
+        datai18n_like_tooltip="mark as favorite" 
+        datai18n_unlike_tooltip="remove" 
+        datai18n_undislike_tooltip="undo">
+      </span>
       {children && <Subtitle dangerouslySetInnerHTML={{ __html: children }} />}
     </Text>
   </Wrapper>

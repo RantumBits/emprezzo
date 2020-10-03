@@ -106,6 +106,13 @@ const TabStyle = {
   marginBottom: "0px"
 }
 
+const SocialIcons = styled.div`
+  display: flex;
+  a {
+    margin-right: 10px;
+  }
+`;
+
 const SingleItem = ({ data, pageContext }) => {
   const { next, prev } = pageContext;
   const { AlexaURL, FollowerRate, InstaFollowers, InstaFollowing, TotalFollowers, GlobalRank, LocalRank, PostRate, ProfilePicURL, TOS, UserID, UserName, activity, category, tags, FBLikes, PinFollowers, PinFollowing, TTFollowers, TTFollowing, TTLikes, TwitterFollowers, TwitterFollowing, YTSubs, name, about, signup_promos } = data.mysqlMainView;
@@ -156,22 +163,18 @@ const SingleItem = ({ data, pageContext }) => {
   //console.log("*****++listProductEdges+++********")
   //console.log(listProductEdges)
 
+  const rowallMysqlShopifyProductsAllEdges = data.allMysqlShopifyProductsAll ? data.allMysqlShopifyProductsAll.edges : [];
+  
   //Extracting bestseller products
-  const rowShopifyBestSellersEdges = data.allMysqlShopifyBestSellers ? data.allMysqlShopifyBestSellers.edges : [];
-  //filtering top 3 for current AlexaURL
-  const filteredShopifyBestSellers = _.filter(rowShopifyBestSellersEdges, ({ node }) => node.VendorURL == AlexaURL)
+  const filteredShopifyBestSellers = _.sortBy(rowallMysqlShopifyProductsAllEdges, ({node}) => node.Position)
   const listShopifyBestSellersEdges = _.slice(filteredShopifyBestSellers, 0, maxProducts);
 
   //Extracting classic products
-  const rowShopifyClassicProductsEdges = data.allMysqlShopifyClassicProducts ? data.allMysqlShopifyClassicProducts.edges : [];
-  //filtering top 3 for current AlexaURL
-  const filteredShopifyClassicProducts = _.filter(rowShopifyClassicProductsEdges, ({ node }) => node.VendorURL == AlexaURL)
+  const filteredShopifyClassicProducts = _.sortBy(rowallMysqlShopifyProductsAllEdges, ({node}) => node.PublishedDate)
   const listShopifyClassicProductsEdges = _.slice(filteredShopifyClassicProducts, 0, maxProducts);
 
   //Extracting new products
-  const rowShopifyNewProductsEdges = data.allMysqlShopifyNewProducts ? data.allMysqlShopifyNewProducts.edges : [];
-  //filtering top 3 for current AlexaURL
-  const filteredShopifyNewProducts = _.filter(rowShopifyNewProductsEdges, ({ node }) => node.VendorURL == AlexaURL)
+  const filteredShopifyNewProducts = _.sortBy(rowallMysqlShopifyProductsAllEdges, ({node}) => -node.PublishedDate)
   const listShopifyNewProductsEdges = _.slice(filteredShopifyNewProducts, 0, maxProducts);
 
   //Generating the data for chart
@@ -259,68 +262,82 @@ const SingleItem = ({ data, pageContext }) => {
   let twitterChartData = null;
   let youtubeChartData = null;
   if (filteredSocialHistory && filteredSocialHistory.length>0) {
-    facebookChartData = {
-      labels: _.split(filteredSocialHistory[0].node.FacebookCreateDates, ','),
-      datasets: [
-        {
-          name: 'Facebook',
-          type: 'line',
-          values: _.split(filteredSocialHistory[0].node.FacebookLikesList, ',')
-        }
-      ]
-    };
-    instagramChartData = {
-      labels: _.split(filteredSocialHistory[0].node.InstagramCreateDates, ','),
-      datasets: [
-        {
-          name: 'Instagram',
-          type: 'line',
-          values: _.split(filteredSocialHistory[0].node.InstagramFollowersList, ',')
-        }
-      ]
-    };
-    pinterestChartData = {
-      labels: _.split(filteredSocialHistory[0].node.PinterestCreateDates, ','),
-      datasets: [
-        {
-          name: 'Pinterest',
-          type: 'line',
-          values: _.split(filteredSocialHistory[0].node.PinterestFollowersList, ',')
-        }
-      ]
-    };
-    tiktokChartData = {
-      labels: _.split(filteredSocialHistory[0].node.TiktokCreateDates, ','),
-      datasets: [
-        {
-          name: 'Tiktok',
-          type: 'line',
-          values: _.split(filteredSocialHistory[0].node.TiktokFollowersList, ',')
-        }
-      ]
-    };
-    twitterChartData = {
-      labels: _.split(filteredSocialHistory[0].node.TwitterCreateDates, ','),
-      datasets: [
-        {
-          name: 'Twitter',
-          type: 'line',
-          values: _.split(filteredSocialHistory[0].node.TwitterFollowersList, ',')
-        }
-      ]
-    };
-    youtubeChartData = {
-      labels: _.split(filteredSocialHistory[0].node.YoutubeCreateDates, ','),
-      datasets: [
-        {
-          name: 'Youtube',
-          type: 'line',
-          values: _.split(filteredSocialHistory[0].node.YoutubeSubscribersList, ',')
-        }
-      ]
-    };
+    if(filteredSocialHistory[0].node.FacebookLikesList){
+      facebookChartData = {
+        labels: _.split(filteredSocialHistory[0].node.FacebookCreateDates, ','),
+        datasets: [
+          {
+            name: 'Facebook',
+            type: 'line',
+            values: _.split(filteredSocialHistory[0].node.FacebookLikesList, ',')
+          }
+        ]
+      };
+    }
+    if(filteredSocialHistory[0].node.InstagramFollowersList){
+      instagramChartData = {
+        labels: _.split(filteredSocialHistory[0].node.InstagramCreateDates, ','),
+        datasets: [
+          {
+            name: 'Instagram',
+            type: 'line',
+            values: _.split(filteredSocialHistory[0].node.InstagramFollowersList, ',')
+          }
+        ]
+      };
+    }
+    if(filteredSocialHistory[0].node.PinterestFollowersList){
+      pinterestChartData = {
+        labels: _.split(filteredSocialHistory[0].node.PinterestCreateDates, ','),
+        datasets: [
+          {
+            name: 'Pinterest',
+            type: 'line',
+            values: _.split(filteredSocialHistory[0].node.PinterestFollowersList, ',')
+          }
+        ]
+      };
+    }
+    if(filteredSocialHistory[0].node.TiktokFollowersList){
+      tiktokChartData = {
+        labels: _.split(filteredSocialHistory[0].node.TiktokCreateDates, ','),
+        datasets: [
+          {
+            name: 'Tiktok',
+            type: 'line',
+            values: _.split(filteredSocialHistory[0].node.TiktokFollowersList, ',')
+          }
+        ]
+      };
+    }
+    if(filteredSocialHistory[0].node.TwitterFollowersList){
+      twitterChartData = {
+        labels: _.split(filteredSocialHistory[0].node.TwitterCreateDates, ','),
+        datasets: [
+          {
+            name: 'Twitter',
+            type: 'line',
+            values: _.split(filteredSocialHistory[0].node.TwitterFollowersList, ',')
+          }
+        ]
+      };
+    }
+    if(filteredSocialHistory[0].node.YoutubeSubscribersList){
+      youtubeChartData = {
+        labels: _.split(filteredSocialHistory[0].node.YoutubeCreateDates, ','),
+        datasets: [
+          {
+            name: 'Youtube',
+            type: 'line',
+            values: _.split(filteredSocialHistory[0].node.YoutubeSubscribersList, ',')
+          }
+        ]
+      };
+    }
   }
 
+  const rowShopifyProductSummary =  data.mysqlShopifyProductSummary || [];
+  
   let subtitle = "<div>" + "</div>"
   let FreeShipText = "";
 
@@ -377,7 +394,7 @@ const SingleItem = ({ data, pageContext }) => {
         description={`Find best sellers and popular products from ${name} on emprezzo. See social media growth, search popularity, and more stats online stores selling ${tagsList}. `}
         pathname={AlexaURL}
       />
-      <Header title={name} children={subtitle} socialDetails={socialDetails}/>
+      <Header title={name} children={subtitle}/>
       <Container>
         <div className="profileimage" style={{ display: "flex" }}>
           {ProfilePicURL &&
@@ -402,6 +419,11 @@ const SingleItem = ({ data, pageContext }) => {
           </div>
         </div>
 
+        {rowShopifyProductSummary.PriceAvg && 
+          <div>Average Price : ${rowShopifyProductSummary.PriceAvg.toFixed(2)}</div>
+        }
+        <div>Range : ${rowShopifyProductSummary.PriceMin.toFixed(2)} - ${rowShopifyProductSummary.PriceMax.toFixed(2)}</div>
+        
         <div style={{ margin: "2rem" }}>
           <a href={AlexaURL} className="button" target="_blank">shop {name}</a> <a href="/randomshop" className="button buttonalt">Discover another shop</a>
         </div>
@@ -479,6 +501,28 @@ const SingleItem = ({ data, pageContext }) => {
         {FreeShipText && FreeShipText.length > 0 && <h3>get free shipping at {name}</h3>}
         <p>{get100Words(FreeShipText)}</p>
         <br />
+
+        {rowShopifyProductSummary &&
+          <ReactFrappeChart
+            type="axis-mixed"
+            colors={["#743ee2"]}
+            height={250}
+            axisOptions={{ xAxisMode: "tick", xIsSeries: 1 }}
+            data={{
+              labels: _.split(rowShopifyProductSummary.DateListActive, ','),
+              datasets: [
+                {
+                  name: 'Product Summary',
+                  type: 'line',
+                  values: _.split(rowShopifyProductSummary.PriceListActive, ',')
+                }
+              ],
+              yMarkers: [{ label: "Avg Price", value: rowShopifyProductSummary.PriceAvg,
+		          options: { hideLine: 1 }}],
+            }}
+          />
+        }
+
         {/* Social Statistics Section */}
         <h3>{name} site traffic</h3>
         <Tabs>
@@ -512,6 +556,26 @@ const SingleItem = ({ data, pageContext }) => {
 
         <h3>{name} social media stats</h3>
 
+        {socialDetails &&
+        <SocialIcons>
+          {socialDetails.InstagramLink &&
+            <a href={socialDetails.InstagramLink} target="_blank"><FaInstagram size="32" color="black" /></a>
+          }
+          {socialDetails.FacebookLink &&
+            <a href={socialDetails.FacebookLink} target="_blank"><FaFacebookSquare size="32" color="black" /></a>
+          }
+          {socialDetails.PinterestLink &&
+            <a href={socialDetails.PinterestLink} target="_blank"><FaPinterestSquare size="32" color="black" /></a>
+          }
+          {socialDetails.TwitterLink &&
+            <a href={socialDetails.TwitterLink} target="_blank"><FaTwitterSquare size="32" color="black" /></a>
+          }
+          {socialDetails.YouTubeLink &&
+            <a href={socialDetails.YouTubeLink} target="_blank"><FaYoutube size="32" color="black" /></a>
+          }
+        </SocialIcons>
+      }
+
         {chartSocialFollowerData &&
           <ReactFrappeChart
             type="bar"
@@ -524,15 +588,15 @@ const SingleItem = ({ data, pageContext }) => {
         }
         <Tabs>
           <TabList>
-            <Tab style={TabStyle}>Facebook</Tab>
-            <Tab style={TabStyle}>Instagram</Tab>
-            <Tab style={TabStyle}>Pinterest</Tab>
-            <Tab style={TabStyle}>TikTok</Tab>
-            <Tab style={TabStyle}>Twitter</Tab>
-            <Tab style={TabStyle}>Youtube</Tab>
-          </TabList>
-          <TabPanel>
+            {facebookChartData && <Tab style={TabStyle}>Facebook</Tab> }
+            {instagramChartData && <Tab style={TabStyle}>Instagram</Tab> }
+            {pinterestChartData && <Tab style={TabStyle}>Pinterest</Tab> }
+            {tiktokChartData && <Tab style={TabStyle}>TikTok</Tab> }
+            {twitterChartData && <Tab style={TabStyle}>Twitter</Tab> }
+            {youtubeChartData && <Tab style={TabStyle}>Youtube</Tab> }
+          </TabList>          
           {facebookChartData &&
+            <TabPanel>
             <ReactFrappeChart
             type="axis-mixed"
               title="Facebook"
@@ -540,10 +604,10 @@ const SingleItem = ({ data, pageContext }) => {
               axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
               data={facebookChartData}
             />
+            </TabPanel>
           }
-          </TabPanel>
-          <TabPanel>
           {instagramChartData &&
+            <TabPanel>
             <ReactFrappeChart
             type="axis-mixed"
               title="Instagram"
@@ -551,10 +615,10 @@ const SingleItem = ({ data, pageContext }) => {
               axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
               data={instagramChartData}
             />
+            </TabPanel>
           }
-          </TabPanel>
-          <TabPanel>
           {pinterestChartData &&
+            <TabPanel>
             <ReactFrappeChart
             type="axis-mixed"
               title="Pinterest"
@@ -562,10 +626,10 @@ const SingleItem = ({ data, pageContext }) => {
               axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
               data={pinterestChartData}
             />
+            </TabPanel>
           }
-          </TabPanel>
-          <TabPanel>
           {tiktokChartData &&
+            <TabPanel>
             <ReactFrappeChart
             type="axis-mixed"
               title="Tiktok"
@@ -573,10 +637,10 @@ const SingleItem = ({ data, pageContext }) => {
               axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
               data={tiktokChartData}
             />
+            </TabPanel>
           }
-          </TabPanel>
-          <TabPanel>
           {twitterChartData &&
+            <TabPanel>
             <ReactFrappeChart
             type="axis-mixed"
               title="Twitter"
@@ -584,10 +648,10 @@ const SingleItem = ({ data, pageContext }) => {
               axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
               data={twitterChartData}
             />
+            </TabPanel>
           }
-          </TabPanel>
-          <TabPanel>
           {youtubeChartData &&
+            <TabPanel>
             <ReactFrappeChart
             type="axis-mixed"
               title="Youtube"
@@ -595,8 +659,8 @@ const SingleItem = ({ data, pageContext }) => {
               axisOptions={{ xAxisMode: "tick", xIsSeries: 1, shortenYAxisNumbers: 1 }}
               data={youtubeChartData}
             />
-          }
-          </TabPanel>
+            </TabPanel>
+          }          
         </Tabs>
 
 
@@ -749,6 +813,42 @@ export const query = graphql`
           FreeShipText
         }
       }
+    }
+
+    allMysqlShopifyProductsAll (filter: {VendorURL: {eq: $pathSlug}}) {
+      edges {
+        node {
+          ImageURL
+          MaxPrice
+          Position
+          Price
+          ProductID
+          ProductURL
+          PublishedDate
+          Title
+          VariantID
+          VariantImageURL
+          VariantTitle
+          VariantUpdateDate
+          VendorName
+          VendorURL
+        }
+      }
+    }
+
+    mysqlShopifyProductSummary (VendorURL: {eq: $pathSlug}) {
+      CountProductsActive
+      CountProductsAll
+      CountVariantsActive
+      CountVariantsAll
+      DateListActive
+      DateListInactive
+      PriceAvg
+      PriceListActive
+      PriceListInactive
+      PriceMax
+      PriceMin
+      VendorURL
     }
 
     allMysqlSocialIdView {
