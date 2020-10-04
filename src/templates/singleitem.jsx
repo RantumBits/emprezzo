@@ -422,7 +422,9 @@ const SingleItem = ({ data, pageContext }) => {
         {rowShopifyProductSummary.PriceAvg && 
           <div>Average Price : ${rowShopifyProductSummary.PriceAvg.toFixed(2)}</div>
         }
-        <div>Range : ${rowShopifyProductSummary.PriceMin.toFixed(2)} - ${rowShopifyProductSummary.PriceMax.toFixed(2)}</div>
+        {rowShopifyProductSummary.PriceMin && rowShopifyProductSummary.PriceMax &&
+          <div>Range : ${rowShopifyProductSummary.PriceMin.toFixed(2)} - ${rowShopifyProductSummary.PriceMax.toFixed(2)}</div>
+        }
         
         <div style={{ margin: "2rem" }}>
           <a href={AlexaURL} className="button" target="_blank">shop {name}</a> <a href="/randomshop" className="button buttonalt">Discover another shop</a>
