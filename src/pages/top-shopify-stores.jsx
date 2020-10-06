@@ -71,7 +71,7 @@ const TableStickyHeader = styled.table`
 
 const TopShopifyStores = ({ data }) => {
   const { edges } = data.allMysqlMainView;
-  const maxItems = 12;
+  const maxItems = 20;
   const [limit, setLimit] = React.useState(maxItems);
   const [showMore, setShowMore] = React.useState(true);
   const [showDialog, setShowDialog] = React.useState(false);
@@ -113,7 +113,7 @@ const TopShopifyStores = ({ data }) => {
 
   //Now limiting the items as per limit
   let listEdges = _.slice(sortedEdges, 0, limit)
-  
+
   //Apply filters if any of them is checked
   if (filterPaypalShopID) {
     listEdges = _.filter(listEdges, item => item.PaypalShopID != null)
@@ -122,7 +122,7 @@ const TopShopifyStores = ({ data }) => {
     listEdges = _.filter(listEdges, item => item.FreeShipText != null && item.FreeShipText.trim().length > 0)
   }
   if (filterPayPalVenmoSupport) {
-    listEdges = _.filter(listEdges, item => item.PayPalVenmoSupport != null)
+    listEdges = _.filter(listEdges, item => item.PaypalVenmoSupport != null)    
   }
   if (filterBuyNowPayLater) {
     listEdges = _.filter(listEdges, item => item.AfterPay == 1 || item.Klarna == 1 || item.Affirm == 1)

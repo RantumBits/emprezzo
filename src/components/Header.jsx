@@ -58,7 +58,7 @@ const Subtitle = styled.p`
   color: ${props => props.theme.colors.white.light};
 `;
 
-const Header = ({ children, title, date, subtitle, cover, socialDetails }) => (
+const Header = ({ children, title, date, subtitle, cover, socialDetails, likeEnabled }) => (
   <Wrapper>
     <Helmet>
       <script src="//w.likebtn.com/js/w/widget.js"></script>
@@ -91,31 +91,37 @@ const Header = ({ children, title, date, subtitle, cover, socialDetails }) => (
           }
         </SocialIcons>
       }
-      <span 
-        className="likebtn-wrapper" 
-        datatheme="custom" 
-        dataicon_l="str2-o" 
-        dataicon_d="alrt2" 
-        dataicon_l_c_v="#ff4f00" 
-        databg_c="rgba(255,255,255,0)" 
-        dataicon_d_c_v="#ff4f00" 
-        dataf_family="Courier New" 
-        datalabel_fs="r" 
-        datai18n_like="favorite" 
-        dataef_voting="heartbeat" 
-        datawhite_label="true" 
-        datarich_snippet="true" 
-        dataidentifier="@STORE_NAME" 
-        dataitem_url="@PAGE_URL" 
-        dataitem_title="@STORE_NAME" 
-        dataitem_image="@PROFILE_IMAGE" 
-        datalazy_load="true" 
-        datatooltip_enabled="false" 
-        datai18n_dislike="warning" 
-        datai18n_like_tooltip="mark as favorite" 
-        datai18n_unlike_tooltip="remove" 
-        datai18n_undislike_tooltip="undo">
-      </span>
+      {likeEnabled &&
+        <span
+          className="likebtn-wrapper"
+          datatheme="custom"
+          dataicon_l="str1-o"
+          dataicon_d="sgn9-f"
+          dataicon_l_c="rgb(55,24,71)"
+          dataicon_l_c_v="rgb(192,76,253)"
+          dataicon_d_c="rgb(55,24,71)" 
+          dataicon_d_c_v="rgba(253,76,97,0.88)" 
+          databg_c="#ffffff" 
+          databg_c_v="#ffffff" 
+          dataf_family="Courier New" 
+          datai18n_like="favorite" 
+          dataef_voting="bounce" 
+          datawhite_label="true" 
+          datarich_snippet="true" 
+          dataidentifier="$_STORENAME" 
+          datacounter_count="true" 
+          datapopup_disabled="true" 
+          datashare_enabled="false" 
+          dataaddthis_pubid="ra-5f7b9ff19ad7a3f6" 
+          dataitem_url="$_URL" 
+          dataitem_title="$_SHOP-NAME" 
+          dataitem_image="$_PROFILE-IMAGE"           
+          datalazy_load="true" 
+          datatooltip_enabled="false" 
+          datasite_id="5f795f90943ec9bf477cbfbe"
+        >
+        </span>
+      }
       {children && <Subtitle dangerouslySetInnerHTML={{ __html: children }} />}
     </Text>
   </Wrapper>
