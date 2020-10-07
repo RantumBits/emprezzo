@@ -671,10 +671,10 @@ const SingleItem = ({ data, pageContext }) => {
             height={250}
             axisOptions={{ xAxisMode: 'tick', xIsSeries: 1 }}
             lineOptions={{ hideLine: 1 }}
-            tooltipOptions: {
+            tooltipOptions={{
               formatTooltipX: d => d,
-              formatTooltipY: d => '$ ' + (d || 0).toFixed(2),
-            },
+              formatTooltipY: d => '$ ' + parseFloat(d || 0).toFixed(2),
+            }}
             data={{
               labels: _.split(productSummary_Dates_NoTime, ','),
               datasets: [
@@ -724,10 +724,10 @@ const SingleItem = ({ data, pageContext }) => {
                 axisOptions={{ xAxisMode: 'tick', xIsSeries: 1 }}
                 lineOptions={{ spline: 1 }}
                 data={chartTOSData}
-                tooltipOptions: {
+                tooltipOptions={{
                   formatTooltipX: d => d,
                   formatTooltipY: d => d + " seconds",
-                },
+                }}
               />
             )}
           </TabPanel>
@@ -1050,16 +1050,10 @@ export const query = graphql`
       }
     }
 
-    mysqlShopifyProductSummary(VendorURL: { eq: $pathSlug }) {
-      CountProductsActive
-      CountProductsAll
-      CountVariantsActive
-      CountVariantsAll
+    mysqlShopifyProductSummary(VendorURL: { eq: $pathSlug }) {      
       DateListActive
-      DateListInactive
       PriceAvg
-      PriceListActive
-      PriceListInactive
+      PriceListActive      
       PriceMax
       PriceMin
       VendorURL

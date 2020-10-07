@@ -90,22 +90,31 @@ const TopShopifyStores = ({ data }) => {
 
   const combinedEdges = [];
 
-  //Creating a new dataset with original nodes and required columns from PayNShip
+  //Creating a new dataset with original nodes and required columns from PayNShip and allMysqlShopifyProductSummary
   edges.map((edge) => {
+    let newNode = {
+      name: edge.node.name,
+      slug: edge.node.UserName,
+      ...edge.node
+    }
     const inputID = edge.node.AlexaURL;
     const rowPayNShipEdges = data.allMysqlPayNShip.edges;
-    var resultData = _.filter(rowPayNShipEdges, ({ node }) => (node.URL == inputID))
-    var firstDataRow = null;
-    if (resultData.length > 0) {
-      firstDataRow = resultData[0]
-      let newNode = {
-        name: edge.node.name,
-        slug: edge.node.UserName,
-        ...edge.node,
-        ...firstDataRow.node
+    var filteredPayNShip = _.filter(rowPayNShipEdges, ({ node }) => (node.URL == inputID))
+    if (filteredPayNShip.length > 0) {
+      newNode = {
+        ...newNode,
+        ...filteredPayNShip[0].node
       }
-      combinedEdges.push(newNode);
     }
+    const rowShopifyProductSummaryEdges = data.allMysqlShopifyProductSummary.edges;
+    var filteredShopifyProductSummary = _.filter(rowShopifyProductSummaryEdges, ({ node }) => (node.VendorURL == inputID))
+    if (filteredShopifyProductSummary.length > 0) {
+      newNode = {
+        ...newNode,
+        ...filteredShopifyProductSummary[0].node
+      }
+    }
+    combinedEdges.push(newNode);
   })
 
   //Now sorting (desc) based on TotalFollowers
@@ -122,18 +131,18 @@ const TopShopifyStores = ({ data }) => {
     listEdges = _.filter(listEdges, item => item.FreeShipText != null && item.FreeShipText.trim().length > 0)
   }
   if (filterPayPalVenmoSupport) {
-    listEdges = _.filter(listEdges, item => item.PaypalVenmoSupport != null)    
+    listEdges = _.filter(listEdges, item => item.PaypalVenmoSupport != null)
   }
   if (filterBuyNowPayLater) {
-    listEdges = _.filter(listEdges, item => item.AfterPay == 1 || item.Klarna == 1 || item.Affirm == 1)
+    listEdges = _.filter(listEdges, item => item.AfterPay || item.Klarna || item.Affirm)
   }
 
   const openMoreDialog = (node) => {
     let dialogContent = "";
-    dialogContent += "<h1>"+node.name+"</h1>";
-    dialogContent += "<p>"+(node.about||"No Description Available")+"</p>";
-    dialogContent += "<p>"+(node.tags||"")+"</p>";
-    dialogContent += "<a href='"+node.AlexaURL+"'>Go to "+node.name+"</a><br/><br/>";
+    dialogContent += "<h1>" + node.name + "</h1>";
+    dialogContent += "<p>" + (node.about || "No Description Available") + "</p>";
+    dialogContent += "<p>" + (node.tags || "") + "</p>";
+    dialogContent += "<a href='" + node.AlexaURL + "'>Go to " + node.name + "</a><br/><br/>";
     setDialogText(dialogContent);
     setShowDialog(true);
     //alert(text)
@@ -204,12 +213,9 @@ const TopShopifyStores = ({ data }) => {
                   <td><strong>TotalFollowers</strong></td>
                   {!isMobile &&
                     <>
-                      <td><strong>Pinterest</strong></td>
-                      <td><strong>Instagram</strong></td>
-                      <td><strong>Twitter</strong></td>
-                      <td><strong>Facebook</strong></td>
-                      <td><strong>Tiktok</strong></td>
-                      <td><strong>Youtube</strong></td>
+                      <td><strong>Avg Price</strong></td>
+                      <td><strong>Price Range</strong></td>
+                      <td><strong>Avg Price Top</strong></td>
                     </>
                   }
                 </tr>
@@ -235,12 +241,9 @@ const TopShopifyStores = ({ data }) => {
                     <td>{node.TotalFollowers}</td>
                     {!isMobile &&
                       <>
-                        <td>{node.PinFollowers || "-"}</td>
-                        <td>{node.InstaFollowers || "-"}</td>
-                        <td>{node.TwitterFollowers || "-"}</td>
-                        <td>{node.FBLikes || "-"}</td>
-                        <td>{node.TTFollowers || "-"}</td>
-                        <td>{node.YTSubs || "-"}</td>
+                        <td>{(node.PriceAvg || 0).toFixed(2)}</td>
+                        <td>{(node.PriceMin || 0).toFixed(2)}{" - "}{(node.PriceMax || 0).toFixed(2)}</td>
+                        <td>{(node.PriceAvgTop10 || 0).toFixed(2)}</td>                        
                       </>
                     }
                   </tr>
@@ -325,6 +328,19 @@ export const query = graphql`
             Klarna
             Affirm
             FreeShipText
+        }
+      }
+    }
+    allMysqlShopifyProductSummary { 
+      edges {
+        node {
+          DateListActive
+          PriceAvg
+          PriceListActive      
+          PriceMax
+          PriceMin
+          PriceAvgTop10
+          VendorURL
         }
       }
     }
