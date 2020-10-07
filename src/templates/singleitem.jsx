@@ -236,7 +236,7 @@ const SingleItem = ({ data, pageContext }) => {
       labels: globalRank_Dates_NoTime,
       datasets: [
         {
-          name: 'Rank Data',
+          name: 'alexa global rank',
           type: 'line',
           values: _.split(data.mysqlMainView.GlobalRank_List, ','),
         },
@@ -249,7 +249,7 @@ const SingleItem = ({ data, pageContext }) => {
       labels: globalRank_Dates_NoTime,
       datasets: [
         {
-          name: 'TOS Data',
+          name: 'Time on site',
           type: 'line',
           values: _.split(data.mysqlMainView.TOS_List, ','),
         },
@@ -289,14 +289,8 @@ const SingleItem = ({ data, pageContext }) => {
   if (InstaFollowing && InstaFollowing != 0) {
     chartSocialFollowingValues.push(InstaFollowing);
   }
-  if (FBLikes && FBLikes != 0) {
-    chartSocialFollowingValues.push(FBLikes);
-  }
   if (TwitterFollowing && TwitterFollowing != 0) {
     chartSocialFollowingValues.push(TwitterFollowing);
-  }
-  if (YTSubs && YTSubs != 0) {
-    chartSocialFollowingValues.push(YTSubs);
   }
   if (PinFollowing && PinFollowing != 0) {
     chartSocialFollowingValues.push(PinFollowing);
@@ -313,7 +307,7 @@ const SingleItem = ({ data, pageContext }) => {
         values: chartSocialFollowerValues,
       },
       {
-        name: 'followings',
+        name: 'follows',
         values: chartSocialFollowingValues,
       },
     ],
@@ -566,13 +560,13 @@ const SingleItem = ({ data, pageContext }) => {
         </div>
         {rowShopifyProductSummary.PriceAvg && (
           <div>
-            Average Price : ${rowShopifyProductSummary.PriceAvg.toFixed(2)}
+            Average Price: ${rowShopifyProductSummary.PriceAvg.toFixed(2)}
           </div>
         )}
         {rowShopifyProductSummary.PriceMin &&
           rowShopifyProductSummary.PriceMax && (
             <div>
-              Range : ${rowShopifyProductSummary.PriceMin.toFixed(2)} - $
+              Price Range: ${rowShopifyProductSummary.PriceMin.toFixed(2)} - $
               {rowShopifyProductSummary.PriceMax.toFixed(2)}
             </div>
           )}
@@ -677,6 +671,10 @@ const SingleItem = ({ data, pageContext }) => {
             height={250}
             axisOptions={{ xAxisMode: 'tick', xIsSeries: 1 }}
             lineOptions={{ hideLine: 1 }}
+            tooltipOptions: {
+              formatTooltipX: d => d,
+              formatTooltipY: d => '$ ' + (d || 0).toFixed(2),
+            },
             data={{
               labels: _.split(productSummary_Dates_NoTime, ','),
               datasets: [
@@ -695,10 +693,6 @@ const SingleItem = ({ data, pageContext }) => {
                   value: rowShopifyProductSummary.PriceAvg,
                 },
               ],
-              tooltipOptions: {
-                formatTooltipX: d => d,
-                formatTooltipY: d => '$ ' + (d || 0).toFixed(2),
-              },
             }}
           />
         )}
@@ -728,8 +722,12 @@ const SingleItem = ({ data, pageContext }) => {
                 colors={['#743ee2']}
                 height={250}
                 axisOptions={{ xAxisMode: 'tick', xIsSeries: 1 }}
-                ineOptions={{ spline: 1 }}
+                lineOptions={{ spline: 1 }}
                 data={chartTOSData}
+                tooltipOptions: {
+                  formatTooltipX: d => d,
+                  formatTooltipY: d => d + " seconds",
+                },
               />
             )}
           </TabPanel>
@@ -813,6 +811,7 @@ const SingleItem = ({ data, pageContext }) => {
                   xIsSeries: 1,
                   shortenYAxisNumbers: 1,
                 }}
+                lineOptions={{ spline: 1 }}
                 data={instagramChartData}
               />
             </TabPanel>
@@ -828,6 +827,7 @@ const SingleItem = ({ data, pageContext }) => {
                   xIsSeries: 1,
                   shortenYAxisNumbers: 1,
                 }}
+                lineOptions={{ spline: 1 }}
                 data={pinterestChartData}
               />
             </TabPanel>
@@ -843,6 +843,7 @@ const SingleItem = ({ data, pageContext }) => {
                   xIsSeries: 1,
                   shortenYAxisNumbers: 1,
                 }}
+                lineOptions={{ spline: 1 }}
                 data={tiktokChartData}
               />
             </TabPanel>
@@ -858,6 +859,7 @@ const SingleItem = ({ data, pageContext }) => {
                   xIsSeries: 1,
                   shortenYAxisNumbers: 1,
                 }}
+                lineOptions={{ spline: 1 }}
                 data={twitterChartData}
               />
             </TabPanel>
@@ -873,6 +875,7 @@ const SingleItem = ({ data, pageContext }) => {
                   xIsSeries: 1,
                   shortenYAxisNumbers: 1,
                 }}
+                lineOptions={{ spline: 1 }}
                 data={youtubeChartData}
               />
             </TabPanel>
