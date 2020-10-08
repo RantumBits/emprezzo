@@ -240,13 +240,14 @@ const SingleItem = ({ data, pageContext }) => {
           type: 'line',
           values: _.split(data.mysqlMainView.GlobalRank_List, ','),
         },
+        ],
         yMarkers: [
                 {
                   label: 'amazon.com',
                   value: '11',
                 },
               ],
-      ],
+
     };
   }
   //TOS data
@@ -703,7 +704,7 @@ const SingleItem = ({ data, pageContext }) => {
           />
         )}
         {/* Social Statistics Section */}
-        <h3>Site Stats: {AlexaURL}</h3>
+        <h3>Site Stats</h3>
         <Tabs>
           <TabList>
             <Tab style={TabStyle}>Alexa traffic rank</Tab>
