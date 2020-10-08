@@ -240,6 +240,12 @@ const SingleItem = ({ data, pageContext }) => {
           type: 'line',
           values: _.split(data.mysqlMainView.GlobalRank_List, ','),
         },
+        yMarkers: [
+                {
+                  label: 'amazon.com',
+                  value: '11',
+                },
+              ],
       ],
     };
   }
@@ -697,10 +703,10 @@ const SingleItem = ({ data, pageContext }) => {
           />
         )}
         {/* Social Statistics Section */}
-        <h3>{name} site traffic</h3>
+        <h3>Site Stats: {AlexaURL}</h3>
         <Tabs>
           <TabList>
-            <Tab style={TabStyle}>Traffic rank</Tab>
+            <Tab style={TabStyle}>Alexa traffic rank</Tab>
             <Tab style={TabStyle}>Time on site</Tab>
           </TabList>
           <TabPanel>
@@ -732,7 +738,7 @@ const SingleItem = ({ data, pageContext }) => {
             )}
           </TabPanel>
         </Tabs>
-        <h3>{name} social media stats</h3>
+        <h3>Social media stats</h3>
         {socialDetails && (
           <SocialIcons>
             {socialDetails.InstagramLink && (
@@ -1050,10 +1056,10 @@ export const query = graphql`
       }
     }
 
-    mysqlShopifyProductSummary(VendorURL: { eq: $pathSlug }) {      
+    mysqlShopifyProductSummary(VendorURL: { eq: $pathSlug }) {
       DateListActive
       PriceAvg
-      PriceListActive      
+      PriceListActive
       PriceMax
       PriceMin
       VendorURL

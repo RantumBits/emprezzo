@@ -130,11 +130,17 @@ const Index = ({ data }) => {
   //Now limiting the items as per limit
   const listEdges = _.slice(sortedEdges, 0, limit)
 
-  //Now sorting (desc) based on TotalFollowers
+  //Now sorting (desc) based on GlobalRankChange
   var globalRankChangeSortedEdges = _.sortBy(combinedEdges, obj => -obj.GlobalRank_Change)
 
   //Now limiting the items as per limit
   const globalRankChangeEdges = _.slice(globalRankChangeSortedEdges, 0, limit)
+
+  //Now sorting (asc) based on GloblRank
+  var globalRankSortedEdges = _.sortBy(combinedEdges, obj => obj.GlobalRank)
+
+  //Now limiting the items as per limit
+  const globalRankEdges = _.slice(globalRankSortedEdges, 0, limit)
 
   const featuredShopEdges = _.filter(edges, ({ node }) => node.tags && node.tags.indexOf("featured") >= 0)
   const combinedFeatureShopEdges = [];
@@ -153,7 +159,7 @@ const Index = ({ data }) => {
   const newlyAddedProducts = checkEdgesInProductView(edges);
   //Now limiting the items as per limit
   const visibleNewlyAddedProducts = _.slice(newlyAddedProducts, 0, limit);
-  
+
   return (
     <Layout title={'emprezzo | Discover the best online shopping sites & direct-to-consumer brands'} description="Discover the best online shopping sites & direct to consumer brands." >
       <Header title="Discover the best online shopping sites"></Header>
@@ -171,9 +177,81 @@ const Index = ({ data }) => {
         <Search collapse homepage indices={searchIndices} />
       </div>
 
+      <CarouselWrapper>
+      <h2>Discover popular online stores by site traffic</h2>
+        See some of the fastest rising shops by global site traffic rank over the last 21 days
+        <Carousel
+          swipeable={false}
+          draggable={false}
+          showDots={false}
+          responsive={responsive}
+          keyBoardControl={true}
+        >
+          {globalRankChangeEdges.map((node, index) => (
+            <HomeCarouselItem
+              id={`post-${index}`}
+              key={index}
+              path={`/shops/${node.slug}`}
+              title={node.name}
+              cover={node.ProfilePicURL}
+              excerpt={node.about && node.about.substring(0, 40) + "..."}
+            />
+          ))}
+        </Carousel>
+      </CarouselWrapper>
 
       <CarouselWrapper>
-      <h3>Featured Shops</h3>
+      <h2>Discover popular online stores by site traffic</h2>
+        See some of the most popular shops by global site traffic ranking
+        <Carousel
+          swipeable={false}
+          draggable={false}
+          showDots={false}
+          responsive={responsive}
+          keyBoardControl={true}
+        >
+          {globalRankEdges.map((node, index) => (
+            <HomeCarouselItem
+              id={`post-${index}`}
+              key={index}
+              path={`/shops/${node.slug}`}
+              title={node.name}
+              cover={node.ProfilePicURL}
+              excerpt={node.about && node.about.substring(0, 40) + "..."}
+            />
+          ))}
+        </Carousel>
+      </CarouselWrapper>
+
+
+
+      <CarouselWrapper>
+      <h3>Most popular shops by fan counts</h3>
+      Discover some of the <a href="/top-shopify-stores">top Shopify stores</a> by total social media follower counts across Instagram, Facebook, Twitter, Tiktok, Pinterest & Youtube
+        <Carousel
+          swipeable={false}
+          draggable={false}
+          showDots={false}
+          responsive={responsive}
+          keyBoardControl={true}
+        >
+          {listEdges.map((node, index) => (
+            <HomeCarouselItem
+              id={`post-${index}`}
+              key={index}
+              path={`/shops/${node.slug}`}
+              title={node.name}
+              cover={node.ProfilePicURL}
+              excerpt={node.about && node.about.substring(0, 40) + "..."}
+            />
+          ))}
+        </Carousel>
+      </CarouselWrapper>
+
+
+
+      <CarouselWrapper>
+      <h3>More featured online shops</h3>
         <Carousel
           swipeable={false}
           draggable={false}
@@ -196,50 +274,9 @@ const Index = ({ data }) => {
 
 
 
-      <CarouselWrapper>
-      <h3>Popular Shopify stores</h3>
-      Discover some of the <a href="/top-shopify-stores">top Shopify stores</a> by social medial follower counts
-        <Carousel
-          swipeable={false}
-          draggable={false}
-          showDots={false}
-          responsive={responsive}
-          keyBoardControl={true}
-        >
-          {listEdges.map((node, index) => (
-            <HomeCarouselItem
-              id={`post-${index}`}
-              key={index}
-              path={`/shops/${node.slug}`}
-              title={node.name}
-              cover={node.ProfilePicURL}
-              excerpt={node.about && node.about.substring(0, 40) + "..."}
-            />
-          ))}
-        </Carousel>
-      </CarouselWrapper>
 
-      <CarouselWrapper>
-      <h3>Top Shopify stores</h3>
-        <Carousel
-          swipeable={false}
-          draggable={false}
-          showDots={false}
-          responsive={responsive}
-          keyBoardControl={true}
-        >
-          {globalRankChangeEdges.map((node, index) => (
-            <HomeCarouselItem
-              id={`post-${index}`}
-              key={index}
-              path={`/shops/${node.slug}`}
-              title={node.name}
-              cover={node.ProfilePicURL}
-              excerpt={node.about && node.about.substring(0, 40) + "..."}
-            />
-          ))}
-        </Carousel>
-      </CarouselWrapper>
+
+
 
       <CarouselWrapper>
       <h3>New Shopify Products</h3>
@@ -256,7 +293,7 @@ const Index = ({ data }) => {
                 cover={getProductImage(node)}
                 path={`/shops/${node.UserName}`}
                 vendorname={node.VendorName}
-                title={node.Title}                
+                title={node.Title}
                 price={node.Price}
             />
           ))}
