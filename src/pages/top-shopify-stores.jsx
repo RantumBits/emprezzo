@@ -52,7 +52,6 @@ const TableStickyHeader = styled.table`
     display: table-cell;
     top: 0px;
     white-space: nowrap;
-    z-index: 2;
     width: auto;
     background-color: white;
     @media (max-width: ${props => props.theme.breakpoints.s}) {
@@ -200,22 +199,22 @@ const TopShopifyStores = ({ data }) => {
             <TableStickyHeader>
               <thead>
                 <tr>
-                  <td><strong>#</strong></td>
-                  <td></td>
+                  <th><strong>#</strong></th>
+                  <th></th>
 
-                  <td><strong>Store</strong></td>
+                  <th><strong>Store</strong></th>
                   {!isMobile &&
                     <>
-                      <td></td>
-                      <td><strong>TrafficRank</strong></td>
+                      <th></th>
+                      <th><strong>TrafficRank</strong></th>
                     </>
                   }
-                  <td><strong>TotalFollowers</strong></td>
+                  <th><strong>TotalFollowers</strong></th>
                   {!isMobile &&
                     <>
-                      <td><strong>Avg Price</strong></td>
-                      <td><strong>Price Range</strong></td>
-                      <td><strong>Avg Price Top</strong></td>
+                      <th><strong>Avg Price</strong></th>
+                      <th><strong>Price Range</strong></th>
+                      <th><strong>Rank Change</strong></th>
                     </>
                   }
                 </tr>
@@ -241,9 +240,9 @@ const TopShopifyStores = ({ data }) => {
                     <td>{node.TotalFollowers}</td>
                     {!isMobile &&
                       <>
-                        <td>{(node.PriceAvg || 0).toFixed(2)}</td>
-                        <td>{(node.PriceMin || 0).toFixed(2)}{" - "}{(node.PriceMax || 0).toFixed(2)}</td>
-                        <td>{(node.PriceAvgTop10 || 0).toFixed(2)}</td>                        
+                        <td>${(node.PriceAvg || 0).toFixed(2)}</td>
+                        <td>${(node.PriceMin || 0).toFixed(2)}{" - "}${(node.PriceMax || 0).toFixed(2)}</td>
+                        <td>{node.GlobalRank_Change}</td>                        
                       </>
                     }
                   </tr>
@@ -290,6 +289,7 @@ export const query = graphql`
             Facebook
             FollowerRate
             GlobalRank
+            GlobalRank_Change
             Instagram
             LocalRank
             Pinterest

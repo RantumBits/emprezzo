@@ -515,7 +515,7 @@ const SingleItem = ({ data, pageContext }) => {
         description={`Find best sellers and popular products from ${name} on emprezzo. See social media growth, search popularity, and more stats online stores selling ${tagsList}. `}
         pathname={AlexaURL}
       />
-      <Header title={name} children={subtitle} likeEnabled={true} />
+      <Header title={name} children={subtitle} likeEnabled={{storeName:name,storeURL:AlexaURL,storeProfileImage:ProfilePicURL}} />
       <Container>
         <div className="profileimage" style={{ display: 'flex' }}>
           {ProfilePicURL && (

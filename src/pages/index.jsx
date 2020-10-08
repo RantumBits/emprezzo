@@ -124,11 +124,17 @@ const Index = ({ data }) => {
 
   })
 
-  //Now sorting (desc) based on FollowerRate
-  var sortedEdges = _.sortBy(combinedEdges, obj => -obj.FollowerRate)
+  //Now sorting (desc) based on TotalFollowers
+  var sortedEdges = _.sortBy(combinedEdges, obj => -obj.TotalFollowers)
 
   //Now limiting the items as per limit
   const listEdges = _.slice(sortedEdges, 0, limit)
+
+  //Now sorting (desc) based on TotalFollowers
+  var globalRankChangeSortedEdges = _.sortBy(combinedEdges, obj => -obj.GlobalRank_Change)
+
+  //Now limiting the items as per limit
+  const globalRankChangeEdges = _.slice(globalRankChangeSortedEdges, 0, limit)
 
   const featuredShopEdges = _.filter(edges, ({ node }) => node.tags && node.tags.indexOf("featured") >= 0)
   const combinedFeatureShopEdges = [];
@@ -201,6 +207,28 @@ const Index = ({ data }) => {
           keyBoardControl={true}
         >
           {listEdges.map((node, index) => (
+            <HomeCarouselItem
+              id={`post-${index}`}
+              key={index}
+              path={`/shops/${node.slug}`}
+              title={node.name}
+              cover={node.ProfilePicURL}
+              excerpt={node.about && node.about.substring(0, 40) + "..."}
+            />
+          ))}
+        </Carousel>
+      </CarouselWrapper>
+
+      <CarouselWrapper>
+      <h3>Top Shopify stores</h3>
+        <Carousel
+          swipeable={false}
+          draggable={false}
+          showDots={false}
+          responsive={responsive}
+          keyBoardControl={true}
+        >
+          {globalRankChangeEdges.map((node, index) => (
             <HomeCarouselItem
               id={`post-${index}`}
               key={index}
@@ -300,6 +328,7 @@ export const query = graphql`
           Facebook
           FollowerRate
           GlobalRank
+          GlobalRank_Change
           Instagram
           LocalRank
           Pinterest
