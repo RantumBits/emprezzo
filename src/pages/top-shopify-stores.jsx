@@ -81,6 +81,10 @@ const TopShopifyStores = ({ data }) => {
   const [filterPayPalVenmoSupport, setFilterPayPalVenmoSupport] = React.useState(false);
   const [filterBuyNowPayLater, setFilterBuyNowPayLater] = React.useState(false);
 
+  const [sortBy, setSortBy] = React.useState("GlobalRank");
+
+  const changeSortBy = (e) => {setSortBy(e.target.value)}
+
   const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
 
   const increaseLimit = () => {
@@ -117,7 +121,7 @@ const TopShopifyStores = ({ data }) => {
   })
 
   //Now sorting (desc) based on TotalFollowers
-  var sortedEdges = _.sortBy(combinedEdges, obj => -obj.TotalFollowers)
+  var sortedEdges = _.sortBy(combinedEdges, obj => -obj[sortBy])
 
   //Now limiting the items as per limit
   let listEdges = _.slice(sortedEdges, 0, limit)
@@ -194,6 +198,14 @@ const TopShopifyStores = ({ data }) => {
           Buy now, pay later
         </label>
         </div>
+        <div style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
+          Sort by :
+          <select value={sortBy} onChange={changeSortBy}>
+            <option value="GlobalRank">GlobalRank</option>
+            <option value="GlobalRank_Change">GlobalRankChange</option>
+            <option value="TotalFollowers">TotalFollowers</option>
+          </select>
+        </div>
         <TableWrapper>
           <StickyTableWrapper>
             <TableStickyHeader>
@@ -242,7 +254,7 @@ const TopShopifyStores = ({ data }) => {
                       <>
                         <td>${(node.PriceAvg || 0).toFixed(2)}</td>
                         <td>${(node.PriceMin || 0).toFixed(2)}{" - "}${(node.PriceMax || 0).toFixed(2)}</td>
-                        <td>{node.GlobalRank_Change}</td>                        
+                        <td>{node.GlobalRank_Change}</td>
                       </>
                     }
                   </tr>
