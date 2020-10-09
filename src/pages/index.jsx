@@ -178,7 +178,7 @@ const Index = ({ data }) => {
       </div>
 
       <CarouselWrapper>
-      <h2>Discover popular online stores by site traffic</h2>
+      <h2>Fast Rising Shops</h2>
         See some of the fastest rising shops by global site traffic rank over the last 28 days
         <Carousel
           swipeable={false}
@@ -201,7 +201,7 @@ const Index = ({ data }) => {
       </CarouselWrapper>
 
       <CarouselWrapper>
-      <h2>Discover popular online stores by site traffic</h2>
+      <h2>Highly Ranked Shops</h2>
         See some of the most popular shops by global site traffic ranking
         <Carousel
           swipeable={false}
@@ -226,7 +226,7 @@ const Index = ({ data }) => {
 
 
       <CarouselWrapper>
-      <h3>Most popular shops by fan counts</h3>
+      <h3>Popular on Social Media</h3>
       Discover some of the <a href="/top-shopify-stores">top Shopify stores</a> by total social media follower counts across Instagram, Facebook, Twitter, Tiktok, Pinterest & Youtube
         <Carousel
           swipeable={false}
@@ -251,7 +251,7 @@ const Index = ({ data }) => {
 
 
       <CarouselWrapper>
-      <h3>More featured online shops</h3>
+      <h3>Featured Online Shops</h3>
         <Carousel
           swipeable={false}
           draggable={false}

@@ -243,8 +243,8 @@ const SingleItem = ({ data, pageContext }) => {
         ],
         yMarkers: [
                 {
-                  label: 'amazon.com',
-                  value: '11',
+                  label: '01: Top Rank',
+                  value: '01',
                 },
               ],
 

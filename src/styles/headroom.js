@@ -37,6 +37,10 @@ a.buttonalt{
   opacity: 50%;
 }
 
+.lb-ef-bounce {
+  -webkit-transform: unset !important;
+    transform: unset !important;
+}
 .react-multiple-carousel__arrow { background: #4B2840;}
 .react-multiple-carousel__arrow:hover {background: #C04CFD; }
 
