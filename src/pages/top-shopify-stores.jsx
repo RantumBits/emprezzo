@@ -199,11 +199,11 @@ const TopShopifyStores = ({ data }) => {
         </label>
         </div>
         <div style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
-          Sort by :
+          Dipslay by
           <select value={sortBy} onChange={changeSortBy}>
-            <option value="GlobalRank">GlobalRank</option>
-            <option value="GlobalRank_Change">GlobalRankChange</option>
-            <option value="TotalFollowers">TotalFollowers</option>
+            <option value="GlobalRank">Traffic rank</option>
+            <option value="GlobalRank_Change">Rank change</option>
+            <option value="TotalFollowers">Total fans</option>
           </select>
         </div>
         <TableWrapper>
@@ -235,17 +235,18 @@ const TopShopifyStores = ({ data }) => {
                 {listEdges.map((node, index) => (
                   <tr key={index} id={`post-${index}`}>
                     <td>{index + 1}</td>
-                    <td><a href="javascript:void(0)" onClick={() => openMoreDialog(node)}>&gt;&gt;</a></td>
+
                     <td>
                       {node.ProfilePicURL &&
-                        <Link to={`/shops/${node.UserName}`}>
+                        <Link to={`/shops/${node.UserName}/`}>
                           <img src={node.ProfilePicURL} className="profileimage" style={{ width: "50px", margin: '0px' }} title={node.about} alt={node.about} />
                         </Link>
                       }
+                      <a href="javascript:void(0)" onClick={() => openMoreDialog(node)}>&gt;&gt;</a>
                     </td>
                     {!isMobile &&
                       <>
-                        <td><Link to={`/shops/${node.UserName}`} title={node.name}>{node.name}</Link></td>
+                        <td><Link to={`/shops/${node.UserName}/`} title={node.name}>{node.name}</Link></td>
                         <td>{node.GlobalRank}</td>
                       </>
                     }
@@ -343,12 +344,12 @@ export const query = graphql`
         }
       }
     }
-    allMysqlShopifyProductSummary { 
+    allMysqlShopifyProductSummary {
       edges {
         node {
           DateListActive
           PriceAvg
-          PriceListActive      
+          PriceListActive
           PriceMax
           PriceMin
           PriceAvgTop10

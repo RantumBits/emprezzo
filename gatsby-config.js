@@ -5,7 +5,7 @@ require("dotenv").config();
 module.exports = {
   siteMetadata: {
     title: "emprezzo",
-    description: "🧐 Discover exceptional retailers & innovative brands 🛒 Shop direct to support independent businesses",
+    description: "🧐 Discover the best direct-to-consumer brands 🛒 Shop direct & support independent businesses",
     ...config,
   },
   plugins: [
@@ -16,7 +16,7 @@ module.exports = {
         // Exclude specific pages or groups of pages using glob parameters
         // See: https://github.com/isaacs/minimatch
         // The example below will exclude the single `path/to/page` and all routes beginning with `category`
-        exclude: [`/tags/*`],
+        exclude: [`/tags/*`, '/random/'],
       }
     },
     {
@@ -108,7 +108,7 @@ module.exports = {
             statement: 'SELECT CONCAT(VendorURL,FLOOR(RAND()*10000)) AS UniqueKey,ShopifyProductSummary.* FROM ShopifyProductSummary',
             idFieldName: 'UniqueKey',
             name: 'ShopifyProductSummary'
-          },          
+          },
           {
             statement: 'SELECT CONCAT(URL,FLOOR(RAND()*10000)) AS UniqueKey,SocialHistory.* FROM SocialHistory',
             idFieldName: 'UniqueKey',

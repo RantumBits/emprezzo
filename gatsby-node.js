@@ -8,7 +8,7 @@ exports.createSchemaCustomization = ({ actions }) => {
     type MysqlDataView implements Node {
       mysqlImage: File
     }
-  `)  
+  `)
   createTypes(`
     type MysqlMainView implements Node {
       TikTok: String
@@ -24,7 +24,7 @@ exports.createSchemaCustomization = ({ actions }) => {
       PostRate: Float
       activity: Float
     }
-  `)  
+  `)
 }
 
 exports.createPages = ({ graphql, actions }) => {
@@ -76,7 +76,7 @@ exports.createPages = ({ graphql, actions }) => {
 
         //create pages
         mainviewRows.forEach(({ node }, index) => {
-          const path = '/shops/' + node.UserName;
+          const path = '/shops/' + node.UserName + '/';
           const prev = index === 0 ? null : mainviewRows[index - 1].node;
           const next =
             index === mainviewRows.length - 1 ? null : mainviewRows[index + 1].node;
@@ -103,7 +103,7 @@ exports.createPages = ({ graphql, actions }) => {
             }
             tagsList.forEach(tag => {
               rowPost.frontmatter.title = node.UserName
-              rowPost.frontmatter.path = '/shops/' + node.UserName
+              rowPost.frontmatter.path = '/shops/' + node.UserName + '/'
               if (!postsByTag[tag]) {
                 postsByTag[tag] = [];
               }
@@ -115,7 +115,7 @@ exports.createPages = ({ graphql, actions }) => {
 
         //Create All Tags page
         createPage({
-          path: '/alltags',
+          path: '/alltags/',
           component: alltagsPage,
           context: {
             tags: tags.sort(),
@@ -127,7 +127,7 @@ exports.createPages = ({ graphql, actions }) => {
           const posts = postsByTag[tagName];
 
           createPage({
-            path: `/tags/${_.kebabCase(tagName.trim())}`,
+            path: `/tags/${_.kebabCase(tagName.trim())}/`,
             component: tagPosts,
             context: {
               posts,
