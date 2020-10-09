@@ -161,12 +161,12 @@ const Index = ({ data }) => {
   const visibleNewlyAddedProducts = _.slice(newlyAddedProducts, 0, limit);
 
   return (
-    <Layout title={'emprezzo | Discover the best online shopping sites & direct-to-consumer brands'} description="Discover the best online shopping sites & direct to consumer brands." >
-      <Header title="Discover the best online shopping sites"></Header>
+    <Layout title={'emprezzo | Discover the best independent online stores & direct-to-consumer brands'} description="Discover the best online shopping sites & direct to consumer brands." >
+      <Header title="Discover the best independent online stores"></Header>
 
       {/* <p className="center"><a href ="/randomshop" className="button button">Discover a  shop</a></p> */}
       <div className="center">
-        🧐 Discover the best online shopping sites<br />🛒 Shop direct-to-consumer brands<br/>
+        🧐 Discover the best independent online shopping sites<br />🛒 Shop direct-to-consumer brands<br/>
 
       </div>
       <div className="center">
@@ -179,7 +179,7 @@ const Index = ({ data }) => {
 
       <CarouselWrapper>
       <h2>Discover popular online stores by site traffic</h2>
-        See some of the fastest rising shops by global site traffic rank over the last 21 days
+        See some of the fastest rising shops by global site traffic rank over the last 28 days
         <Carousel
           swipeable={false}
           draggable={false}
