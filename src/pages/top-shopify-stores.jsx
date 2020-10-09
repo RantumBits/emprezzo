@@ -235,7 +235,7 @@ const TopShopifyStores = ({ data }) => {
                 {listEdges.map((node, index) => (
                   <tr key={index} id={`post-${index}`}>
                     <td>{index + 1}</td>
-
+                  
                     <td>
                       {node.ProfilePicURL &&
                         <Link to={`/shops/${node.UserName}/`}>

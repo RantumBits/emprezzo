@@ -178,8 +178,8 @@ const Index = ({ data }) => {
       </div>
 
       <CarouselWrapper>
-      <h2>Fast Rising Shops</h2>
-        See some of the fastest rising shops by global site traffic rank over the last 28 days
+      <h2>Fast Growing Stores</h2>
+        See some of the fastest growing shops by global site traffic rank over the last 28 days
         <Carousel
           swipeable={false}
           draggable={false}
@@ -201,7 +201,7 @@ const Index = ({ data }) => {
       </CarouselWrapper>
 
       <CarouselWrapper>
-      <h2>Highly Ranked Shops</h2>
+      <h2>Popular Shops by Traffic</h2>
         See some of the most popular shops by global site traffic ranking
         <Carousel
           swipeable={false}
