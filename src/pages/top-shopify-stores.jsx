@@ -235,14 +235,13 @@ const TopShopifyStores = ({ data }) => {
                 {listEdges.map((node, index) => (
                   <tr key={index} id={`post-${index}`}>
                     <td>{index + 1}</td>
-                  
+                    <td><a href="javascript:void(0)" onClick={() => openMoreDialog(node)}>&gt;&gt;</a></td>
                     <td>
                       {node.ProfilePicURL &&
                         <Link to={`/shops/${node.UserName}/`}>
                           <img src={node.ProfilePicURL} className="profileimage" style={{ width: "50px", margin: '0px' }} title={node.about} alt={node.about} />
                         </Link>
                       }
-                      <a href="javascript:void(0)" onClick={() => openMoreDialog(node)}>&gt;&gt;</a>
                     </td>
                     {!isMobile &&
                       <>
