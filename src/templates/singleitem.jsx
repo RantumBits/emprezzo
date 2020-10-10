@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { Layout, Container, Content } from 'layouts';
 import { TagsBlock, Header, SEO } from 'components';
 import _ from 'lodash';
+import { getRelatedShops } from '../components/RelatedShops'
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
 import { useMediaQuery } from 'react-responsive';
@@ -123,6 +124,24 @@ const SocialIcons = styled.div`
   }
 `;
 
+const PostSectionGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 2rem;
+  @media (max-width: ${props => props.theme.breakpoints.s}) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+`;
+
+const PostSectionImage = styled.div`
+  width: 100%;
+  height: 10rem;
+`;
+
+const PostSectionContent = styled.div`
+  padding: 1rem;
+`;
+
 const SingleItem = ({ data, pageContext }) => {
   const { next, prev } = pageContext;
   const {
@@ -154,6 +173,9 @@ const SingleItem = ({ data, pageContext }) => {
     about,
     signup_promos,
   } = data.mysqlMainView;
+
+  const allMysqlMainViewEdges = data.allMysqlMainView.edges;
+  const relatedShops = getRelatedShops(data.mysqlMainView, allMysqlMainViewEdges);
 
   const rowSocialIDViewEdges = data.allMysqlSocialIdView.edges;
   const filteredSocialIDView = _.filter(rowSocialIDViewEdges, ({ node }) => node.Instagram == UserName);
@@ -240,13 +262,13 @@ const SingleItem = ({ data, pageContext }) => {
           type: 'line',
           values: _.split(data.mysqlMainView.GlobalRank_List, ','),
         },
-        ],
-        yMarkers: [
-                {
-                  label: '01: Top Rank',
-                  value: '01',
-                },
-              ],
+      ],
+      yMarkers: [
+        {
+          label: '01: Top Rank',
+          value: '01',
+        },
+      ],
 
     };
   }
@@ -522,7 +544,7 @@ const SingleItem = ({ data, pageContext }) => {
         description={`Find best sellers and popular products from ${name} on emprezzo. See social media growth, search popularity, and more stats online stores selling ${tagsList}. `}
         pathname={AlexaURL}
       />
-      <Header title={name} children={subtitle} likeEnabled={{storeName:name,storeURL:AlexaURL,storeProfileImage:ProfilePicURL}} />
+      <Header title={name} children={subtitle} likeEnabled={{ storeName: name, storeURL: AlexaURL, storeProfileImage: ProfilePicURL }} />
       <Container>
         <div className="profileimage" style={{ display: 'flex' }}>
           {ProfilePicURL && (
@@ -926,11 +948,31 @@ const SingleItem = ({ data, pageContext }) => {
         <br />
         <br />
         See more online stores for: <TagsBlock list={tagsList || []} />
+
+        {!!relatedShops.length && (
+          <>
+            <h3>Related Shops</h3>
+            <PostSectionGrid>
+              {relatedShops && relatedShops.map(({ shop }, index) => (
+                <Link key={index} to={`/shops/${shop.node.UserName}/`}>
+                  <PostSectionImage>
+                    <img src={shop.node.ProfilePicURL} alt={shop.node.name} style={{ height: "inherit" }} />
+                  </PostSectionImage>
+                  <PostSectionContent>
+                    {shop.node.name && <h3>{shop.node.name}</h3>}
+                    {shop.node.about && <div>{_.truncate(shop.node.about,{length: 200, omission: '...'})}</div>}
+                  </PostSectionContent>
+                </Link>
+              ))}
+            </PostSectionGrid>
+          </>
+        )}
       </Container>
       <SuggestionBar>
         <PostSuggestion></PostSuggestion>
         <PostSuggestion></PostSuggestion>
       </SuggestionBar>
+
     </Layout>
   );
 };
@@ -964,6 +1006,7 @@ export const query = graphql`
       PinFollowing
       TTFollowers
       TTFollowing
+      id
       name
       about
       signup_promos
@@ -971,6 +1014,20 @@ export const query = graphql`
       GlobalRank_Dates
       GlobalRank_List
       TOS_List
+    }
+    allMysqlMainView {
+      edges {
+        node {
+          id
+          AlexaURL
+          UserName
+          category
+          tags
+          ProfilePicURL
+          name
+          about
+        }
+      }
     }
     allMysqlDataView(filter: { AlexaURL: { eq: $pathSlug } }) {
       edges {

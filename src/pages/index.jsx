@@ -142,6 +142,12 @@ const Index = ({ data }) => {
   //Now limiting the items as per limit
   const globalRankEdges = _.slice(globalRankSortedEdges, 0, limit)
 
+  //Now sorting (desc) based on TotalFollowers
+  var totalFollowersSortedEdges = _.sortBy(combinedEdges, obj => -obj.TotalFollowers)
+
+  //Now limiting the items as per limit
+  const totalFollowersEdges = _.slice(totalFollowersSortedEdges, 0, limit)
+
   const featuredShopEdges = _.filter(edges, ({ node }) => node.tags && node.tags.indexOf("featured") >= 0)
   const combinedFeatureShopEdges = [];
   //Creating a new dataset with original nodes and required columns from DataView
@@ -235,7 +241,7 @@ const Index = ({ data }) => {
           responsive={responsive}
           keyBoardControl={true}
         >
-          {listEdges.map((node, index) => (
+          {totalFollowersEdges.map((node, index) => (
             <HomeCarouselItem
               id={`post-${index}`}
               key={index}

@@ -121,7 +121,7 @@ const TopShopifyStores = ({ data }) => {
   })
 
   //Now sorting (desc) based on TotalFollowers
-  var sortedEdges = _.sortBy(combinedEdges, obj => -obj[sortBy])
+  var sortedEdges = _.sortBy(combinedEdges, obj => sortBy=="GlobalRank"?obj[sortBy]:-obj[sortBy])
 
   //Now limiting the items as per limit
   let listEdges = _.slice(sortedEdges, 0, limit)
