@@ -4,8 +4,8 @@ import { includes, orderBy } from 'lodash'
 export const getRelatedShops = (currentShop, allshops) => {
 
     const maxPosts = 3;
-    const currentCategories = currentShop.category.split(",") || [];
-    const currentTags = currentShop.tags.split(",") || [];
+    const currentCategories = currentShop.category?currentShop.category.split(","):[];
+    const currentTags = currentShop.tags?currentShop.tags.split(","):[];
 
     // console.log("******** in related shops")
     // console.log(allshops)
@@ -30,7 +30,7 @@ export const getRelatedShops = (currentShop, allshops) => {
 
         // For category matches, we add 2 points
         const categoryPoints = 2;
-        const categories = post.node.category.split(",") || [];
+        const categories = post.node.category?post.node.category.split(","):[];
         categories.forEach((category) => {
             if (includes(...currentCategories, category)) {
                 identityMap[id].points += categoryPoints;
@@ -39,7 +39,7 @@ export const getRelatedShops = (currentShop, allshops) => {
 
         // For tags matches, we add 1 point
         const tagPoint = 1;
-        const tags = post.node.tags.split(",") || [];
+        const tags = post.node.tags?post.node.tags.split(","):[];
         tags.forEach((aTag) => {
             if (includes(currentTags, aTag)) {
                 identityMap[id].points += tagPoint;
