@@ -124,12 +124,6 @@ const Index = ({ data }) => {
 
   })
 
-  //Now sorting (desc) based on TotalFollowers
-  var sortedEdges = _.sortBy(combinedEdges, obj => -obj.TotalFollowers)
-
-  //Now limiting the items as per limit
-  const listEdges = _.slice(sortedEdges, 0, limit)
-
   //Now sorting (desc) based on GlobalRankChange
   var globalRankChangeSortedEdges = _.sortBy(combinedEdges, obj => -obj.GlobalRank_Change)
 
@@ -229,8 +223,6 @@ const Index = ({ data }) => {
         </Carousel>
       </CarouselWrapper>
 
-
-
       <CarouselWrapper>
       <h3>Popular on Social Media</h3>
       Discover some of the <a href="/top-shopify-stores">top Shopify stores</a> by total social media follower counts across Instagram, Facebook, Twitter, Tiktok, Pinterest & Youtube
@@ -254,8 +246,6 @@ const Index = ({ data }) => {
         </Carousel>
       </CarouselWrapper>
 
-
-
       <CarouselWrapper>
       <h3>Featured Online Shops</h3>
         <Carousel
@@ -277,12 +267,6 @@ const Index = ({ data }) => {
           ))}
         </Carousel>
       </CarouselWrapper>
-
-
-
-
-
-
 
       <CarouselWrapper>
       <h3>New Shopify Products</h3>
@@ -370,6 +354,7 @@ export const query = graphql`
           AlexaURL
           Facebook
           FollowerRate
+          TotalFollowers
           GlobalRank
           GlobalRank_Change
           Instagram

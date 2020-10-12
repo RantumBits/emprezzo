@@ -128,6 +128,7 @@ const PostSectionGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 2rem;
+  text-align: justify;
   @media (max-width: ${props => props.theme.breakpoints.s}) {
     grid-template-columns: repeat(1, 1fr);
   }
@@ -139,7 +140,7 @@ const PostSectionImage = styled.div`
 `;
 
 const PostSectionContent = styled.div`
-  padding: 1rem;
+  padding-top: 1rem;
 `;
 
 const SingleItem = ({ data, pageContext }) => {
@@ -954,15 +955,17 @@ const SingleItem = ({ data, pageContext }) => {
             <h3>Related Shops</h3>
             <PostSectionGrid>
               {relatedShops && relatedShops.map(({ shop }, index) => (
-                <Link key={index} to={`/shops/${shop.node.UserName}/`}>
+                <span key={index}>
                   <PostSectionImage>
                     <img src={shop.node.ProfilePicURL} alt={shop.node.name} style={{ height: "inherit" }} />
                   </PostSectionImage>
                   <PostSectionContent>
-                    {shop.node.name && <h3>{shop.node.name}</h3>}
-                    {shop.node.about && <div>{_.truncate(shop.node.about,{length: 200, omission: '...'})}</div>}
+                    <Link key={index} to={`/shops/${shop.node.UserName}/`}>
+                      {shop.node.name && <h3>{shop.node.name}</h3>}
+                    </Link>
+                    {shop.node.about && <div>{_.truncate(shop.node.about, { length: 200, omission: '...' })}</div>}
                   </PostSectionContent>
-                </Link>
+                </span>
               ))}
             </PostSectionGrid>
           </>

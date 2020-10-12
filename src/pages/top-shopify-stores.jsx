@@ -80,10 +80,11 @@ const TopShopifyStores = ({ data }) => {
   const [filterFreeShipText, setFilterFreeShipText] = React.useState(false);
   const [filterPayPalVenmoSupport, setFilterPayPalVenmoSupport] = React.useState(false);
   const [filterBuyNowPayLater, setFilterBuyNowPayLater] = React.useState(false);
+  const [filterText, setFilterText] = React.useState("");
 
   const [sortBy, setSortBy] = React.useState("GlobalRank");
 
-  const changeSortBy = (e) => {setSortBy(e.target.value)}
+  const changeSortBy = (e) => { setSortBy(e.target.value) }
 
   const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
 
@@ -121,7 +122,7 @@ const TopShopifyStores = ({ data }) => {
   })
 
   //Now sorting (desc) based on TotalFollowers
-  var sortedEdges = _.sortBy(combinedEdges, obj => sortBy=="GlobalRank"?obj[sortBy]:-obj[sortBy])
+  var sortedEdges = _.sortBy(combinedEdges, obj => sortBy == "GlobalRank" ? obj[sortBy] : -obj[sortBy])
 
   //Now limiting the items as per limit
   let listEdges = _.slice(sortedEdges, 0, limit)
@@ -139,6 +140,14 @@ const TopShopifyStores = ({ data }) => {
   if (filterBuyNowPayLater) {
     listEdges = _.filter(listEdges, item => item.AfterPay || item.Klarna || item.Affirm)
   }
+  if (filterText && filterText.length > 0) {
+    listEdges = _.filter(listEdges, item => 
+      (item.name && item.name.toLowerCase().indexOf(filterText.toLowerCase()) >= 0)
+      || (item.about && item.about.toLowerCase().indexOf(filterText.toLowerCase()) >= 0)
+      || (item.tags && item.tags.toLowerCase().indexOf(filterText.toLowerCase()) >= 0)
+      || (item.category && item.category.toLowerCase().indexOf(filterText.toLowerCase()) >= 0)
+    )
+  }
 
   const openMoreDialog = (node) => {
     let dialogContent = "";
@@ -148,7 +157,6 @@ const TopShopifyStores = ({ data }) => {
     dialogContent += "<a href='" + node.AlexaURL + "'>Go to " + node.name + "</a><br/><br/>";
     setDialogText(dialogContent);
     setShowDialog(true);
-    //alert(text)
   }
 
   const closeMoreDialog = () => setShowDialog(false);
@@ -167,6 +175,14 @@ const TopShopifyStores = ({ data }) => {
         <div className="intro_text">
           <h3>Browse top Shopify stores</h3>
           <p>Discover top Shopify sellers based upon organic search traffic and social media activity.</p>
+        </div>
+        <div style={{ display: "flex", width: "100%" }}>
+          <label>Filter Results:
+            <input type="text"
+              value={filterText}
+              onChange={(e) => setFilterText(e.target.value)}
+            />
+          </label>
         </div>
         <div style={{ display: "flex", width: "100%" }}>
           <label>
