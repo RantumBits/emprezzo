@@ -61,6 +61,7 @@ const CarouselWrapper = styled.div`
 const Index = ({ data }) => {
   const { edges } = data.allMysqlMainView;
   const rowProductsEdges = data.allMysqlShopifyView.edges;
+  const rowallMysqlShopifyProductsAllEdges = data.allMysqlShopifyProductsAll ? data.allMysqlShopifyProductsAll.edges : [];
   const maxItems = 25;
   const [limit, setLimit] = React.useState(maxItems);
   const [showMore, setShowMore] = React.useState(true);
@@ -94,9 +95,10 @@ const Index = ({ data }) => {
   const checkEdgesInProductView = (allEdges) => {
     let filteredProducts = [];
     allEdges.map((edge) => {
-      const inputID = edge.node.UserName;
-      const result = _.filter(rowProductsEdges, ({ node }) => node.UserName == inputID && node.Price > 20 && node.Title.toLowerCase().indexOf("gift") < 0 && node.Title.toLowerCase().indexOf("test") < 0 && node.Title.toLowerCase().indexOf("shipping") < 0)
-      const max2Results = _.slice(result,0,2);//max 2 products from a store
+      const inputID = edge.node.AlexaURL;
+      const result = _.filter(rowallMysqlShopifyProductsAllEdges, ({ node }) => node.VendorURL == inputID && node.Price > 20 && node.Title.toLowerCase().indexOf("gift") < 0 && node.Title.toLowerCase().indexOf("test") < 0 && node.Title.toLowerCase().indexOf("shipping") < 0)
+      const sortedResult = _.sortBy(result, ({ node }) => -node.PublishedDate);
+      const max2Results = _.slice(sortedResult,0,2);//max 2 products from a store
       filteredProducts = _.union(filteredProducts, max2Results)
     });
     return filteredProducts;
@@ -373,6 +375,27 @@ export const query = graphql`
           tags
           name
           about
+        }
+      }
+    }
+
+    allMysqlShopifyProductsAll {
+      edges {
+        node {
+          ImageURL
+          MaxPrice
+          Position
+          Price
+          ProductID
+          ProductURL
+          PublishedDate
+          Title
+          VariantID
+          VariantImageURL
+          VariantTitle
+          VariantUpdateDate
+          VendorName
+          VendorURL
         }
       }
     }

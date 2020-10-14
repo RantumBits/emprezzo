@@ -8,6 +8,7 @@ import { Header, BlogList } from 'components';
 import { Layout } from 'layouts';
 import _ from 'lodash';
 import { useMediaQuery } from 'react-responsive'
+import Slider from '@material-ui/core/Slider';
 import { Dialog } from "@reach/dialog";
 import "@reach/dialog/styles.css";
 
@@ -82,7 +83,10 @@ const TopShopifyStores = ({ data }) => {
   const [filterBuyNowPayLater, setFilterBuyNowPayLater] = React.useState(false);
   const [filterText, setFilterText] = React.useState("");
 
-  const [sortBy, setSortBy] = React.useState("GlobalRank");
+  const [sliderAvgPrice, setSliderAvgPrice] = React.useState([0, 0]);
+  const [sliderPriceRange, setSliderPriceRange] = React.useState([0, 0]);
+
+  const [sortBy, setSortBy] = React.useState("GlobalRank_Change");
 
   const changeSortBy = (e) => { setSortBy(e.target.value) }
 
@@ -92,7 +96,7 @@ const TopShopifyStores = ({ data }) => {
     setLimit(limit + maxItems);
   }
 
-  const combinedEdges = [];
+  let combinedEdges = [];
 
   //Creating a new dataset with original nodes and required columns from PayNShip and allMysqlShopifyProductSummary
   edges.map((edge) => {
@@ -121,6 +125,31 @@ const TopShopifyStores = ({ data }) => {
     combinedEdges.push(newNode);
   })
 
+  if (sliderAvgPrice[0] == 0 && sliderAvgPrice[0] == 0) {
+    var minPriceAvg = _.minBy(combinedEdges, 'PriceAvg')
+    var maxPriceAvg = _.maxBy(combinedEdges, 'PriceAvg')
+    setSliderAvgPrice([minPriceAvg.PriceAvg, maxPriceAvg.PriceAvg])
+  }
+  combinedEdges = _.filter(combinedEdges, item => sliderAvgPrice[0] <= item.PriceAvg && item.PriceAvg <= sliderAvgPrice[1])
+
+  if (sliderPriceRange[0] == 0 && sliderPriceRange[0] == 0 && combinedEdges.length>0) {
+    var minPriceRange = _.minBy(combinedEdges, 'PriceMin')
+    var maxPriceRange = _.maxBy(combinedEdges, 'PriceMax')
+    setSliderPriceRange([minPriceRange.PriceMin, maxPriceRange.PriceMax])    
+  }
+  combinedEdges = _.filter(combinedEdges, item => sliderPriceRange[0] <= item.PriceMax && item.PriceMax <= sliderPriceRange[1])
+
+  const handerSliderAvgPriceChange = (event, newValue) => {
+    setSliderAvgPrice(newValue);
+  }
+  const handerSliderPriceRangeChange = (event, newValue) => {
+    setSliderPriceRange(newValue);
+  }
+  
+  const sliderValueText = (value) => {
+    return value;
+  }
+
   //Now sorting (desc) based on TotalFollowers
   var sortedEdges = _.sortBy(combinedEdges, obj => sortBy == "GlobalRank" ? obj[sortBy] : -obj[sortBy])
 
@@ -141,7 +170,7 @@ const TopShopifyStores = ({ data }) => {
     listEdges = _.filter(listEdges, item => item.AfterPay || item.Klarna || item.Affirm)
   }
   if (filterText && filterText.length > 0) {
-    listEdges = _.filter(listEdges, item => 
+    listEdges = _.filter(listEdges, item =>
       (item.name && item.name.toLowerCase().indexOf(filterText.toLowerCase()) >= 0)
       || (item.about && item.about.toLowerCase().indexOf(filterText.toLowerCase()) >= 0)
       || (item.tags && item.tags.toLowerCase().indexOf(filterText.toLowerCase()) >= 0)
@@ -215,25 +244,48 @@ const TopShopifyStores = ({ data }) => {
         </label>
         </div>
         <div style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
-          Dipslay by
+          Display by
           <select value={sortBy} onChange={changeSortBy}>
             <option value="GlobalRank">Traffic rank</option>
             <option value="GlobalRank_Change">Rank change</option>
             <option value="TotalFollowers">Total fans</option>
           </select>
         </div>
+        <div style={{ width: "80%", display: "flex" }}>
+          <span style={{ width: "20%" }}>Average Price : </span>
+          <Slider
+            value={sliderAvgPrice}
+            onChange={handerSliderAvgPriceChange}
+            min={0}
+            max={sliderAvgPrice[1]+50}
+            valueLabelDisplay="auto"
+            aria-labelledby="range-slider-avg"
+
+          />
+        </div>
+        <div style={{ width: "80%", display: "flex" }}>
+          <span style={{ width: "20%" }}>Price Range : </span>
+          <Slider
+            value={sliderPriceRange}
+            onChange={handerSliderPriceRangeChange}
+            min={0}
+            max={sliderPriceRange[1]+50}
+            valueLabelDisplay="auto"
+            aria-labelledby="range-slider-range"
+          />
+        </div>
         <TableWrapper>
           <StickyTableWrapper>
             <TableStickyHeader>
               <thead>
                 <tr>
-                  <th><strong>#</strong></th>
-                  <th></th>
+                  <th style={{ width: "3%" }}><strong>#</strong></th>
+                  <th style={{ width: "3%" }}></th>
 
                   <th><strong>Store</strong></th>
                   {!isMobile &&
                     <>
-                      <th></th>
+                      <th style={{ width: "20%" }}></th>
                       <th><strong>TrafficRank</strong></th>
                     </>
                   }
