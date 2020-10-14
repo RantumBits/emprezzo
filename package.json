@@ -67,6 +67,7 @@
     "gatsby-transformer-sharp": "^2.2.13",
     "inquirer": "^7.3.3",
     "lodash": "^4.17.19",
+    "material-ui-slider": "^3.0.8",
     "netlify-cli": "^2.64.1",
     "node-fetch": "^2.6.1",
     "prismjs": "^1.17.1",
