@@ -5,10 +5,10 @@ import _ from 'lodash';
 import { navigate } from "@reach/router"
 
 const RandomShop = ({ data }) => {
-  const { edges } = data.allMysqlMainView;
+  const { edges } = data.allMysqlMainView;  
+  const combinedEdges = edges;
+  /*
   const rowRankViewEdges = data.allMysqlRankView.edges;
-
-  const combinedEdges = [];
   //Creating a new dataset with original nodes and required columns from DataView
   edges.map((edge) => {
     const inputInstaID = edge.node.UserName;
@@ -17,14 +17,15 @@ const RandomShop = ({ data }) => {
       combinedEdges.push(edge);
     }
   })
+  */
 
-  //console.log("Total Shops with Rank View = "+combinedEdges.length);
+  //console.log("Total Shops with Rank View = ",combinedEdges.length,combinedEdges);
   const randomnumber = Math.round(Math.random() * combinedEdges.length);
   //console.log("Generated Random Number = "+randomnumber);
   const edge = combinedEdges[randomnumber-1] ? combinedEdges[randomnumber-1] : combinedEdges[0];
   //console.log(edge)
-  const randomshopurl = "/shops/"+edge.node.UserName;
-  console.log("Random URL = "+randomshopurl);
+  const randomshopurl = "/shops/"+edge.node.UserName+"/";
+  //console.log("Random URL = "+randomshopurl);
   navigate(randomshopurl);
 
   return (
@@ -41,13 +42,6 @@ export const query = graphql`
       edges {
         node {
           AlexaURL
-          UserName
-        }
-      }
-    }
-    allMysqlRankView {
-      edges {
-        node {
           UserName
         }
       }

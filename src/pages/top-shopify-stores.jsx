@@ -125,14 +125,14 @@ const TopShopifyStores = ({ data }) => {
     combinedEdges.push(newNode);
   })
 
-  if (sliderAvgPrice[0] == 0 && sliderAvgPrice[0] == 0) {
+  if (sliderAvgPrice[0] == 0 && sliderAvgPrice[1] == 0) {
     var minPriceAvg = _.minBy(combinedEdges, 'PriceAvg')
     var maxPriceAvg = _.maxBy(combinedEdges, 'PriceAvg')
     setSliderAvgPrice([minPriceAvg.PriceAvg, maxPriceAvg.PriceAvg])
   }
   combinedEdges = _.filter(combinedEdges, item => sliderAvgPrice[0] <= item.PriceAvg && item.PriceAvg <= sliderAvgPrice[1])
 
-  if (sliderPriceRange[0] == 0 && sliderPriceRange[0] == 0 && combinedEdges.length>0) {
+  if (sliderPriceRange[0] == 0 && sliderPriceRange[1] == 0 && combinedEdges.length>0) {
     var minPriceRange = _.minBy(combinedEdges, 'PriceMin')
     var maxPriceRange = _.maxBy(combinedEdges, 'PriceMax')
     setSliderPriceRange([minPriceRange.PriceMin, maxPriceRange.PriceMax])    
@@ -146,15 +146,8 @@ const TopShopifyStores = ({ data }) => {
     setSliderPriceRange(newValue);
   }
   
-  const sliderValueText = (value) => {
-    return value;
-  }
-
   //Now sorting (desc) based on TotalFollowers
-  var sortedEdges = _.sortBy(combinedEdges, obj => sortBy == "GlobalRank" ? obj[sortBy] : -obj[sortBy])
-
-  //Now limiting the items as per limit
-  let listEdges = _.slice(sortedEdges, 0, limit)
+  let listEdges = _.sortBy(combinedEdges, obj => sortBy == "GlobalRank" ? obj[sortBy] : -obj[sortBy])
 
   //Apply filters if any of them is checked
   if (filterPaypalShopID) {
@@ -177,6 +170,9 @@ const TopShopifyStores = ({ data }) => {
       || (item.category && item.category.toLowerCase().indexOf(filterText.toLowerCase()) >= 0)
     )
   }
+
+  //Now limiting the items as per limit
+  listEdges = _.slice(listEdges, 0, limit)
 
   const openMoreDialog = (node) => {
     let dialogContent = "";

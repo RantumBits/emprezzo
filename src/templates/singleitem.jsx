@@ -948,7 +948,7 @@ const SingleItem = ({ data, pageContext }) => {
         </a>
         <br />
         <br />
-        See more online stores for: <TagsBlock list={tagsList || []} />
+        See more online stores for: <TagsBlock list={tagsList || []} isLinkToShops={true} />
 
         {!!relatedShops.length && (
           <>

@@ -9,7 +9,7 @@ import { Layout } from 'layouts';
 import _ from 'lodash';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-
+import Slider from '@material-ui/core/Slider';
 import { useMediaQuery } from 'react-responsive'
 
 const CategoryHeading = styled.h1`
@@ -64,6 +64,7 @@ const Products = ({ data, pageContext }) => {
   const maxItems = 25;
   const [sortBy, setSortBy] = React.useState("UpdateDate");
   const [sortOrder, setSortOrder] = React.useState("DESC");
+  const [sliderPrice, setSliderPrice] = React.useState([0, 0]);
 
   const changeSortBy = (e) => { setSortBy(e.target.value) }
   const changeSortOrder = (e) => { setSortOrder(e.target.value) }
@@ -130,6 +131,14 @@ const Products = ({ data, pageContext }) => {
   }
   let listShopifyProductsAllEdges = rowallMysqlShopifyProductsAllEdges;
 
+  //apply filter for slider on price
+  if (sliderPrice[0] == 0 && sliderPrice[1] == 0) {
+    var minPrice = _.minBy(listShopifyProductsAllEdges, ({ node }) => node.Price)
+    var maxPrice = _.maxBy(listShopifyProductsAllEdges, ({ node }) => node.Price)
+    setSliderPrice([minPrice.node.Price, maxPrice.node.Price])
+  }
+  listShopifyProductsAllEdges = _.filter(listShopifyProductsAllEdges, ({ node }) => sliderPrice[0] <= node.Price && node.Price <= sliderPrice[1])
+
   //apply filtertext if its greater than 3 characters
   if (filter && filter.length > 3) {
     listShopifyProductsAllEdges = _.filter(listShopifyProductsAllEdges, ({ node }) => node.VendorName.toLowerCase().indexOf(filter.toLowerCase()) >= 0 || node.Title.toLowerCase().indexOf(filter.toLowerCase()) >= 0)
@@ -142,6 +151,10 @@ const Products = ({ data, pageContext }) => {
   listShopifyProductsAllEdges = _.slice(listShopifyProductsAllEdges, 0, limit)
 
   if (listShopifyProductsAllEdges.length >= rowallMysqlShopifyProductsAllEdges.length) setShowMore(false);
+
+  const handerSliderPriceChange = (event, newValue) => {
+    setSliderPrice(newValue);
+  }
 
   return (
     <Layout title={'Shopify Products | Disover great products from Shopify stores'} description="Discover the best Shopify products from hundreds of stores in one place. It's like a mini-Shopify marketplace.">
@@ -202,6 +215,18 @@ const Products = ({ data, pageContext }) => {
               setFilter(value);
             }}
           />
+          <div style={{ width: "80%", display: "flex" }}>
+            <span style={{ width: "15%" }}>Price Range : </span>
+            <Slider
+              value={sliderPrice}
+              onChange={handerSliderPriceChange}
+              min={0}
+              max={sliderPrice[1] + 50}
+              valueLabelDisplay="auto"
+              aria-labelledby="range-slider-avg"
+
+            />
+          </div>
           <div style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
             Display by
             <select value={sortBy} onChange={changeSortBy}>

@@ -74,11 +74,11 @@ module.exports = {
             idFieldName: 'ProductURL',
             name: 'ShopifyView'
           },
-          {
-            statement: 'SELECT * FROM RankView WHERE AlexaURL IS NOT NULL',
-            idFieldName: 'AlexaURL',
-            name: 'RankView'
-          },
+          // {
+          //   statement: 'SELECT * FROM RankView WHERE AlexaURL IS NOT NULL',
+          //   idFieldName: 'AlexaURL',
+          //   name: 'RankView'
+          // },
           {
             statement: 'SELECT * FROM RankView_Paypal WHERE AlexaURL IS NOT NULL',
             idFieldName: 'AlexaURL',

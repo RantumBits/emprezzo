@@ -3,7 +3,7 @@ import { Link, graphql } from 'gatsby';
 import Image from 'gatsby-image';
 import Helmet from 'react-helmet';
 import styled from '@emotion/styled';
-import PropTypes from 'prop-types';
+import * as queryString from "query-string";
 import { Header, BlogList } from 'components';
 import { Layout } from 'layouts';
 import _ from 'lodash';
@@ -69,7 +69,7 @@ const TableStickyHeader = styled.table`
   }
 `;
 
-const TopShopifyStores = ({ data }) => {
+const TopShopifyStores = ({ location, data }) => {
   const { edges } = data.allMysqlMainView;
   const maxItems = 20;
   const [limit, setLimit] = React.useState(maxItems);
@@ -95,6 +95,14 @@ const TopShopifyStores = ({ data }) => {
   const increaseLimit = () => {
     setLimit(limit + maxItems);
   }
+
+  React.useEffect(() => {
+    //checking if tag filter is present
+    if(location && location.search) {
+      const { tag } = queryString.parse(location.search);
+      setFilterText(tag.trim())
+    }
+  },[]);
 
   let combinedEdges = [];
 
@@ -151,10 +159,7 @@ const TopShopifyStores = ({ data }) => {
   }
 
   //Now sorting (desc) based on TotalFollowers
-  var sortedEdges = _.sortBy(combinedEdges, obj => sortBy == "GlobalRank" ? obj[sortBy] : -obj[sortBy])
-
-  //Now limiting the items as per limit
-  let listEdges = _.slice(sortedEdges, 0, limit)
+  let listEdges = _.sortBy(combinedEdges, obj => sortBy == "GlobalRank" ? obj[sortBy] : -obj[sortBy])
 
   //Apply filters if any of them is checked
   if (filterPaypalShopID) {
@@ -169,6 +174,7 @@ const TopShopifyStores = ({ data }) => {
   if (filterBuyNowPayLater) {
     listEdges = _.filter(listEdges, item => item.AfterPay || item.Klarna || item.Affirm)
   }
+  console.log("**** listEdges",filterText,listEdges)
   if (filterText && filterText.length > 0) {
     listEdges = _.filter(listEdges, item =>
       (item.name && item.name.toLowerCase().indexOf(filterText.toLowerCase()) >= 0)
@@ -177,6 +183,10 @@ const TopShopifyStores = ({ data }) => {
       || (item.category && item.category.toLowerCase().indexOf(filterText.toLowerCase()) >= 0)
     )
   }
+  console.log("**** listEdges",listEdges)
+
+  //Now limiting the items as per limit
+  listEdges = _.slice(listEdges, 0, limit)
 
   const openMoreDialog = (node) => {
     let dialogContent = "";
