@@ -46,9 +46,9 @@ exports.createPages = ({ graphql, actions }) => {
             allMysqlMainView {
               edges {
                 node {
-                  AlexaURL              
+                  AlexaURL
                   GlobalRank
-                  LocalRank                  
+                  LocalRank
                   TOS
                   UserName
                   category
@@ -70,7 +70,7 @@ exports.createPages = ({ graphql, actions }) => {
 
         //create pages
         mainviewRows.forEach(({ node }, index) => {
-          const path = '/shops/' + node.UserName + '/';
+          const path = '/shops/' + node.UserName.toLowerCase + '/';
           const prev = index === 0 ? null : mainviewRows[index - 1].node;
           const next =
             index === mainviewRows.length - 1 ? null : mainviewRows[index + 1].node;
