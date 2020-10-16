@@ -157,10 +157,10 @@ const Products = ({ data, pageContext }) => {
   }
 
   return (
-    <Layout title={'Shopify Products | Disover great products from Shopify stores'} description="Discover the best Shopify products from hundreds of stores in one place. It's like a mini-Shopify marketplace.">
+    <Layout title={'Shopify Products | Disover great products from indepedent online stores'} description="Discover the best products from hundreds of independent online stores in one place. An alternative to Amazon Marketplace online shopping.">
       <Header title="🧐 Disover great products from Shopify stores" />
       <div>
-        <CategoryHeading>Featured Shopify Products</CategoryHeading>
+        <CategoryHeading>Top Products from Featured Brands</CategoryHeading>
         <CarouselWrapper>
           <Carousel
             swipeable={false}
@@ -184,31 +184,10 @@ const Products = ({ data, pageContext }) => {
           </Carousel>
         </CarouselWrapper>
 
-        <CategoryHeading>New Shopify Products</CategoryHeading>
-        <CarouselWrapper>
-          <Carousel
-            swipeable={false}
-            draggable={false}
-            showDots={false}
-            responsive={responsive}
-            keyBoardControl={true}
-          >
-            {visibleProducts.map(({ node }, index) => (
-              <ProductCategoryItem
-                key={index}
-                cover={getProductImage(node)}
-                path={`/shops/${node.UserName}`}
-                vendorname={node.VendorName}
-                title={node.Title}
-                variant={getProductVariant(node)}
-                price={node.Price}
-                node={node}
-              />
-            ))}
-          </Carousel>
-        </CarouselWrapper>
 
-        <CategoryHeading>All Shopify Products</CategoryHeading>
+
+        <CategoryHeading>Discover great products</CategoryHeading>
+        <
         <SearchWrapper>
           Search
             <input
@@ -262,6 +241,54 @@ const Products = ({ data, pageContext }) => {
             </button>
           </div>
         }
+
+        <CategoryHeading>Sale Products</CategoryHeading>
+        <CarouselWrapper>
+          <Carousel
+            swipeable={false}
+            draggable={false}
+            showDots={false}
+            responsive={responsive}
+            keyBoardControl={true}
+          >
+            {visibleProducts.map(({ node }, index) => (
+              <ProductCategoryItem
+                key={index}
+                cover={getProductImage(node)}
+                path={`/shops/${node.UserName}`}
+                vendorname={node.VendorName}
+                title={node.Title}
+                variant={getProductVariant(node)}
+                price={node.Price}
+                node={node}
+              />
+            ))}
+          </Carousel>
+        </CarouselWrapper>
+
+        <CategoryHeading>Gift Cards</CategoryHeading>
+        <CarouselWrapper>
+          <Carousel
+            swipeable={false}
+            draggable={false}
+            showDots={false}
+            responsive={responsive}
+            keyBoardControl={true}
+          >
+            {visibleProducts.map(({ node }, index) => (
+              <ProductCategoryItem
+                key={index}
+                cover={getProductImage(node)}
+                path={`/shops/${node.UserName}`}
+                vendorname={node.VendorName}
+                title={node.Title}
+                variant={getProductVariant(node)}
+                price={node.Price}
+                node={node}
+              />
+            ))}
+          </Carousel>
+        </CarouselWrapper>
       </div>
     </Layout>
   );
