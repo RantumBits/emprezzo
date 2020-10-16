@@ -187,7 +187,7 @@ const Products = ({ data, pageContext }) => {
 
 
         <CategoryHeading>Discover great products</CategoryHeading>
-        <
+
         <SearchWrapper>
           Search
             <input
@@ -209,14 +209,14 @@ const Products = ({ data, pageContext }) => {
             />
           </div>
           <div style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
-            Display by
+            Sort by
             <select value={sortBy} onChange={changeSortBy}>
-              <option value="Price">Price</option>
-              <option value="UpdateDate">UpdateDate</option>
+              <option value="Price"> Price </option>
+              <option value="UpdateDate"> Date </option>&nbsp;
             </select>
             <select value={sortOrder} onChange={changeSortOrder}>
-              <option value="ASC">ASC</option>
-              <option value="DESC">DESC</option>
+              <option value="ASC"> △ </option>
+              <option value="DESC"> ▽ </option>
             </select>
           </div>
         </SearchWrapper>
