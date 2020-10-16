@@ -147,18 +147,12 @@ const SingleItem = ({ data, pageContext }) => {
   const { next, prev } = pageContext;
   const {
     AlexaURL,
-    FollowerRate,
     InstaFollowers,
     InstaFollowing,
-    TotalFollowers,
     GlobalRank,
     LocalRank,
-    PostRate,
-    ProfilePicURL,
     TOS,
-    UserID,
     UserName,
-    activity,
     category,
     tags,
     FBLikes,
@@ -545,12 +539,12 @@ const SingleItem = ({ data, pageContext }) => {
         description={`Find best sellers and popular products from ${name} on emprezzo. See social media growth, search popularity, and more stats online stores selling ${tagsList}. `}
         pathname={AlexaURL}
       />
-      <Header title={name} children={subtitle} likeEnabled={{ storeName: name, storeURL: AlexaURL, storeProfileImage: ProfilePicURL }} />
+      <Header title={name} children={subtitle} likeEnabled={{ storeName: name, storeURL: AlexaURL, storeProfileImage: (firstRowDataView && ProfilePicURL) }} />
       <Container>
         <div className="profileimage" style={{ display: 'flex' }}>
-          {ProfilePicURL && (
+          {firstRowDataView && firstRowDataView.ProfilePicURL && (
             <img
-              src={ProfilePicURL}
+              src={firstRowDataView.ProfilePicURL}
               alt={name}
               className="profileimage"
               style={{ width: '100px', height: '100px' }}
@@ -558,7 +552,7 @@ const SingleItem = ({ data, pageContext }) => {
           )}
           <div style={{ paddingLeft: '15px' }}>
             <Statistics>
-              {(activity || FollowerRate || PostRate) && (
+              {firstRowDataView && (firstRowDataView.activity || firstRowDataView.FollowerRate || firstRowDataView.PostRate) && (
                 <StatisticItem>
                   <a
                     target="_blank"
@@ -568,9 +562,9 @@ const SingleItem = ({ data, pageContext }) => {
                   ></a>
                 </StatisticItem>
               )}
-              {TotalFollowers && (
+              {firstRowDataView && firstRowDataView.TotalFollowers && (
                 <StatisticItem>
-                  {TotalFollowers.toLocaleString()}
+                  {firstRowDataView.TotalFollowers.toLocaleString()}
                   <br />
                   <span className="stat_title">Total Fans</span>
                 </StatisticItem>
@@ -986,19 +980,12 @@ export const query = graphql`
   query($pathSlug: String!) {
     mysqlMainView(AlexaURL: { eq: $pathSlug }) {
       AlexaURL
-      FollowerRate
       GlobalRank
       LocalRank
-      PostRate
-      ProfilePicURL
       TOS
-      UserID
       UserName
-      activity
       category
       tags
-      TotalFollowers
-      TotalFollowing
       FBLikes
       InstaFollowers
       InstaFollowing
@@ -1026,7 +1013,6 @@ export const query = graphql`
           UserName
           category
           tags
-          ProfilePicURL
           name
           about
         }
@@ -1041,6 +1027,12 @@ export const query = graphql`
           Biography
           PostDate
           PhotoLink
+          ProfilePicURL
+          FollowerRate
+          PostRate
+          activity
+          TotalFollowers
+          TotalFollowing
           AlexaRankOrder
           mysqlImage {
             childImageSharp {

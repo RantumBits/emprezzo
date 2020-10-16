@@ -93,6 +93,8 @@ const Title = styled.h2`
 
 const HomeCarouselItem = ({ id, cover, path, date, title, excerpt }) => {
 
+  const defaultImageOnError = (e) => { e.target.src = "https://source.unsplash.com/600x600/?abstract,"+(Math.random()*1000) }
+
   return (
     <Wrapper id={id}>
       <Image>
@@ -100,7 +102,7 @@ const HomeCarouselItem = ({ id, cover, path, date, title, excerpt }) => {
           <Img fluid={cover} />
         }
         {cover && typeof cover === 'string' &&
-          <img src={cover || {} || [] || ''} style={{ objectFit: 'fill' }} />
+          <img src={cover || {} || [] || ''} onError={defaultImageOnError} style={{ objectFit: 'fill' }} />
         }
       </Image>
       <StyledLink to={path}>

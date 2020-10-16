@@ -65,7 +65,7 @@ const Index = ({ data }) => {
   const maxItems = 25;
   const [limit, setLimit] = React.useState(maxItems);
   const [showMore, setShowMore] = React.useState(true);
-
+  
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -98,7 +98,7 @@ const Index = ({ data }) => {
       const inputID = edge.node.AlexaURL;
       const result = _.filter(rowallMysqlShopifyProductsAllEdges, ({ node }) => node.VendorURL == inputID && node.Price > 20 && node.Title.toLowerCase().indexOf("gift") < 0 && node.Title.toLowerCase().indexOf("test") < 0 && node.Title.toLowerCase().indexOf("shipping") < 0)
       const sortedResult = _.sortBy(result, ({ node }) => -node.PublishedDate);
-      const max2Results = _.slice(sortedResult,0,2);//max 2 products from a store
+      const max2Results = _.slice(sortedResult, 0, 2);//max 2 products from a store
       filteredProducts = _.union(filteredProducts, max2Results)
     });
     return filteredProducts;
@@ -115,12 +115,20 @@ const Index = ({ data }) => {
 
   //Creating a new dataset with original nodes and required columns from DataView
   edges.map((edge) => {
+    const inputID = edge.node.AlexaURL;
+    //filter to show only shops with DataView . AlexaCountry = United States
+    var resultData = _.filter(rowDataViewEdges, ({ node }) => (node.AlexaURL == inputID))
+    var firstDataRow = [];
+    if (resultData.length > 0) {
+      firstDataRow = resultData[0]
+    }
     let newNode = {
       name: edge.node.name,
       slug: edge.node.UserName,
       about: edge.node.about,
       instagramname: edge.node.UserName,
-      ...edge.node
+      ...edge.node,
+      ...firstDataRow.node
     }
     combinedEdges.push(newNode);
 
@@ -164,23 +172,22 @@ const Index = ({ data }) => {
 
   return (
     <Layout title={'emprezzo | Discover the best independent online stores & direct-to-consumer brands'} description="Discover the best online shopping sites & direct to consumer brands." >
-      <Header title="Discover the best independent online stores"></Header>
-
+      <Header title="Discover the best independent online stores"></Header>      
       {/* <p className="center"><a href ="/randomshop" className="button button">Discover a  shop</a></p> */}
       <div className="center">
-        🧐 Discover the best independent online shopping sites<br />🛒 Shop direct-to-consumer brands<br/>
+        🧐 Discover the best independent online shopping sites<br />🛒 Shop direct-to-consumer brands<br />
 
       </div>
       <div className="center">
 
-          <a href="/randomshop/" className="button ">Discover a shop</a>
+        <a href="/randomshop/" className="button ">Discover a shop</a>
       </div>
       <div className="search_main">
         <Search collapse homepage indices={searchIndices} />
       </div>
 
       <CarouselWrapper>
-      <h2>Fast Growing Stores</h2>
+        <h2>Fast Growing Stores</h2>
         See some of the fastest growing shops by global site traffic rank over the last 28 days
         <Carousel
           swipeable={false}
@@ -203,7 +210,7 @@ const Index = ({ data }) => {
       </CarouselWrapper>
 
       <CarouselWrapper>
-      <h2>Popular Shops by Traffic</h2>
+        <h2>Popular Shops by Traffic</h2>
         See some of the most popular shops by global site traffic ranking
         <Carousel
           swipeable={false}
@@ -226,7 +233,7 @@ const Index = ({ data }) => {
       </CarouselWrapper>
 
       <CarouselWrapper>
-      <h3>Popular on Social Media</h3>
+        <h3>Popular on Social Media</h3>
       Discover some of the <a href="/top-shopify-stores">top Shopify stores</a> by total social media follower counts across Instagram, Facebook, Twitter, Tiktok, Pinterest & Youtube
         <Carousel
           swipeable={false}
@@ -249,7 +256,7 @@ const Index = ({ data }) => {
       </CarouselWrapper>
 
       <CarouselWrapper>
-      <h3>Featured Online Shops</h3>
+        <h3>Featured Online Shops</h3>
         <Carousel
           swipeable={false}
           draggable={false}
@@ -271,7 +278,7 @@ const Index = ({ data }) => {
       </CarouselWrapper>
 
       <CarouselWrapper>
-      <h3>New Shopify Products</h3>
+        <h3>New Shopify Products</h3>
         <Carousel
           swipeable={false}
           draggable={false}
@@ -279,14 +286,15 @@ const Index = ({ data }) => {
           responsive={responsive}
           keyBoardControl={true}
         >
-          {visibleNewlyAddedProducts.map(({node}, index) => (
+          {visibleNewlyAddedProducts.map(({ node }, index) => (
             <ProductCategoryItem
-                key={index}
-                cover={getProductImage(node)}
-                path={`/shops/${node.UserName}`}
-                vendorname={node.VendorName}
-                title={node.Title}
-                price={node.Price}
+              key={index}
+              cover={getProductImage(node)}
+              path={`/shops/${node.UserName}`}
+              vendorname={node.VendorName}
+              title={node.Title}
+              price={node.Price}
+              node={node}
             />
           ))}
         </Carousel>
@@ -324,6 +332,8 @@ export const query = graphql`
           LocalRank
           TOS
           ProfilePicURL
+          TotalFollowers
+          TotalFollowing
           Caption
           ShortCodeURL
           FollowerRate
@@ -354,23 +364,17 @@ export const query = graphql`
       edges {
         node {
           AlexaURL
-          Facebook
-          FollowerRate
-          TotalFollowers
+          Facebook          
           GlobalRank
           GlobalRank_Change
           Instagram
           LocalRank
-          Pinterest
-          PostRate
-          ProfilePicURL
+          Pinterest          
           TOS
           TikTok
           Twitter
-          UserID
           UserName
           YouTube
-          activity
           category
           tags
           name

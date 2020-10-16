@@ -113,21 +113,16 @@ export const query = graphql`
       edges {
         node {
           AlexaURL
-          Facebook
-          FollowerRate
+          Facebook          
           GlobalRank
           Instagram
           LocalRank
           Pinterest
-          PostRate
-          ProfilePicURL
           TOS
           TikTok
           Twitter
-          UserID
           UserName
           YouTube
-          activity
           category
           tags
         }

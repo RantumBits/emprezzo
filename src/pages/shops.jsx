@@ -114,6 +114,14 @@ const TopShopifyStores = ({ location, data }) => {
       ...edge.node
     }
     const inputID = edge.node.AlexaURL;
+    const rowDataViewEdges = data.allMysqlDataView.edges;
+    var filteredDataView = _.filter(rowDataViewEdges, ({ node }) => (node.AlexaURL == inputID))
+    if (filteredDataView.length > 0) {
+      newNode = {
+        ...newNode,
+        ...filteredDataView[0].node
+      }
+    }
     const rowPayNShipEdges = data.allMysqlPayNShip.edges;
     var filteredPayNShip = _.filter(rowPayNShipEdges, ({ node }) => (node.URL == inputID))
     if (filteredPayNShip.length > 0) {
@@ -376,33 +384,48 @@ export const query = graphql`
       edges {
         node {
             AlexaURL
-            Facebook
-            FollowerRate
+            Facebook            
             GlobalRank
             GlobalRank_Change
             Instagram
             LocalRank
             Pinterest
-            PostRate
-            ProfilePicURL
             TOS
             TikTok
             Twitter
-            UserID
             UserName
             YouTube
-            activity
             category
             tags
             InstaFollowers
             FBLikes
             PinFollowers
             TTFollowers
-            TwitterFollowers
-            TotalFollowers
+            TwitterFollowers            
             YTSubs
             name
             about
+        }
+      }
+    }
+    allMysqlDataView {
+      edges {
+        node {
+          AlexaURL
+          UserName
+          FullName
+          Biography
+          PostDate
+          PhotoLink
+          ProfilePicURL
+          FollowerRate
+          PostRate
+          activity
+          TotalFollowers
+          TotalFollowing
+          AlexaRankOrder          
+          Caption
+          ShortCodeURL
         }
       }
     }

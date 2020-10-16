@@ -46,16 +46,11 @@ exports.createPages = ({ graphql, actions }) => {
             allMysqlMainView {
               edges {
                 node {
-                  AlexaURL
-                  FollowerRate
+                  AlexaURL              
                   GlobalRank
-                  LocalRank
-                  PostRate
-                  ProfilePicURL
+                  LocalRank                  
                   TOS
-                  UserID
                   UserName
-                  activity
                   category
                   tags
                   name

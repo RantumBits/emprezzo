@@ -106,6 +106,14 @@ const TopShopifyStores = ({ data }) => {
       ...edge.node
     }
     const inputID = edge.node.AlexaURL;
+    const rowDataViewEdges = data.allMysqlDataView.edges;
+    var filteredDataView = _.filter(rowDataViewEdges, ({ node }) => (node.AlexaURL == inputID))
+    if (filteredDataView.length > 0) {
+      newNode = {
+        ...newNode,
+        ...filteredDataView[0].node
+      }
+    }
     const rowPayNShipEdges = data.allMysqlPayNShip.edges;
     var filteredPayNShip = _.filter(rowPayNShipEdges, ({ node }) => (node.URL == inputID))
     if (filteredPayNShip.length > 0) {
@@ -132,10 +140,10 @@ const TopShopifyStores = ({ data }) => {
   }
   combinedEdges = _.filter(combinedEdges, item => sliderAvgPrice[0] <= item.PriceAvg && item.PriceAvg <= sliderAvgPrice[1])
 
-  if (sliderPriceRange[0] == 0 && sliderPriceRange[1] == 0 && combinedEdges.length>0) {
+  if (sliderPriceRange[0] == 0 && sliderPriceRange[1] == 0 && combinedEdges.length > 0) {
     var minPriceRange = _.minBy(combinedEdges, 'PriceMin')
     var maxPriceRange = _.maxBy(combinedEdges, 'PriceMax')
-    setSliderPriceRange([minPriceRange.PriceMin, maxPriceRange.PriceMax])    
+    setSliderPriceRange([minPriceRange.PriceMin, maxPriceRange.PriceMax])
   }
   combinedEdges = _.filter(combinedEdges, item => sliderPriceRange[0] <= item.PriceMax && item.PriceMax <= sliderPriceRange[1])
 
@@ -145,7 +153,7 @@ const TopShopifyStores = ({ data }) => {
   const handerSliderPriceRangeChange = (event, newValue) => {
     setSliderPriceRange(newValue);
   }
-  
+
   //Now sorting (desc) based on TotalFollowers
   let listEdges = _.sortBy(combinedEdges, obj => sortBy == "GlobalRank" ? obj[sortBy] : -obj[sortBy])
 
@@ -186,6 +194,7 @@ const TopShopifyStores = ({ data }) => {
 
   const closeMoreDialog = () => setShowDialog(false);
 
+  const defaultImageOnError = (e) => { e.target.src = "https://source.unsplash.com/100x100/?abstract,"+(Math.random()*1000) }
 
   return (
     <Layout title={'Top Shopify Stores | Shop the most popular stores'} description='Discover top Shopify stores. Shop the best and most popular Shopify shop on emprezzo.'>
@@ -253,7 +262,7 @@ const TopShopifyStores = ({ data }) => {
             value={sliderAvgPrice}
             onChange={handerSliderAvgPriceChange}
             min={0}
-            max={sliderAvgPrice[1]+50}
+            max={sliderAvgPrice[1] + 50}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider-avg"
 
@@ -265,7 +274,7 @@ const TopShopifyStores = ({ data }) => {
             value={sliderPriceRange}
             onChange={handerSliderPriceRangeChange}
             min={0}
-            max={sliderPriceRange[1]+50}
+            max={sliderPriceRange[1] + 50}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider-range"
           />
@@ -303,7 +312,7 @@ const TopShopifyStores = ({ data }) => {
                     <td>
                       {node.ProfilePicURL &&
                         <Link to={`/shops/${node.UserName}/`}>
-                          <img src={node.ProfilePicURL} className="profileimage" style={{ width: "50px", margin: '0px' }} title={node.about} alt={node.about} />
+                          <img src={node.ProfilePicURL} className="profileimage" onError={defaultImageOnError} style={{ width: "50px", margin: '0px' }} title={node.about} alt={node.about} />
                         </Link>
                       }
                     </td>
@@ -362,33 +371,48 @@ export const query = graphql`
       edges {
         node {
             AlexaURL
-            Facebook
-            FollowerRate
+            Facebook            
             GlobalRank
             GlobalRank_Change
             Instagram
             LocalRank
-            Pinterest
-            PostRate
-            ProfilePicURL
+            Pinterest            
             TOS
             TikTok
             Twitter
-            UserID
             UserName
             YouTube
-            activity
             category
             tags
             InstaFollowers
             FBLikes
             PinFollowers
             TTFollowers
-            TwitterFollowers
-            TotalFollowers
+            TwitterFollowers            
             YTSubs
             name
             about
+        }
+      }
+    }
+    allMysqlDataView {
+      edges {
+        node {
+          AlexaURL
+          UserName
+          FullName
+          Biography
+          PostDate
+          PhotoLink
+          ProfilePicURL
+          FollowerRate
+          PostRate
+          activity
+          TotalFollowers
+          TotalFollowing
+          AlexaRankOrder          
+          Caption
+          ShortCodeURL
         }
       }
     }

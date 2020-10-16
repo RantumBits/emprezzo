@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { Link } from 'gatsby';
 import Img from 'gatsby-image';
 import theme from '../../config/theme';
+import { Dialog } from "@reach/dialog";
+import "@reach/dialog/styles.css";
 
 const Wrapper = styled.article`
   margin: 0.7rem;
@@ -52,7 +54,7 @@ const Image = styled.div`
   }
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = styled.a`
   position: absolute;
   top: 0;
   left: 0;
@@ -113,27 +115,65 @@ const Price = styled.div`
   margin: 0;
 `;
 
-const ProductCategoryItem = ({ path, cover, title, vendorname, variant, price }) => (
+const ProductCategoryItem = ({ path, cover, title, vendorname, variant, price, node }) => {
+  const [showDialog, setShowDialog] = React.useState(false);
+  const [dialogText, setDialogText] = React.useState();
+
+  console.log("****** node ",node)
+
+  // Title, ImageURL, MaxPrice, Price, VendorName, Link to ProductURL, Link, Variant Titles to /shops/VENDOR page
+  //
+
+  const openDialog = () => {
+    let dialogContent = "";
+    dialogContent += "<h1>" + node.title + "</h1>";
+    if (cover && typeof cover === 'string') dialogContent += "<img src=" + cover + " height='100px' />";
+    dialogContent += "<h1>" + node.title + "</h1>";
+    dialogContent += "<a href='" + path + "'>Go to " + vendorname + "</a><br/><br/>";
+
+    dialogContent = `
+      <h1>${node.Title}</h1>
+      <img src=${cover} height='300px' />
+      <div>Max Price : $${node.MaxPrice || node.Price}</div>
+      <div>Price : $${node.Price}</div>
+      <br/>
+      <div>Variants : <a href=${node.ProductURL} target="_blank">${node.VariantTitle}</a></div>
+      <div>Go to Shop : <a href=${node.VendorURL} target="_blank">${node.VendorName}</a></div>
+      <br/><br/>
+    `;
+    setDialogText(dialogContent);
+    setShowDialog(true);
+  }
+  const closeDialog = () => setShowDialog(false);
+
+  return (
     <Wrapper>
-        <Image>
-            <a href={path} title={title} target="_blank">
-                {cover && typeof cover === 'object' &&
-                    <Img fluid={cover || {} || [] || ''} />
-                }
-                {cover && typeof cover === 'string' &&
-                    <img src={cover || {} || [] || ''} style={{ objectFit: 'fill' }} />
-                }
-            </a>
-        </Image>
-        <StyledLink to={path} title={vendorname} target="_blank">
-            <Information>
-                <Vendor>{vendorname}</Vendor>
-                <Title>{title}</Title>
-                <SubTitle>{variant}</SubTitle>
-                <Price>${price}</Price>
-            </Information>
-        </StyledLink>
+      <Dialog isOpen={showDialog} onDismiss={closeDialog}>
+        <span dangerouslySetInnerHTML={{ __html: dialogText }} />
+        <button onClick={closeDialog}>
+          Close
+        </button>
+      </Dialog>
+      <Image>
+        <a href={path} title={title} target="_blank">
+          {cover && typeof cover === 'object' &&
+            <Img fluid={cover || {} || [] || ''} />
+          }
+          {cover && typeof cover === 'string' &&
+            <img src={cover || {} || [] || ''} style={{ objectFit: 'fill' }} />
+          }
+        </a>
+      </Image>
+      <StyledLink href="javascript:void(0)" onClick={() => openDialog()} title={vendorname}>
+        <Information>
+          <Vendor>{vendorname}</Vendor>
+          <Title>{title}</Title>
+          <SubTitle>{variant}</SubTitle>
+          <Price>${price}</Price>
+        </Information>
+      </StyledLink>
     </Wrapper>
-);
+  );
+}
 
 export default ProductCategoryItem;

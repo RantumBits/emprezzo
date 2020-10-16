@@ -178,6 +178,7 @@ const Products = ({ data, pageContext }) => {
                 title={node.Title}
                 variant={getProductVariant(node)}
                 price={node.Price}
+                node={node}
               />
             ))}
           </Carousel>
@@ -201,6 +202,7 @@ const Products = ({ data, pageContext }) => {
                 title={node.Title}
                 variant={getProductVariant(node)}
                 price={node.Price}
+                node={node}
               />
             ))}
           </Carousel>
@@ -249,6 +251,7 @@ const Products = ({ data, pageContext }) => {
               title={node.Title}
               variant={getProductVariant(node)}
               price={node.Price}
+              node={node}
             />
           ))}
         </CategoryWrapper>
