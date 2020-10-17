@@ -144,14 +144,14 @@ const StoresWithPaypal = ({ data }) => {
                     <td>{index + 1}</td>
                     <td>
                       {node.ProfilePicURL &&
-                        <Link to={`/shops/${node.UserName}`}>
+                        <Link to={`/shops/${node.UserName}/`}>
                           <img src={node.ProfilePicURL} className="profileimage" style={{ width: "50px", margin: '0px' }} title={node.about} alt={node.about} />
                         </Link>
                       }
                     </td>
                     {!isMobile &&
                       <>
-                        <td><Link to={`/shops/${node.UserName}`} title={node.name}>{node.name}</Link></td>
+                        <td><Link to={`/shops/${node.UserName}/`} title={node.name}>{node.name}</Link></td>
                         <td>{node.GlobalRank}</td>
                       </>
                     }

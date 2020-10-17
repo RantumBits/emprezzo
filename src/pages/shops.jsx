@@ -141,14 +141,14 @@ const TopShopifyStores = ({ location, data }) => {
     combinedEdges.push(newNode);
   })
 
-  if (sliderAvgPrice[0] == 0 && sliderAvgPrice[0] == 0) {
+  if (sliderAvgPrice[0] == 0 && sliderAvgPrice[1] == 0) {
     var minPriceAvg = _.minBy(combinedEdges, 'PriceAvg')
     var maxPriceAvg = _.maxBy(combinedEdges, 'PriceAvg')
     setSliderAvgPrice([minPriceAvg.PriceAvg, maxPriceAvg.PriceAvg])
   }
   combinedEdges = _.filter(combinedEdges, item => sliderAvgPrice[0] <= item.PriceAvg && item.PriceAvg <= sliderAvgPrice[1])
 
-  if (sliderPriceRange[0] == 0 && sliderPriceRange[0] == 0 && combinedEdges.length>0) {
+  if (sliderPriceRange[0] == 0 && sliderPriceRange[1] == 0 && combinedEdges.length>0) {
     var minPriceRange = _.minBy(combinedEdges, 'PriceMin')
     var maxPriceRange = _.maxBy(combinedEdges, 'PriceMax')
     setSliderPriceRange([minPriceRange.PriceMin, maxPriceRange.PriceMax])
@@ -182,7 +182,7 @@ const TopShopifyStores = ({ location, data }) => {
   if (filterBuyNowPayLater) {
     listEdges = _.filter(listEdges, item => item.AfterPay || item.Klarna || item.Affirm)
   }
-  console.log("**** listEdges",filterText,listEdges)
+  
   if (filterText && filterText.length > 0) {
     listEdges = _.filter(listEdges, item =>
       (item.name && item.name.toLowerCase().indexOf(filterText.toLowerCase()) >= 0)
@@ -191,7 +191,6 @@ const TopShopifyStores = ({ location, data }) => {
       || (item.category && item.category.toLowerCase().indexOf(filterText.toLowerCase()) >= 0)
     )
   }
-  console.log("**** listEdges",listEdges)
 
   //Now limiting the items as per limit
   listEdges = _.slice(listEdges, 0, limit)

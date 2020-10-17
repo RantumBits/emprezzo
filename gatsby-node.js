@@ -70,7 +70,7 @@ exports.createPages = ({ graphql, actions }) => {
 
         //create pages
         mainviewRows.forEach(({ node }, index) => {
-          const path = '/shops/' + node.UserName.toLowerCase + '/';
+          const path = '/shops/' + node.UserName + '/';
           const prev = index === 0 ? null : mainviewRows[index - 1].node;
           const next =
             index === mainviewRows.length - 1 ? null : mainviewRows[index + 1].node;

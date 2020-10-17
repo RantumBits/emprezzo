@@ -57,6 +57,7 @@ const CarouselWrapper = styled.div`
 const Products = ({ data, pageContext }) => {
   const rowallMysqlShopifyProductsAllEdges = data.allMysqlShopifyProductsAll ? data.allMysqlShopifyProductsAll.edges : [];
   const maxFeaturedItems = 20;
+  const maxProducts = 5;
   const [limit, setLimit] = React.useState(maxFeaturedItems);
   const [showMore, setShowMore] = React.useState(true);
   const [filter, setFilter] = React.useState([]);
@@ -129,6 +130,15 @@ const Products = ({ data, pageContext }) => {
   const increaseLimit = () => {
     setLimit(limit + maxFeaturedItems);
   }
+
+  //Extracting sale products
+  const filteredShopifySaleProducts = _.sortBy(_.filter(rowallMysqlShopifyProductsAllEdges, ({ node }) => node.DiscountAmt > 0.10 && node.DiscountAmt < 1), ({ node }) => -node.DiscountPct);
+  const listShopifySaleProducts = _.slice(filteredShopifySaleProducts, 0, maxProducts);
+  
+  //Extracting gift cards
+  const filteredShopifyGiftCards = _.filter(rowallMysqlShopifyProductsAllEdges, ({ node }) => node.Title.toLowerCase().indexOf("gift card") >= 0);
+  const listShopifyGiftCards = _.slice(filteredShopifyGiftCards, 0, maxProducts);
+
   let listShopifyProductsAllEdges = rowallMysqlShopifyProductsAllEdges;
 
   //apply filter for slider on price
@@ -173,7 +183,7 @@ const Products = ({ data, pageContext }) => {
               <ProductCategoryItem
                 key={index}
                 cover={getProductImage(node)}
-                path={`/shops/${node.UserName}`}
+                path={`/shops/${node.UserName}/`}
                 vendorname={node.VendorName}
                 title={node.Title}
                 variant={getProductVariant(node)}
@@ -225,7 +235,7 @@ const Products = ({ data, pageContext }) => {
             <ProductCategoryItem
               key={index}
               cover={getProductImage(node)}
-              path={`/shops/${node.UserName}`}
+              path={`/shops/${node.UserName}/`}
               vendorname={node.VendorName}
               title={node.Title}
               variant={getProductVariant(node)}
@@ -242,7 +252,9 @@ const Products = ({ data, pageContext }) => {
           </div>
         }
 
-        <CategoryHeading>Sale Products</CategoryHeading>
+        {listShopifySaleProducts && listShopifySaleProducts.length > 0 &&
+          <CategoryHeading>Sale Products</CategoryHeading>
+        }
         <CarouselWrapper>
           <Carousel
             swipeable={false}
@@ -251,11 +263,11 @@ const Products = ({ data, pageContext }) => {
             responsive={responsive}
             keyBoardControl={true}
           >
-            {visibleProducts.map(({ node }, index) => (
+            {listShopifySaleProducts.map(({ node }, index) => (
               <ProductCategoryItem
                 key={index}
                 cover={getProductImage(node)}
-                path={`/shops/${node.UserName}`}
+                path={`/shops/${node.UserName}/`}
                 vendorname={node.VendorName}
                 title={node.Title}
                 variant={getProductVariant(node)}
@@ -266,7 +278,9 @@ const Products = ({ data, pageContext }) => {
           </Carousel>
         </CarouselWrapper>
 
-        <CategoryHeading>Gift Cards</CategoryHeading>
+        {listShopifyGiftCards && listShopifyGiftCards.length > 0 &&
+          <CategoryHeading>Gift Cards</CategoryHeading>
+        }
         <CarouselWrapper>
           <Carousel
             swipeable={false}
@@ -275,11 +289,11 @@ const Products = ({ data, pageContext }) => {
             responsive={responsive}
             keyBoardControl={true}
           >
-            {visibleProducts.map(({ node }, index) => (
+            {listShopifyGiftCards.map(({ node }, index) => (
               <ProductCategoryItem
                 key={index}
                 cover={getProductImage(node)}
-                path={`/shops/${node.UserName}`}
+                path={`/shops/${node.UserName}/`}
                 vendorname={node.VendorName}
                 title={node.Title}
                 variant={getProductVariant(node)}
@@ -301,6 +315,9 @@ export const query = graphql`
     allMysqlShopifyProductsAll {
       edges {
         node {
+          DiscountAmt
+          DiscountPct
+          HasVariants
           ImageURL
           MaxPrice
           Position

@@ -72,7 +72,7 @@ const Category = ({ data, pageContext }) => {
         {listEdges.map(({ node }) => (
           <PostList
               key={getFullNameFromDataView(node.AlexaURL,"FullName")}
-              path={`/shops/${node.UserName}`}
+              path={`/shops/${node.UserName}/`}
               title={getFullNameFromDataView(node.AlexaURL,"FullName")}
               excerpt={getBiographyFromDataView(node.AlexaURL,"Biography") && getBiographyFromDataView(node.AlexaURL,"Biography").substring(0,40)+"..."}
               mysqldataview={rowDataViewEdges}

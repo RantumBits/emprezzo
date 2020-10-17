@@ -14,13 +14,13 @@ export const getRelatedShops = (currentShop, allshops) => {
     // console.log(currentTags)
 
     // Don't include the current post in posts list
-    allshops = allshops.filter((post) => post.node.id !== currentShop.id);
+    allshops = allshops.filter((post) => post.id !== currentShop.id);
 
     const identityMap = {};
 
     //Map over all posts, add to map and add points
     for (let post of allshops) {
-        const id = post.node.id;
+        const id = post.id;
         if (!identityMap.hasOwnProperty(id)) {
             identityMap[id] = {
                 shop: post,
@@ -30,7 +30,7 @@ export const getRelatedShops = (currentShop, allshops) => {
 
         // For category matches, we add 2 points
         const categoryPoints = 2;
-        const categories = post.node.category?post.node.category.split(","):[];
+        const categories = post.category?post.category.split(","):[];
         categories.forEach((category) => {
             if (includes(...currentCategories, category)) {
                 identityMap[id].points += categoryPoints;
@@ -39,7 +39,7 @@ export const getRelatedShops = (currentShop, allshops) => {
 
         // For tags matches, we add 1 point
         const tagPoint = 1;
-        const tags = post.node.tags?post.node.tags.split(","):[];
+        const tags = post.tags?post.tags.split(","):[];
         tags.forEach((aTag) => {
             if (includes(currentTags, aTag)) {
                 identityMap[id].points += tagPoint;

@@ -119,11 +119,6 @@ const ProductCategoryItem = ({ path, cover, title, vendorname, variant, price, n
   const [showDialog, setShowDialog] = React.useState(false);
   const [dialogText, setDialogText] = React.useState();
 
-  console.log("****** node ",node)
-
-  // Title, ImageURL, MaxPrice, Price, VendorName, Link to ProductURL, Link, Variant Titles to /shops/VENDOR page
-  //
-
   const openDialog = () => {
     let dialogContent = "";
     dialogContent += "<h1>" + node.title + "</h1>";

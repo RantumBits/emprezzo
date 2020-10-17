@@ -79,7 +79,7 @@ const Tag = ({ data, pageContext }) => {
               key={node.UserName}
               title={node.name}
               excerpt={node.about}
-              path={`/shops/${node.UserName}`}
+              path={`/shops/${node.UserName}/`}
               mysqldataview={rowDataViewEdges}
               instagramname={node.UserName}
             />

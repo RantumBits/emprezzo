@@ -170,7 +170,6 @@ const SingleItem = ({ data, pageContext }) => {
   } = data.mysqlMainView;
 
   const allMysqlMainViewEdges = data.allMysqlMainView.edges;
-  const relatedShops = getRelatedShops(data.mysqlMainView, allMysqlMainViewEdges);
 
   const rowSocialIDViewEdges = data.allMysqlSocialIdView.edges;
   const filteredSocialIDView = _.filter(rowSocialIDViewEdges, ({ node }) => node.Instagram == UserName);
@@ -202,12 +201,32 @@ const SingleItem = ({ data, pageContext }) => {
   const filteredDataView = _.filter(rowDataViewEdges, ({ node }) => node.AlexaURL == AlexaURL);
   const listPostEdges = _.slice(filteredDataView, 0, maxPosts);
   const firstRowDataView = listPostEdges && listPostEdges.length ? listPostEdges[0] : null;
-  //console.log("*********** firstRowDataView")
-  //console.log(firstRowDataView)
+  // console.log("*********** firstRowDataView",firstRowDataView)
   //Now filtering instagram posts if the image or caption is not present
   const listInstaPostEdges = _.filter(listPostEdges, ({ node }) => node.PhotoLink);
   //console.log("*****++listInstaPostEdges+++********")
   //console.log(listInstaPostEdges)
+
+  //Creating a new dataset with original nodes and required columns from DataView
+  let combinedMainDataEdges = [];
+  allMysqlMainViewEdges.map((edge) => {
+    let newNode = {
+      name: edge.node.name,
+      slug: edge.node.UserName,
+      ...edge.node
+    }
+    const inputID = edge.node.AlexaURL;
+    var filteredDataViewEdge = _.filter(rowDataViewEdges, ({ node }) => (node.AlexaURL == inputID))
+    if (filteredDataViewEdge.length > 0) {
+      newNode = {
+        ...newNode,
+        ...filteredDataViewEdge[0].node
+      }
+    }
+    combinedMainDataEdges.push(newNode);
+  })
+  const relatedShops = getRelatedShops(data.mysqlMainView, combinedMainDataEdges);
+  //console.log("*** relatedShops",relatedShops);
 
   //Extracting Products from MySQL Data
   const maxProducts = 5;
@@ -227,16 +246,24 @@ const SingleItem = ({ data, pageContext }) => {
   const rowallMysqlShopifyProductsAllEdges = data.allMysqlShopifyProductsAll ? data.allMysqlShopifyProductsAll.edges : [];
 
   //Extracting bestseller products
-  const filteredShopifyBestSellers = _.sortBy(_.filter(rowallMysqlShopifyProductsAllEdges, ({ node }) => node.Position != null), ({ node }) => node.Position);
+  const filteredShopifyBestSellers = _.sortBy(_.filter(rowallMysqlShopifyProductsAllEdges, ({ node }) => node.Position != null && node.Title.toLowerCase().indexOf("gift card") < 0 && node.Title.toLowerCase().indexOf("shipping") < 0 && node.Title.toLowerCase().indexOf("insurance") < 0), ({ node }) => node.Position);
   const listShopifyBestSellersEdges = _.slice(filteredShopifyBestSellers, 0, maxProducts);
 
   //Extracting classic products
-  const filteredShopifyClassicProducts = _.sortBy(rowallMysqlShopifyProductsAllEdges, ({ node }) => node.PublishedDate);
+  const filteredShopifyClassicProducts = _.sortBy(_.filter(rowallMysqlShopifyProductsAllEdges, ({ node }) => node.Title.toLowerCase().indexOf("gift card") < 0 && node.Title.toLowerCase().indexOf("shipping") < 0 && node.Title.toLowerCase().indexOf("insurance") < 0), ({ node }) => node.PublishedDate);
   const listShopifyClassicProductsEdges = _.slice(filteredShopifyClassicProducts, 0, maxProducts);
 
   //Extracting new products
-  const filteredShopifyNewProducts = _.sortBy(rowallMysqlShopifyProductsAllEdges, ({ node }) => -node.PublishedDate);
+  const filteredShopifyNewProducts = _.sortBy(_.filter(rowallMysqlShopifyProductsAllEdges, ({ node }) => node.Title.toLowerCase().indexOf("gift card") < 0 && node.Title.toLowerCase().indexOf("shipping") < 0 && node.Title.toLowerCase().indexOf("insurance") < 0), ({ node }) => -node.PublishedDate);
   const listShopifyNewProductsEdges = _.slice(filteredShopifyNewProducts, 0, maxProducts);
+
+  //Extracting sale products
+  const filteredShopifySaleProducts = _.sortBy(_.filter(rowallMysqlShopifyProductsAllEdges, ({ node }) => node.DiscountAmt > 0.10 && node.DiscountAmt < 1 && node.Title.toLowerCase().indexOf("gift card") < 0 && node.Title.toLowerCase().indexOf("shipping") < 0 && node.Title.toLowerCase().indexOf("insurance") < 0), ({ node }) => -node.DiscountPct);
+  const listShopifySaleProducts = _.slice(filteredShopifySaleProducts, 0, maxProducts);
+
+  //Extracting gift cards
+  const filteredShopifyGiftCards = _.filter(rowallMysqlShopifyProductsAllEdges, ({ node }) => node.Title.toLowerCase().indexOf("gift card") >= 0);
+  const listShopifyGiftCards = _.slice(filteredShopifyGiftCards, 0, maxProducts);
 
   //Generating the data for chart
   let chartRankData = null;
@@ -539,20 +566,20 @@ const SingleItem = ({ data, pageContext }) => {
         description={`Find best sellers and popular products from ${name} on emprezzo. See social media growth, search popularity, and more stats online stores selling ${tagsList}. `}
         pathname={AlexaURL}
       />
-      <Header title={name} children={subtitle} likeEnabled={{ storeName: name, storeURL: AlexaURL, storeProfileImage: (firstRowDataView && firstRowDataView.ProfilePicURL) }} />
+      <Header title={name} children={subtitle} likeEnabled={{ storeName: name, storeURL: AlexaURL, storeProfileImage: (firstRowDataView && firstRowDataView.node.ProfilePicURL) }} />
       <Container>
         <div className="profileimage" style={{ display: 'flex' }}>
-          {firstRowDataView && firstRowDataView.ProfilePicURL && (
+          {firstRowDataView && firstRowDataView.node.ProfilePicURL &&
             <img
-              src={firstRowDataView.ProfilePicURL}
+              src={firstRowDataView.node.ProfilePicURL}
               alt={name}
               className="profileimage"
               style={{ width: '100px', height: '100px' }}
             />
-          )}
+          }
           <div style={{ paddingLeft: '15px' }}>
             <Statistics>
-              {firstRowDataView && (firstRowDataView.activity || firstRowDataView.FollowerRate || firstRowDataView.PostRate) && (
+              {firstRowDataView && (firstRowDataView.node.activity || firstRowDataView.node.FollowerRate || firstRowDataView.node.PostRate) && (
                 <StatisticItem>
                   <a
                     target="_blank"
@@ -562,9 +589,9 @@ const SingleItem = ({ data, pageContext }) => {
                   ></a>
                 </StatisticItem>
               )}
-              {firstRowDataView && firstRowDataView.TotalFollowers && (
+              {firstRowDataView && firstRowDataView.node.TotalFollowers && (
                 <StatisticItem>
-                  {firstRowDataView.TotalFollowers.toLocaleString()}
+                  {firstRowDataView.node.TotalFollowers.toLocaleString()}
                   <br />
                   <span className="stat_title">Total Fans</span>
                 </StatisticItem>
@@ -625,6 +652,10 @@ const SingleItem = ({ data, pageContext }) => {
               listShopifyNewProductsEdges.length > 0 && (
                 <Tab style={TabStyle}>New products</Tab>
               )}
+            {listShopifySaleProducts &&
+              listShopifySaleProducts.length > 0 && (
+                <Tab style={TabStyle}>Sale</Tab>
+              )}
           </TabList>
           {listShopifyBestSellersEdges &&
             listShopifyBestSellersEdges.length > 0 && (
@@ -677,6 +708,16 @@ const SingleItem = ({ data, pageContext }) => {
                 </ViewContainer>
               </TabPanel>
             )}
+          {listShopifySaleProducts &&
+            listShopifySaleProducts.length > 0 && (
+              <TabPanel>
+                <ViewContainer>
+                  {listShopifySaleProducts.map(({ node }) => {
+                    return renderProduct(node);
+                  })}
+                </ViewContainer>
+              </TabPanel>
+            )}
         </Tabs>
         {listProductEdges &&
           listProductEdges.map(({ node }) => {
@@ -686,6 +727,17 @@ const SingleItem = ({ data, pageContext }) => {
           <h3>get free shipping at {name}</h3>
         )}
         <p>{get100Words(FreeShipText)}</p>
+        {listShopifyGiftCards &&
+          listShopifyGiftCards.length > 0 && (
+            <div>
+              <h3>Gift cards available</h3>
+              <PostSectionGrid>
+                {listShopifyGiftCards.map(({ node }) => {
+                  return renderProduct(node);
+                })}
+              </PostSectionGrid>
+            </div>
+          )}
         <br />
         {rowShopifyProductSummary && (
           <ReactFrappeChart
@@ -909,7 +961,7 @@ const SingleItem = ({ data, pageContext }) => {
         {listInstaPostEdges && listInstaPostEdges.length > 0 && (
           <h3>instagram posts</h3>
         )}
-        <Content input={firstRowDataView.node.Biography} />
+        <Content input={firstRowDataView && firstRowDataView.node.Biography} />
         <br />
         {/* Show carousel for mobile version */}
         {isMobile && (
@@ -951,13 +1003,13 @@ const SingleItem = ({ data, pageContext }) => {
               {relatedShops && relatedShops.map(({ shop }, index) => (
                 <span key={index}>
                   <PostSectionImage>
-                    <img src={shop.node.ProfilePicURL} alt={shop.node.name} style={{ height: "inherit" }} />
+                    <img src={shop.ProfilePicURL} alt={shop.name} style={{ height: "inherit" }} />
                   </PostSectionImage>
                   <PostSectionContent>
-                    <Link key={index} to={`/shops/${shop.node.UserName}/`}>
-                      {shop.node.name && <h3>{shop.node.name}</h3>}
+                    <Link key={index} to={`/shops/${shop.UserName}/`}>
+                      {shop.name && <h3>{shop.name}</h3>}
                     </Link>
-                    {shop.node.about && <div>{_.truncate(shop.node.about, { length: 200, omission: '...' })}</div>}
+                    {shop.about && <div>{_.truncate(shop.about, { length: 200, omission: '...' })}</div>}
                   </PostSectionContent>
                 </span>
               ))}
@@ -1018,7 +1070,7 @@ export const query = graphql`
         }
       }
     }
-    allMysqlDataView(filter: { AlexaURL: { eq: $pathSlug } }) {
+    allMysqlDataView {
       edges {
         node {
           AlexaURL
@@ -1091,20 +1143,24 @@ export const query = graphql`
     allMysqlShopifyProductsAll(filter: { VendorURL: { eq: $pathSlug } }) {
       edges {
         node {
+          DiscountAmt
+          DiscountPct
+          HasVariants
           ImageURL
           MaxPrice
           Position
           Price
           ProductID
           ProductURL
-          PublishedDate
           Title
+          UniqueKey
           VariantID
           VariantImageURL
           VariantTitle
           VariantUpdateDate
           VendorName
           VendorURL
+          PublishedDate
         }
       }
     }

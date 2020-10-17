@@ -200,7 +200,7 @@ const Index = ({ data }) => {
             <HomeCarouselItem
               id={`post-${index}`}
               key={index}
-              path={`/shops/${node.slug}`}
+              path={`/shops/${node.slug}/`}
               title={node.name}
               cover={node.ProfilePicURL}
               excerpt={node.about && node.about.substring(0, 40) + "..."}
@@ -223,7 +223,7 @@ const Index = ({ data }) => {
             <HomeCarouselItem
               id={`post-${index}`}
               key={index}
-              path={`/shops/${node.slug}`}
+              path={`/shops/${node.slug}/`}
               title={node.name}
               cover={node.ProfilePicURL}
               excerpt={node.about && node.about.substring(0, 40) + "..."}
@@ -246,7 +246,7 @@ const Index = ({ data }) => {
             <HomeCarouselItem
               id={`post-${index}`}
               key={index}
-              path={`/shops/${node.slug}`}
+              path={`/shops/${node.slug}/`}
               title={node.name}
               cover={node.ProfilePicURL}
               excerpt={node.about && node.about.substring(0, 40) + "..."}
@@ -268,7 +268,7 @@ const Index = ({ data }) => {
             <HomeCarouselItem
               id={`post-${index}`}
               key={index}
-              path={`/shops/${node.UserName}`}
+              path={`/shops/${node.UserName}/`}
               title={node.name}
               cover={node.ProfilePicURL}
               excerpt={node.about && node.about.substring(0, 40) + "..."}
@@ -290,7 +290,7 @@ const Index = ({ data }) => {
             <ProductCategoryItem
               key={index}
               cover={getProductImage(node)}
-              path={`/shops/${node.UserName}`}
+              path={`/shops/${node.UserName}/`}
               vendorname={node.VendorName}
               title={node.Title}
               price={node.Price}

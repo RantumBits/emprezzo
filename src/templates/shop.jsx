@@ -126,9 +126,6 @@ const SingleItem = ({ data, pageContext }) => {
     "TwitterLink": (firstRowDataView && firstRowDataView.node.Twitter) ? "https://www.twitter.com/" + (firstRowDataView && firstRowDataView.node.Twitter) : null,
     "YouTubeLink": (firstRowDataView && firstRowDataView.node.YouTube) ? "https://www.youtube.com/c/" + (firstRowDataView && firstRowDataView.node.YouTube) : null
   }
-  console.log("+++++++++++++")
-  console.log(socialDetails)
-  console.log("+++++++++++++")
 
   return (
     <Layout>
@@ -229,7 +226,7 @@ const SingleItem = ({ data, pageContext }) => {
       <SuggestionBar>
         <PostSuggestion>
           {prev && (
-            <Link to={`/shops/${prev.slug}`}>
+            <Link to={`/shops/${prev.slug}/`}>
 
               <p>&lt; {prev.name}</p>
             </Link>
@@ -237,7 +234,7 @@ const SingleItem = ({ data, pageContext }) => {
         </PostSuggestion>
         <PostSuggestion>
           {next && (
-            <Link to={`/shops/${next.slug}`}>
+            <Link to={`/shops/${next.slug}/`}>
 
               <p>{next.name}	&gt;</p>
             </Link>
