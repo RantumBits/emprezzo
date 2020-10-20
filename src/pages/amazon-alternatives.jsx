@@ -104,6 +104,24 @@ const AmazonAlternatives = ({ data }) => {
   //Now limiting the items as per limit
   const listEdges = _.slice(sortedEdges, 0, limit)
 
+  const defaultImageOnError = (e) => { e.target.src = "https://source.unsplash.com/100x100/?abstract," + (Math.random() * 1000) }
+
+  const renderProfilePicURL = (node) => {
+    if (node.mysqlImages && node.mysqlImages.length > 0) {
+      return (
+        <Image fluid={node.mysqlImages[0].childImageSharp.fluid} style={{ width: "50px", margin: '0px' }} title={node.about} alt={node.about} />
+      );
+    } else if (node.ProfilePicURL) {
+      return (
+        <img src={node.ProfilePicURL} className="profileimage" onError={defaultImageOnError} style={{ width: "50px", margin: '0px' }} title={node.about} alt={node.about} />
+      );
+    } else {
+      return (
+        <img src={"https://source.unsplash.com/100x100/?abstract," + (Math.random() * 1000)} className="profileimage" style={{ width: "50px", margin: '0px' }} title={node.about} alt={node.about} />
+      );
+    }
+  }
+
   return (
     <Layout title={'Amazon Alternatives for Online Shopping'} description='Discover amazing alternatives to the Amazon marketplace. Find amazon alernatives. Shop directly to support independent online stores.' >
       <Header title="🧐 Discover great Amazon alternatives for online shopping" subtitle=""></Header>
@@ -122,8 +140,8 @@ const AmazonAlternatives = ({ data }) => {
                   <th>Store</th>
                   {!isMobile &&
                     <>
-                    <th></th>
-                    <th>TrafficRank</th>
+                      <th></th>
+                      <th>TrafficRank</th>
                     </>
                   }
                   <th>FollowerRate</th>
@@ -144,16 +162,14 @@ const AmazonAlternatives = ({ data }) => {
                   <tr key={index} id={`post-${index}`}>
                     <td>{index + 1}</td>
                     <td>
-                      {node.ProfilePicURL &&
-                        <Link to={`/shops/${node.UserName}/`}>
-                          <img src={node.ProfilePicURL} className="profileimage" style={{ width: "50px", margin: '0px' }} title={node.about} alt={node.about} />
-                        </Link>
-                      }
+                      <Link to={`/shops/${node.UserName}/`}>
+                        {renderProfilePicURL(node)}
+                      </Link>
                     </td>
                     {!isMobile &&
                       <>
-                      <td><Link to={`/shops/${node.UserName}/`}>{node.name}</Link></td>
-                      <td>{node.LocalRank}</td>
+                        <td><Link to={`/shops/${node.UserName}/`}>{node.name}</Link></td>
+                        <td>{node.LocalRank}</td>
                       </>
                     }
                     <td>{node.FollowerRate}</td>
@@ -233,6 +249,13 @@ export const query = graphql`
           LocalRank
           TOS
           ProfilePicURL
+          mysqlImages {
+            childImageSharp {
+              fluid(srcSetBreakpoints: [200, 400]) {
+                ...GatsbyImageSharpFluid
+              }
+            }
+          }
           Caption
           ShortCodeURL
           FollowerRate

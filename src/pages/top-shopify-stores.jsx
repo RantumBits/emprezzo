@@ -194,7 +194,23 @@ const TopShopifyStores = ({ data }) => {
 
   const closeMoreDialog = () => setShowDialog(false);
 
-  const defaultImageOnError = (e) => { e.target.src = "https://source.unsplash.com/100x100/?abstract,"+(Math.random()*1000) }
+  const defaultImageOnError = (e) => { e.target.src = "https://source.unsplash.com/100x100/?abstract," + (Math.random() * 1000) }
+
+  const renderProfilePicURL = (node) => {
+    if (node.mysqlImages && node.mysqlImages.length > 0) {
+      return (
+        <Image fluid={node.mysqlImages[0].childImageSharp.fluid} style={{ width: "50px", margin: '0px' }} title={node.about} alt={node.about} />
+      );
+    } else if (node.ProfilePicURL) {
+      return (
+        <img src={node.ProfilePicURL} className="profileimage" onError={defaultImageOnError} style={{ width: "50px", margin: '0px' }} title={node.about} alt={node.about} />
+      );
+    } else {
+      return (
+        <img src={"https://source.unsplash.com/100x100/?abstract," + (Math.random() * 1000)} className="profileimage" style={{ width: "50px", margin: '0px' }} title={node.about} alt={node.about} />
+      );
+    }
+  }
 
   return (
     <Layout title={'Top Shopify Stores | Shop the most popular stores'} description='Discover top Shopify stores. Shop the best and most popular Shopify shop on emprezzo.'>
@@ -310,11 +326,9 @@ const TopShopifyStores = ({ data }) => {
                     <td>{index + 1}</td>
                     <td><a href="javascript:void(0)" onClick={() => openMoreDialog(node)}>&gt;&gt;</a></td>
                     <td>
-                      {node.ProfilePicURL &&
-                        <Link to={`/shops/${node.UserName}/`}>
-                          <img src={node.ProfilePicURL} className="profileimage" onError={defaultImageOnError} style={{ width: "50px", margin: '0px' }} title={node.about} alt={node.about} />
-                        </Link>
-                      }
+                      <Link to={`/shops/${node.UserName}/`}>
+                        {renderProfilePicURL(node)}
+                      </Link>
                     </td>
                     {!isMobile &&
                       <>
@@ -405,6 +419,13 @@ export const query = graphql`
           PostDate
           PhotoLink
           ProfilePicURL
+          mysqlImages {
+            childImageSharp {
+              fluid(srcSetBreakpoints: [200, 400]) {
+                ...GatsbyImageSharpFluid
+              }
+            }
+          }
           FollowerRate
           PostRate
           activity

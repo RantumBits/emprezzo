@@ -65,7 +65,7 @@ const Index = ({ data }) => {
   const maxItems = 25;
   const [limit, setLimit] = React.useState(maxItems);
   const [showMore, setShowMore] = React.useState(true);
-  
+
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -172,7 +172,7 @@ const Index = ({ data }) => {
 
   return (
     <Layout title={'emprezzo | Discover the best independent online stores & direct-to-consumer brands'} description="Discover the best online shopping sites & direct to consumer brands." >
-      <Header title="Discover the best independent online stores"></Header>      
+      <Header title="Discover the best independent online stores"></Header>
       {/* <p className="center"><a href ="/randomshop" className="button button">Discover a  shop</a></p> */}
       <div className="center">
         🧐 Discover the best independent online shopping sites<br />🛒 Shop direct-to-consumer brands<br />
@@ -202,7 +202,7 @@ const Index = ({ data }) => {
               key={index}
               path={`/shops/${node.slug}/`}
               title={node.name}
-              cover={node.ProfilePicURL}
+              cover={node.mysqlImages && node.mysqlImages.length > 0 ? node.mysqlImages[0].childImageSharp.fluid : node.ProfilePicURL}
               excerpt={node.about && node.about.substring(0, 40) + "..."}
             />
           ))}
@@ -225,7 +225,7 @@ const Index = ({ data }) => {
               key={index}
               path={`/shops/${node.slug}/`}
               title={node.name}
-              cover={node.ProfilePicURL}
+              cover={node.mysqlImages && node.mysqlImages.length > 0 ? node.mysqlImages[0].childImageSharp.fluid : node.ProfilePicURL}
               excerpt={node.about && node.about.substring(0, 40) + "..."}
             />
           ))}
@@ -248,7 +248,7 @@ const Index = ({ data }) => {
               key={index}
               path={`/shops/${node.slug}/`}
               title={node.name}
-              cover={node.ProfilePicURL}
+              cover={node.mysqlImages && node.mysqlImages.length > 0 ? node.mysqlImages[0].childImageSharp.fluid : node.ProfilePicURL}
               excerpt={node.about && node.about.substring(0, 40) + "..."}
             />
           ))}
@@ -270,7 +270,7 @@ const Index = ({ data }) => {
               key={index}
               path={`/shops/${node.UserName}/`}
               title={node.name}
-              cover={node.ProfilePicURL}
+              cover={node.mysqlImages && node.mysqlImages.length > 0 ? node.mysqlImages[0].childImageSharp.fluid : node.ProfilePicURL}
               excerpt={node.about && node.about.substring(0, 40) + "..."}
             />
           ))}
@@ -332,6 +332,13 @@ export const query = graphql`
           LocalRank
           TOS
           ProfilePicURL
+          mysqlImages {
+            childImageSharp {
+              fluid(srcSetBreakpoints: [200, 400]) {
+                ...GatsbyImageSharpFluid
+              }
+            }
+          }
           TotalFollowers
           TotalFollowing
           Caption

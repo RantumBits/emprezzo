@@ -98,11 +98,11 @@ const TopShopifyStores = ({ location, data }) => {
 
   React.useEffect(() => {
     //checking if tag filter is present
-    if(location && location.search) {
+    if (location && location.search) {
       const { tag } = queryString.parse(location.search);
       setFilterText(tag.trim())
     }
-  },[]);
+  }, []);
 
   let combinedEdges = [];
 
@@ -148,7 +148,7 @@ const TopShopifyStores = ({ location, data }) => {
   }
   combinedEdges = _.filter(combinedEdges, item => sliderAvgPrice[0] <= item.PriceAvg && item.PriceAvg <= sliderAvgPrice[1])
 
-  if (sliderPriceRange[0] == 0 && sliderPriceRange[1] == 0 && combinedEdges.length>0) {
+  if (sliderPriceRange[0] == 0 && sliderPriceRange[1] == 0 && combinedEdges.length > 0) {
     var minPriceRange = _.minBy(combinedEdges, 'PriceMin')
     var maxPriceRange = _.maxBy(combinedEdges, 'PriceMax')
     setSliderPriceRange([minPriceRange.PriceMin, maxPriceRange.PriceMax])
@@ -182,7 +182,7 @@ const TopShopifyStores = ({ location, data }) => {
   if (filterBuyNowPayLater) {
     listEdges = _.filter(listEdges, item => item.AfterPay || item.Klarna || item.Affirm)
   }
-  
+
   if (filterText && filterText.length > 0) {
     listEdges = _.filter(listEdges, item =>
       (item.name && item.name.toLowerCase().indexOf(filterText.toLowerCase()) >= 0)
@@ -207,6 +207,23 @@ const TopShopifyStores = ({ location, data }) => {
 
   const closeMoreDialog = () => setShowDialog(false);
 
+  const defaultImageOnError = (e) => { e.target.src = "https://source.unsplash.com/100x100/?abstract," + (Math.random() * 1000) }
+
+  const renderProfilePicURL = (node) => {
+    if (node.mysqlImages && node.mysqlImages.length > 0) {
+      return (
+        <Image fluid={node.mysqlImages[0].childImageSharp.fluid} style={{ width: "50px", margin: '0px' }} title={node.about} alt={node.about} />
+      );
+    } else if (node.ProfilePicURL) {
+      return (
+        <img src={node.ProfilePicURL} className="profileimage" onError={defaultImageOnError} style={{ width: "50px", margin: '0px' }} title={node.about} alt={node.about} />
+      );
+    } else {
+      return (
+        <img src={"https://source.unsplash.com/100x100/?abstract," + (Math.random() * 1000)} className="profileimage" style={{ width: "50px", margin: '0px' }} title={node.about} alt={node.about} />
+      );
+    }
+  }
 
   return (
     <Layout title={'Discover popular independent stores and direct to consumer brands'} description='Discover popular independent stores and direct to consumer brands. Shop the best and most popular Shopify shop on emprezzo.'>
@@ -274,7 +291,7 @@ const TopShopifyStores = ({ location, data }) => {
             value={sliderAvgPrice}
             onChange={handerSliderAvgPriceChange}
             min={0}
-            max={sliderAvgPrice[1]+50}
+            max={sliderAvgPrice[1] + 50}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider-avg"
 
@@ -286,7 +303,7 @@ const TopShopifyStores = ({ location, data }) => {
             value={sliderPriceRange}
             onChange={handerSliderPriceRangeChange}
             min={0}
-            max={sliderPriceRange[1]+50}
+            max={sliderPriceRange[1] + 50}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider-range"
           />
@@ -322,11 +339,9 @@ const TopShopifyStores = ({ location, data }) => {
                     <td>{index + 1}</td>
                     <td><a href="javascript:void(0)" onClick={() => openMoreDialog(node)}>&gt;&gt;</a></td>
                     <td>
-                      {node.ProfilePicURL &&
-                        <Link to={`/shops/${node.UserName}/`}>
-                          <img src={node.ProfilePicURL} className="profileimage" style={{ width: "50px", margin: '0px' }} title={node.about} alt={node.about} />
-                        </Link>
-                      }
+                      <Link to={`/shops/${node.UserName}/`}>
+                        {renderProfilePicURL(node)}
+                      </Link>
                     </td>
                     {!isMobile &&
                       <>
@@ -415,8 +430,15 @@ export const query = graphql`
           FullName
           Biography
           PostDate
-          PhotoLink
+          PhotoLink 
           ProfilePicURL
+          mysqlImages {
+            childImageSharp {
+              fluid(srcSetBreakpoints: [200, 400]) {
+                ...GatsbyImageSharpFluid
+              }
+            }
+          }
           FollowerRate
           PostRate
           activity

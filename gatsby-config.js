@@ -128,7 +128,7 @@ module.exports = {
             statement: "Select CONCAT(UserName,FLOOR(RAND()*10000)) AS UniqueKey, DataView.*,CONCAT('https://instagram.com/p/',DataView.ShortCode) AS ShortCodeURL FROM DataView WHERE UserName IS NOT NULL ORDER BY activity DESC",
             idFieldName: 'UniqueKey',
             name: 'DataView'
-            ,remoteImageFieldNames: ['UniquePhotoLink']
+            ,remoteImageFieldNames: ['ProfilePicURL']
           }
         ]
       }

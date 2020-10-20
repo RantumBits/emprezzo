@@ -102,6 +102,8 @@ const StoresWithPaylater = ({ data }) => {
   //Now limiting the items as per limit
   const listEdges = _.slice(sortedEdges, 0, limit)
 
+  const defaultImageOnError = (e) => { e.target.src = "https://source.unsplash.com/100x100/?abstract,"+(Math.random()*1000) }
+
   return (
     <Layout title={'Buy now, pay later stores | Find online stores that accept layaway payments'} description='Find online stores that offer buy now, pay later payment options like Klarna, Afteray, Affirm. Shop stores with layaway payment plans and flexible payment options. '>
       <Header title="🧐 Buy now, pay later stores" subtitle=""></Header>
@@ -144,7 +146,7 @@ const StoresWithPaylater = ({ data }) => {
                     <td>
                       {node.ProfilePicURL &&
                         <Link to={`/shops/${node.UserName}/`}>
-                          <img src={node.ProfilePicURL} className="profileimage" style={{ width: "50px", margin: '0px' }} title={node.about} alt={node.about} />
+                          <img src={node.ProfilePicURL} className="profileimage" onError={defaultImageOnError} style={{ width: "50px", margin: '0px' }} title={node.about} alt={node.about} />
                         </Link>
                       }
                     </td>

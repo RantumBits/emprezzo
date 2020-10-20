@@ -120,34 +120,46 @@ const ProductCategoryItem = ({ path, cover, title, vendorname, variant, price, n
   const [dialogText, setDialogText] = React.useState();
 
   const openDialog = () => {
-    let dialogContent = "";
-    dialogContent += "<h1>" + node.title + "</h1>";
-    if (cover && typeof cover === 'string') dialogContent += "<img src=" + cover + " height='100px' />";
-    dialogContent += "<h1>" + node.title + "</h1>";
-    dialogContent += "<a href='" + path + "'>Go to " + vendorname + "</a><br/><br/>";
+    console.log("*** node = ", node)
 
-    dialogContent = `
+    let dialogContent = `
       <h1>${node.Title}</h1>
       <img src=${cover} height='300px' />
       <div>Max Price : $${node.MaxPrice || node.Price}</div>
       <div>Price : $${node.Price}</div>
       <br/>
-      <div>Variants : <a href=${node.ProductURL} target="_blank">${node.VariantTitle}</a></div>
-      <div>Go to Shop : <a href=${node.VendorURL} target="_blank">${node.VendorName}</a></div>
-      <br/><br/>
+      <div>Variants : ${convertToSelectList(node.VariantTitle)}</div>      
+      <br/>
+      <div>
+        <a href=${node.ProductURL} target="_blank" class="button">Go to Product</a>
+        <a href=/shops/${node.VendorName ? node.VendorName.toLowerCase() : ''} class="button">Go to Shop</a>
+      </div>
+      <br/>
     `;
     setDialogText(dialogContent);
     setShowDialog(true);
   }
   const closeDialog = () => setShowDialog(false);
 
+  const convertToSelectList = (variants) => {
+    if(variants == null) return;
+    if (variants.toLowerCase() == "default") return;
+    const list = variants.split(",");
+    let returnHTML = "<select>";
+    list.map((item)=>{
+      returnHTML += "<option>"+item+"</option>";
+    })
+    returnHTML += "</select>";
+    return returnHTML;
+  }
+
   return (
     <Wrapper>
       <Dialog isOpen={showDialog} onDismiss={closeDialog}>
-        <span dangerouslySetInnerHTML={{ __html: dialogText }} />
-        <button onClick={closeDialog}>
-          Close
+        <button className="close-button" onClick={closeDialog} style={{ float: "right" }}>
+          <span aria-hidden>X</span>
         </button>
+        <span dangerouslySetInnerHTML={{ __html: dialogText }} />
       </Dialog>
       <Image>
         <a href={path} title={title} target="_blank">

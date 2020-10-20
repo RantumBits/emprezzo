@@ -559,6 +559,24 @@ const SingleItem = ({ data, pageContext }) => {
     );
   };
 
+  const defaultImageOnError = (e) => { e.target.src = "https://source.unsplash.com/100x100/?abstract," + (Math.random() * 1000) }
+
+  const renderProfilePicURL = (node,name) => {
+    if (node.mysqlImages && node.mysqlImages.length > 0) {
+      return (
+        <Image fluid={node.mysqlImages[0].childImageSharp.fluid} style={{ width: '100px', height: '100px' }} title={name} alt={name} />
+      );
+    } else if (node.ProfilePicURL) {
+      return (
+        <img src={node.ProfilePicURL} className="profileimage" onError={defaultImageOnError} style={{ width: '100px', height: '100px' }} title={name} alt={name} />
+      );
+    } else {
+      return (
+        <img src={"https://source.unsplash.com/100x100/?abstract," + (Math.random() * 1000)} className="profileimage" style={{ width: '100px', height: '100px' }} title={name} alt={name} />
+      );
+    }
+  }
+
   return (
     <Layout>
       <SEO
@@ -569,14 +587,7 @@ const SingleItem = ({ data, pageContext }) => {
       <Header title={name} children={subtitle} likeEnabled={{ storeName: name, storeURL: AlexaURL, storeProfileImage: (firstRowDataView && firstRowDataView.node.ProfilePicURL) }} />
       <Container>
         <div className="profileimage" style={{ display: 'flex' }}>
-          {firstRowDataView && firstRowDataView.node.ProfilePicURL &&
-            <img
-              src={firstRowDataView.node.ProfilePicURL}
-              alt={name}
-              className="profileimage"
-              style={{ width: '100px', height: '100px' }}
-            />
-          }
+          {firstRowDataView && renderProfilePicURL(firstRowDataView.node,name)}          
           <div style={{ paddingLeft: '15px' }}>
             <Statistics>
               {firstRowDataView && (firstRowDataView.node.activity || firstRowDataView.node.FollowerRate || firstRowDataView.node.PostRate) && (
@@ -1080,6 +1091,13 @@ export const query = graphql`
           PostDate
           PhotoLink
           ProfilePicURL
+          mysqlImages {
+            childImageSharp {
+              fluid(srcSetBreakpoints: [200, 400]) {
+                ...GatsbyImageSharpFluid
+              }
+            }
+          }
           FollowerRate
           PostRate
           activity
