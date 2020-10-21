@@ -115,7 +115,7 @@ module.exports = {
             name: 'PayNShip'
           },
           {
-            statement: "SELECT CONCAT(AlexaRankView.URL,FLOOR(RAND()*10000)) AS UniqueKey,AlexaRankView.URL as AlexaURL, AlexaRankView.*, Tags.*, SocialIDView.*, RankHistory.* FROM AlexaRankView LEFT JOIN Tags ON TRIM(TRAILING '/' FROM AlexaRankView.URL) = TRIM(TRAILING '/' FROM Tags.url) LEFT JOIN SocialIDView ON TRIM(TRAILING '/' FROM AlexaRankView.URL) = TRIM(TRAILING '/' FROM SocialIDView.URL) LEFT JOIN RankHistory ON TRIM(TRAILING '/' FROM AlexaRankView.URL) = TRIM(TRAILING '/' FROM RankHistory.url) LIMIT 300",
+            statement: "SELECT CONCAT(AlexaRankView.URL,FLOOR(RAND()*10000)) AS UniqueKey,AlexaRankView.URL as AlexaURL, AlexaRankView.*, Tags.*, SocialIDView.*, RankHistory.* FROM AlexaRankView LEFT JOIN Tags ON TRIM(TRAILING '/' FROM AlexaRankView.URL) = TRIM(TRAILING '/' FROM Tags.url) LEFT JOIN SocialIDView ON TRIM(TRAILING '/' FROM AlexaRankView.URL) = TRIM(TRAILING '/' FROM SocialIDView.URL) LEFT JOIN RankHistory ON TRIM(TRAILING '/' FROM AlexaRankView.URL) = TRIM(TRAILING '/' FROM RankHistory.url) LIMIT 400",
             idFieldName: 'AlexaURL',
             name: 'MainView'
           },
