@@ -100,8 +100,8 @@ module.exports = {
             name: 'ShopifyProductsAll'
           },
           {
-            //statement: 'SELECT CONCAT(VendorURL,FLOOR(RAND()*10000)) AS UniqueKey,ShopifyProductSummary.* FROM ShopifyProductSummary',
-            statement: "SELECT 1 AS UniqueKey, '2' AS VendorURL, 3 AS PriceAvg, 4 AS PriceAvgTop10, 5 AS PriceMin, 6 AS PriceMax, 7 AS CountProducts, 8 AS PriceListActive, 9 AS DateListActive FROM DUAL",
+            statement: 'SELECT CONCAT(VendorURL,FLOOR(RAND()*10000)) AS UniqueKey,ShopifyProductSummary.* FROM ShopifyProductSummary',
+            //statement: "SELECT 1 AS UniqueKey, '2' AS VendorURL, 3 AS PriceAvg, 4 AS PriceAvgTop10, 5 AS PriceMin, 6 AS PriceMax, 7 AS CountProducts, 8 AS PriceListActive, 9 AS DateListActive FROM DUAL",
             idFieldName: 'UniqueKey',
             name: 'ShopifyProductSummary'
           },
