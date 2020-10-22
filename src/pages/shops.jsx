@@ -144,7 +144,7 @@ const TopShopifyStores = ({ location, data }) => {
   if (sliderAvgPrice[0] == 0 && sliderAvgPrice[1] == 0) {
     var minPriceAvg = _.minBy(combinedEdges, 'PriceAvg')
     var maxPriceAvg = _.maxBy(combinedEdges, 'PriceAvg')
-    setSliderAvgPrice([minPriceAvg.PriceAvg, maxPriceAvg.PriceAvg])
+    //setSliderAvgPrice([minPriceAvg.PriceAvg, maxPriceAvg.PriceAvg])
   }
   combinedEdges = _.filter(combinedEdges, item => sliderAvgPrice[0] <= item.PriceAvg && item.PriceAvg <= sliderAvgPrice[1])
 
@@ -398,7 +398,7 @@ export const query = graphql`
       edges {
         node {
             AlexaURL
-            Facebook            
+            Facebook
             GlobalRank
             GlobalRank_Change
             Instagram
@@ -415,7 +415,7 @@ export const query = graphql`
             FBLikes
             PinFollowers
             TTFollowers
-            TwitterFollowers            
+            TwitterFollowers
             YTSubs
             name
             about
@@ -430,7 +430,7 @@ export const query = graphql`
           FullName
           Biography
           PostDate
-          PhotoLink 
+          PhotoLink
           ProfilePicURL
           mysqlImages {
             childImageSharp {
@@ -444,7 +444,7 @@ export const query = graphql`
           activity
           TotalFollowers
           TotalFollowing
-          AlexaRankOrder          
+          AlexaRankOrder
           Caption
           ShortCodeURL
         }
