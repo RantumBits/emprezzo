@@ -352,8 +352,8 @@ const TopShopifyStores = ({ location, data }) => {
                     <td>{node.TotalFollowers}</td>
                     {!isMobile &&
                       <>
-                        <td>${(node.PriceAvg || 0).toFixed(2)}</td>
-                        <td>${(node.PriceMin || 0).toFixed(2)}{" - "}${(node.PriceMax || 0).toFixed(2)}</td>
+                        <td>${(node.PriceAvg || 0)}</td>
+                        <td>${(node.PriceMin || 0)}{" - "}${(node.PriceMax || 0)}</td>
                         <td>{node.GlobalRank_Change}</td>
                       </>
                     }
