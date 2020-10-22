@@ -587,7 +587,7 @@ const SingleItem = ({ data, pageContext }) => {
       <Header title={name} children={subtitle} likeEnabled={{ storeName: name, storeURL: AlexaURL, storeProfileImage: (firstRowDataView && firstRowDataView.node.ProfilePicURL) }} />
       <Container>
         <div className="profileimage" style={{ display: 'flex' }}>
-          {firstRowDataView && renderProfilePicURL(firstRowDataView.node,name)}          
+          {firstRowDataView && renderProfilePicURL(firstRowDataView.node,name)}
           <div style={{ paddingLeft: '15px' }}>
             <Statistics>
               {firstRowDataView && (firstRowDataView.node.activity || firstRowDataView.node.FollowerRate || firstRowDataView.node.PostRate) && (
@@ -622,14 +622,14 @@ const SingleItem = ({ data, pageContext }) => {
         </div>
         {rowShopifyProductSummary.PriceAvg && (
           <div>
-            Average Price: ${rowShopifyProductSummary.PriceAvg.toFixed(2)}
+            Average Price: ${rowShopifyProductSummary.PriceAvg}
           </div>
         )}
         {rowShopifyProductSummary.PriceMin &&
           rowShopifyProductSummary.PriceMax && (
             <div>
-              Price Range: ${rowShopifyProductSummary.PriceMin.toFixed(2)} - $
-              {rowShopifyProductSummary.PriceMax.toFixed(2)}
+              Price Range: ${rowShopifyProductSummary.PriceMin} - $
+              {rowShopifyProductSummary.PriceMax}
             </div>
           )}
         <div style={{ margin: '2rem' }}>
