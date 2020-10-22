@@ -1000,16 +1000,11 @@ const SingleItem = ({ data, pageContext }) => {
           </ViewContainer>
         )}
         <br />
-        <a href="/randomshop" className="button ">
-          Discover another shop
-        </a>
-        <br />
-        <br />
-        See more online stores for: <TagsBlock list={tagsList || []} isLinkToShops={true} />
+
 
         {!!relatedShops.length && (
           <>
-            <h3>Related Shops</h3>
+            <h3>Discover more stores like {node.Title}e </h3>
             <PostSectionGrid>
               {relatedShops && relatedShops.map(({ shop }, index) => (
                 <span key={index}>
@@ -1027,6 +1022,13 @@ const SingleItem = ({ data, pageContext }) => {
             </PostSectionGrid>
           </>
         )}
+        <a href="/randomshop" className="button ">
+          Discover a new shop
+        </a>
+        <br />
+        <br />
+        See more online stores tagged: <TagsBlock list={tagsList || []} isLinkToShops={true} />
+
       </Container>
       <SuggestionBar>
         <PostSuggestion></PostSuggestion>
