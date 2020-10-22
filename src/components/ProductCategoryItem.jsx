@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import PropTypes from 'prop-types';
+import _ from 'lodash';
 import { Link } from 'gatsby';
 import Img from 'gatsby-image';
 import theme from '../../config/theme';
@@ -119,20 +119,20 @@ const ProductCategoryItem = ({ path, cover, title, vendorname, variant, price, n
   const [showDialog, setShowDialog] = React.useState(false);
   const [dialogText, setDialogText] = React.useState();
 
-  const openDialog = () => {
-    console.log("*** node = ", node)
+  const displayMaxPrice=(node.MaxPrice && node.MaxPrice!=node.Price?'$'+node.MaxPrice:'')
 
+  const openDialog = () => {
+    console.log("*** node = ", ({ path, cover, title, vendorname, variant, price, node }))    
     let dialogContent = `
       <h1>${node.Title}</h1>
       <img src=${cover} height='300px' />
-      <div>Max Price : $${node.MaxPrice || node.Price}</div>
-      <div>Price : $${node.Price}</div>
+      <div>Price : <strike>${displayMaxPrice}</strike> $${node.Price}</div>
       <br/>
-      <div>Variants : ${convertToSelectList(node.VariantTitle)}</div>      
+      <div>${convertToSelectList(node.VariantTitle)||''}</div>      
       <br/>
       <div>
         <a href=${node.ProductURL} target="_blank" class="button">Go to Product</a>
-        <a href=/shops/${node.VendorName ? node.VendorName.toLowerCase() : ''} class="button">Go to Shop</a>
+        <a href=${node.UserName?path:node.VendorURL} class="button">Go to Shop</a>
       </div>
       <br/>
     `;
@@ -143,9 +143,9 @@ const ProductCategoryItem = ({ path, cover, title, vendorname, variant, price, n
 
   const convertToSelectList = (variants) => {
     if(variants == null) return;
-    if (variants.toLowerCase() == "default") return;
+    if (variants.toLowerCase() == "default title") return;
     const list = variants.split(",");
-    let returnHTML = "<select>";
+    let returnHTML = "Variants : <select>";
     list.map((item)=>{
       returnHTML += "<option>"+item+"</option>";
     })
@@ -173,10 +173,10 @@ const ProductCategoryItem = ({ path, cover, title, vendorname, variant, price, n
       </Image>
       <StyledLink href="javascript:void(0)" onClick={() => openDialog()} title={vendorname}>
         <Information>
-          <Vendor>{vendorname}</Vendor>
-          <Title>{title}</Title>
+          <Vendor>{node.name || vendorname}</Vendor>
+          <Title>{_.truncate(title, { length: 38, omission: '' })}</Title>
           <SubTitle>{variant}</SubTitle>
-          <Price>${price}</Price>
+          <Price><strike>{displayMaxPrice}</strike> ${price}</Price>
         </Information>
       </StyledLink>
     </Wrapper>

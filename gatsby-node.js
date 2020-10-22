@@ -7,6 +7,7 @@ exports.createSchemaCustomization = ({ actions }) => {
   createTypes(`
     type MysqlDataView implements Node {
       mysqlImage: File
+      mysqlImages: File
     }
   `)
   createTypes(`

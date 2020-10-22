@@ -57,7 +57,7 @@ const CarouselWrapper = styled.div`
 const Products = ({ data, pageContext }) => {
   const rowallMysqlShopifyProductsAllEdges = data.allMysqlShopifyProductsAll ? data.allMysqlShopifyProductsAll.edges : [];
   const maxFeaturedItems = 20;
-  const maxProducts = 5;
+  const maxProducts = 25;
   const [limit, setLimit] = React.useState(maxFeaturedItems);
   const [showMore, setShowMore] = React.useState(true);
   const [filter, setFilter] = React.useState([]);
@@ -95,7 +95,17 @@ const Products = ({ data, pageContext }) => {
       const result = _.filter(rowallMysqlShopifyProductsAllEdges, ({ node }) => node.VendorURL == inputID && node.Price > 20 && node.Title.toLowerCase().indexOf("gift") < 0 && node.Title.toLowerCase().indexOf("test") < 0 && node.Title.toLowerCase().indexOf("shipping") < 0)
       const sortedResult = _.sortBy(result, ({ node }) => -node.PublishedDate);
       const max2Results = _.slice(sortedResult, 0, 2);//max 2 products from a store
-      filteredProducts = _.union(filteredProducts, max2Results)
+      //add shop details to products
+      let combinedMax2Results = [];
+      max2Results.map((maxedge) => {
+        combinedMax2Results.push({
+          node : {
+            ...maxedge.node,
+            ...edge.node,
+          }
+        });
+      })  
+      filteredProducts = _.union(filteredProducts, combinedMax2Results)
     });
     return filteredProducts;
   }
@@ -131,15 +141,35 @@ const Products = ({ data, pageContext }) => {
     setLimit(limit + maxFeaturedItems);
   }
 
+  let listShopifyProductsAllEdges = [];
+  //Creating a new dataset with original product nodes and shop columns from MainView
+  rowallMysqlShopifyProductsAllEdges.map((edge) => {
+    let newNode = {
+      ...edge.node
+    }
+    const inputID = edge.node.VendorURL;
+    var filteredMainViewEdges = _.filter(mainViewEdges, ({ node }) => (node.AlexaURL == inputID))
+    if (filteredMainViewEdges.length > 0) {
+      newNode = {
+        ...newNode,
+        ...filteredMainViewEdges[0].node
+      }      
+    }
+    listShopifyProductsAllEdges.push({
+      node : {
+        ...newNode
+      }
+    });   
+  })
+
   //Extracting sale products
-  const filteredShopifySaleProducts = _.sortBy(_.filter(rowallMysqlShopifyProductsAllEdges, ({ node }) => node.DiscountAmt > 0.10 && node.DiscountAmt < 1), ({ node }) => -node.DiscountPct);
+  const filteredShopifySaleProducts = _.sortBy(_.filter(listShopifyProductsAllEdges, ({ node }) => node.DiscountAmt > 0.10 && node.DiscountAmt < 1), ({ node }) => -node.UpdateDate);
   const listShopifySaleProducts = _.slice(filteredShopifySaleProducts, 0, maxProducts);
   
   //Extracting gift cards
-  const filteredShopifyGiftCards = _.filter(rowallMysqlShopifyProductsAllEdges, ({ node }) => node.Title.toLowerCase().indexOf("gift card") >= 0);
+  const filteredShopifyGiftCards = _.sortBy(_.filter(listShopifyProductsAllEdges, ({ node }) => node.Title.toLowerCase().indexOf("gift card") >= 0), ({ node }) => -node.UpdateDate);
   const listShopifyGiftCards = _.slice(filteredShopifyGiftCards, 0, maxProducts);
 
-  let listShopifyProductsAllEdges = rowallMysqlShopifyProductsAllEdges;
 
   //apply filter for slider on price
   if (sliderPrice[0] == 0 && sliderPrice[1] == 0) {
@@ -342,6 +372,8 @@ export const query = graphql`
           AlexaURL
           UserName
           tags
+          name
+          about
         }
       }
     }

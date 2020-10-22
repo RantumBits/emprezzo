@@ -100,7 +100,8 @@ module.exports = {
             name: 'ShopifyProductsAll'
           },
           {
-            statement: 'SELECT CONCAT(VendorURL,FLOOR(RAND()*10000)) AS UniqueKey,ShopifyProductSummary.* FROM ShopifyProductSummary',
+            //statement: 'SELECT CONCAT(VendorURL,FLOOR(RAND()*10000)) AS UniqueKey,ShopifyProductSummary.* FROM ShopifyProductSummary',
+            statement: "SELECT 1 AS UniqueKey, '2' AS VendorURL, 3 AS PriceAvg, 4 AS PriceAvgTop10, 5 AS PriceMin, 6 AS PriceMax, 7 AS CountProducts, 8 AS PriceListActive, 9 AS DateListActive FROM DUAL",
             idFieldName: 'UniqueKey',
             name: 'ShopifyProductSummary'
           },
@@ -128,7 +129,7 @@ module.exports = {
             statement: "Select CONCAT(UserName,FLOOR(RAND()*10000)) AS UniqueKey, DataView.*,CONCAT('https://instagram.com/p/',DataView.ShortCode) AS ShortCodeURL FROM DataView WHERE UserName IS NOT NULL ORDER BY activity DESC",
             idFieldName: 'UniqueKey',
             name: 'DataView'
-            ,remoteImageFieldNames: ['ProfilePicURL']
+            //,remoteImageFieldNames: ['ProfilePicURL']
           }
         ]
       }

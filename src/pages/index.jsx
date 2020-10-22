@@ -99,7 +99,17 @@ const Index = ({ data }) => {
       const result = _.filter(rowallMysqlShopifyProductsAllEdges, ({ node }) => node.VendorURL == inputID && node.Price > 20 && node.Title.toLowerCase().indexOf("gift") < 0 && node.Title.toLowerCase().indexOf("test") < 0 && node.Title.toLowerCase().indexOf("shipping") < 0)
       const sortedResult = _.sortBy(result, ({ node }) => -node.PublishedDate);
       const max2Results = _.slice(sortedResult, 0, 2);//max 2 products from a store
-      filteredProducts = _.union(filteredProducts, max2Results)
+      //add shop details to products
+      let combinedMax2Results = [];
+      max2Results.map((maxedge) => {
+        combinedMax2Results.push({
+          node : {
+            ...maxedge.node,
+            ...edge.node
+          }
+        });
+      })      
+      filteredProducts = _.union(filteredProducts, combinedMax2Results)      
     });
     return filteredProducts;
   }
@@ -156,10 +166,18 @@ const Index = ({ data }) => {
   const combinedFeatureShopEdges = [];
   //Creating a new dataset with original nodes and required columns from DataView
   featuredShopEdges.map((edge) => {
+    const inputID = edge.node.AlexaURL;
+    //filter to show only shops with DataView . AlexaCountry = United States
+    var resultData = _.filter(rowDataViewEdges, ({ node }) => (node.AlexaURL == inputID))
+    var firstDataRow = [];
+    if (resultData.length > 0) {
+      firstDataRow = resultData[0]
+    }
     let newNode = {
       slug: edge.node.UserName,
       instagramname: edge.node.UserName,
-      ...edge.node
+      ...edge.node,
+      ...firstDataRow.node
     }
     combinedFeatureShopEdges.push(newNode);
   })
@@ -193,6 +211,7 @@ const Index = ({ data }) => {
           swipeable={false}
           draggable={false}
           showDots={false}
+          ssr={true}
           responsive={responsive}
           keyBoardControl={true}
         >
@@ -216,6 +235,7 @@ const Index = ({ data }) => {
           swipeable={false}
           draggable={false}
           showDots={false}
+          ssr={true}
           responsive={responsive}
           keyBoardControl={true}
         >
@@ -239,6 +259,7 @@ const Index = ({ data }) => {
           swipeable={false}
           draggable={false}
           showDots={false}
+          ssr={true}
           responsive={responsive}
           keyBoardControl={true}
         >
@@ -261,6 +282,7 @@ const Index = ({ data }) => {
           swipeable={false}
           draggable={false}
           showDots={false}
+          ssr={true}
           responsive={responsive}
           keyBoardControl={true}
         >
@@ -283,6 +305,7 @@ const Index = ({ data }) => {
           swipeable={false}
           draggable={false}
           showDots={false}
+          ssr={true}
           responsive={responsive}
           keyBoardControl={true}
         >
