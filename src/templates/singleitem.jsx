@@ -1004,7 +1004,7 @@ const SingleItem = ({ data, pageContext }) => {
 
         {!!relatedShops.length && (
           <>
-            <h3>Discover more stores like {node.Title}e </h3>
+            <h3>Discover more stores like {name} </h3>
             <PostSectionGrid>
               {relatedShops && relatedShops.map(({ shop }, index) => (
                 <span key={index}>
