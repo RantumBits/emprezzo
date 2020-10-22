@@ -136,14 +136,14 @@ const TopShopifyStores = ({ data }) => {
   if (sliderAvgPrice[0] == 0 && sliderAvgPrice[1] == 0) {
     var minPriceAvg = _.minBy(combinedEdges, 'PriceAvg')
     var maxPriceAvg = _.maxBy(combinedEdges, 'PriceAvg')
-    setSliderAvgPrice([minPriceAvg.PriceAvg, maxPriceAvg.PriceAvg])
+  //  setSliderAvgPrice([minPriceAvg.PriceAvg, maxPriceAvg.PriceAvg])
   }
   combinedEdges = _.filter(combinedEdges, item => sliderAvgPrice[0] <= item.PriceAvg && item.PriceAvg <= sliderAvgPrice[1])
 
   if (sliderPriceRange[0] == 0 && sliderPriceRange[1] == 0 && combinedEdges.length > 0) {
     var minPriceRange = _.minBy(combinedEdges, 'PriceMin')
     var maxPriceRange = _.maxBy(combinedEdges, 'PriceMax')
-    setSliderPriceRange([minPriceRange.PriceMin, maxPriceRange.PriceMax])
+  //  setSliderPriceRange([minPriceRange.PriceMin, maxPriceRange.PriceMax])
   }
   combinedEdges = _.filter(combinedEdges, item => sliderPriceRange[0] <= item.PriceMax && item.PriceMax <= sliderPriceRange[1])
 
@@ -385,12 +385,12 @@ export const query = graphql`
       edges {
         node {
             AlexaURL
-            Facebook            
+            Facebook
             GlobalRank
             GlobalRank_Change
             Instagram
             LocalRank
-            Pinterest            
+            Pinterest
             TOS
             TikTok
             Twitter
@@ -402,7 +402,7 @@ export const query = graphql`
             FBLikes
             PinFollowers
             TTFollowers
-            TwitterFollowers            
+            TwitterFollowers
             YTSubs
             name
             about
@@ -431,7 +431,7 @@ export const query = graphql`
           activity
           TotalFollowers
           TotalFollowing
-          AlexaRankOrder          
+          AlexaRankOrder
           Caption
           ShortCodeURL
         }
