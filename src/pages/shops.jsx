@@ -151,7 +151,7 @@ const TopShopifyStores = ({ location, data }) => {
   if (sliderPriceRange[0] == 0 && sliderPriceRange[1] == 0 && combinedEdges.length > 0) {
     var minPriceRange = _.minBy(combinedEdges, 'PriceMin')
     var maxPriceRange = _.maxBy(combinedEdges, 'PriceMax')
-    setSliderPriceRange([minPriceRange.PriceMin, maxPriceRange.PriceMax])
+  //  setSliderPriceRange([minPriceRange.PriceMin, maxPriceRange.PriceMax])
   }
   combinedEdges = _.filter(combinedEdges, item => sliderPriceRange[0] <= item.PriceMax && item.PriceMax <= sliderPriceRange[1])
 
