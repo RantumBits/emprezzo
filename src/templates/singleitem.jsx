@@ -570,7 +570,7 @@ const SingleItem = ({ data, pageContext }) => {
       );
     } else if (node.ProfilePicURL) {
       return (
-        <img src={node.ProfilePicURL} className="profileimage" onError={defaultImageOnError} style={{ width: '100px', height: '100px', 'border-radius': '100%' }} title={name} alt={name} />
+        <img src={node.ProfilePicURL} className="profileimage" onError={defaultImageOnError} style={{ width: '100px', height: '100px', border-radius: '100%' }} title={name} alt={name} />
       );
     } else {
       return (
@@ -1011,7 +1011,7 @@ const SingleItem = ({ data, pageContext }) => {
 
         {!!relatedShops.length && (
           <>
-            <h3>Discover more stores like {name} style={{ text-align: center; }}</h3>
+            <h3  style={{ text-align: center }}>Discover more stores like {name}</h3>
             <PostSectionGrid>
               {relatedShops && relatedShops.map(({ shop }, index) => (
                 <span key={index}>
