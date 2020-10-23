@@ -10,7 +10,7 @@ const Wrapper = styled.article`
   position: relative;
   z-index: 100;
   border-radius: ${props => props.theme.borderRadius.default};
-  box-shadow: ${props => props.theme.shadow.feature.small.default};
+  {/* box-shadow: ${props => props.theme.shadow.feature.small.default}; */}
   transition: ${props => props.theme.transitions.boom.transition};
   height: 17rem;
 
@@ -45,10 +45,10 @@ const StyledLink = styled(Link)`
     bottom: 0;
     background: linear-gradient(
       to bottom,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 0.3) 50%,
-      rgba(0, 0, 0, 0.7) 80%,
-      rgba(0, 0, 0, 0.8) 100%
+      rgba(140, 82, 255, 0) 0%,
+      rgba(140, 82, 255, 0.2) 30%,
+      rgba(75, 40, 64, 0.6) 60%,
+      rgba(75, 40, 64, 0.9) 100%
     );
     z-index: -10;
     border-radius: ${theme.borderRadius.default};
@@ -67,8 +67,8 @@ const Image = styled.div`
   text-align: center;
   border-radius: ${props => props.theme.borderRadius.default};
   img {
-    border-radius: ${props => props.theme.borderRadius.default};
-    width: 100%;
+   border-radius: 100%;
+    padding: 10%;
   }
   > div {
     position: static !important;
@@ -80,14 +80,16 @@ const Image = styled.div`
 
 const Info = styled.div`
   color: ${props => props.theme.colors.white.light};
-  margin: 0 1rem 1.25rem 1.25rem;
+  margin: 0px 0.75rem 0 0.75rem;
   position: absolute;
   bottom: 0;
   left: 0;
+  font-size: 0.8em;
 `;
 
 const Title = styled.h2`
   margin-bottom: 0.6rem;
+  font-size: 1.25rem;
 `;
 
 const HomeCarouselItem = ({ id, cover, path, date, title, excerpt }) => {

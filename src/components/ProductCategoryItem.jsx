@@ -12,7 +12,7 @@ const Wrapper = styled.article`
   position: relative;
   z-index: 100;
   border-radius: ${props => props.theme.borderRadius.default};
-  box-shadow: ${props => props.theme.shadow.feature.small.default};
+  {/* box-shadow: ${props => props.theme.shadow.feature.small.default};*/}
   transition: ${props => props.theme.transitions.boom.transition};
   height: 17rem;
 
@@ -122,13 +122,13 @@ const ProductCategoryItem = ({ path, cover, title, vendorname, variant, price, n
   const displayMaxPrice=(node.MaxPrice && node.MaxPrice!=node.Price?'$'+node.MaxPrice:'')
 
   const openDialog = () => {
-    console.log("*** node = ", ({ path, cover, title, vendorname, variant, price, node }))    
+    console.log("*** node = ", ({ path, cover, title, vendorname, variant, price, node }))
     let dialogContent = `
       <h1>${node.Title}</h1>
       <img src=${cover} height='300px' />
       <div>Price : <strike>${displayMaxPrice}</strike> $${node.Price}</div>
       <br/>
-      <div>${convertToSelectList(node.VariantTitle)||''}</div>      
+      <div>${convertToSelectList(node.VariantTitle)||''}</div>
       <br/>
       <div>
         <a href=${node.ProductURL} target="_blank" class="button">Go to Product</a>
