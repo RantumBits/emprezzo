@@ -128,7 +128,7 @@ const PostSectionGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 2rem;
-  text-align: justify;
+  text-align: left;
   @media (max-width: ${props => props.theme.breakpoints.s}) {
     grid-template-columns: repeat(1, 1fr);
   }
@@ -136,7 +136,8 @@ const PostSectionGrid = styled.div`
 
 const PostSectionImage = styled.div`
   width: 100%;
-  height: 10rem;
+  height: 6rem;
+  text-align: center;
 `;
 
 const PostSectionContent = styled.div`
@@ -1014,7 +1015,7 @@ const SingleItem = ({ data, pageContext }) => {
               {relatedShops && relatedShops.map(({ shop }, index) => (
                 <span key={index}>
                   <PostSectionImage>
-                    <img src={shop.ProfilePicURL} alt={shop.name} style={{ height: "inherit" }} />
+                    <img src={shop.ProfilePicURL} alt={shop.name} style={{ height: "100px", "text-align":"center" }} />
                   </PostSectionImage>
                   <PostSectionContent>
                     <Link key={index} to={`/shops/${shop.UserName}/`}>
