@@ -128,7 +128,7 @@ const PostSectionGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 2rem;
-  text-align: left;
+  text-align: justify;
   @media (max-width: ${props => props.theme.breakpoints.s}) {
     grid-template-columns: repeat(1, 1fr);
   }
@@ -136,9 +136,7 @@ const PostSectionGrid = styled.div`
 
 const PostSectionImage = styled.div`
   width: 100%;
-  height: 6rem;
-  text-align: center;
-
+  height: 10rem;
 `;
 
 const PostSectionContent = styled.div`
@@ -570,7 +568,7 @@ const SingleItem = ({ data, pageContext }) => {
       );
     } else if (node.ProfilePicURL) {
       return (
-        <img src={node.ProfilePicURL} className="profileimage" onError={defaultImageOnError} style={{ width: '100px', height: '100px', border-radius: '100%' }} title={name} alt={name} />
+        <img src={node.ProfilePicURL} className="profileimage" onError={defaultImageOnError} style={{ width: '100px', height: '100px' }} title={name} alt={name} />
       );
     } else {
       return (
@@ -1011,12 +1009,12 @@ const SingleItem = ({ data, pageContext }) => {
 
         {!!relatedShops.length && (
           <>
-            <h3  style={{ text-align: center }}>Discover more stores like {name}</h3>
+            <h3>Discover more stores like {name} </h3>
             <PostSectionGrid>
               {relatedShops && relatedShops.map(({ shop }, index) => (
                 <span key={index}>
                   <PostSectionImage>
-                    <img src={shop.ProfilePicURL} alt={shop.name} style={{ height: '100px', margin:'0 auto', 'text-align': 'center', 'border-radius':'100%' }} />
+                    <img src={shop.ProfilePicURL} alt={shop.name} style={{ height: "inherit" }} />
                   </PostSectionImage>
                   <PostSectionContent>
                     <Link key={index} to={`/shops/${shop.UserName}/`}>
@@ -1029,8 +1027,6 @@ const SingleItem = ({ data, pageContext }) => {
             </PostSectionGrid>
           </>
         )}
-          <br />
-            <br />
         <a href="/randomshop" className="button ">
           Discover a new shop
         </a>
