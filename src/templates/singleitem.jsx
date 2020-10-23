@@ -363,7 +363,7 @@ const SingleItem = ({ data, pageContext }) => {
       },
     ],
   };
-
+  
   //Extracting social history
   const rowSocialHistoryEdges = data.allMysqlSocialHistory.edges;
   //filtering top 3 for current AlexaURL
@@ -561,7 +561,7 @@ const SingleItem = ({ data, pageContext }) => {
 
   const defaultImageOnError = (e) => { e.target.src = "https://source.unsplash.com/100x100/?abstract," + (Math.random() * 1000) }
 
-  const renderProfilePicURL = (node,name) => {
+  const renderProfilePicURL = (node, name) => {
     if (node.mysqlImages && node.mysqlImages.length > 0) {
       return (
         <Image fluid={node.mysqlImages[0].childImageSharp.fluid} style={{ width: '100px', height: '100px' }} title={name} alt={name} />
@@ -587,7 +587,7 @@ const SingleItem = ({ data, pageContext }) => {
       <Header title={name} children={subtitle} likeEnabled={{ storeName: name, storeURL: AlexaURL, storeProfileImage: (firstRowDataView && firstRowDataView.node.ProfilePicURL) }} />
       <Container>
         <div className="profileimage" style={{ display: 'flex' }}>
-          {firstRowDataView && renderProfilePicURL(firstRowDataView.node,name)}
+          {firstRowDataView && renderProfilePicURL(firstRowDataView.node, name)}
           <div style={{ paddingLeft: '15px' }}>
             <Statistics>
               {firstRowDataView && (firstRowDataView.node.activity || firstRowDataView.node.FollowerRate || firstRowDataView.node.PostRate) && (
@@ -658,7 +658,10 @@ const SingleItem = ({ data, pageContext }) => {
               listShopifyBestSellersEdges.length > 0 && (
                 <Tab style={TabStyle}>Best sellers</Tab>
               )}
-            <Tab style={TabStyle}>Classics</Tab>
+            {listShopifyClassicProductsEdges &&
+              listShopifyClassicProductsEdges.length > 0 && (
+                <Tab style={TabStyle}>Classics</Tab>
+              )}
             {listShopifyNewProductsEdges &&
               listShopifyNewProductsEdges.length > 0 && (
                 <Tab style={TabStyle}>New products</Tab>
@@ -678,9 +681,10 @@ const SingleItem = ({ data, pageContext }) => {
                 </ViewContainer>
               </TabPanel>
             )}
-          <TabPanel>
-            {/* Show carousel for mobile version */}
-            {isMobile && (
+
+          {/* Show carousel for mobile version */}
+          {isMobile && listShopifyClassicProductsEdges && listShopifyClassicProductsEdges.length > 0 && (
+            <TabPanel>
               <Carousel
                 showThumbs={false}
                 infiniteLoop
@@ -689,26 +693,27 @@ const SingleItem = ({ data, pageContext }) => {
                 showArrows={true}
                 showStatus={false}
               >
-                {listShopifyClassicProductsEdges &&
-                  listShopifyClassicProductsEdges.map(({ node }) => {
-                    return renderProduct(node, true);
-                  })}
+                {listShopifyClassicProductsEdges.map(({ node }) => {
+                  return renderProduct(node, true);
+                })}
               </Carousel>
-            )}
+            </TabPanel>
+          )}
 
-            {/* Show carousel for mobile version */}
-            {!isMobile && (
+          {/* Show carousel for mobile version */}
+          {!isMobile && listShopifyClassicProductsEdges && listShopifyClassicProductsEdges.length > 0 && (
+            <TabPanel>
               <ViewContainer>
                 <>
                   <span>&nbsp;</span>
-                  {listShopifyClassicProductsEdges &&
-                    listShopifyClassicProductsEdges.map(({ node }) => {
-                      return renderProduct(node);
-                    })}
+                  {listShopifyClassicProductsEdges.map(({ node }) => {
+                    return renderProduct(node);
+                  })}
                 </>
               </ViewContainer>
-            )}
-          </TabPanel>
+            </TabPanel>
+          )}
+
           {listShopifyNewProductsEdges &&
             listShopifyNewProductsEdges.length > 0 && (
               <TabPanel>
@@ -750,7 +755,7 @@ const SingleItem = ({ data, pageContext }) => {
             </div>
           )}
         <br />
-        {rowShopifyProductSummary && (
+        {rowShopifyProductSummary && rowShopifyProductSummary.length > 0 && (
           <ReactFrappeChart
             title="Product prices"
             type="axis-mixed"
@@ -849,7 +854,7 @@ const SingleItem = ({ data, pageContext }) => {
             )}
           </SocialIcons>
         )}
-        {chartSocialData && (
+        {chartSocialData && chartSocialData.labels && chartSocialData.labels.length > 0 && (
           <ReactFrappeChart
             type="bar"
             title="Followers"

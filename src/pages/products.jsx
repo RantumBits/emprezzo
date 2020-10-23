@@ -11,6 +11,7 @@ import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import Slider from '@material-ui/core/Slider';
 import { useMediaQuery } from 'react-responsive'
+import LazyLoad from 'react-lazyload'
 
 const CategoryHeading = styled.h1`
   margin-left: 4rem;
@@ -99,12 +100,12 @@ const Products = ({ data, pageContext }) => {
       let combinedMax2Results = [];
       max2Results.map((maxedge) => {
         combinedMax2Results.push({
-          node : {
+          node: {
             ...maxedge.node,
             ...edge.node,
           }
         });
-      })  
+      })
       filteredProducts = _.union(filteredProducts, combinedMax2Results)
     });
     return filteredProducts;
@@ -153,19 +154,19 @@ const Products = ({ data, pageContext }) => {
       newNode = {
         ...newNode,
         ...filteredMainViewEdges[0].node
-      }      
+      }
     }
     listShopifyProductsAllEdges.push({
-      node : {
+      node: {
         ...newNode
       }
-    });   
+    });
   })
 
   //Extracting sale products
   const filteredShopifySaleProducts = _.sortBy(_.filter(listShopifyProductsAllEdges, ({ node }) => node.DiscountAmt > 0.10 && node.DiscountAmt < 1), ({ node }) => -node.UpdateDate);
   const listShopifySaleProducts = _.slice(filteredShopifySaleProducts, 0, maxProducts);
-  
+
   //Extracting gift cards
   const filteredShopifyGiftCards = _.sortBy(_.filter(listShopifyProductsAllEdges, ({ node }) => node.Title.toLowerCase().indexOf("gift card") >= 0), ({ node }) => -node.UpdateDate);
   const listShopifyGiftCards = _.slice(filteredShopifyGiftCards, 0, maxProducts);
@@ -201,29 +202,30 @@ const Products = ({ data, pageContext }) => {
       <Header title="🧐 Disover great products from Shopify stores" />
       <div>
         <CategoryHeading>Top Products from Featured Brands</CategoryHeading>
-        <CarouselWrapper>
-          <Carousel
-            swipeable={false}
-            draggable={false}
-            showDots={false}
-            responsive={responsive}
-            keyBoardControl={true}
-          >
-            {visibleFeaturedProducts.map(({ node }, index) => (
-              <ProductCategoryItem
-                key={index}
-                cover={getProductImage(node)}
-                path={`/shops/${node.UserName}/`}
-                vendorname={node.VendorName}
-                title={node.Title}
-                variant={getProductVariant(node)}
-                price={node.Price}
-                node={node}
-              />
-            ))}
-          </Carousel>
-        </CarouselWrapper>
-
+        <LazyLoad>
+          <CarouselWrapper>
+            <Carousel
+              swipeable={false}
+              draggable={false}
+              showDots={false}
+              responsive={responsive}
+              keyBoardControl={true}
+            >
+              {visibleFeaturedProducts.map(({ node }, index) => (
+                <ProductCategoryItem
+                  key={index}
+                  cover={getProductImage(node)}
+                  path={`/shops/${node.UserName}/`}
+                  vendorname={node.VendorName}
+                  title={node.Title}
+                  variant={getProductVariant(node)}
+                  price={node.Price}
+                  node={node}
+                />
+              ))}
+            </Carousel>
+          </CarouselWrapper>
+        </LazyLoad>
 
 
         <CategoryHeading>Discover great products</CategoryHeading>
@@ -260,20 +262,23 @@ const Products = ({ data, pageContext }) => {
             </select>
           </div>
         </SearchWrapper>
-        <CategoryWrapper>
-          {listShopifyProductsAllEdges.map(({ node }, index) => (
-            <ProductCategoryItem
-              key={index}
-              cover={getProductImage(node)}
-              path={`/shops/${node.UserName}/`}
-              vendorname={node.VendorName}
-              title={node.Title}
-              variant={getProductVariant(node)}
-              price={node.Price}
-              node={node}
-            />
-          ))}
-        </CategoryWrapper>
+        <LazyLoad height={200} once offset={[-200, 0]}>
+          <CategoryWrapper>
+            {listShopifyProductsAllEdges.map(({ node }, index) => (
+              <ProductCategoryItem
+                key={index}
+                cover={getProductImage(node)}
+                path={`/shops/${node.UserName}/`}
+                vendorname={node.VendorName}
+                title={node.Title}
+                variant={getProductVariant(node)}
+                price={node.Price}
+                node={node}
+              />
+            ))}
+          </CategoryWrapper>
+        </LazyLoad>
+
         {showMore && listShopifyProductsAllEdges.length > 0 &&
           <div className="center">
             <button className="button" onClick={increaseLimit} style={{ cursor: "pointer" }}>
@@ -282,57 +287,60 @@ const Products = ({ data, pageContext }) => {
           </div>
         }
 
-        {listShopifySaleProducts && listShopifySaleProducts.length > 0 &&
-          <CategoryHeading>Sale Products</CategoryHeading>
-        }
-        <CarouselWrapper>
-          <Carousel
-            swipeable={false}
-            draggable={false}
-            showDots={false}
-            responsive={responsive}
-            keyBoardControl={true}
-          >
-            {listShopifySaleProducts.map(({ node }, index) => (
-              <ProductCategoryItem
-                key={index}
-                cover={getProductImage(node)}
-                path={`/shops/${node.UserName}/`}
-                vendorname={node.VendorName}
-                title={node.Title}
-                variant={getProductVariant(node)}
-                price={node.Price}
-                node={node}
-              />
-            ))}
-          </Carousel>
-        </CarouselWrapper>
-
-        {listShopifyGiftCards && listShopifyGiftCards.length > 0 &&
-          <CategoryHeading>Gift Cards</CategoryHeading>
-        }
-        <CarouselWrapper>
-          <Carousel
-            swipeable={false}
-            draggable={false}
-            showDots={false}
-            responsive={responsive}
-            keyBoardControl={true}
-          >
-            {listShopifyGiftCards.map(({ node }, index) => (
-              <ProductCategoryItem
-                key={index}
-                cover={getProductImage(node)}
-                path={`/shops/${node.UserName}/`}
-                vendorname={node.VendorName}
-                title={node.Title}
-                variant={getProductVariant(node)}
-                price={node.Price}
-                node={node}
-              />
-            ))}
-          </Carousel>
-        </CarouselWrapper>
+        <LazyLoad height={200} once offset={[-200, 0]}>
+          {listShopifySaleProducts && listShopifySaleProducts.length > 0 &&
+            <CategoryHeading>Sale Products</CategoryHeading>
+          }
+          <CarouselWrapper>
+            <Carousel
+              swipeable={false}
+              draggable={false}
+              showDots={false}
+              responsive={responsive}
+              keyBoardControl={true}
+            >
+              {listShopifySaleProducts.map(({ node }, index) => (
+                <ProductCategoryItem
+                  key={index}
+                  cover={getProductImage(node)}
+                  path={`/shops/${node.UserName}/`}
+                  vendorname={node.VendorName}
+                  title={node.Title}
+                  variant={getProductVariant(node)}
+                  price={node.Price}
+                  node={node}
+                />
+              ))}
+            </Carousel>
+          </CarouselWrapper>
+        </LazyLoad>
+        <LazyLoad height={200} once offset={[-200, 0]}>
+          {listShopifyGiftCards && listShopifyGiftCards.length > 0 &&
+            <CategoryHeading>Gift Cards</CategoryHeading>
+          }
+          <CarouselWrapper>
+            <Carousel
+              swipeable={false}
+              draggable={false}
+              showDots={false}
+              responsive={responsive}
+              keyBoardControl={true}
+            >
+              {listShopifyGiftCards.map(({ node }, index) => (
+                <ProductCategoryItem
+                  key={index}
+                  cover={getProductImage(node)}
+                  path={`/shops/${node.UserName}/`}
+                  vendorname={node.VendorName}
+                  title={node.Title}
+                  variant={getProductVariant(node)}
+                  price={node.Price}
+                  node={node}
+                />
+              ))}
+            </Carousel>
+          </CarouselWrapper>
+        </LazyLoad>
       </div>
     </Layout>
   );

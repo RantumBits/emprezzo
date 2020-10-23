@@ -11,6 +11,7 @@ import Search from 'components/search';
 import _ from 'lodash';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+import LazyLoad from 'react-lazyload';
 
 const PostSectionHeading = styled.h1`
   margin-left: 4rem;
@@ -103,13 +104,13 @@ const Index = ({ data }) => {
       let combinedMax2Results = [];
       max2Results.map((maxedge) => {
         combinedMax2Results.push({
-          node : {
+          node: {
             ...maxedge.node,
             ...edge.node
           }
         });
-      })      
-      filteredProducts = _.union(filteredProducts, combinedMax2Results)      
+      })
+      filteredProducts = _.union(filteredProducts, combinedMax2Results)
     });
     return filteredProducts;
   }
@@ -204,124 +205,134 @@ const Index = ({ data }) => {
         <Search collapse homepage indices={searchIndices} />
       </div>
 
-      <CarouselWrapper>
-        <h2>Fast Growing Stores</h2>
+      <LazyLoad height={200} once offset={[-200, 0]}>
+        <CarouselWrapper>
+          <h2>Fast Growing Stores</h2>
         See some of the fastest growing shops by global site traffic rank over the last 28 days
         <Carousel
-          swipeable={false}
-          draggable={false}
-          showDots={false}
-          ssr={true}
-          responsive={responsive}
-          keyBoardControl={true}
-        >
-          {globalRankChangeEdges.map((node, index) => (
-            <HomeCarouselItem
-              id={`post-${index}`}
-              key={index}
-              path={`/shops/${node.slug}/`}
-              title={node.name}
-              cover={node.mysqlImages && node.mysqlImages.length > 0 ? node.mysqlImages[0].childImageSharp.fluid : node.ProfilePicURL}
-              excerpt={node.about && node.about.substring(0, 40) + "..."}
-            />
-          ))}
-        </Carousel>
-      </CarouselWrapper>
+            swipeable={false}
+            draggable={false}
+            showDots={false}
+            ssr={true}
+            responsive={responsive}
+            keyBoardControl={true}
+          >
+            {globalRankChangeEdges.map((node, index) => (
+              <HomeCarouselItem
+                id={`post-${index}`}
+                key={index}
+                path={`/shops/${node.slug}/`}
+                title={node.name}
+                cover={node.mysqlImages && node.mysqlImages.length > 0 ? node.mysqlImages[0].childImageSharp.fluid : node.ProfilePicURL}
+                excerpt={node.about && node.about.substring(0, 40) + "..."}
+              />
+            ))}
+          </Carousel>
+        </CarouselWrapper>
+      </LazyLoad>
 
-      <CarouselWrapper>
-        <h2>Popular Shops by Traffic</h2>
+      <LazyLoad height={200} once offset={[-200, 0]}>
+        <CarouselWrapper>
+          <h2>Popular Shops by Traffic</h2>
         See some of the most popular shops by global site traffic ranking
         <Carousel
-          swipeable={false}
-          draggable={false}
-          showDots={false}
-          ssr={true}
-          responsive={responsive}
-          keyBoardControl={true}
-        >
-          {globalRankEdges.map((node, index) => (
-            <HomeCarouselItem
-              id={`post-${index}`}
-              key={index}
-              path={`/shops/${node.slug}/`}
-              title={node.name}
-              cover={node.mysqlImages && node.mysqlImages.length > 0 ? node.mysqlImages[0].childImageSharp.fluid : node.ProfilePicURL}
-              excerpt={node.about && node.about.substring(0, 40) + "..."}
-            />
-          ))}
-        </Carousel>
-      </CarouselWrapper>
+            swipeable={false}
+            draggable={false}
+            showDots={false}
+            ssr={true}
+            responsive={responsive}
+            keyBoardControl={true}
+          >
+            {globalRankEdges.map((node, index) => (
+              <HomeCarouselItem
+                id={`post-${index}`}
+                key={index}
+                path={`/shops/${node.slug}/`}
+                title={node.name}
+                cover={node.mysqlImages && node.mysqlImages.length > 0 ? node.mysqlImages[0].childImageSharp.fluid : node.ProfilePicURL}
+                excerpt={node.about && node.about.substring(0, 40) + "..."}
+              />
+            ))}
+          </Carousel>
+        </CarouselWrapper>
+      </LazyLoad>
 
-      <CarouselWrapper>
-        <h3>Popular on Social Media</h3>
+      <LazyLoad height={200} once offset={[-200, 0]}>
+        <CarouselWrapper>
+          <h3>Popular on Social Media</h3>
       Discover some of the <a href="/top-shopify-stores">top Shopify stores</a> by total social media follower counts across Instagram, Facebook, Twitter, Tiktok, Pinterest & Youtube
         <Carousel
-          swipeable={false}
-          draggable={false}
-          showDots={false}
-          ssr={true}
-          responsive={responsive}
-          keyBoardControl={true}
-        >
-          {totalFollowersEdges.map((node, index) => (
-            <HomeCarouselItem
-              id={`post-${index}`}
-              key={index}
-              path={`/shops/${node.slug}/`}
-              title={node.name}
-              cover={node.mysqlImages && node.mysqlImages.length > 0 ? node.mysqlImages[0].childImageSharp.fluid : node.ProfilePicURL}
-              excerpt={node.about && node.about.substring(0, 40) + "..."}
-            />
-          ))}
-        </Carousel>
-      </CarouselWrapper>
+            swipeable={false}
+            draggable={false}
+            showDots={false}
+            ssr={true}
+            responsive={responsive}
+            keyBoardControl={true}
+          >
+            {totalFollowersEdges.map((node, index) => (
+              <HomeCarouselItem
+                id={`post-${index}`}
+                key={index}
+                path={`/shops/${node.slug}/`}
+                title={node.name}
+                cover={node.mysqlImages && node.mysqlImages.length > 0 ? node.mysqlImages[0].childImageSharp.fluid : node.ProfilePicURL}
+                excerpt={node.about && node.about.substring(0, 40) + "..."}
+              />
+            ))}
+          </Carousel>
+        </CarouselWrapper>
+      </LazyLoad>
 
-      <CarouselWrapper>
-        <h3>Featured Online Shops</h3>
-        <Carousel
-          swipeable={false}
-          draggable={false}
-          showDots={false}
-          ssr={true}
-          responsive={responsive}
-          keyBoardControl={true}
-        >
-          {combinedFeatureShopEdges.map((node, index) => (
-            <HomeCarouselItem
-              id={`post-${index}`}
-              key={index}
-              path={`/shops/${node.UserName}/`}
-              title={node.name}
-              cover={node.mysqlImages && node.mysqlImages.length > 0 ? node.mysqlImages[0].childImageSharp.fluid : node.ProfilePicURL}
-              excerpt={node.about && node.about.substring(0, 40) + "..."}
-            />
-          ))}
-        </Carousel>
-      </CarouselWrapper>
+      <LazyLoad height={200} once offset={[-200, 0]}>
+        <CarouselWrapper>
+          <h3>Featured Online Shops</h3>
+          <Carousel
+            swipeable={false}
+            draggable={false}
+            showDots={false}
+            ssr={true}
+            responsive={responsive}
+            keyBoardControl={true}
+          >
+            {combinedFeatureShopEdges.map((node, index) => (
+              <HomeCarouselItem
+                id={`post-${index}`}
+                key={index}
+                path={`/shops/${node.UserName}/`}
+                title={node.name}
+                cover={node.mysqlImages && node.mysqlImages.length > 0 ? node.mysqlImages[0].childImageSharp.fluid : node.ProfilePicURL}
+                excerpt={node.about && node.about.substring(0, 40) + "..."}
+              />
+            ))}
+          </Carousel>
+        </CarouselWrapper>
+      </LazyLoad>
 
-      <CarouselWrapper>
-        <h3>New Shopify Products</h3>
-        <Carousel
-          swipeable={false}
-          draggable={false}
-          showDots={false}
-          ssr={true}
-          responsive={responsive}
-          keyBoardControl={true}
-        >
-          {visibleNewlyAddedProducts.map(({ node }, index) => (
-            <ProductCategoryItem
-              key={index}
-              cover={getProductImage(node)}
-              path={`/shops/${node.UserName}/`}
-              vendorname={node.VendorName}
-              title={node.Title}
-              price={node.Price}
-              node={node}
-            />
-          ))}
-        </Carousel>
-      </CarouselWrapper>
+      <LazyLoad height={200} once offset={[-200, 0]}>
+        <CarouselWrapper>
+          <h3>New Shopify Products</h3>
+          <Carousel
+            swipeable={false}
+            draggable={false}
+            showDots={false}
+            ssr={true}
+            responsive={responsive}
+            keyBoardControl={true}
+          >
+            {visibleNewlyAddedProducts.map(({ node }, index) => (
+              <ProductCategoryItem
+                key={index}
+                cover={getProductImage(node)}
+                path={`/shops/${node.UserName}/`}
+                vendorname={node.VendorName}
+                title={node.Title}
+                price={node.Price}
+                node={node}
+              />
+            ))}
+          </Carousel>
+        </CarouselWrapper>
+      </LazyLoad>
 
       <ShopWrapper>
         <h3>Discover the best online shopping sites at Emprezzo</h3>
