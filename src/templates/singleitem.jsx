@@ -1016,7 +1016,7 @@ const SingleItem = ({ data, pageContext }) => {
               {relatedShops && relatedShops.map(({ shop }, index) => (
                 <span key={index}>
                   <PostSectionImage>
-                    <img src={shop.ProfilePicURL} alt={shop.name} style={{ height: "inherit" }} />
+                    <img src={shop.ProfilePicURL} alt={shop.name} style={{ height: 'inherit', 'text-align': 'center', 'border-radius':'100%' }} />
                   </PostSectionImage>
                   <PostSectionContent>
                     <Link key={index} to={`/shops/${shop.UserName}/`}>
