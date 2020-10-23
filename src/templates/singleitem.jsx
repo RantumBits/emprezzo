@@ -138,6 +138,7 @@ const PostSectionImage = styled.div`
   width: 100%;
   height: 6rem;
   text-align: center;
+
 `;
 
 const PostSectionContent = styled.div`
@@ -1015,7 +1016,7 @@ const SingleItem = ({ data, pageContext }) => {
               {relatedShops && relatedShops.map(({ shop }, index) => (
                 <span key={index}>
                   <PostSectionImage>
-                    <img src={shop.ProfilePicURL} alt={shop.name} style={{ height: "100px", "text-align":"center" }} />
+                    <img src={shop.ProfilePicURL} alt={shop.name} style={{ height: "inherit" }} />
                   </PostSectionImage>
                   <PostSectionContent>
                     <Link key={index} to={`/shops/${shop.UserName}/`}>
@@ -1028,6 +1029,8 @@ const SingleItem = ({ data, pageContext }) => {
             </PostSectionGrid>
           </>
         )}
+          <br />
+            <br />
         <a href="/randomshop" className="button ">
           Discover a new shop
         </a>
