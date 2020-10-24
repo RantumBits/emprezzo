@@ -59,6 +59,13 @@ const prism = css`
     bottom: 2px;
     position: relative;
   }
+  .carousel .slide {
+    background: unset;
+  }
+
+  .carousel.carousel-slider .control-arrow{
+  ${theme.colors.primary.dark};
+}
   .token.operator {
     color: #bc78d7;
   }

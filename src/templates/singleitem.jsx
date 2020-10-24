@@ -75,7 +75,7 @@ const StatisticItem = styled.div`
   @media (max-width: ${props => props.theme.breakpoints.s}) {
     font-size: 1rem;
     margin-right: 10px;
-    padding-bottom: 5px;
+    padding-bottom: 8px;
   }
   h5,
   h6 {
@@ -846,7 +846,7 @@ const SingleItem = ({ data, pageContext }) => {
         <h3>Site Stats</h3>
         <Tabs>
           <TabList>
-            <Tab style={TabStyle}>Alexa traffic rank</Tab>
+            <Tab style={TabStyle}>Traffic rank</Tab>
             <Tab style={TabStyle}>Time on site</Tab>
           </TabList>
           <TabPanel>
