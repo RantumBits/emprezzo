@@ -119,35 +119,36 @@ const ProductCategoryItem = ({ path, cover, title, vendorname, variant, price, n
   const [showDialog, setShowDialog] = React.useState(false);
   const [dialogText, setDialogText] = React.useState();
 
-  const displayMaxPrice=(node.MaxPrice && node.MaxPrice!=node.Price?'$'+node.MaxPrice:'')
+  const displayMaxPrice = (node.MaxPrice && node.MaxPrice != node.Price ? '$' + node.MaxPrice : '')
 
   const openDialog = () => {
-    console.log("*** node = ", ({ path, cover, title, vendorname, variant, price, node }))
+    //console.log("*** node = ", ({ path, cover, title, vendorname, variant, price, node }))
     let dialogContent = `
       <h1>${node.Title}</h1>
       <img src=${cover} height='300px' />
       <div>Price : <strike>${displayMaxPrice}</strike> $${node.Price}</div>
       <br/>
-      <div>${convertToSelectList(node.VariantTitle)||''}</div>
+      <div>${convertToSelectList(node.VariantTitle) || ''}</div>
       <br/>
       <div>
         <a href=${node.ProductURL} target="_blank" class="button">Go to Product</a>
-        <a href=${node.UserName?path:node.VendorURL} class="button">Go to Shop</a>
+        <a href=${node.UserName ? path : node.VendorURL} class="button">Go to Shop</a>
       </div>
       <br/>
     `;
     setDialogText(dialogContent);
-    setShowDialog(true);
+    //setShowDialog(true);
+    alert(dialogContent)
   }
   const closeDialog = () => setShowDialog(false);
 
   const convertToSelectList = (variants) => {
-    if(variants == null) return;
+    if (variants == null) return;
     if (variants.toLowerCase() == "default title") return;
     const list = variants.split(",");
     let returnHTML = "Variants : <select>";
-    list.map((item)=>{
-      returnHTML += "<option>"+item+"</option>";
+    list.map((item) => {
+      returnHTML += "<option>" + item + "</option>";
     })
     returnHTML += "</select>";
     return returnHTML;
@@ -155,12 +156,6 @@ const ProductCategoryItem = ({ path, cover, title, vendorname, variant, price, n
 
   return (
     <Wrapper>
-      <Dialog isOpen={showDialog} onDismiss={closeDialog}>
-        <button className="close-button" onClick={closeDialog} style={{ float: "right" }}>
-          <span aria-hidden>X</span>
-        </button>
-        <span dangerouslySetInnerHTML={{ __html: dialogText }} />
-      </Dialog>
       <Image>
         <a href={path} title={title} target="_blank">
           {cover && typeof cover === 'object' &&
@@ -179,6 +174,12 @@ const ProductCategoryItem = ({ path, cover, title, vendorname, variant, price, n
           <Price><strike>{displayMaxPrice}</strike> ${price}</Price>
         </Information>
       </StyledLink>
+      <Dialog isOpen={showDialog} onDismiss={closeDialog}>
+        <button className="close-button" onClick={closeDialog} style={{ float: "right" }}>
+          <span aria-hidden>X</span>
+        </button>
+        <span dangerouslySetInnerHTML={{ __html: dialogText }} />
+      </Dialog>      
     </Wrapper>
   );
 }

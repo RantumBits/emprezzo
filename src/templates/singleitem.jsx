@@ -673,16 +673,34 @@ const SingleItem = ({ data, pageContext }) => {
                 <Tab style={TabStyle}>Sale</Tab>
               )}
           </TabList>
-          {listShopifyBestSellersEdges &&
-            listShopifyBestSellersEdges.length > 0 && (
-              <TabPanel>
-                <ViewContainer>
-                  {listShopifyBestSellersEdges.map(({ node }) => {
-                    return renderProduct(node);
-                  })}
-                </ViewContainer>
-              </TabPanel>
-            )}
+
+          {/* Show carousel for mobile version */}
+          {isMobile && listShopifyBestSellersEdges && listShopifyBestSellersEdges.length > 0 && (
+            <TabPanel>
+              <Carousel
+                showThumbs={false}
+                infiniteLoop
+                showIndicators={false}
+                selectedItem={1}
+                showArrows={true}
+                showStatus={false}
+              >
+                {listShopifyBestSellersEdges.map(({ node }) => {
+                  return renderProduct(node, true);
+                })}
+              </Carousel>
+            </TabPanel>
+          )}
+          {/* Show normally for non mobile version */}
+          {!isMobile && listShopifyBestSellersEdges && listShopifyBestSellersEdges.length > 0 && (
+            <TabPanel>
+              <ViewContainer>
+                {listShopifyBestSellersEdges.map(({ node }) => {
+                  return renderProduct(node);
+                })}
+              </ViewContainer>
+            </TabPanel>
+          )}
 
           {/* Show carousel for mobile version */}
           {isMobile && listShopifyClassicProductsEdges && listShopifyClassicProductsEdges.length > 0 && (
@@ -701,8 +719,7 @@ const SingleItem = ({ data, pageContext }) => {
               </Carousel>
             </TabPanel>
           )}
-
-          {/* Show carousel for mobile version */}
+          {/* Show normally for non mobile version */}
           {!isMobile && listShopifyClassicProductsEdges && listShopifyClassicProductsEdges.length > 0 && (
             <TabPanel>
               <ViewContainer>
@@ -716,26 +733,61 @@ const SingleItem = ({ data, pageContext }) => {
             </TabPanel>
           )}
 
-          {listShopifyNewProductsEdges &&
-            listShopifyNewProductsEdges.length > 0 && (
-              <TabPanel>
-                <ViewContainer>
-                  {listShopifyNewProductsEdges.map(({ node }) => {
-                    return renderProduct(node);
-                  })}
-                </ViewContainer>
-              </TabPanel>
-            )}
-          {listShopifySaleProducts &&
-            listShopifySaleProducts.length > 0 && (
-              <TabPanel>
-                <ViewContainer>
-                  {listShopifySaleProducts.map(({ node }) => {
-                    return renderProduct(node);
-                  })}
-                </ViewContainer>
-              </TabPanel>
-            )}
+          {/* Show carousel for mobile version */}
+          {isMobile && listShopifyNewProductsEdges && listShopifyNewProductsEdges.length > 0 && (
+            <TabPanel>
+              <Carousel
+                showThumbs={false}
+                infiniteLoop
+                showIndicators={false}
+                selectedItem={1}
+                showArrows={true}
+                showStatus={false}
+              >
+                {listShopifyNewProductsEdges.map(({ node }) => {
+                  return renderProduct(node, true);
+                })}
+              </Carousel>
+            </TabPanel>
+          )}
+          {/* Show normally for non mobile version */}
+          {!isMobile && listShopifyNewProductsEdges && listShopifyNewProductsEdges.length > 0 && (
+            <TabPanel>
+              <ViewContainer>
+                {listShopifyNewProductsEdges.map(({ node }) => {
+                  return renderProduct(node);
+                })}
+              </ViewContainer>
+            </TabPanel>
+          )}
+
+          {/* Show carousel for mobile version */}
+          {isMobile && listShopifySaleProducts && listShopifySaleProducts.length > 0 && (
+            <TabPanel>
+              <Carousel
+                showThumbs={false}
+                infiniteLoop
+                showIndicators={false}
+                selectedItem={1}
+                showArrows={true}
+                showStatus={false}
+              >
+                {listShopifySaleProducts.map(({ node }) => {
+                  return renderProduct(node, true);
+                })}
+              </Carousel>
+            </TabPanel>
+          )}
+          {/* Show normally for non mobile version */}
+          {!isMobile && listShopifySaleProducts && listShopifySaleProducts.length > 0 && (
+            <TabPanel>
+              <ViewContainer>
+                {listShopifySaleProducts.map(({ node }) => {
+                  return renderProduct(node);
+                })}
+              </ViewContainer>
+            </TabPanel>
+          )}
         </Tabs>
         {listProductEdges &&
           listProductEdges.map(({ node }) => {
@@ -1016,7 +1068,7 @@ const SingleItem = ({ data, pageContext }) => {
               {relatedShops && relatedShops.map(({ shop }, index) => (
                 <span key={index}>
                   <PostSectionImage>
-                    <img src={shop.ProfilePicURL} alt={shop.name} style={{ height: 'inherit', 'text-align': 'center', 'border-radius':'100%' }} />
+                    <img src={shop.ProfilePicURL} alt={shop.name} style={{ height: 'inherit', 'text-align': 'center', 'border-radius': '100%' }} />
                   </PostSectionImage>
                   <PostSectionContent>
                     <Link key={index} to={`/shops/${shop.UserName}/`}>
@@ -1029,8 +1081,8 @@ const SingleItem = ({ data, pageContext }) => {
             </PostSectionGrid>
           </>
         )}
-          <br />
-            <br />
+        <br />
+        <br />
         <a href="/randomshop" className="button ">
           Discover a new shop
         </a>

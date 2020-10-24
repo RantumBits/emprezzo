@@ -213,7 +213,7 @@ const Products = ({ data, pageContext }) => {
             >
               {visibleFeaturedProducts.map(({ node }, index) => (
                 <ProductCategoryItem
-                  key={index}
+                key={`FeaturedProducts-${index}`}
                   cover={getProductImage(node)}
                   path={`/shops/${node.UserName}/`}
                   vendorname={node.VendorName}
@@ -266,7 +266,7 @@ const Products = ({ data, pageContext }) => {
           <CategoryWrapper>
             {listShopifyProductsAllEdges.map(({ node }, index) => (
               <ProductCategoryItem
-                key={index}
+              key={`SaleProductsAll-${index}`}
                 cover={getProductImage(node)}
                 path={`/shops/${node.UserName}/`}
                 vendorname={node.VendorName}
@@ -301,7 +301,7 @@ const Products = ({ data, pageContext }) => {
             >
               {listShopifySaleProducts.map(({ node }, index) => (
                 <ProductCategoryItem
-                  key={index}
+                  key={`SaleProducts-${index}`}
                   cover={getProductImage(node)}
                   path={`/shops/${node.UserName}/`}
                   vendorname={node.VendorName}
@@ -328,7 +328,7 @@ const Products = ({ data, pageContext }) => {
             >
               {listShopifyGiftCards.map(({ node }, index) => (
                 <ProductCategoryItem
-                  key={index}
+                key={`GiftCards-${index}`}
                   cover={getProductImage(node)}
                   path={`/shops/${node.UserName}/`}
                   vendorname={node.VendorName}

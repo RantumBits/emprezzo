@@ -205,57 +205,53 @@ const Index = ({ data }) => {
         <Search collapse homepage indices={searchIndices} />
       </div>
 
-      <LazyLoad height={200} once offset={[-200, 0]}>
-        <CarouselWrapper>
-          <h2>Fast Growing Stores</h2>
+      <CarouselWrapper>
+        <h2>Fast Growing Stores</h2>
         See some of the fastest growing shops by global site traffic rank over the last 28 days
         <Carousel
-            swipeable={false}
-            draggable={false}
-            showDots={false}
-            ssr={true}
-            responsive={responsive}
-            keyBoardControl={true}
-          >
-            {globalRankChangeEdges.map((node, index) => (
-              <HomeCarouselItem
-                id={`post-${index}`}
-                key={index}
-                path={`/shops/${node.slug}/`}
-                title={node.name}
-                cover={node.mysqlImages && node.mysqlImages.length > 0 ? node.mysqlImages[0].childImageSharp.fluid : node.ProfilePicURL}
-                excerpt={node.about && node.about.substring(0, 40) + "..."}
-              />
-            ))}
-          </Carousel>
-        </CarouselWrapper>
-      </LazyLoad>
+          swipeable={false}
+          draggable={false}
+          showDots={false}
+          ssr={true}
+          responsive={responsive}
+          keyBoardControl={true}
+        >
+          {globalRankChangeEdges.map((node, index) => (
+            <HomeCarouselItem
+              id={`post-${index}`}
+              key={index}
+              path={`/shops/${node.slug}/`}
+              title={node.name}
+              cover={node.mysqlImages && node.mysqlImages.length > 0 ? node.mysqlImages[0].childImageSharp.fluid : node.ProfilePicURL}
+              excerpt={node.about && node.about.substring(0, 40) + "..."}
+            />
+          ))}
+        </Carousel>
+      </CarouselWrapper>
 
-      <LazyLoad height={200} once offset={[-200, 0]}>
-        <CarouselWrapper>
-          <h2>Popular Shops by Traffic</h2>
+      <CarouselWrapper>
+        <h2>Popular Shops by Traffic</h2>
         See some of the most popular shops by global site traffic ranking
         <Carousel
-            swipeable={false}
-            draggable={false}
-            showDots={false}
-            ssr={true}
-            responsive={responsive}
-            keyBoardControl={true}
-          >
-            {globalRankEdges.map((node, index) => (
-              <HomeCarouselItem
-                id={`post-${index}`}
-                key={index}
-                path={`/shops/${node.slug}/`}
-                title={node.name}
-                cover={node.mysqlImages && node.mysqlImages.length > 0 ? node.mysqlImages[0].childImageSharp.fluid : node.ProfilePicURL}
-                excerpt={node.about && node.about.substring(0, 40) + "..."}
-              />
-            ))}
-          </Carousel>
-        </CarouselWrapper>
-      </LazyLoad>
+          swipeable={false}
+          draggable={false}
+          showDots={false}
+          ssr={true}
+          responsive={responsive}
+          keyBoardControl={true}
+        >
+          {globalRankEdges.map((node, index) => (
+            <HomeCarouselItem
+              id={`post-${index}`}
+              key={index}
+              path={`/shops/${node.slug}/`}
+              title={node.name}
+              cover={node.mysqlImages && node.mysqlImages.length > 0 ? node.mysqlImages[0].childImageSharp.fluid : node.ProfilePicURL}
+              excerpt={node.about && node.about.substring(0, 40) + "..."}
+            />
+          ))}
+        </Carousel>
+      </CarouselWrapper>
 
       <LazyLoad height={200} once offset={[-200, 0]}>
         <CarouselWrapper>
@@ -321,7 +317,7 @@ const Index = ({ data }) => {
           >
             {visibleNewlyAddedProducts.map(({ node }, index) => (
               <ProductCategoryItem
-                key={index}
+                key={`NewlyAddedProducts-${index}`}
                 cover={getProductImage(node)}
                 path={`/shops/${node.UserName}/`}
                 vendorname={node.VendorName}
