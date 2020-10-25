@@ -82,7 +82,7 @@ const Info = styled.div`
   color: ${props => props.theme.colors.white.light};
   margin: 0px 0.75rem 0 0.75rem;
   position: absolute;
-  bottom: 0;
+  bottom: 8px;
   left: 0;
   font-size: 0.8em;
 `;

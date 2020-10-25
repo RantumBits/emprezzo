@@ -137,8 +137,8 @@ const ProductCategoryItem = ({ path, cover, title, vendorname, variant, price, n
       <br/>
     `;
     setDialogText(dialogContent);
-    //setShowDialog(true);
-    alert(dialogContent)
+    setShowDialog(true);
+    //alert(dialogContent)
   }
   const closeDialog = () => setShowDialog(false);
 
@@ -179,7 +179,7 @@ const ProductCategoryItem = ({ path, cover, title, vendorname, variant, price, n
           <span aria-hidden>X</span>
         </button>
         <span dangerouslySetInnerHTML={{ __html: dialogText }} />
-      </Dialog>      
+      </Dialog>
     </Wrapper>
   );
 }
