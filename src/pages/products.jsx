@@ -164,7 +164,7 @@ const Products = ({ data, pageContext }) => {
   })
 
   //Extracting sale products
-  const filteredShopifySaleProducts = _.sortBy(_.filter(listShopifyProductsAllEdges, ({ node }) => node.DiscountAmt > 0.10 && node.DiscountAmt < 1), ({ node }) => -node.UpdateDate);
+  const filteredShopifySaleProducts = _.sortBy(_.filter(listShopifyProductsAllEdges, ({ node }) => node.DiscountPct > 0.20 && node.DiscountPct < 1), ({ node }) => -node.UpdateDate);
   const listShopifySaleProducts = _.slice(filteredShopifySaleProducts, 0, maxProducts);
 
   //Extracting gift cards
