@@ -198,10 +198,9 @@ const Products = ({ data, pageContext }) => {
   }
 
   return (
-    <Layout title={'Shopify Products | Disover great products from indepedent online stores'} description="Discover the best products from hundreds of independent online stores in one place. An alternative to Amazon Marketplace online shopping.">
-      <Header title="🧐 Disover great products from Shopify stores" />
+    <Layout title={'Gift Cards to Independent Online Stores | Discover & shop for online gift cards'} description="Shop for gift cards from hundreds of independent online stores in one place. Discover and buy gift onilne gift cards. " />
       <div>
-        <CategoryHeading>Popular Products from Featured Brands</CategoryHeading>
+        <CategoryHeading>Gift Cards from Featured Brands</CategoryHeading>
 
           <CarouselWrapper>
             <Carousel
@@ -211,7 +210,7 @@ const Products = ({ data, pageContext }) => {
               responsive={responsive}
               keyBoardControl={true}
             >
-              {visibleFeaturedProducts.map(({ node }, index) => (
+              {listShopifyGiftCards.map(({ node }, index) => (
                 <ProductCategoryItem
                 key={`FeaturedProducts-${index}`}
                   cover={getProductImage(node)}
@@ -227,8 +226,7 @@ const Products = ({ data, pageContext }) => {
           </CarouselWrapper>
 
 
-
-        <CategoryHeading>Discover great products</CategoryHeading>
+        <CategoryHeading>Shop for gift cards</CategoryHeading>
 
         <SearchWrapper>
           Search
@@ -264,7 +262,7 @@ const Products = ({ data, pageContext }) => {
         </SearchWrapper>
         <LazyLoad height={200} once offset={[-200, 0]}>
           <CategoryWrapper>
-            {listShopifyProductsAllEdges.map(({ node }, index) => (
+            {listShopifyGiftCards.map(({ node }, index) => (
               <ProductCategoryItem
               key={`SaleProductsAll-${index}`}
                 cover={getProductImage(node)}
@@ -287,60 +285,7 @@ const Products = ({ data, pageContext }) => {
           </div>
         }
 
-        <LazyLoad height={200} once offset={[-200, 0]}>
-          {listShopifySaleProducts && listShopifySaleProducts.length > 0 &&
-            <CategoryHeading>Sale Products</CategoryHeading>
-          }
-          <CarouselWrapper>
-            <Carousel
-              swipeable={false}
-              draggable={false}
-              showDots={false}
-              responsive={responsive}
-              keyBoardControl={true}
-            >
-              {listShopifySaleProducts.map(({ node }, index) => (
-                <ProductCategoryItem
-                  key={`SaleProducts-${index}`}
-                  cover={getProductImage(node)}
-                  path={`/shops/${node.UserName}/`}
-                  vendorname={node.VendorName}
-                  title={node.Title}
-                  variant={getProductVariant(node)}
-                  price={node.Price}
-                  node={node}
-                />
-              ))}
-            </Carousel>
-          </CarouselWrapper>
-        </LazyLoad>
-        <LazyLoad height={200} once offset={[-200, 0]}>
-          {listShopifyGiftCards && listShopifyGiftCards.length > 0 &&
-            <CategoryHeading>Gift Cards</CategoryHeading>
-          }
-          <CarouselWrapper>
-            <Carousel
-              swipeable={false}
-              draggable={false}
-              showDots={false}
-              responsive={responsive}
-              keyBoardControl={true}
-            >
-              {listShopifyGiftCards.map(({ node }, index) => (
-                <ProductCategoryItem
-                key={`GiftCards-${index}`}
-                  cover={getProductImage(node)}
-                  path={`/shops/${node.UserName}/`}
-                  vendorname={node.VendorName}
-                  title={node.Title}
-                  variant={getProductVariant(node)}
-                  price={node.Price}
-                  node={node}
-                />
-              ))}
-            </Carousel>
-          </CarouselWrapper>
-        </LazyLoad>
+
       </div>
     </Layout>
   );
