@@ -260,7 +260,7 @@ const SingleItem = ({ data, pageContext }) => {
   const listShopifyNewProductsEdges = _.slice(filteredShopifyNewProducts, 0, maxProducts);
 
   //Extracting sale products
-  const filteredShopifySaleProducts = _.sortBy(_.filter(rowallMysqlShopifyProductsAllEdges, ({ node }) => node.DiscountAmt > 0.10 && node.DiscountAmt < 1 && node.Title.toLowerCase().indexOf("gift card") < 0 && node.Title.toLowerCase().indexOf("shipping") < 0 && node.Title.toLowerCase().indexOf("insurance") < 0), ({ node }) => -node.DiscountPct);
+  const filteredShopifySaleProducts = _.sortBy(_.filter(rowallMysqlShopifyProductsAllEdges, ({ node }) => node.DiscountPct > 0.10 && node.DiscountPct < 1 && node.Title.toLowerCase().indexOf("gift card") < 0 && node.Title.toLowerCase().indexOf("shipping") < 0 && node.Title.toLowerCase().indexOf("insurance") < 0), ({ node }) => -node.DiscountPct);
   const listShopifySaleProducts = _.slice(filteredShopifySaleProducts, 0, maxProducts);
 
   //Extracting gift cards
