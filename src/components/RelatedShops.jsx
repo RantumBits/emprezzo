@@ -3,7 +3,7 @@ import { includes, orderBy } from 'lodash'
 
 export const getRelatedShops = (currentShop, allshops) => {
 
-    const maxPosts = 3;
+    const maxPosts = 4;
     const currentCategories = currentShop.category?currentShop.category.split(","):[];
     const currentTags = currentShop.tags?currentShop.tags.split(","):[];
 
