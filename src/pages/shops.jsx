@@ -87,8 +87,13 @@ const TopShopifyStores = ({ location, data }) => {
   const [sliderPriceRange, setSliderPriceRange] = React.useState([0, 0]);
 
   const [sortBy, setSortBy] = React.useState("GlobalRank_Change");
+  const [categoryFilter, setCategoryFilter] = React.useState("");
 
   const changeSortBy = (e) => { setSortBy(e.target.value) }
+
+  const changeCategoryFilter = (e) => { setCategoryFilter(e.target.value) }
+
+  const allCategories = _.orderBy(_.uniq(Object.values(_.mapValues(edges, ({ node }) => node.category))))
 
   const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
 
@@ -144,14 +149,14 @@ const TopShopifyStores = ({ location, data }) => {
   if (sliderAvgPrice[0] == 0 && sliderAvgPrice[1] == 0) {
     var minPriceAvg = _.minBy(combinedEdges, 'PriceAvg')
     var maxPriceAvg = _.maxBy(combinedEdges, 'PriceAvg')
-    if(minPriceAvg && maxPriceAvg) {setSliderAvgPrice([minPriceAvg.PriceAvg, maxPriceAvg.PriceAvg])}
+    if (minPriceAvg && maxPriceAvg) { setSliderAvgPrice([minPriceAvg.PriceAvg, maxPriceAvg.PriceAvg]) }
   }
   combinedEdges = _.filter(combinedEdges, item => sliderAvgPrice[0] <= item.PriceAvg && item.PriceAvg <= sliderAvgPrice[1])
 
   if (sliderPriceRange[0] == 0 && sliderPriceRange[1] == 0 && combinedEdges.length > 0) {
     var minPriceRange = _.minBy(combinedEdges, 'PriceMin')
     var maxPriceRange = _.maxBy(combinedEdges, 'PriceMax')
-    if(minPriceRange && maxPriceRange) {setSliderPriceRange([minPriceRange.PriceMin, maxPriceRange.PriceMax])}
+    if (minPriceRange && maxPriceRange) { setSliderPriceRange([minPriceRange.PriceMin, maxPriceRange.PriceMax]) }
   }
   combinedEdges = _.filter(combinedEdges, item => sliderPriceRange[0] <= item.PriceMax && item.PriceMax <= sliderPriceRange[1])
 
@@ -181,6 +186,11 @@ const TopShopifyStores = ({ location, data }) => {
   }
   if (filterBuyNowPayLater) {
     listEdges = _.filter(listEdges, item => item.AfterPay || item.Klarna || item.Affirm)
+  }
+
+  //applying category filter
+  if(categoryFilter.length>0) {
+    listEdges = _.filter(listEdges, item => item.category == categoryFilter)
   }
 
   if (filterText && filterText.length > 0) {
@@ -238,6 +248,16 @@ const TopShopifyStores = ({ location, data }) => {
         <div className="intro_text">
           <h3>Discover Great Online Shops</h3>
           <p>Discover popular independent stores and direct to consumer brands</p>
+        </div>
+        <div style={{ display: "flex", width: "100%", paddingBottom: "10px" }}>
+          <label>Filter by Category:
+            <select value={categoryFilter} onChange={changeCategoryFilter}>
+              <option value="">-</option>
+              {allCategories && allCategories.map(item => (
+                <option value={item}>{item}</option>
+              ))}
+            </select>
+          </label>
         </div>
         <div style={{ display: "flex", width: "100%" }}>
           <label>Filter Results:

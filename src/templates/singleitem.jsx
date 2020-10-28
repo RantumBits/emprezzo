@@ -126,11 +126,11 @@ const SocialIcons = styled.div`
 
 const PostSectionGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   grid-gap: 2rem;
   text-align: left;
   @media (max-width: ${props => props.theme.breakpoints.s}) {
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 `;
 

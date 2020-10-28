@@ -9,7 +9,6 @@ import { Layout } from 'layouts';
 import _ from 'lodash';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import Slider from '@material-ui/core/Slider';
 import { useMediaQuery } from 'react-responsive'
 import LazyLoad from 'react-lazyload'
 
@@ -57,6 +56,7 @@ const CarouselWrapper = styled.div`
 
 const Products = ({ data, pageContext }) => {
   const rowallMysqlShopifyProductsAllEdges = data.allMysqlShopifyProductsAll ? data.allMysqlShopifyProductsAll.edges : [];
+  const mainViewEdges = data.allMysqlMainView.edges;
   const maxFeaturedItems = 10;
   const maxProducts = 25;
   const [limit, setLimit] = React.useState(maxFeaturedItems);
@@ -66,10 +66,16 @@ const Products = ({ data, pageContext }) => {
   const maxItems = 25;
   const [sortBy, setSortBy] = React.useState("UpdateDate");
   const [sortOrder, setSortOrder] = React.useState("DESC");
-  const [sliderPrice, setSliderPrice] = React.useState([0, 0]);
+  const [categoryFilter, setCategoryFilter] = React.useState("");
+  const [priceRangeMin, setPriceRangeMin] = React.useState();
+  const [priceRangeMax, setPriceRangeMax] = React.useState();
 
   const changeSortBy = (e) => { setSortBy(e.target.value) }
   const changeSortOrder = (e) => { setSortOrder(e.target.value) }
+
+  const changeCategoryFilter = (e) => { setCategoryFilter(e.target.value) }
+
+  const allCategories = _.orderBy(_.uniq(Object.values(_.mapValues(mainViewEdges, ({ node }) => node.category))))
 
   const responsive = {
     desktop: {
@@ -123,7 +129,6 @@ const Products = ({ data, pageContext }) => {
     return productImage;
   }
 
-  const mainViewEdges = data.allMysqlMainView.edges;
   //get featured shops
   const featuredShopEdges = _.filter(mainViewEdges, ({ node }) => node.tags && node.tags.indexOf("featured") >= 0)
 
@@ -131,7 +136,7 @@ const Products = ({ data, pageContext }) => {
   const filteredFeaturedProducts = (filter && filter.length > 3) ? checkEdgesInProductView(mainViewEdges) : checkEdgesInProductView(featuredShopEdges);
 
   //Now limiting the featured items as per limit
-  const visibleFeaturedProducts = _.slice(filteredFeaturedProducts, 0, maxItems);
+  const visibleFeaturedProducts = _.slice(filteredFeaturedProducts, 0, maxFeaturedItems);
 
   const filteredProducts = checkEdgesInProductView(mainViewEdges);
 
@@ -139,7 +144,7 @@ const Products = ({ data, pageContext }) => {
   const visibleProducts = _.slice(filteredProducts, 0, maxItems);
 
   const increaseLimit = () => {
-    setLimit(limit + maxFeaturedItems);
+    setLimit(limit + maxItems);
   }
 
   let listShopifyProductsAllEdges = [];
@@ -171,14 +176,18 @@ const Products = ({ data, pageContext }) => {
   const filteredShopifyGiftCards = _.sortBy(_.filter(listShopifyProductsAllEdges, ({ node }) => node.Title.toLowerCase().indexOf("gift card") >= 0), ({ node }) => -node.UpdateDate);
   const listShopifyGiftCards = _.slice(filteredShopifyGiftCards, 0, maxProducts);
 
+  //applying category filter
+  if (categoryFilter.length > 0) {
+    listShopifyProductsAllEdges = _.filter(listShopifyProductsAllEdges, ({ node }) => node.category == categoryFilter)
+  }
 
   //apply filter for slider on price
-  if (sliderPrice[0] == 0 && sliderPrice[1] == 0) {
-    var minPrice = _.minBy(listShopifyProductsAllEdges, ({ node }) => node.Price)
-    var maxPrice = _.maxBy(listShopifyProductsAllEdges, ({ node }) => node.Price)
-    setSliderPrice([minPrice.node.Price, maxPrice.node.Price])
+  if (priceRangeMin) {
+    listShopifyProductsAllEdges = _.filter(listShopifyProductsAllEdges, ({ node }) => priceRangeMin <= node.Price)
   }
-  listShopifyProductsAllEdges = _.filter(listShopifyProductsAllEdges, ({ node }) => sliderPrice[0] <= node.Price && node.Price <= sliderPrice[1])
+  if (priceRangeMax) {
+    listShopifyProductsAllEdges = _.filter(listShopifyProductsAllEdges, ({ node }) => node.Price <= priceRangeMax)
+  }
 
   //apply filtertext if its greater than 3 characters
   if (filter && filter.length > 3) {
@@ -193,44 +202,50 @@ const Products = ({ data, pageContext }) => {
 
   if (listShopifyProductsAllEdges.length >= rowallMysqlShopifyProductsAllEdges.length) setShowMore(false);
 
-  const handerSliderPriceChange = (event, newValue) => {
-    setSliderPrice(newValue);
-  }
-
   return (
     <Layout title={'Shopify Products | Disover great products from indepedent online stores'} description="Discover the best products from hundreds of independent online stores in one place. An alternative to Amazon Marketplace online shopping.">
       <Header title="🧐 Disover great products from Shopify stores" />
       <div>
         <CategoryHeading>Popular Products from Featured Brands</CategoryHeading>
 
-          <CarouselWrapper>
-            <Carousel
-              swipeable={false}
-              draggable={false}
-              showDots={false}
-              responsive={responsive}
-              keyBoardControl={true}
-            >
-              {visibleFeaturedProducts.map(({ node }, index) => (
-                <ProductCategoryItem
+        <CarouselWrapper>
+          <Carousel
+            swipeable={false}
+            draggable={false}
+            showDots={false}
+            responsive={responsive}
+            keyBoardControl={true}
+          >
+            {visibleFeaturedProducts.map(({ node }, index) => (
+              <ProductCategoryItem
                 key={`FeaturedProducts-${index}`}
-                  cover={getProductImage(node)}
-                  path={`/shops/${node.UserName}/`}
-                  vendorname={node.VendorName}
-                  title={node.Title}
-                  variant={getProductVariant(node)}
-                  price={node.Price}
-                  node={node}
-                />
-              ))}
-            </Carousel>
-          </CarouselWrapper>
+                cover={getProductImage(node)}
+                path={`/shops/${node.UserName}/`}
+                vendorname={node.VendorName}
+                title={node.Title}
+                variant={getProductVariant(node)}
+                price={node.Price}
+                node={node}
+              />
+            ))}
+          </Carousel>
+        </CarouselWrapper>
 
 
 
         <CategoryHeading>Discover great products</CategoryHeading>
 
         <SearchWrapper>
+          <div>
+            <label>Filter by Category:
+            <select value={categoryFilter} onChange={changeCategoryFilter}>
+                <option value="">-</option>
+                {allCategories && allCategories.map(item => (
+                  <option value={item}>{item}</option>
+                ))}
+              </select>
+            </label>
+          </div>
           Search
             <input
             placeholder="filter products"
@@ -238,17 +253,17 @@ const Products = ({ data, pageContext }) => {
               setFilter(value);
             }}
           />
-          <div style={{ width: "80%", display: "flex" }}>
-            <span style={{ width: "15%" }}>Price Range : </span>
-            <Slider
-              value={sliderPrice}
-              onChange={handerSliderPriceChange}
-              min={0}
-              max={sliderPrice[1] + 50}
-              valueLabelDisplay="auto"
-              aria-labelledby="range-slider-avg"
-
-            />
+          <div>
+            <label>Price Range : Min <input size="4"
+                onChange={({ target: { value } }) => {
+                  setPriceRangeMin(value);
+                }}
+              /> - Max <input size="4"
+                onChange={({ target: { value } }) => {
+                  setPriceRangeMax(value);
+                }}
+              />
+            </label>
           </div>
           <div style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
             Sort by
@@ -266,7 +281,7 @@ const Products = ({ data, pageContext }) => {
           <CategoryWrapper>
             {listShopifyProductsAllEdges.map(({ node }, index) => (
               <ProductCategoryItem
-              key={`SaleProductsAll-${index}`}
+                key={`SaleProductsAll-${index}`}
                 cover={getProductImage(node)}
                 path={`/shops/${node.UserName}/`}
                 vendorname={node.VendorName}
@@ -328,7 +343,7 @@ const Products = ({ data, pageContext }) => {
             >
               {listShopifyGiftCards.map(({ node }, index) => (
                 <ProductCategoryItem
-                key={`GiftCards-${index}`}
+                  key={`GiftCards-${index}`}
                   cover={getProductImage(node)}
                   path={`/shops/${node.UserName}/`}
                   vendorname={node.VendorName}
@@ -380,6 +395,7 @@ export const query = graphql`
           AlexaURL
           UserName
           tags
+          category
           name
           about
         }
