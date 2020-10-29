@@ -95,7 +95,7 @@ module.exports = {
             name: 'Pages'
           },
           {
-            statement: 'SELECT CONCAT(VendorURL,FLOOR(RAND()*10000)) AS UniqueKey,ShopifyProductsAll.* FROM ShopifyProductsAll',
+            statement: 'SELECT CONCAT(VendorURL,FLOOR(RAND()*10000)) AS UniqueKey,ShopifyProductsAll.*,ShopifyDesc.Description FROM ShopifyProductsAll LEFT JOIN ShopifyDesc on ShopifyDesc.ProductID = ShopifyProductsAll.ProductID',
             idFieldName: 'UniqueKey',
             name: 'ShopifyProductsAll'
           },

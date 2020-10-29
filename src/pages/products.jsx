@@ -386,6 +386,7 @@ export const query = graphql`
           VariantUpdateDate
           VendorName
           VendorURL
+          Description
         }
       }
     }
