@@ -493,7 +493,8 @@ const SingleItem = ({ data, pageContext }) => {
     return calculatedText;
   };
 
-  const renderProduct = (node, ismobile) => {
+  const renderProduct = (node, ismobile, showDiscountedPrice) => {
+    const displayMaxPrice = (showDiscountedPrice && node.MaxPrice && node.MaxPrice != node.Price ? '$' + node.MaxPrice : '')
     return (
       <ViewCard key={node.ProductURL} style={{ padding: ismobile && '15px' }}>
         <a href={node.ProductURL} target="_blank">
@@ -501,6 +502,7 @@ const SingleItem = ({ data, pageContext }) => {
             <div style={{ width: '100%', height: '150px' }}>
               <img
                 src={node.ImageURL}
+                onError={defaultImageOnError}
                 style={{
                   objectFit: 'cover',
                   height: '150px',
@@ -512,7 +514,7 @@ const SingleItem = ({ data, pageContext }) => {
             </div>
           </ViewImage>
         </a>
-        <small>${node.Price}</small>
+        <small><strike>{displayMaxPrice}</strike> ${node.Price}</small>
         <ViewInfo className="info">
           <a href={node.ProductURL} target="_blank">
             {node.Title && node.Title.substring(0, 50)}
@@ -561,7 +563,7 @@ const SingleItem = ({ data, pageContext }) => {
     );
   };
 
-  const defaultImageOnError = (e) => { e.target.src = "https://source.unsplash.com/100x100/?abstract," + (Math.random() * 1000) }
+  const defaultImageOnError = (e) => { e.target.src = "/logo/logo.png" }
 
   const renderProfilePicURL = (node, name) => {
     if (node.mysqlImages && node.mysqlImages.length > 0) {
@@ -574,7 +576,7 @@ const SingleItem = ({ data, pageContext }) => {
       );
     } else {
       return (
-        <img src={"https://source.unsplash.com/100x100/?abstract," + (Math.random() * 1000)} className="profileimage" style={{ width: '100px', height: '100px' }} title={name} alt={name} />
+        <img src={"/logo/logo.png"} className="profileimage" style={{ width: '100px', height: '100px' }} title={name} alt={name} />
       );
     }
   }
@@ -773,7 +775,7 @@ const SingleItem = ({ data, pageContext }) => {
                 showStatus={false}
               >
                 {listShopifySaleProducts.map(({ node }) => {
-                  return renderProduct(node, true);
+                  return renderProduct(node, true, true);
                 })}
               </Carousel>
             </TabPanel>
@@ -783,7 +785,7 @@ const SingleItem = ({ data, pageContext }) => {
             <TabPanel>
               <ViewContainer>
                 {listShopifySaleProducts.map(({ node }) => {
-                  return renderProduct(node);
+                  return renderProduct(node, false, true);
                 })}
               </ViewContainer>
             </TabPanel>
@@ -809,7 +811,7 @@ const SingleItem = ({ data, pageContext }) => {
             </div>
           )}
         <br />
-        {rowShopifyProductSummary && rowShopifyProductSummary.length > 0 && (
+        {rowShopifyProductSummary && (
           <ReactFrappeChart
             title="Product prices"
             type="axis-mixed"
@@ -1253,6 +1255,7 @@ export const query = graphql`
       PriceMax
       PriceMin
       VendorURL
+      TitleList
     }
 
     allMysqlSocialIdView {
