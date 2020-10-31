@@ -616,6 +616,8 @@ const SingleItem = ({ data, pageContext }) => {
                   <br />
                   <span className="stat_title">Price Range</span>
                 </StatisticItem>
+                </Statistics>
+                <Statistics>
                 <StatisticItem>
                 {rowShopifyProductSummary.PriceAvg && (
                   <div>
@@ -797,25 +799,7 @@ const SingleItem = ({ data, pageContext }) => {
           <h3>get free shipping at {name}</h3>
         )}
 
-        <Tabs>
-          <TabList>
-            {listShopifyBestSellersEdges &&
-              listShopifyBestSellersEdges.length > 0 && (
-                <Tab style={TabStyle}>Best sellers</Tab>
-              )}
-            {listShopifyClassicProductsEdges &&
-              listShopifyClassicProductsEdges.length > 0 && (
-                <Tab style={TabStyle}>Classics</Tab>
-              )}
-            {listShopifyNewProductsEdges &&
-              listShopifyNewProductsEdges.length > 0 && (
-                <Tab style={TabStyle}>New products</Tab>
-              )}
-            {listShopifySaleProducts &&
-              listShopifySaleProducts.length > 0 && (
-                <Tab style={TabStyle}>Sale</Tab>
-              )}
-          </TabList>
+
 
 <h3>Disocover great products from {name}</h3>
           {/* Show carousel for mobile version */}
@@ -923,7 +907,7 @@ const SingleItem = ({ data, pageContext }) => {
           />
         )}
         {/* Social Statistics Section */}
-        <h3>Site Stats: {name}</h3>
+        <h3>Site Stats for {name}</h3>
         <Tabs>
           <TabList>
             <Tab style={TabStyle}>Traffic rank</Tab>
