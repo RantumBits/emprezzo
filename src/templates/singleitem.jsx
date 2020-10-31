@@ -231,12 +231,12 @@ const SingleItem = ({ data, pageContext }) => {
   //console.log("*** relatedShops",relatedShops);
 
   //Extracting Products from MySQL Data
-  const maxProducts = 5;
+  const maxProducts = 25;
   const rowShopifyViewEdges = data.allMysqlShopifyView.edges;
   //filtering top 3 for current AlexaURL
   const filteredProductView = _.filter(rowShopifyViewEdges, ({ node }) =>
     node.AlexaURL == AlexaURL &&
-    node.Price > 20 &&
+    node.Price > 5 &&
     node.Title.toLowerCase().indexOf('gift') < 0 &&
     node.Title.toLowerCase().indexOf('test') < 0 &&
     node.Title.toLowerCase().indexOf('shipping') < 0
@@ -604,38 +604,36 @@ const SingleItem = ({ data, pageContext }) => {
                   ></a>
                 </StatisticItem>
               )}
-              {firstRowDataView && firstRowDataView.node.TotalFollowers && (
+
                 <StatisticItem>
-                  {firstRowDataView.node.TotalFollowers.toLocaleString()}
+                {rowShopifyProductSummary.PriceMin &&
+        rowShopifyProductSummary.PriceMax && (
+          <div>
+            Price Range: ${rowShopifyProductSummary.PriceMin} - $
+            {rowShopifyProductSummary.PriceMax}
+          </div>
+        )}
                   <br />
-                  <span className="stat_title">Total Fans</span>
+                  <span className="stat_title">Price Range</span>
                 </StatisticItem>
-              )}
+                <StatisticItem>
+                {rowShopifyProductSummary.PriceAvg && (
+                  <div>
+                 ${rowShopifyProductSummary.PriceAvg}
+                  </div>
+                )}
+
+                  <br />
+                  <span className="stat_title">Avg Price</span>
+                </StatisticItem>
             </Statistics>
             <Statistics>
-              {firstRowDataView && firstRowDataView.node.AlexaRankOrder && (
-                <StatisticItem>
-                  {firstRowDataView.node.AlexaRankOrder} <br />
-                  <span className="stat_title" title="Emprezzo Traffic Rank">
-                    Traffic Rank
-                  </span>
-                </StatisticItem>
-              )}
+              <Content input={about} />
             </Statistics>
           </div>
         </div>
-        {rowShopifyProductSummary.PriceAvg && (
-          <div>
-            Average Price: ${rowShopifyProductSummary.PriceAvg}
-          </div>
-        )}
-        {rowShopifyProductSummary.PriceMin &&
-          rowShopifyProductSummary.PriceMax && (
-            <div>
-              Price Range: ${rowShopifyProductSummary.PriceMin} - $
-              {rowShopifyProductSummary.PriceMax}
-            </div>
-          )}
+
+
         <div style={{ margin: '2rem' }}>
           <a href={AlexaURL} className="button" target="_blank">
             shop {name}
@@ -644,7 +642,7 @@ const SingleItem = ({ data, pageContext }) => {
             Discover another shop
           </a>
         </div>
-        <Content input={about} />
+
         <br />
         {/* List of Products from MySQL View */}
         {listProductEdges && listProductEdges.length > 0 && (
@@ -798,6 +796,56 @@ const SingleItem = ({ data, pageContext }) => {
         {FreeShipText && FreeShipText.length > 0 && (
           <h3>get free shipping at {name}</h3>
         )}
+
+        <Tabs>
+          <TabList>
+            {listShopifyBestSellersEdges &&
+              listShopifyBestSellersEdges.length > 0 && (
+                <Tab style={TabStyle}>Best sellers</Tab>
+              )}
+            {listShopifyClassicProductsEdges &&
+              listShopifyClassicProductsEdges.length > 0 && (
+                <Tab style={TabStyle}>Classics</Tab>
+              )}
+            {listShopifyNewProductsEdges &&
+              listShopifyNewProductsEdges.length > 0 && (
+                <Tab style={TabStyle}>New products</Tab>
+              )}
+            {listShopifySaleProducts &&
+              listShopifySaleProducts.length > 0 && (
+                <Tab style={TabStyle}>Sale</Tab>
+              )}
+          </TabList>
+
+<h3>Disocover great products from {name}</h3>
+          {/* Show carousel for mobile version */}
+          {isMobile && listProductEdges && listProductEdges.length > 0 && (
+
+              <Carousel
+                showThumbs={false}
+                infiniteLoop
+                showIndicators={false}
+                selectedItem={1}
+                showArrows={true}
+                showStatus={false}
+              >
+                {listProductEdges.map(({ node }) => {
+                  return renderProduct(node, true);
+                })}
+              </Carousel>
+
+          )}
+          {/* Show normally for non mobile version */}
+          {!isMobile && listProductEdges && listProductEdges.length > 0 && (
+
+              <ViewContainer>
+                {listProductEdges.map(({ node }) => {
+                  return renderProduct(node);
+                })}
+              </ViewContainer>
+
+          )}
+
         <p>{get100Words(FreeShipText)}</p>
         {listShopifyGiftCards &&
           listShopifyGiftCards.length > 0 && (
@@ -811,6 +859,36 @@ const SingleItem = ({ data, pageContext }) => {
             </div>
           )}
         <br />
+        {!!relatedShops.length && (
+          <>
+            <h3>Discover more stores like {name}</h3>
+            <PostSectionGrid>
+              {relatedShops && relatedShops.map(({ shop }, index) => (
+                <span key={index}>
+                  <PostSectionImage>
+                    <img src={shop.ProfilePicURL} alt={shop.name} style={{ height: 'inherit', 'text-align': 'center', 'border-radius': '100%' }} />
+                  </PostSectionImage>
+                  <PostSectionContent>
+                    <Link key={index} to={`/shops/${shop.UserName}/`}>
+                      {shop.name && <h3>{shop.name}</h3>}
+                    </Link>
+                    {shop.about && <div>{_.truncate(shop.about, { length: 200, omission: '...' })}</div>}
+                  </PostSectionContent>
+                </span>
+              ))}
+            </PostSectionGrid>
+          </>
+        )}
+        <br />
+        <br />
+        <a href="/randomshop" className="button ">
+          Discover a new shop
+        </a>
+        <br />
+        <br />
+        See more online stores tagged: <TagsBlock list={tagsList || []} isLinkToShops={true} />
+            <br />
+        <h3>Product prices at {name}</h3>
         {rowShopifyProductSummary && (
           <ReactFrappeChart
             title="Product prices"
@@ -845,7 +923,7 @@ const SingleItem = ({ data, pageContext }) => {
           />
         )}
         {/* Social Statistics Section */}
-        <h3>Site Stats</h3>
+        <h3>Site Stats: {name}</h3>
         <Tabs>
           <TabList>
             <Tab style={TabStyle}>Traffic rank</Tab>
@@ -1063,34 +1141,7 @@ const SingleItem = ({ data, pageContext }) => {
         <br />
 
 
-        {!!relatedShops.length && (
-          <>
-            <h3>Discover more stores like {name}</h3>
-            <PostSectionGrid>
-              {relatedShops && relatedShops.map(({ shop }, index) => (
-                <span key={index}>
-                  <PostSectionImage>
-                    <img src={shop.ProfilePicURL} alt={shop.name} style={{ height: 'inherit', 'text-align': 'center', 'border-radius': '100%' }} />
-                  </PostSectionImage>
-                  <PostSectionContent>
-                    <Link key={index} to={`/shops/${shop.UserName}/`}>
-                      {shop.name && <h3>{shop.name}</h3>}
-                    </Link>
-                    {shop.about && <div>{_.truncate(shop.about, { length: 200, omission: '...' })}</div>}
-                  </PostSectionContent>
-                </span>
-              ))}
-            </PostSectionGrid>
-          </>
-        )}
-        <br />
-        <br />
-        <a href="/randomshop" className="button ">
-          Discover a new shop
-        </a>
-        <br />
-        <br />
-        See more online stores tagged: <TagsBlock list={tagsList || []} isLinkToShops={true} />
+
 
       </Container>
       <SuggestionBar>
