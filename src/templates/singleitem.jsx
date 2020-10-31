@@ -231,7 +231,7 @@ const SingleItem = ({ data, pageContext }) => {
   //console.log("*** relatedShops",relatedShops);
 
   //Extracting Products from MySQL Data
-  const maxProducts = 25;
+  const maxProducts = 7;
   const rowShopifyViewEdges = data.allMysqlShopifyView.edges;
   //filtering top 3 for current AlexaURL
   const filteredProductView = _.filter(rowShopifyViewEdges, ({ node }) =>
@@ -1129,8 +1129,14 @@ const SingleItem = ({ data, pageContext }) => {
 
       </Container>
       <SuggestionBar>
-        <PostSuggestion></PostSuggestion>
-        <PostSuggestion></PostSuggestion>
+      <div style={{ margin: '2rem' }}>
+        <a href={AlexaURL} className="button" target="_blank">
+          shop {name}
+        </a>{' '}
+        <a href="/randomshop" className="button buttonalt">
+          Discover another shop
+        </a>
+      </div>
       </SuggestionBar>
 
     </Layout>
