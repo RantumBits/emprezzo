@@ -604,30 +604,29 @@ const SingleItem = ({ data, pageContext }) => {
                   ></a>
                 </StatisticItem>
               )}
+              <StatisticItem>
+              {rowShopifyProductSummary.PriceAvg && (
+                <div>
+               ${rowShopifyProductSummary.PriceAvg}
+                </div>
+              )}
 
+                <br />
+                <span className="stat_title">Avg Price</span>
+              </StatisticItem>
                 <StatisticItem>
+
                 {rowShopifyProductSummary.PriceMin &&
         rowShopifyProductSummary.PriceMax && (
           <div>
-            Price Range: ${rowShopifyProductSummary.PriceMin} - $
-            {rowShopifyProductSummary.PriceMax}
+             ${rowShopifyProductSummary.PriceMin} - ${rowShopifyProductSummary.PriceMax}
           </div>
         )}
-                  <br />
+
                   <span className="stat_title">Price Range</span>
                 </StatisticItem>
-                </Statistics>
-                <Statistics>
-                <StatisticItem>
-                {rowShopifyProductSummary.PriceAvg && (
-                  <div>
-                 ${rowShopifyProductSummary.PriceAvg}
-                  </div>
-                )}
 
-                  <br />
-                  <span className="stat_title">Avg Price</span>
-                </StatisticItem>
+
             </Statistics>
             <Statistics>
               <Content input={about} />
@@ -664,7 +663,7 @@ const SingleItem = ({ data, pageContext }) => {
               )}
             {listShopifyClassicProductsEdges &&
               listShopifyClassicProductsEdges.length > 0 && (
-                <Tab style={TabStyle}>Classics</Tab>
+                <Tab style={TabStyle}>Shop {name}</Tab>
               )}
             {listShopifyNewProductsEdges &&
               listShopifyNewProductsEdges.length > 0 && (
