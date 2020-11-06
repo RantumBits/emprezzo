@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import theme from '../../config/theme';
 
+
 const Wrapper = styled.article`
   margin: 0.7rem;
   position: relative;
@@ -45,10 +46,10 @@ const StyledLink = styled(Link)`
     bottom: 0;
     background: linear-gradient(
       to bottom,
-      rgba(140, 82, 255, 0) 0%,
-      rgba(140, 82, 255, 0.2) 30%,
-      rgba(75, 40, 64, 0.6) 60%,
-      rgba(75, 40, 64, 0.9) 100%
+      rgba(0, 0, 0, 0) 30%,
+      rgba(0, 0, 0, 0.2) 60%,
+      rgba(0, 0, 0, 0.3) 80%,
+      rgba(0, 0, 0, 0.5) 100%
     );
     z-index: -10;
     border-radius: ${theme.borderRadius.default};

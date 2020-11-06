@@ -231,7 +231,7 @@ const SingleItem = ({ data, pageContext }) => {
   //console.log("*** relatedShops",relatedShops);
 
   //Extracting Products from MySQL Data
-  const maxProducts = 7;
+  const maxProducts = 5;
   const rowShopifyViewEdges = data.allMysqlShopifyView.edges;
   //filtering top 3 for current AlexaURL
   const filteredProductView = _.filter(rowShopifyViewEdges, ({ node }) =>
@@ -593,44 +593,16 @@ const SingleItem = ({ data, pageContext }) => {
         <div className="profileimage" style={{ display: 'flex' }}>
           {firstRowDataView && renderProfilePicURL(firstRowDataView.node, name)}
           <div style={{ paddingLeft: '15px' }}>
+
+            <Content input={about} />
+<br/>  <span className="stat_title">{tags}</span>
             <Statistics>
-              {firstRowDataView && (firstRowDataView.node.activity || firstRowDataView.node.FollowerRate || firstRowDataView.node.PostRate) && (
-                <StatisticItem>
-                  <a
-                    target="_blank"
-                    href={
-                      firstRowDataView && firstRowDataView.node.ShortCodeURL
-                    }
-                  ></a>
-                </StatisticItem>
-              )}
-              <StatisticItem>
-              {rowShopifyProductSummary.PriceAvg && (
-                <div>
-               ${rowShopifyProductSummary.PriceAvg}
-                </div>
-              )}
 
-                <br />
-                <span className="stat_title">Avg Price</span>
-              </StatisticItem>
-                <StatisticItem>
 
-                {rowShopifyProductSummary.PriceMin &&
-        rowShopifyProductSummary.PriceMax && (
-          <div>
-             ${rowShopifyProductSummary.PriceMin} - ${rowShopifyProductSummary.PriceMax}
-          </div>
-        )}
-
-                  <span className="stat_title">Price Range</span>
-                </StatisticItem>
 
 
             </Statistics>
-            <Statistics>
-              <Content input={about} />
-            </Statistics>
+
           </div>
         </div>
 
@@ -640,15 +612,14 @@ const SingleItem = ({ data, pageContext }) => {
             shop {name}
           </a>{' '}
           <a href="/randomshop" className="button buttonalt">
-            Discover another shop
+            Discover a new shop
           </a>
         </div>
 
         <br />
         {/* List of Products from MySQL View */}
-        {listProductEdges && listProductEdges.length > 0 && (
-          <h3>shop {name}</h3>
-        )}
+
+
         {signup_promos && signup_promos.toLowerCase() != 'n/a' && (
           <>
             <Content input={signup_promos} />
@@ -790,17 +761,15 @@ const SingleItem = ({ data, pageContext }) => {
             </TabPanel>
           )}
         </Tabs>
-        {listProductEdges &&
-          listProductEdges.map(({ node }) => {
-            FreeShipText = node.FreeShipText;
-          })}
+
         {FreeShipText && FreeShipText.length > 0 && (
           <h3>get free shipping at {name}</h3>
         )}
 
-
-
-<h3>Disocover great products from {name}</h3>
+        {listProductEdges &&
+          listProductEdges.map(({ node }) => {
+<h3>Discover great products from {name}</h3>
+  })}
           {/* Show carousel for mobile version */}
           {isMobile && listProductEdges && listProductEdges.length > 0 && (
 
@@ -844,7 +813,7 @@ const SingleItem = ({ data, pageContext }) => {
         <br />
         {!!relatedShops.length && (
           <>
-            <h3>Discover more stores like {name}</h3>
+            <h3>Discover similar shops to {name}</h3>
             <PostSectionGrid>
               {relatedShops && relatedShops.map(({ shop }, index) => (
                 <span key={index}>
@@ -872,6 +841,31 @@ const SingleItem = ({ data, pageContext }) => {
         See more online stores tagged: <TagsBlock list={tagsList || []} isLinkToShops={true} />
             <br />
         <h3>Product prices at {name}</h3>
+        <Statistics>
+        <StatisticItem>
+        {rowShopifyProductSummary.PriceAvg && (
+          <div>
+         ${rowShopifyProductSummary.PriceAvg}<br/>
+           <span className="stat_title">Avg Price</span>
+          </div>
+        )}
+
+
+
+        </StatisticItem>
+          <StatisticItem>
+
+          {rowShopifyProductSummary.PriceMin &&
+  rowShopifyProductSummary.PriceMax && (
+    <div>
+       ${rowShopifyProductSummary.PriceMin} - ${rowShopifyProductSummary.PriceMax}<br/>
+           <span className="stat_title">Price Range</span>
+    </div>
+  )}
+
+
+          </StatisticItem>
+            </Statistics>
         {rowShopifyProductSummary && (
           <ReactFrappeChart
             title="Product prices"
