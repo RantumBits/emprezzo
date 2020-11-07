@@ -15,6 +15,7 @@ import LazyLoad from 'react-lazyload';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import '../styles/prism';
+import { useMediaQuery } from 'react-responsive';
 
 const PostSectionHeading = styled.h1`
   margin-left: 4rem;
@@ -33,6 +34,8 @@ const PostWrapper = styled.div`
     margin: 4rem 1rem 1rem 1rem;
   }
 `;
+
+
 
 const ShopSectionHeading = styled.h1`
   margin-left: 4rem;
@@ -73,8 +76,8 @@ const Index = ({ data }) => {
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
-      items: 6,
-      slidesToSlide: 6 // optional, default to 1.
+      items: 7,
+      slidesToSlide: 7 // optional, default to 1.
     },
     tablet: {
       breakpoint: { max: 1024, min: 464 },
@@ -104,7 +107,7 @@ const Index = ({ data }) => {
       const inputID = edge.node.AlexaURL;
       const result = _.filter(rowallMysqlShopifyProductsAllEdges, ({ node }) => node.VendorURL == inputID && node.Price > 25 && node.Title.toLowerCase().indexOf("gift") < 0 && node.Title.toLowerCase().indexOf("test") < 0 && node.Title.toLowerCase().indexOf("shipping") < 0)
       const sortedResult = _.sortBy(result, ({ node }) => -node.PublishedDate);
-      const max2Results = _.slice(sortedResult, 0, 3);//max 2 products from a store
+      const max2Results = _.slice(sortedResult, 0, 2);//max 2 products from a store
       //add shop details to products
       let combinedMax2Results = [];
       max2Results.map((maxedge) => {
@@ -127,9 +130,36 @@ const Index = ({ data }) => {
   };
 
   const TabPanelStyle = {
-  padding: '5%'
+  padding: '2% 5%'
 
   };
+
+
+  const ViewContainer = styled.section`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 100%;
+    gap: 10px;
+  `;
+
+  const ViewCard = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    flex: 1;
+    @media (max-width: ${props => props.theme.breakpoints.s}) {
+      flex: 2;
+    }
+  `;
+
+  const ViewImage = styled.div`
+    max-width: 100%;
+    border-radius: 100%;
+  `;
+  const ViewInfo = styled.div`
+    max-width: 100%;
+  `;
 
 
   const getProductImage = (node) => {
@@ -172,7 +202,7 @@ const Index = ({ data }) => {
   var globalRankSortedEdges = _.sortBy(combinedEdges, obj => obj.GlobalRank)
 
   //Now limiting the items as per limit
-  const globalRankEdges = _.slice(globalRankSortedEdges, 0, 6)
+  const globalRankEdges = _.slice(globalRankSortedEdges, 0, 7)
 
   //Now sorting (desc) based on TotalFollowers
   var totalFollowersSortedEdges = _.sortBy(combinedEdges, obj => -obj.TotalFollowers)
@@ -221,6 +251,8 @@ const Index = ({ data }) => {
   })
 
   const apparelShopEdges = _.filter(edges, ({ node }) => node.category && node.category.indexOf("Apparel") >= 0)
+
+
   const combinedApparelShopEdges = [];
   //Creating a new dataset with original nodes and required columns from DataView
   apparelShopEdges.map((edge) => {
@@ -304,17 +336,21 @@ const Index = ({ data }) => {
   })
 
   //Extracting sale products
-  const filteredShopifySaleProducts = _.sortBy(_.filter(listShopifyProductsAllEdges, ({ node }) => node.DiscountPct > 0.20 && node.DiscountPct < 1), ({ node }) => -node.UpdateDate);
-  const listShopifySaleProducts = _.slice(filteredShopifySaleProducts, 0, limit);
+  const filteredShopifyBestProducts = _.sortBy(_.filter(listShopifyProductsAllEdges, ({ node }) => node.Position == 1 || node.Position == 2 ), ({ node }) => -node.UpdateDate);
+  const listShopifyBestProducts = _.slice(filteredShopifyBestProducts, 0, limit);
 
   //getting newly added products
-  const newlyAddedProducts = checkEdgesInProductView(edges);
-  //Now limiting the items as per limit
+  //const newlyAddedProducts = _.sortBy(_.filter(listShopifyProductsAllEdges, ({ node }) => node.category && node.category.indexOf("Apparel") >= 0 ), ({ node }) => -node.PublishedDate);
+  const newlyAddedProducts = _.sortBy(_.filter(listShopifyProductsAllEdges, ({ node }) => node.Price > 50 && node.Price < 150 ), ({ node }) => -node.PublishedDate);
+  //Now limiting the items as per limit node.category.indexOf("Apparel")
   const visibleNewlyAddedProducts = _.slice(newlyAddedProducts, 0, limit);
+
+
+
 
   return (
     <Layout title={'emprezzo | Discover great independent shops & direct-to-consumer brands'} description="Discover the best online storess & direct-to-consumer brands" >
-      <Header title="Discover great brands & shops" subtitle="shop directly to support indepedent brands"></Header>
+      <Header title="Discover great brands & online shops" subtitle="shop directly & support independent business"></Header>
       {/* <p className="center"><a href ="/randomshop" className="button button">Discover a  shop</a></p> */}
       <div className="center">
 
@@ -336,34 +372,48 @@ const Index = ({ data }) => {
       {combinedApparelShopEdges && <Tab style={TabStyle}>Apparel</Tab>}
       {combinedToysShopEdges && <Tab style={TabStyle}>Toys</Tab>}
       {combinedElectronicsShopEdges && <Tab style={TabStyle}>Electronics</Tab>}
-      {combinedHomeShopEdges && <Tab style={TabStyle}>Home & Office</Tab>}
+      {combinedHomeShopEdges && <Tab style={TabStyle}>Home</Tab>}
       {combinedFootwearShopEdges && <Tab style={TabStyle}>Footwear</Tab>}
 
 
     </TabList>
+
+
     <TabPanel>
-    <Carousel
-      swipeable={false}
-      draggable={false}
-      showDots={false}
-      ssr={true}
-      responsive={responsive}
-      keyBoardControl={true}
-    >
+    <ViewContainer>
       {globalRankEdges.map((node, index) => (
-        <HomeCarouselItem
-          id={`post-${index}`}
-          key={index}
-          path={`/shops/${node.slug}/`}
-          title={node.name}
-          cover={node.mysqlImages && node.mysqlImages.length > 0 ? node.mysqlImages[0].childImageSharp.fluid : node.ProfilePicURL}
-          excerpt={node.category && node.category.substring(0, 80) + `: ${node.tags}` }
-        />
-      ))}
-    </Carousel>
-
-
-
+      <ViewCard key={index}>
+        <a href={`/shops/${node.slug}/`} target="_blank">
+          <ViewImage>
+            <div style={{ 'text-align' : 'center', }}>
+              <img
+                src={node.mysqlImages && node.mysqlImages.length > 0 ? node.mysqlImages[0].childImageSharp.fluid : node.ProfilePicURL}
+                onError=''
+                style={{
+                  objectFit: 'cover',
+                  height: '60%',
+                  width: '60%',
+                  margin: 'auto',
+                  'border-radius': '100%',
+                  padding: '5%',
+                }}
+                alt={node.name}
+              />
+            </div>
+          </ViewImage>
+        </a>
+        <small>{node.category}</small>
+        <ViewInfo className="info">
+          <a href={`/shops/${node.slug}/`} target="_blank">
+            {node.name}
+          </a>
+          <p>
+          <small>{node.tags && node.tags.substring(0, 90)}</small>
+          </p>
+        </ViewInfo>
+      </ViewCard>
+    ))}
+    </ViewContainer>
       </TabPanel>
 
 
@@ -503,7 +553,7 @@ const Index = ({ data }) => {
 
   <LazyLoad height={200} once offset={[-200, 0]}>
     <CarouselWrapper>
-      <h3>New Products </h3>
+  <h3>Discover best selling products</h3>
       <Carousel
         swipeable={false}
         draggable={false}
@@ -512,7 +562,7 @@ const Index = ({ data }) => {
         responsive={responsive}
         keyBoardControl={true}
       >
-        {listShopifySaleProducts.map(({ node }, index) => (
+        {listShopifyBestProducts.map(({ node }, index) => (
           <ProductCategoryItem
             key={`NewlyAddedProducts-${index}`}
             cover={getProductImage(node)}
@@ -528,12 +578,9 @@ const Index = ({ data }) => {
   </LazyLoad>
 
 
-
-
-
       <LazyLoad height={200} once offset={[-200, 0]}>
         <CarouselWrapper>
-          <h3>Discover Great Products</h3>
+          <h3>New Products</h3>
           <Carousel
             swipeable={false}
             draggable={false}
@@ -650,10 +697,12 @@ export const query = graphql`
     allMysqlShopifyProductsAll {
       edges {
         node {
+          DiscountPct
           ImageURL
           MaxPrice
           Position
           Price
+          UpdateDate
           ProductID
           ProductURL
           PublishedDate

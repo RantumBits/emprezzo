@@ -14,7 +14,7 @@ const Wrapper = styled.article`
   border-radius: ${props => props.theme.borderRadius.default};
   {/* box-shadow: ${props => props.theme.shadow.feature.small.default};*/}
   transition: ${props => props.theme.transitions.boom.transition};
-  height: 17rem;
+  height: 12rem;
 
   &:hover {
     box-shadow: ${props => props.theme.shadow.feature.small.hover};
@@ -42,6 +42,7 @@ const Image = styled.div`
   bottom: 0;
   z-index: 1;
   object-fit: cover;
+  text-align: center;
   border-radius: ${props => props.theme.borderRadius.default};
   img {
     border-radius: ${props => props.theme.borderRadius.default};
@@ -78,10 +79,10 @@ const StyledLink = styled.a`
     bottom: 0;
     background: linear-gradient(
       to bottom,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 0.3) 50%,
-      rgba(0, 0, 0, 0.7) 80%,
-      rgba(0, 0, 0, 0.8) 100%
+      rgba(0, 0, 0, 0) 30%,
+      rgba(0, 0, 0, 0.2) 60%,
+      rgba(0, 0, 0, 0.3) 80%,
+      rgba(0, 0, 0, 0.5) 100%
     );
     z-index: -10;
     border-radius: ${theme.borderRadius.default};
@@ -105,6 +106,7 @@ const Vendor = styled.h5`
 const Title = styled.div`
   margin: 0;
   margin-bottom: 0.6rem;
+  display: none;
 `;
 const SubTitle = styled.h5`
   margin: 0;
@@ -113,6 +115,7 @@ const SubTitle = styled.h5`
 const Price = styled.div`
   font-size: 1rem;
   margin: 0;
+  display: none;
 `;
 
 const ProductCategoryItem = ({ path, cover, title, vendorname, variant, price, node }) => {
@@ -164,17 +167,18 @@ const ProductCategoryItem = ({ path, cover, title, vendorname, variant, price, n
         </button>
 
         <h1>{node.Title}</h1>
-        <div style={{ display: "flex" }}>
-          <img src={cover} height='300px' />
-          <span style={{ paddingLeft: "2rem" }}>{node.Description}</span>
+        <div style={{ display: "flex"}}>
+          <img src={cover} style={{ 'max-height': '300px' , 'max-width' : '60%'}}/>
+          <span style={{ paddingLeft: "2rem" }}>{node.Description.substring(0, 250)}</span>
         </div>
-        <div>Price : <strike>{displayMaxPrice}</strike> ${node.Price}</div>
+
         <br />
+          <div>Price : <strike>{displayMaxPrice}</strike> ${node.Price}</div>
         {convertToSelectList(node.VariantTitle)}
         <br />
         <div>
-          <a href={node.ProductURL} target="_blank" class="button">Go to Product</a>
-          <a href={node.UserName ? path : node.VendorURL} class="button">Go to Shop</a>
+          <a href={node.ProductURL} target="_blank" class="button">Buy at {node.name || vendorname}</a>
+          <a href={node.UserName ? path : node.VendorURL} class="button buttonalt">Get shop info</a>
         </div>
         <br />
       </Dialog>

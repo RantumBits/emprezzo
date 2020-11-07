@@ -509,7 +509,7 @@ const SingleItem = ({ data, pageContext }) => {
                   width: '100%',
                   margin: 'auto',
                 }}
-                alt={node.Title}
+                alt={node.Title }
               />
             </div>
           </ViewImage>
