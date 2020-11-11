@@ -37,7 +37,7 @@ const PostWrapper = styled.div`
 
 
 
-const ShopSectionHeading = styled.h1`
+const SectionHeading = styled.h3`
   margin-left: 4rem;
 `;
 
@@ -65,13 +65,30 @@ const CarouselWrapper = styled.div`
   }
 `;
 
+const CategoryWrapper = styled.div`
+  display: grid;
+  margin: 0 auto;
+  width: 90vw;
+  grid-gap: 1rem;
+  @media (min-width: 501px) {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  }
+  @media only screen and (max-width: 600px) {
+    grid-template-columns: 100%;
+  }
+`;
+
 const Index = ({ data }) => {
   const { edges } = data.allMysqlMainView;
   const rowProductsEdges = data.allMysqlShopifyView.edges;
   const rowallMysqlShopifyProductsAllEdges = data.allMysqlShopifyProductsAll ? data.allMysqlShopifyProductsAll.edges : [];
-  const maxItems = 25;
-  const [limit, setLimit] = React.useState(maxItems);
+  const limit = 100;
+  const maxProducts = 7;
+  const maxVisibleItems = 10;
+  const [visibleItems, setVisibleItems] = React.useState(maxVisibleItems);
   const [showMore, setShowMore] = React.useState(true);
+
+  const isMobile = useMediaQuery({ query: '(max-width: 600px)' });
 
   const responsive = {
     desktop: {
@@ -92,7 +109,7 @@ const Index = ({ data }) => {
   };
 
   const increaseLimit = () => {
-    setLimit(limit + maxItems);
+    setVisibleItems(visibleItems + maxVisibleItems);
   }
 
   const searchIndices = [
@@ -130,7 +147,7 @@ const Index = ({ data }) => {
   };
 
   const TabPanelStyle = {
-  padding: '2% 5%'
+    padding: '2% 5%'
 
   };
 
@@ -202,7 +219,7 @@ const Index = ({ data }) => {
   var globalRankSortedEdges = _.sortBy(combinedEdges, obj => obj.GlobalRank)
 
   //Now limiting the items as per limit
-  const globalRankEdges = _.slice(globalRankSortedEdges, 0, 7)
+  const globalRankEdges = _.slice(globalRankSortedEdges, 0, maxProducts)
 
   //Now sorting (desc) based on TotalFollowers
   var totalFollowersSortedEdges = _.sortBy(combinedEdges, obj => -obj.TotalFollowers)
@@ -338,16 +355,84 @@ const Index = ({ data }) => {
   //Extracting sale products
   const filteredShopifyBestProducts = _.sortBy(_.filter(listShopifyProductsAllEdges, ({ node }) => node.Position == 1 || node.Position == 2 ), ({ node }) => -node.UpdateDate);
   const listShopifyBestProducts = _.slice(filteredShopifyBestProducts, 0, limit);
+  //Now limiting the items as per limit
+  const visibleShopifyBestProducts = _.slice(listShopifyBestProducts, 0, visibleItems);
+  if (visibleShopifyBestProducts.length >= listShopifyBestProducts.length) setShowMore(false);
 
   //getting newly added products
   //const newlyAddedProducts = _.sortBy(_.filter(listShopifyProductsAllEdges, ({ node }) => node.category && node.category.indexOf("Apparel") >= 0 ), ({ node }) => -node.PublishedDate);
-  const newlyAddedProducts = _.sortBy(_.filter(listShopifyProductsAllEdges, ({ node }) => node.Price > 50 && node.Price < 150 ), ({ node }) => -node.PublishedDate);
+  const newlyAddedProducts = _.sortBy(_.filter(listShopifyProductsAllEdges, ({ node }) => node.Price > 50 && node.Price < 150), ({ node }) => -node.PublishedDate);
   //Now limiting the items as per limit node.category.indexOf("Apparel")
   const visibleNewlyAddedProducts = _.slice(newlyAddedProducts, 0, limit);
 
+  const defaultImageOnError = (e) => { e.target.src = "/logo/logo.png" }
 
+  const renderProduct = (node) => {
+    return (
+      <ViewCard key={node.ProductURL}>
+        <a href={`/shops/${node.slug}/`}>
+          <ViewImage>
+            <div style={{ 'textAlign': 'center', }}>
+              <img
+                src={node.mysqlImages && node.mysqlImages.length > 0 ? node.mysqlImages[0].childImageSharp.fluid : node.ProfilePicURL}
+                onError={defaultImageOnError}
+                style={{
+                  objectFit: 'cover',
+                  height: '60%',
+                  width: '60%',
+                  margin: 'auto',
+                  borderRadius: '100%',
+                  padding: '5%',
+                }}
+                alt={node.name}
+              />
+            </div>
+          </ViewImage>
+        </a>
+        <small>{node.category}</small>
+        <ViewInfo className="info">
+          <a href={`/shops/${node.slug}/`} >
+            {node.name}
+          </a>
+          <p>
+            <small>{node.tags && node.tags.substring(0, 90)}</small>
+          </p>
+        </ViewInfo>
+      </ViewCard>
+    );
+  };
 
-
+  const renderProductList = (edges) => {
+    const limitedEdges = _.slice(edges, 0, maxProducts)
+    return (
+      <>
+        {/* below renderer for desktop version */}
+        { !isMobile && limitedEdges && limitedEdges.length > 0 && (
+          <ViewContainer>
+            {limitedEdges.map((node) => {
+              return renderProduct(node)
+            })}
+          </ViewContainer>
+        )}
+        {/* below renderer for mobile version */}
+        { isMobile && limitedEdges && limitedEdges.length > 0 && (
+          <Carousel
+            showThumbs={false}
+            infiniteLoop
+            showIndicators={false}
+            selectedItem={1}
+            showArrows={true}
+            showStatus={false}
+            responsive={responsive}
+          >
+            {limitedEdges.map((node) => {
+              return renderProduct(node);
+            })}
+          </Carousel>
+        )}
+      </>
+    );
+  }
   return (
     <Layout title={'emprezzo | Discover great independent shops & direct-to-consumer brands'} description="Discover the best online storess & direct-to-consumer brands" >
       <Header title="Discover great brands & online shops" subtitle="shop directly & support independent business"></Header>
@@ -364,245 +449,96 @@ const Index = ({ data }) => {
 
 
 
-        <Tabs style={TabPanelStyle}>
-<h2>Browse popular online shops</h2>
-    <TabList>
-      <Tab style={TabStyle}>All</Tab>
+      <Tabs style={TabPanelStyle}>
+        <h2>Browse popular online shops</h2>
+        <TabList>
+          <Tab style={TabStyle}>All</Tab>
 
-      {combinedApparelShopEdges && <Tab style={TabStyle}>Apparel</Tab>}
-      {combinedToysShopEdges && <Tab style={TabStyle}>Toys</Tab>}
-      {combinedElectronicsShopEdges && <Tab style={TabStyle}>Electronics</Tab>}
-      {combinedHomeShopEdges && <Tab style={TabStyle}>Home</Tab>}
-      {combinedFootwearShopEdges && <Tab style={TabStyle}>Footwear</Tab>}
-
-
-    </TabList>
+          {combinedApparelShopEdges && <Tab style={TabStyle}>Apparel</Tab>}
+          {combinedToysShopEdges && <Tab style={TabStyle}>Toys</Tab>}
+          {combinedElectronicsShopEdges && <Tab style={TabStyle}>Electronics</Tab>}
+          {combinedHomeShopEdges && <Tab style={TabStyle}>Home</Tab>}
+          {combinedFootwearShopEdges && <Tab style={TabStyle}>Footwear</Tab>}
 
 
-    <TabPanel>
-    <ViewContainer>
-      {globalRankEdges.map((node, index) => (
-      <ViewCard key={index}>
-        <a href={`/shops/${node.slug}/`} target="_blank">
-          <ViewImage>
-            <div style={{ 'text-align' : 'center', }}>
-              <img
-                src={node.mysqlImages && node.mysqlImages.length > 0 ? node.mysqlImages[0].childImageSharp.fluid : node.ProfilePicURL}
-                onError=''
-                style={{
-                  objectFit: 'cover',
-                  height: '60%',
-                  width: '60%',
-                  margin: 'auto',
-                  'border-radius': '100%',
-                  padding: '5%',
-                }}
-                alt={node.name}
-              />
-            </div>
-          </ViewImage>
-        </a>
-        <small>{node.category}</small>
-        <ViewInfo className="info">
-          <a href={`/shops/${node.slug}/`} target="_blank">
-            {node.name}
-          </a>
-          <p>
-          <small>{node.tags && node.tags.substring(0, 90)}</small>
-          </p>
-        </ViewInfo>
-      </ViewCard>
-    ))}
-    </ViewContainer>
-      </TabPanel>
+        </TabList>
 
 
-    {combinedApparelShopEdges && (
-      <TabPanel>
+        <TabPanel>
+          {renderProductList(globalRankEdges)}
+        </TabPanel>
+
+
+        {combinedApparelShopEdges && (
+          <TabPanel>
+            <LazyLoad height={200} once offset={[-200, 0]}>
+              {renderProductList(combinedApparelShopEdges)}
+            </LazyLoad>
+          </TabPanel>
+        )}
+        {combinedToysShopEdges && (
+          <TabPanel>
+            <LazyLoad height={200} once offset={[-200, 0]}>
+              {renderProductList(combinedToysShopEdges)}
+            </LazyLoad>
+          </TabPanel>
+        )}
+        {combinedElectronicsShopEdges && (
+          <TabPanel>
+            <LazyLoad height={200} once offset={[-200, 0]}>
+              {renderProductList(combinedElectronicsShopEdges)}
+            </LazyLoad>
+          </TabPanel>
+        )}
+
+
+        {combinedHomeShopEdges && (
+          <TabPanel>
+            <LazyLoad height={200} once offset={[-200, 0]}>
+              {renderProductList(combinedHomeShopEdges)}
+            </LazyLoad>
+          </TabPanel>
+        )}
+
+        {combinedFootwearShopEdges && (
+          <TabPanel>
+            <LazyLoad height={200} once offset={[-200, 0]}>
+              {renderProductList(combinedFootwearShopEdges)}
+            </LazyLoad>
+          </TabPanel>
+        )}
+
+      </Tabs>
+
+
+
+
       <LazyLoad height={200} once offset={[-200, 0]}>
-        <Carousel
-          swipeable={false}
-          draggable={false}
-          showDots={false}
-          ssr={true}
-          responsive={responsive}
-          keyBoardControl={true}
-        >
-          {combinedApparelShopEdges.map((node, index) => (
-            <HomeCarouselItem
-              id={`post-${index}`}
-              key={index}
+        <SectionHeading>Discover best selling products</SectionHeading>
+        <CategoryWrapper>
+          {visibleShopifyBestProducts.map(({ node }, index) => (
+            <ProductCategoryItem
+              key={`NewlyAddedProducts-${index}`}
+              cover={getProductImage(node)}
               path={`/shops/${node.UserName}/`}
-              title={node.name}
-              cover={node.mysqlImages && node.mysqlImages.length > 0 ? node.mysqlImages[0].childImageSharp.fluid : node.ProfilePicURL}
-              excerpt={node.category && node.category.substring(0, 80) + `: ${node.tags}` }
+              vendorname={node.VendorName}
+              title={node.Title}
+              price={node.Price}
+              node={node}
             />
           ))}
-        </Carousel>
-  </LazyLoad>
-      </TabPanel>
-    )}
-    {combinedToysShopEdges && (
-      <TabPanel>
-      <LazyLoad height={200} once offset={[-200, 0]}>
-        <Carousel
-          swipeable={false}
-          draggable={false}
-          showDots={false}
-          ssr={true}
-          responsive={responsive}
-          keyBoardControl={true}
-        >
-          {combinedToysShopEdges.map((node, index) => (
-            <HomeCarouselItem
-              id={`post-${index}`}
-              key={index}
-              path={`/shops/${node.UserName}/`}
-              title={node.name}
-              cover={node.mysqlImages && node.mysqlImages.length > 0 ? node.mysqlImages[0].childImageSharp.fluid : node.ProfilePicURL}
-              excerpt={node.category && node.category.substring(0, 80) + `: ${node.tags}` }
-            />
-          ))}
-        </Carousel>
-    </LazyLoad>
-      </TabPanel>
-    )}
-    {combinedElectronicsShopEdges && (
-      <TabPanel>
-      <LazyLoad height={200} once offset={[-200, 0]}>
-        <Carousel
-          swipeable={false}
-          draggable={false}
-          showDots={false}
-          ssr={true}
-          responsive={responsive}
-          keyBoardControl={true}
-        >
-          {combinedElectronicsShopEdges.map((node, index) => (
-            <HomeCarouselItem
-              id={`post-${index}`}
-              key={index}
-              path={`/shops/${node.UserName}/`}
-              title={node.name}
-              cover={node.mysqlImages && node.mysqlImages.length > 0 ? node.mysqlImages[0].childImageSharp.fluid : node.ProfilePicURL}
-              excerpt={node.category && node.category.substring(0, 80) + `: ${node.tags}` }
-            />
-          ))}
-        </Carousel>
-    </LazyLoad>
-      </TabPanel>
-    )}
-
-
-    {combinedHomeShopEdges && (
-      <TabPanel>
-      <LazyLoad height={200} once offset={[-200, 0]}>
-        <Carousel
-          swipeable={false}
-          draggable={false}
-          showDots={false}
-          ssr={true}
-          responsive={responsive}
-          keyBoardControl={true}
-        >
-          {combinedHomeShopEdges.map((node, index) => (
-            <HomeCarouselItem
-              id={`post-${index}`}
-              key={index}
-              path={`/shops/${node.UserName}/`}
-              title={node.name}
-              cover={node.mysqlImages && node.mysqlImages.length > 0 ? node.mysqlImages[0].childImageSharp.fluid : node.ProfilePicURL}
-              excerpt={node.category && node.category.substring(0, 80) + `: ${node.tags}` }
-            />
-          ))}
-        </Carousel>
-    </LazyLoad>
-      </TabPanel>
-    )}
-
-    {combinedFootwearShopEdges && (
-      <TabPanel>
-      <LazyLoad height={200} once offset={[-200, 0]}>
-        <Carousel
-          swipeable={false}
-          draggable={false}
-          showDots={false}
-          ssr={true}
-          responsive={responsive}
-          keyBoardControl={true}
-        >
-          {combinedFootwearShopEdges.map((node, index) => (
-            <HomeCarouselItem
-              id={`post-${index}`}
-              key={index}
-              path={`/shops/${node.UserName}/`}
-              title={node.name}
-              cover={node.mysqlImages && node.mysqlImages.length > 0 ? node.mysqlImages[0].childImageSharp.fluid : node.ProfilePicURL}
-              excerpt={node.category && node.category.substring(0, 80) + `: ${node.tags}` }
-            />
-          ))}
-        </Carousel>
-    </LazyLoad>
-      </TabPanel>
-    )}
-
-  </Tabs>
-
-
-
-
-  <LazyLoad height={200} once offset={[-200, 0]}>
-    <CarouselWrapper>
-  <h3>Discover best selling products</h3>
-      <Carousel
-        swipeable={false}
-        draggable={false}
-        showDots={false}
-        ssr={true}
-        responsive={responsive}
-        keyBoardControl={true}
-      >
-        {listShopifyBestProducts.map(({ node }, index) => (
-          <ProductCategoryItem
-            key={`NewlyAddedProducts-${index}`}
-            cover={getProductImage(node)}
-            path={`/shops/${node.UserName}/`}
-            vendorname={node.VendorName}
-            title={node.Title}
-            price={node.Price}
-            node={node}
-          />
-        ))}
-      </Carousel>
-    </CarouselWrapper>
-  </LazyLoad>
-
-
-      <LazyLoad height={200} once offset={[-200, 0]}>
-        <CarouselWrapper>
-          <h3>New Products</h3>
-          <Carousel
-            swipeable={false}
-            draggable={false}
-            showDots={false}
-            ssr={true}
-            responsive={responsive}
-            keyBoardControl={true}
-          >
-            {visibleNewlyAddedProducts.map(({ node }, index) => (
-              <ProductCategoryItem
-                key={`NewlyAddedProducts-${index}`}
-                cover={getProductImage(node)}
-                path={`/shops/${node.UserName}/`}
-                vendorname={node.VendorName}
-                title={node.Title}
-                price={node.Price}
-                node={node}
-              />
-            ))}
-          </Carousel>
-        </CarouselWrapper>
+        </CategoryWrapper>
+        {showMore && visibleShopifyBestProducts.length > 0 &&
+          <div className="center">
+            <button className="button" onClick={increaseLimit} style={{ cursor: "pointer" }}>
+              Load More
+            </button>
+          </div>
+        }
       </LazyLoad>
+
+
+
 
       <ShopWrapper>
         <h3>Discover the best online shopping sites at Emprezzo</h3>

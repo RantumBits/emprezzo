@@ -106,7 +106,7 @@ const Vendor = styled.h5`
 const Title = styled.div`
   margin: 0;
   margin-bottom: 0.6rem;
-  display: none;
+  text-transform: capitalize;
 `;
 const SubTitle = styled.h5`
   margin: 0;
@@ -116,6 +116,38 @@ const Price = styled.div`
   font-size: 1rem;
   margin: 0;
   display: none;
+`;
+
+const StyledDialog = styled(Dialog)`
+@media (max-width: 700px) {
+  width: 90vw;
+}
+.dialogTitle {
+  @media (max-width: 700px) {
+    font-size: 1.5rem;
+  }
+}
+
+.dialogImageDescription {
+  display : flex;
+  img {
+    max-height: 300px;
+    max-width: 50%;
+  }
+  span {
+    padding-left: 2rem;
+  }
+
+  @media (max-width: 700px) {
+    display : block;
+    img {
+      max-width : 100%;
+    }
+    span {
+      padding-left: 0rem;
+    }
+  }
+}
 `;
 
 const ProductCategoryItem = ({ path, cover, title, vendorname, variant, price, node }) => {
@@ -131,7 +163,7 @@ const ProductCategoryItem = ({ path, cover, title, vendorname, variant, price, n
     if (variants.toLowerCase() == "default title") return;
     const list = variants.split(",");
     return (
-      <div>Variants : <select>
+      <div>Options: <select>
         {list.map((item, index) => (
           <option key={index}>{item}</option>
         ))}
@@ -156,24 +188,29 @@ const ProductCategoryItem = ({ path, cover, title, vendorname, variant, price, n
       <StyledLink href="javascript:void(0)" onClick={() => openDialog()} title={vendorname}>
         <Information>
           <Vendor>{node.name || vendorname}</Vendor>
-          <Title>{_.truncate(title, { length: 38, omission: '' })}</Title>
+          <Title>{_.truncate(title.toLowerCase(), { length: 22, omission: '' })}</Title>
           <SubTitle>{variant}</SubTitle>
           <Price><strike>{displayMaxPrice}</strike> ${price}</Price>
         </Information>
       </StyledLink>
-      <Dialog isOpen={showDialog} onDismiss={closeDialog}>
+      <StyledDialog isOpen={showDialog} onDismiss={closeDialog}>
         <button className="close-button" onClick={closeDialog} style={{ float: "right", cursor: "pointer" }}>
           <span aria-hidden>X</span>
         </button>
 
-        <h1>{node.Title}</h1>
-        <div style={{ display: "flex"}}>
-          <img src={cover} style={{ 'max-height': '300px' , 'max-width' : '60%'}}/>
-          <span style={{ paddingLeft: "2rem" }}>{node.Description.substring(0, 250)}</span>
+
+        <div className="dialogImageDescription">
+          <img src={cover} />
+          <div>  <h3>{node.Title}</h3>
+
+          <b><strike>{displayMaxPrice}</strike> ${node.Price}</b><br/>
+          Buy at  <i>{node.name || vendorname}</i><br/>
+          <p>{node.Description && node.Description.substring(0, 250)}</p>
+          </div>
         </div>
 
         <br />
-          <div>Price : <strike>{displayMaxPrice}</strike> ${node.Price}</div>
+        <div></div>
         {convertToSelectList(node.VariantTitle)}
         <br />
         <div>
@@ -181,7 +218,7 @@ const ProductCategoryItem = ({ path, cover, title, vendorname, variant, price, n
           <a href={node.UserName ? path : node.VendorURL} class="button buttonalt">Get shop info</a>
         </div>
         <br />
-      </Dialog>
+      </StyledDialog>
     </Wrapper>
   );
 }
