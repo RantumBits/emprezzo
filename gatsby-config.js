@@ -116,7 +116,7 @@ module.exports = {
             name: 'PayNShip'
           },
           {
-            statement: "SELECT CONCAT(AlexaRankView.URL,FLOOR(RAND()*10000)) AS UniqueKey,AlexaRankView.URL as AlexaURL, AlexaRankView.*, Tags.*, SocialIDView.*, RankHistory.* FROM AlexaRankView LEFT JOIN Tags ON TRIM(TRAILING '/' FROM AlexaRankView.URL) = TRIM(TRAILING '/' FROM Tags.url) LEFT JOIN SocialIDView ON TRIM(TRAILING '/' FROM AlexaRankView.URL) = TRIM(TRAILING '/' FROM SocialIDView.URL) LEFT JOIN RankHistory ON TRIM(TRAILING '/' FROM AlexaRankView.URL) = TRIM(TRAILING '/' FROM RankHistory.url) LIMIT 100",
+            statement: "SELECT CONCAT(AlexaRankView.URL,FLOOR(RAND()*10000)) AS UniqueKey,AlexaRankView.URL as AlexaURL, AlexaRankView.*, Tags.*, SocialIDView.*, RankHistory.* FROM AlexaRankView LEFT JOIN Tags ON TRIM(TRAILING '/' FROM AlexaRankView.URL) = TRIM(TRAILING '/' FROM Tags.url) LEFT JOIN SocialIDView ON TRIM(TRAILING '/' FROM AlexaRankView.URL) = TRIM(TRAILING '/' FROM SocialIDView.URL) LEFT JOIN RankHistory ON TRIM(TRAILING '/' FROM AlexaRankView.URL) = TRIM(TRAILING '/' FROM RankHistory.url)",
             idFieldName: 'AlexaURL',
             name: 'MainView'
           },
@@ -130,6 +130,11 @@ module.exports = {
             idFieldName: 'UniqueKey',
             name: 'DataView'
             //,remoteImageFieldNames: ['ProfilePicURL']
+          },
+          {
+            statement: "SELECT CrunchBase.*,InstagramHistory.* from CrunchBase LEFT JOIN InstagramHistory ON TRIM(TRAILING '/' FROM CrunchBase.URL) = TRIM(TRAILING '/' FROM InstagramHistory.ExternalURL)",
+            idFieldName: 'URL',
+            name: 'CrunchBaseView' 
           }
         ]
       }

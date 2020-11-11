@@ -206,7 +206,7 @@ const SingleItem = ({ data, pageContext }) => {
   const [sortBy, setSortBy] = React.useState("UpdateDate");
   const [sortOrder, setSortOrder] = React.useState("DESC");
   const changeSortBy = (e) => { setSortBy(e.target.value) }
-  const changeSortOrder = (e) => { setSortOrder(e.target.value) }
+  const changeSortOrder = (e) => { setSortOrder((sortOrder=="DESC")?"ASC":"DESC") }
 
   const isMobile = useMediaQuery({ query: '(max-width: 600px)' });
   //console.log("****** isMobile = " + isMobile)
@@ -275,7 +275,9 @@ const SingleItem = ({ data, pageContext }) => {
   filteredShopifyClassicProducts = _.sortBy(filteredShopifyClassicProducts, ({ node }) => sortOrder != "DESC" ? node[sortBy] : -node[sortBy])
   //Now limiting the items as per limit
   const visibleShopifyClassicProductsEdges = _.slice(filteredShopifyClassicProducts, 0, visibleItems);
-  if (visibleShopifyClassicProductsEdges.length >= filteredShopifyClassicProducts.length) setShowMore(false);
+  //Now checking if 'Position' and 'DiscountPct' data is present in the list, if yes then only show 'Position' and 'DiscountPct' in the sorting options
+  const isPositionPresent = _.filter(visibleShopifyClassicProductsEdges, ({ node }) => node.Position != null).length > 0;
+  const isDiscountPctPresent = _.filter(visibleShopifyClassicProductsEdges, ({ node }) => node.DiscountPct != null).length > 0;
 
   //Extracting new products
   const filteredShopifyNewProducts = _.sortBy(_.filter(rowallMysqlShopifyProductsAllEdges, ({ node }) => node.Title.toLowerCase().indexOf("gift card") < 0 && node.Title.toLowerCase().indexOf("shipping") < 0 && node.Title.toLowerCase().indexOf("insurance") < 0), ({ node }) => -node.PublishedDate);
@@ -691,17 +693,18 @@ const SingleItem = ({ data, pageContext }) => {
           {visibleShopifyClassicProductsEdges && visibleShopifyClassicProductsEdges.length > 0 && (
             <TabPanel>
               <div style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
-                Sort by
+                <span>Sort by &nbsp;</span>
                 <select value={sortBy} onChange={changeSortBy}>
                   <option value="PublishedDate"> Date </option>
-                  <option value="Position"> Position </option>
+                  {isPositionPresent &&
+                    <option value="Position"> Position </option>
+                  }
                   <option value="Price"> Price </option>
-                  <option value="DiscountPct"> Discount % </option>
-                </select>
-                <select value={sortOrder} onChange={changeSortOrder}>
-                  <option value="DESC"> ▽ </option>
-                  <option value="ASC"> △ </option>
-                </select>
+                  {isDiscountPctPresent &&
+                    <option value="DiscountPct"> Discount % </option>
+                  }
+                </select>                
+                <button className="button" onClick={changeSortOrder}>{sortOrder}</button>
               </div>
               {renderProductList(visibleShopifyClassicProductsEdges, 'visibleShopifyClassicProductsEdges')}
               {showMore && visibleShopifyClassicProductsEdges.length > 0 &&
@@ -802,7 +805,7 @@ const SingleItem = ({ data, pageContext }) => {
               })}
           </ViewContainer>
         )}
-        <br/>
+        <br />
         {!!relatedShops.length && (
           <>
             <h3>Discover similar shops to {name}</h3>
@@ -846,64 +849,64 @@ const SingleItem = ({ data, pageContext }) => {
             <Tab style={TabStyle}>Time on site</Tab>
           </TabList>
           <TabPanel>
-          <Statistics>
-            <StatisticItem>
-              {rowShopifyProductSummary.PriceAvg && (
-                <div>
-                  ${rowShopifyProductSummary.PriceAvg}<br />
-                  <span className="stat_title">Avg Price</span>
-                </div>
-              )}
-
-
-
-            </StatisticItem>
-            <StatisticItem>
-
-              {rowShopifyProductSummary.PriceMin &&
-                rowShopifyProductSummary.PriceMax && (
+            <Statistics>
+              <StatisticItem>
+                {rowShopifyProductSummary.PriceAvg && (
                   <div>
-                    ${rowShopifyProductSummary.PriceMin} - ${rowShopifyProductSummary.PriceMax}<br />
-                    <span className="stat_title">Price Range</span>
+                    ${rowShopifyProductSummary.PriceAvg}<br />
+                    <span className="stat_title">Avg Price</span>
                   </div>
                 )}
 
 
-            </StatisticItem>
-          </Statistics>
-          {rowShopifyProductSummary && (
-            <ReactFrappeChart
-              title="Product prices"
-              type="axis-mixed"
-              colors={['#743ee2']}
-              height={250}
-              axisOptions={{ xAxisMode: 'tick', xIsSeries: 1 }}
-              lineOptions={{ hideLine: 1 }}
-              tooltipOptions={{
-                formatTooltipX: d => d,
-                formatTooltipY: d => '$ ' + parseFloat(d || 0).toFixed(2),
-              }}
-              data={{
-                labels: _.split(productSummary_Dates_NoTime, ','),
-                datasets: [
-                  {
-                    name: 'Product prices',
-                    type: 'line',
-                    values: _.split(
-                      rowShopifyProductSummary.PriceListActive,
-                      ','
-                    ),
-                  },
-                ],
-                yMarkers: [
-                  {
-                    label: 'Avg Price',
-                    value: rowShopifyProductSummary.PriceAvg,
-                  },
-                ],
-              }}
-            />
-          )}
+
+              </StatisticItem>
+              <StatisticItem>
+
+                {rowShopifyProductSummary.PriceMin &&
+                  rowShopifyProductSummary.PriceMax && (
+                    <div>
+                      ${rowShopifyProductSummary.PriceMin} - ${rowShopifyProductSummary.PriceMax}<br />
+                      <span className="stat_title">Price Range</span>
+                    </div>
+                  )}
+
+
+              </StatisticItem>
+            </Statistics>
+            {rowShopifyProductSummary && (
+              <ReactFrappeChart
+                title="Product prices"
+                type="axis-mixed"
+                colors={['#743ee2']}
+                height={250}
+                axisOptions={{ xAxisMode: 'tick', xIsSeries: 1 }}
+                lineOptions={{ hideLine: 1 }}
+                tooltipOptions={{
+                  formatTooltipX: d => d,
+                  formatTooltipY: d => '$ ' + parseFloat(d || 0).toFixed(2),
+                }}
+                data={{
+                  labels: _.split(productSummary_Dates_NoTime, ','),
+                  datasets: [
+                    {
+                      name: 'Product prices',
+                      type: 'line',
+                      values: _.split(
+                        rowShopifyProductSummary.PriceListActive,
+                        ','
+                      ),
+                    },
+                  ],
+                  yMarkers: [
+                    {
+                      label: 'Avg Price',
+                      value: rowShopifyProductSummary.PriceAvg,
+                    },
+                  ],
+                }}
+              />
+            )}
           </TabPanel>
           <TabPanel>
             {chartRankData && (
@@ -938,129 +941,129 @@ const SingleItem = ({ data, pageContext }) => {
         <h3>Social media stats</h3>
 
 
-      <div  style={{ display: 'flex' }}>
-<div  style={{ flex: '30%' }}>
-        {chartSocialData && chartSocialData.labels && chartSocialData.labels.length > 0 && (
-          <ReactFrappeChart
+        <div style={{ display: 'flex' }}>
+          <div style={{ flex: '30%' }}>
+            {chartSocialData && chartSocialData.labels && chartSocialData.labels.length > 0 && (
+              <ReactFrappeChart
 
-            type="donut"
-            title="Total fans by platform"
-            height={300}
+                type="donut"
+                title="Total fans by platform"
+                height={300}
 
 
-            data={chartSocialData}
+                data={chartSocialData}
 
-          />
-        )}
+              />
+            )}
 
-        </div>
-<div  style={{ flex: '60%' }}>
-        <Tabs >
-          <TabList>
-            {facebookChartData && <Tab style={TabStyle}>Facebook</Tab>}
-            {instagramChartData && <Tab style={TabStyle}>Instagram</Tab>}
-            {pinterestChartData && <Tab style={TabStyle}>Pinterest</Tab>}
-            {tiktokChartData && <Tab style={TabStyle}>TikTok</Tab>}
-            {twitterChartData && <Tab style={TabStyle}>Twitter</Tab>}
-            {youtubeChartData && <Tab style={TabStyle}>Youtube</Tab>}
-          </TabList>
-          {facebookChartData && (
-            <TabPanel>
-              <ReactFrappeChart
-                type="axis-mixed"
-                title="Facebook"
-                height={250}
-                axisOptions={{
-                  xAxisMode: 'tick',
-                  xIsSeries: 1,
-                  shortenYAxisNumbers: 1,
-                }}
-                data={facebookChartData}
-              />
-            </TabPanel>
-          )}
-          {instagramChartData && (
-            <TabPanel>
-              <ReactFrappeChart
-                type="axis-mixed"
-                title="Instagram"
-                height={250}
-                axisOptions={{
-                  xAxisMode: 'tick',
-                  xIsSeries: 1,
-                  shortenYAxisNumbers: 1,
-                }}
-                lineOptions={{ spline: 1 }}
-                data={instagramChartData}
-              />
-            </TabPanel>
-          )}
-          {pinterestChartData && (
-            <TabPanel>
-              <ReactFrappeChart
-                type="axis-mixed"
-                title="Pinterest"
-                height={250}
-                axisOptions={{
-                  xAxisMode: 'tick',
-                  xIsSeries: 1,
-                  shortenYAxisNumbers: 1,
-                }}
-                lineOptions={{ spline: 1 }}
-                data={pinterestChartData}
-              />
-            </TabPanel>
-          )}
-          {tiktokChartData && (
-            <TabPanel>
-              <ReactFrappeChart
-                type="axis-mixed"
-                title="Tiktok"
-                height={250}
-                axisOptions={{
-                  xAxisMode: 'tick',
-                  xIsSeries: 1,
-                  shortenYAxisNumbers: 1,
-                }}
-                lineOptions={{ spline: 1 }}
-                data={tiktokChartData}
-              />
-            </TabPanel>
-          )}
-          {twitterChartData && (
-            <TabPanel>
-              <ReactFrappeChart
-                type="axis-mixed"
-                title="Twitter"
-                height={250}
-                axisOptions={{
-                  xAxisMode: 'tick',
-                  xIsSeries: 1,
-                  shortenYAxisNumbers: 1,
-                }}
-                lineOptions={{ spline: 1 }}
-                data={twitterChartData}
-              />
-            </TabPanel>
-          )}
-          {youtubeChartData && (
-            <TabPanel>
-              <ReactFrappeChart
-                type="axis-mixed"
-                title="Youtube"
-                height={250}
-                axisOptions={{
-                  xAxisMode: 'tick',
-                  xIsSeries: 1,
-                  shortenYAxisNumbers: 1,
-                }}
-                lineOptions={{ spline: 1 }}
-                data={youtubeChartData}
-              />
-            </TabPanel>
-          )}
-        </Tabs>
-        </div>
+          </div>
+          <div style={{ flex: '60%' }}>
+            <Tabs >
+              <TabList>
+                {facebookChartData && <Tab style={TabStyle}>Facebook</Tab>}
+                {instagramChartData && <Tab style={TabStyle}>Instagram</Tab>}
+                {pinterestChartData && <Tab style={TabStyle}>Pinterest</Tab>}
+                {tiktokChartData && <Tab style={TabStyle}>TikTok</Tab>}
+                {twitterChartData && <Tab style={TabStyle}>Twitter</Tab>}
+                {youtubeChartData && <Tab style={TabStyle}>Youtube</Tab>}
+              </TabList>
+              {facebookChartData && (
+                <TabPanel>
+                  <ReactFrappeChart
+                    type="axis-mixed"
+                    title="Facebook"
+                    height={250}
+                    axisOptions={{
+                      xAxisMode: 'tick',
+                      xIsSeries: 1,
+                      shortenYAxisNumbers: 1,
+                    }}
+                    data={facebookChartData}
+                  />
+                </TabPanel>
+              )}
+              {instagramChartData && (
+                <TabPanel>
+                  <ReactFrappeChart
+                    type="axis-mixed"
+                    title="Instagram"
+                    height={250}
+                    axisOptions={{
+                      xAxisMode: 'tick',
+                      xIsSeries: 1,
+                      shortenYAxisNumbers: 1,
+                    }}
+                    lineOptions={{ spline: 1 }}
+                    data={instagramChartData}
+                  />
+                </TabPanel>
+              )}
+              {pinterestChartData && (
+                <TabPanel>
+                  <ReactFrappeChart
+                    type="axis-mixed"
+                    title="Pinterest"
+                    height={250}
+                    axisOptions={{
+                      xAxisMode: 'tick',
+                      xIsSeries: 1,
+                      shortenYAxisNumbers: 1,
+                    }}
+                    lineOptions={{ spline: 1 }}
+                    data={pinterestChartData}
+                  />
+                </TabPanel>
+              )}
+              {tiktokChartData && (
+                <TabPanel>
+                  <ReactFrappeChart
+                    type="axis-mixed"
+                    title="Tiktok"
+                    height={250}
+                    axisOptions={{
+                      xAxisMode: 'tick',
+                      xIsSeries: 1,
+                      shortenYAxisNumbers: 1,
+                    }}
+                    lineOptions={{ spline: 1 }}
+                    data={tiktokChartData}
+                  />
+                </TabPanel>
+              )}
+              {twitterChartData && (
+                <TabPanel>
+                  <ReactFrappeChart
+                    type="axis-mixed"
+                    title="Twitter"
+                    height={250}
+                    axisOptions={{
+                      xAxisMode: 'tick',
+                      xIsSeries: 1,
+                      shortenYAxisNumbers: 1,
+                    }}
+                    lineOptions={{ spline: 1 }}
+                    data={twitterChartData}
+                  />
+                </TabPanel>
+              )}
+              {youtubeChartData && (
+                <TabPanel>
+                  <ReactFrappeChart
+                    type="axis-mixed"
+                    title="Youtube"
+                    height={250}
+                    axisOptions={{
+                      xAxisMode: 'tick',
+                      xIsSeries: 1,
+                      shortenYAxisNumbers: 1,
+                    }}
+                    lineOptions={{ spline: 1 }}
+                    data={youtubeChartData}
+                  />
+                </TabPanel>
+              )}
+            </Tabs>
+          </div>
         </div>
         {/* List of Posts from MySQL View */}
 

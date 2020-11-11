@@ -82,6 +82,7 @@ const Index = ({ data }) => {
   const { edges } = data.allMysqlMainView;
   const rowProductsEdges = data.allMysqlShopifyView.edges;
   const rowallMysqlShopifyProductsAllEdges = data.allMysqlShopifyProductsAll ? data.allMysqlShopifyProductsAll.edges : [];
+  const rowallMysqlCrunchBaseViewEdges = data.allMysqlCrunchBaseView ? data.allMysqlCrunchBaseView.edges : [];
   const limit = 100;
   const maxProducts = 7;
   const maxVisibleItems = 10;
@@ -185,29 +186,36 @@ const Index = ({ data }) => {
     return productImage;
   }
 
+  const combineEdgesForShops = (originalEdges) => {
+    const combinedEdges = [];
+    //Creating a new dataset with original nodes and required columns from DataView
+    originalEdges.map((edge) => {
+      const inputID = edge.node.AlexaURL;
+      //filter shops from DataView
+      var resultData = _.filter(rowDataViewEdges, ({ node }) => (node.AlexaURL == inputID))
+      var firstDataRow = [];
+      if (resultData.length > 0) {
+        firstDataRow = resultData[0]
+      }
+      //filter for profileimage
+      var crunchBaseData = _.filter(rowallMysqlCrunchBaseViewEdges, ({ node }) => node.URL == inputID)
+      var crunchBaseRow = crunchBaseData.length > 0 ? crunchBaseData[0] : [];
+      let newNode = {
+        name: edge.node.name,
+        slug: edge.node.UserName,
+        about: edge.node.about,
+        instagramname: edge.node.UserName,
+        ...edge.node,
+        ...firstDataRow.node,
+        ...crunchBaseRow.node
+      }
+      combinedEdges.push(newNode);
+    })
+    return combinedEdges;
+  }
+
   const rowDataViewEdges = data.allMysqlDataView.edges;
-  const combinedEdges = [];
-
-  //Creating a new dataset with original nodes and required columns from DataView
-  edges.map((edge) => {
-    const inputID = edge.node.AlexaURL;
-    //filter to show only shops with DataView . AlexaCountry = United States
-    var resultData = _.filter(rowDataViewEdges, ({ node }) => (node.AlexaURL == inputID))
-    var firstDataRow = [];
-    if (resultData.length > 0) {
-      firstDataRow = resultData[0]
-    }
-    let newNode = {
-      name: edge.node.name,
-      slug: edge.node.UserName,
-      about: edge.node.about,
-      instagramname: edge.node.UserName,
-      ...edge.node,
-      ...firstDataRow.node
-    }
-    combinedEdges.push(newNode);
-
-  })
+  const combinedEdges = combineEdgesForShops(edges);
 
   //Now sorting (desc) based on GlobalRankChange
   var globalRankChangeSortedEdges = _.sortBy(combinedEdges, obj => -obj.GlobalRank_Change)
@@ -228,109 +236,21 @@ const Index = ({ data }) => {
   const totalFollowersEdges = _.slice(totalFollowersSortedEdges, 0, limit)
 
   const electronicsShopEdges = _.filter(edges, ({ node }) => node.category && node.category.indexOf("Electronics") >= 0)
-  const combinedElectronicsShopEdges = [];
-  //Creating a new dataset with original nodes and required columns from DataView
-  electronicsShopEdges.map((edge) => {
-    const inputID = edge.node.AlexaURL;
-    //filter to show only shops with DataView . AlexaCountry = United States
-    var resultData = _.filter(rowDataViewEdges, ({ node }) => (node.AlexaURL == inputID))
-    var firstDataRow = [];
-    if (resultData.length > 0) {
-      firstDataRow = resultData[0]
-    }
-    let newNode = {
-      slug: edge.node.UserName,
-      instagramname: edge.node.UserName,
-      ...edge.node,
-      ...firstDataRow.node
-    }
-    combinedElectronicsShopEdges.push(newNode);
-  })
-
+  const combinedElectronicsShopEdges = combineEdgesForShops(electronicsShopEdges);
+  
   const homeShopEdges = _.filter(edges, ({ node }) => node.category && node.category.indexOf("Home and Office") >= 0)
-  const combinedHomeShopEdges = [];
-  //Creating a new dataset with original nodes and required columns from DataView
-  homeShopEdges.map((edge) => {
-    const inputID = edge.node.AlexaURL;
-    //filter to show only shops with DataView . AlexaCountry = United States
-    var resultData = _.filter(rowDataViewEdges, ({ node }) => (node.AlexaURL == inputID))
-    var firstDataRow = [];
-    if (resultData.length > 0) {
-      firstDataRow = resultData[0]
-    }
-    let newNode = {
-      slug: edge.node.UserName,
-      instagramname: edge.node.UserName,
-      ...edge.node,
-      ...firstDataRow.node
-    }
-    combinedHomeShopEdges.push(newNode);
-  })
-
+  const combinedHomeShopEdges = combineEdgesForShops(homeShopEdges);
+  
   const apparelShopEdges = _.filter(edges, ({ node }) => node.category && node.category.indexOf("Apparel") >= 0)
-
-
-  const combinedApparelShopEdges = [];
-  //Creating a new dataset with original nodes and required columns from DataView
-  apparelShopEdges.map((edge) => {
-    const inputID = edge.node.AlexaURL;
-    //filter to show only shops with DataView . AlexaCountry = United States
-    var resultData = _.filter(rowDataViewEdges, ({ node }) => (node.AlexaURL == inputID))
-    var firstDataRow = [];
-    if (resultData.length > 0) {
-      firstDataRow = resultData[0]
-    }
-    let newNode = {
-      slug: edge.node.UserName,
-      instagramname: edge.node.UserName,
-      ...edge.node,
-      ...firstDataRow.node
-    }
-    combinedApparelShopEdges.push(newNode);
-  })
-
-
+  const combinedApparelShopEdges = combineEdgesForShops(apparelShopEdges);
+  
   const toysShopEdges = _.filter(edges, ({ node }) => node.category && node.category.indexOf("Toys") >= 0)
-  const combinedToysShopEdges = [];
-  //Creating a new dataset with original nodes and required columns from DataView
-  toysShopEdges.map((edge) => {
-    const inputID = edge.node.AlexaURL;
-    //filter to show only shops with DataView . AlexaCountry = United States
-    var resultData = _.filter(rowDataViewEdges, ({ node }) => (node.AlexaURL == inputID))
-    var firstDataRow = [];
-    if (resultData.length > 0) {
-      firstDataRow = resultData[0]
-    }
-    let newNode = {
-      slug: edge.node.UserName,
-      instagramname: edge.node.UserName,
-      ...edge.node,
-      ...firstDataRow.node
-    }
-    combinedToysShopEdges.push(newNode);
-  })
-
+  const combinedToysShopEdges = combineEdgesForShops(toysShopEdges);
+  
   const footwearShopEdges = _.filter(edges, ({ node }) => node.category && node.category.indexOf("Footwear") >= 0)
-  const combinedFootwearShopEdges = [];
-  //Creating a new dataset with original nodes and required columns from DataView
-  footwearShopEdges.map((edge) => {
-    const inputID = edge.node.AlexaURL;
-    //filter to show only shops with DataView . AlexaCountry = United States
-    var resultData = _.filter(rowDataViewEdges, ({ node }) => (node.AlexaURL == inputID))
-    var firstDataRow = [];
-    if (resultData.length > 0) {
-      firstDataRow = resultData[0]
-    }
-    let newNode = {
-      slug: edge.node.UserName,
-      instagramname: edge.node.UserName,
-      ...edge.node,
-      ...firstDataRow.node
-    }
-    combinedFootwearShopEdges.push(newNode);
-  })
+  const combinedFootwearShopEdges = combineEdgesForShops(footwearShopEdges);
+  
   const mainViewEdges = data.allMysqlMainView.edges;
-
   let listShopifyProductsAllEdges = [];
   //Creating a new dataset with original product nodes and shop columns from MainView
   rowallMysqlShopifyProductsAllEdges.map((edge) => {
@@ -353,7 +273,7 @@ const Index = ({ data }) => {
   })
 
   //Extracting sale products
-  const filteredShopifyBestProducts = _.sortBy(_.filter(listShopifyProductsAllEdges, ({ node }) => node.Position == 1 || node.Position == 2 ), ({ node }) => -node.UpdateDate);
+  const filteredShopifyBestProducts = _.sortBy(_.filter(listShopifyProductsAllEdges, ({ node }) => node.Position == 1 || node.Position == 2), ({ node }) => -(new Date(node.UpdateDate)));
   const listShopifyBestProducts = _.slice(filteredShopifyBestProducts, 0, limit);
   //Now limiting the items as per limit
   const visibleShopifyBestProducts = _.slice(listShopifyBestProducts, 0, visibleItems);
@@ -374,7 +294,7 @@ const Index = ({ data }) => {
           <ViewImage>
             <div style={{ 'textAlign': 'center', }}>
               <img
-                src={node.mysqlImages && node.mysqlImages.length > 0 ? node.mysqlImages[0].childImageSharp.fluid : node.ProfilePicURL}
+                src={node.profile_image_url || node.ProfilePicURL || "/logo/logo.png"}
                 onError={defaultImageOnError}
                 style={{
                   objectFit: 'cover',
@@ -650,6 +570,16 @@ export const query = graphql`
           VendorName
           VendorURL
           Description
+        }
+      }
+    }
+
+    allMysqlCrunchBaseView {
+      edges {
+        node {
+          URL
+          profile_image_url
+          ProfilePicURL
         }
       }
     }
