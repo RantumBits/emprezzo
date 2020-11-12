@@ -182,7 +182,8 @@ const SingleItem = ({ data, pageContext }) => {
   } = data.mysqlMainView;
 
   const allMysqlMainViewEdges = data.allMysqlMainView.edges;
-
+  const rowallMysqlCrunchBaseViewEdges = data.allMysqlCrunchBaseView ? data.allMysqlCrunchBaseView.edges : [];
+  const rowallMysqlPayNShipEdges = data.allMysqlPayNShip ? data.allMysqlPayNShip.edges : [];
   const rowSocialIDViewEdges = data.allMysqlSocialIdView.edges;
   const filteredSocialIDView = _.filter(rowSocialIDViewEdges, ({ node }) => node.Instagram == UserName);
   const { Facebook, Instagram, Pinterest, TikTok, Twitter, URL, YouTube } = filteredSocialIDView.length > 0 ? filteredSocialIDView[0].node : [];
@@ -207,7 +208,7 @@ const SingleItem = ({ data, pageContext }) => {
   const [sortBy, setSortBy] = React.useState("UpdateDate");
   const [sortOrder, setSortOrder] = React.useState("DESC");
   const changeSortBy = (e) => { setSortBy(e.target.value) }
-  const changeSortOrder = (e) => { setSortOrder((sortOrder=="DESC")?"ASC":"DESC") }
+  const changeSortOrder = (e) => { setSortOrder((sortOrder == "DESC") ? "ASC" : "DESC") }
 
   const isMobile = useMediaQuery({ query: '(max-width: 600px)' });
   //console.log("****** isMobile = " + isMobile)
@@ -221,8 +222,23 @@ const SingleItem = ({ data, pageContext }) => {
   //filtering top 3 for current instagram id
   const filteredDataView = _.filter(rowDataViewEdges, ({ node }) => node.AlexaURL == AlexaURL);
   const listPostEdges = _.slice(filteredDataView, 0, maxPosts);
-  const firstRowDataView = listPostEdges && listPostEdges.length ? listPostEdges[0] : null;
-  // console.log("*********** firstRowDataView",firstRowDataView)
+  let firstRowDataView = listPostEdges && listPostEdges.length ? listPostEdges[0] : null;
+  //adding profileimage to firstrow
+  if (firstRowDataView) {
+    var crunchBaseData = _.filter(rowallMysqlCrunchBaseViewEdges, ({ node }) => node.URL == firstRowDataView.node.AlexaURL)
+    var crunchBaseRow = crunchBaseData.length > 0 ? crunchBaseData[0] : [];
+    //adding PayNShip data to firstrow
+    var payNShipData = _.filter(rowallMysqlPayNShipEdges, ({ node }) => node.URL == firstRowDataView.node.AlexaURL)
+    var payNShipRow = payNShipData.length > 0 ? payNShipData[0] : [];
+    firstRowDataView = {
+      node: {
+        ...firstRowDataView.node,
+        ...crunchBaseRow.node,
+        ...payNShipRow.node,
+      }
+    }
+  }//end if (firstRowDataView)
+
   //Now filtering instagram posts if the image or caption is not present
   const listInstaPostEdges = _.filter(listPostEdges, ({ node }) => node.PhotoLink);
   //console.log("*****++listInstaPostEdges+++********")
@@ -247,7 +263,21 @@ const SingleItem = ({ data, pageContext }) => {
     combinedMainDataEdges.push(newNode);
   })
   const relatedShops = getRelatedShops(data.mysqlMainView, combinedMainDataEdges);
-  //console.log("*** relatedShops",relatedShops);
+  const combinedRelatedShops = [];
+  relatedShops.map(({ shop, points }) => {
+    const inputID = shop.AlexaURL;
+    //filter for profileimage
+    var crunchBaseData = _.filter(rowallMysqlCrunchBaseViewEdges, ({ node }) => node.URL == inputID)
+    var crunchBaseRow = crunchBaseData.length > 0 ? crunchBaseData[0] : [];
+    let newNode = {
+      points,
+      shop: {
+        ...shop,
+        ...crunchBaseRow.node,
+      }
+    }
+    combinedRelatedShops.push(newNode);
+  })
 
   //Extracting Products from MySQL Data
   const maxProducts = 10;
@@ -273,12 +303,13 @@ const SingleItem = ({ data, pageContext }) => {
   //Extracting classic products
   let filteredShopifyClassicProducts = _.sortBy(_.filter(rowallMysqlShopifyProductsAllEdges, ({ node }) => node.Title.toLowerCase().indexOf("gift card") < 0 && node.Title.toLowerCase().indexOf("shipping") < 0 && node.Title.toLowerCase().indexOf("insurance") < 0), ({ node }) => node.PublishedDate);
   //Now applying sorting
-  filteredShopifyClassicProducts = _.sortBy(filteredShopifyClassicProducts, ({ node }) => sortOrder != "DESC" ? node[sortBy] : -node[sortBy])
+  filteredShopifyClassicProducts = _.sortBy(filteredShopifyClassicProducts, ({ node }) => sortOrder != "DESC" && sortBy != "UpdateDate" ? node[sortBy] : -node[sortBy])
+  filteredShopifyClassicProducts = _.sortBy(filteredShopifyClassicProducts, ({ node }) => sortOrder != "DESC" && sortBy == "UpdateDate" ? new Date(node[sortBy]) : -(new Date(node[sortBy])))
   //Now limiting the items as per limit
   const visibleShopifyClassicProductsEdges = _.slice(filteredShopifyClassicProducts, 0, visibleItems);
+  if (showMore && visibleShopifyClassicProductsEdges.length >= filteredShopifyClassicProducts.length) setShowMore(false);
   //Now checking if 'Position' and 'DiscountPct' data is present in the list, if yes then only show 'Position' and 'DiscountPct' in the sorting options
   const isPositionPresent = _.filter(visibleShopifyClassicProductsEdges, ({ node }) => node.Position != null).length > 0;
-  const isDiscountPctPresent = _.filter(visibleShopifyClassicProductsEdges, ({ node }) => node.DiscountPct != null).length > 0;
 
   //Extracting new products
   const filteredShopifyNewProducts = _.sortBy(_.filter(rowallMysqlShopifyProductsAllEdges, ({ node }) => node.Title.toLowerCase().indexOf("gift card") < 0 && node.Title.toLowerCase().indexOf("shipping") < 0 && node.Title.toLowerCase().indexOf("insurance") < 0), ({ node }) => -node.PublishedDate);
@@ -567,8 +598,8 @@ const SingleItem = ({ data, pageContext }) => {
         style={{ padding: ismobile && '15px', width: !ismobile && '30%' }}
       >
 
-          <ViewImage   style={{ height: '200px'}}>
-            <a href={node.ShortCodeURL} target="_blank">
+        <ViewImage style={{ height: '200px' }}>
+          <a href={node.ShortCodeURL} target="_blank">
             {node.mysqlImage && (
               <Image
                 fluid={node.mysqlImage.childImageSharp.fluid}
@@ -588,8 +619,8 @@ const SingleItem = ({ data, pageContext }) => {
                 }}
               />
             )}
-              </a>
-          </ViewImage>
+          </a>
+        </ViewImage>
 
         <ViewInfo className="info" style={{ color: ismobile && 'white' }}>
           {node.Caption && node.Caption.substring(0, 140) + '...'}
@@ -608,6 +639,10 @@ const SingleItem = ({ data, pageContext }) => {
     } else if (node.ProfilePicURL) {
       return (
         <img src={node.ProfilePicURL} className="profileimage" onError={defaultImageOnError} style={{ width: '100px', height: '100px', 'border-radius': '100%', margin: '3%' }} title={name} alt={name} />
+      );
+    } else if (node.profile_image_url) {
+      return (
+        <img src={node.profile_image_url} className="profileimage" onError={defaultImageOnError} style={{ width: '100px', height: '100px', 'border-radius': '100%', margin: '3%' }} title={name} alt={name} />
       );
     } else {
       return (
@@ -635,36 +670,48 @@ const SingleItem = ({ data, pageContext }) => {
           {firstRowDataView && renderProfilePicURL(firstRowDataView.node, name)}
           <div style={{ paddingLeft: '15px' }}>
 
-           <b>{name}</b> produces and sells {category} products {tags} and more. The company sells direct-to-consumer on its website.
+            <b>{name}</b> produces and sells {category} products {tags} and more. The company sells direct-to-consumer on its website.
+
            {rowShopifyProductSummary.PriceMin &&
-                rowShopifyProductSummary.PriceMax && (
-                  <span>
-                   &nbsp;Prices range from ${rowShopifyProductSummary.PriceMin} - ${rowShopifyProductSummary.PriceMax} with an average price of ${rowShopifyProductSummary.PriceAvg}.</span>
+              rowShopifyProductSummary.PriceMax && (
+                <span>
+                  &nbsp;Prices range from ${rowShopifyProductSummary.PriceMin} - ${rowShopifyProductSummary.PriceMax} with an average price of ${rowShopifyProductSummary.PriceAvg}.</span>
+              )}
+            {socialDetails && (
+              <span>
+                &nbsp;The {name} brand can be found on
+                {socialDetails.InstagramLink && (
+                  " Instagram, "
                 )}
-           {socialDetails && (
-                  <span>
-                  &nbsp;The {name} brand can be found on
-                     {socialDetails.InstagramLink && (
-                      " Instagram, "
-                     )}
-                     {socialDetails.FacebookLink && (
-                      " Facebook, "
-                     )}
-                     {socialDetails.PinterestLink && (
-                    " Pinterest, "
-                     )}
-                     {socialDetails.TikTok && (
-                    " TikTok, "
-                     )}
-                     {socialDetails.TwitterLink && (
-                    " Twitter, "
-                     )}
-                     {socialDetails.YouTubeLink && (
-                      " Youtube, "
-                     )}
+                {socialDetails.FacebookLink && (
+                  " Facebook, "
+                )}
+                {socialDetails.PinterestLink && (
+                  " Pinterest, "
+                )}
+                {socialDetails.TikTok && (
+                  " TikTok, "
+                )}
+                {socialDetails.TwitterLink && (
+                  " Twitter, "
+                )}
+                {socialDetails.YouTubeLink && (
+                  " Youtube, "
+                )}
                      and here on Emprezzo.&nbsp;
-                  </span>
-                 )}
+              </span>
+            )}
+
+            {firstRowDataView &&
+              <>
+                <br /><br />
+                <div>Free shipping on orders over ${firstRowDataView.node.FreeShipMin}</div>
+                <div>Base shipping rate: ${firstRowDataView.node.BaseShipRate}</div>
+                <div>Offers {firstRowDataView.node.ReturnDays} day returns.</div>
+                <div>Return shipping is : {firstRowDataView.node.ReturnShipFree}</div>
+                <div>Return condition: {firstRowDataView.node.ReturnCondition} {firstRowDataView.node.ReturnNotes}</div>
+              </>
+            }
 
             <Statistics>
 
@@ -703,10 +750,10 @@ const SingleItem = ({ data, pageContext }) => {
               visibleShopifyClassicProductsEdges.length > 0 && (
                 <Tab style={TabStyle}>Shop {name}</Tab>
               )}
-              {listShopifyBestSellersEdges &&
-                listShopifyBestSellersEdges.length > 0 && (
-                  <Tab style={TabStyle}>Best sellers</Tab>
-                )}
+            {listShopifyBestSellersEdges &&
+              listShopifyBestSellersEdges.length > 0 && (
+                <Tab style={TabStyle}>Best sellers</Tab>
+              )}
             {listShopifyNewProductsEdges &&
               listShopifyNewProductsEdges.length > 0 && (
                 <Tab style={TabStyle}>New products</Tab>
@@ -715,10 +762,10 @@ const SingleItem = ({ data, pageContext }) => {
               listShopifySaleProducts.length > 0 && (
                 <Tab style={TabStyle}>Sale</Tab>
               )}
-              {listShopifyGiftCards &&
-                listShopifyGiftCards.length > 0 && (
-                  <Tab style={TabStyle}>Gift Cards</Tab>
-                )}
+            {listShopifyGiftCards &&
+              listShopifyGiftCards.length > 0 && (
+                <Tab style={TabStyle}>Gift Cards</Tab>
+              )}
           </TabList>
 
 
@@ -728,16 +775,13 @@ const SingleItem = ({ data, pageContext }) => {
               <div style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
 
                 <select value={sortBy} onChange={changeSortBy}>
-                  <option value="PublishedDate"> Date </option>
+                  <option value="UpdateDate"> Date </option>
                   {isPositionPresent &&
                     <option value="Position"> Position </option>
                   }
                   <option value="Price"> Price </option>
-                  {isDiscountPctPresent &&
-                    <option value="DiscountPct"> Discount % </option>
-                  }
                 </select> &nbsp;
-                <button className="button" onClick={changeSortOrder}>{sortOrder}</button>
+                <button className="button" onClick={changeSortOrder}>{(sortOrder == "DESC") ? "▽" : "△"}</button>
               </div>
               {renderProductList(visibleShopifyClassicProductsEdges, 'visibleShopifyClassicProductsEdges')}
               {showMore && visibleShopifyClassicProductsEdges.length > 0 &&
@@ -767,7 +811,7 @@ const SingleItem = ({ data, pageContext }) => {
           )}
           {listShopifyGiftCards &&
             listShopifyGiftCards.length > 0 && (
-                <TabPanel>
+              <TabPanel>
 
                 <PostSectionGrid>
                   {listShopifyGiftCards.map(({ node, index }) => {
@@ -849,14 +893,14 @@ const SingleItem = ({ data, pageContext }) => {
           </ViewContainer>
         )}
         <br />
-        {!!relatedShops.length && (
+        {!!combinedRelatedShops.length && (
           <>
             <h3>Discover similar shops to {name}</h3>
             <PostSectionGrid>
-              {relatedShops && relatedShops.map(({ shop }, index) => (
+              {combinedRelatedShops && combinedRelatedShops.map(({ shop }, index) => (
                 <span key={index}>
                   <PostSectionImage>
-                    <img src={shop.ProfilePicURL} alt={shop.name} style={{ height: 'inherit', 'textAlign': 'center', 'borderRadius': '100%' }} />
+                    <img src={shop.ProfilePicURL || shop.profile_image_url || "/logo/logo.png"} alt={shop.name} onError={defaultImageOnError} style={{ height: 'inherit', 'textAlign': 'center', 'borderRadius': '100%' }} />
                   </PostSectionImage>
                   <PostSectionContent>
                     <Link key={index} to={`/shops/${shop.UserName}/`}>
@@ -887,72 +931,72 @@ const SingleItem = ({ data, pageContext }) => {
         <h3>{name} data and charts</h3>
         <Tabs>
           <TabList>
-                {rowShopifyProductSummary.PriceListActive && (<Tab style={TabStyle}>Product Prices</Tab>)}
+            {rowShopifyProductSummary.PriceListActive && (<Tab style={TabStyle}>Product Prices</Tab>)}
             <Tab style={TabStyle}>Traffic rank</Tab>
             <Tab style={TabStyle}>Time on site</Tab>
           </TabList>
-            {rowShopifyProductSummary.PriceListActive && (
-          <TabPanel>
-            <Statistics>
-              <StatisticItem>
-                {rowShopifyProductSummary.PriceAvg && (
-                  <div>
-                    ${rowShopifyProductSummary.PriceAvg}<br />
-                    <span className="stat_title">Avg Price</span>
-                  </div>
-                )}
-
-
-
-              </StatisticItem>
-              <StatisticItem>
-
-                {rowShopifyProductSummary.PriceMin &&
-                  rowShopifyProductSummary.PriceMax && (
+          {rowShopifyProductSummary.PriceListActive && (
+            <TabPanel>
+              <Statistics>
+                <StatisticItem>
+                  {rowShopifyProductSummary.PriceAvg && (
                     <div>
-                      ${rowShopifyProductSummary.PriceMin} - ${rowShopifyProductSummary.PriceMax}<br />
-                      <span className="stat_title">Price Range</span>
+                      ${rowShopifyProductSummary.PriceAvg}<br />
+                      <span className="stat_title">Avg Price</span>
                     </div>
                   )}
 
 
-              </StatisticItem>
-            </Statistics>
-            {rowShopifyProductSummary && (
-              <ReactFrappeChart
-                title="Product prices"
-                type="axis-mixed"
-                colors={['#743ee2']}
-                height={250}
-                axisOptions={{ xAxisMode: 'tick', xIsSeries: 1 }}
-                lineOptions={{ hideLine: 1 }}
-                tooltipOptions={{
-                  formatTooltipX: d => d,
-                  formatTooltipY: d => '$ ' + parseFloat(d || 0).toFixed(2),
-                }}
-                data={{
-                  labels: _.split(productSummary_Dates_NoTime, ','),
-                  datasets: [
-                    {
-                      name: 'Product prices',
-                      type: 'line',
-                      values: _.split(
-                        rowShopifyProductSummary.PriceListActive,
-                        ','
-                      ),
-                    },
-                  ],
-                  yMarkers: [
-                    {
-                      label: 'Avg Price',
-                      value: rowShopifyProductSummary.PriceAvg,
-                    },
-                  ],
-                }}
-              />
-            )}
-          </TabPanel>
-        )}
+
+                </StatisticItem>
+                <StatisticItem>
+
+                  {rowShopifyProductSummary.PriceMin &&
+                    rowShopifyProductSummary.PriceMax && (
+                      <div>
+                        ${rowShopifyProductSummary.PriceMin} - ${rowShopifyProductSummary.PriceMax}<br />
+                        <span className="stat_title">Price Range</span>
+                      </div>
+                    )}
+
+
+                </StatisticItem>
+              </Statistics>
+              {rowShopifyProductSummary && (
+                <ReactFrappeChart
+                  title="Product prices"
+                  type="axis-mixed"
+                  colors={['#743ee2']}
+                  height={250}
+                  axisOptions={{ xAxisMode: 'tick', xIsSeries: 1 }}
+                  lineOptions={{ hideLine: 1 }}
+                  tooltipOptions={{
+                    formatTooltipX: d => d,
+                    formatTooltipY: d => '$ ' + parseFloat(d || 0).toFixed(2),
+                  }}
+                  data={{
+                    labels: _.split(productSummary_Dates_NoTime, ','),
+                    datasets: [
+                      {
+                        name: 'Product prices',
+                        type: 'line',
+                        values: _.split(
+                          rowShopifyProductSummary.PriceListActive,
+                          ','
+                        ),
+                      },
+                    ],
+                    yMarkers: [
+                      {
+                        label: 'Avg Price',
+                        value: rowShopifyProductSummary.PriceAvg,
+                      },
+                    ],
+                  }}
+                />
+              )}
+            </TabPanel>
+          )}
           <TabPanel>
             {chartRankData && (
               <ReactFrappeChart
@@ -1277,6 +1321,7 @@ export const query = graphql`
           VendorName
           VendorURL
           PublishedDate
+          UpdateDate
         }
       }
     }
@@ -1301,6 +1346,37 @@ export const query = graphql`
           Twitter
           URL
           YouTube
+        }
+      }
+    }
+
+    allMysqlCrunchBaseView {
+      edges {
+        node {
+          URL
+          profile_image_url          
+        }
+      }
+    }
+
+    allMysqlPayNShip {
+      edges {
+        node {
+            URL
+            Shipping
+            PaypalShopID
+            PaypalCurrency
+            PaypalVenmoSupport
+            AfterPay
+            Klarna
+            Affirm
+            FreeShipText
+            FreeShipMin
+            BaseShipRate
+            ReturnDays
+            ReturnShipFree
+            ReturnCondition
+            ReturnNotes
         }
       }
     }

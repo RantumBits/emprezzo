@@ -191,8 +191,9 @@ const ProductCategoryItem = ({ path, cover, title, vendorname, variant, price, n
       <StyledLink href="javascript:void(0)" onClick={() => openDialog()} title={vendorname}>
         <Information>
           <Title>{_.truncate(title.toLowerCase(), { length: 22, omission: '' })}</Title>
-
-          <Price><strike>{displayMaxPrice}</strike> ${price}</Price>
+          {price &&
+            <Price><strike>{displayMaxPrice}</strike> ${price}</Price>
+          }
         </Information>
       </StyledLink>
       <StyledDialog isOpen={showDialog} onDismiss={closeDialog}>
@@ -209,9 +210,9 @@ const ProductCategoryItem = ({ path, cover, title, vendorname, variant, price, n
 
 
 
-          <p>{node.Description && node.Description.substring(0, 220)}</p>
+            <p>{node.Description && node.Description.substring(0, 220)}</p>
 
-        {convertToSelectList(node.VariantTitle)}
+            {convertToSelectList(node.VariantTitle)}
           </div>
 
         </div>

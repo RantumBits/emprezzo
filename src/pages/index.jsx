@@ -74,7 +74,7 @@ const CategoryWrapper = styled.div`
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   }
   @media only screen and (max-width: 600px) {
-    grid-template-columns: 100%;
+    grid-template-columns: repeat(2, 1fr);
   }
 `;
 
@@ -343,7 +343,7 @@ const Index = ({ data }) => {
             selectedItem={1}
             showArrows={true}
             showStatus={false}
-            responsive={responsive}
+            responsive={responsive} 
           >
             {limitedEdges.map((node) => {
               return renderProduct(node);
@@ -442,8 +442,8 @@ const Index = ({ data }) => {
               cover={getProductImage(node)}
               path={`/shops/${node.UserName}/`}
               vendorname={node.VendorName}
-              title={node.Title}
-              price={node.Price}
+              title={isMobile?``:node.Title}
+              price={isMobile?``:node.Price}
               node={node}
             />
           ))}
@@ -578,8 +578,7 @@ export const query = graphql`
       edges {
         node {
           URL
-          profile_image_url
-          ProfilePicURL
+          profile_image_url          
         }
       }
     }

@@ -111,7 +111,7 @@ module.exports = {
             name: 'SocialHistory'
           },
           {
-            statement: "SELECT URL,Shipping,PaypalShopID,PaypalCurrency,IF(PaypalVenmoSupport=1,'true',null) as PaypalVenmoSupport,IF(AfterPay=1,'true',null) as AfterPay,IF(Klarna=1,'true',null) as Klarna,IF(Affirm=1,'true',null) as Affirm,FreeShipText,CreateDate,UpdateDate FROM PayNShip",
+            statement: "SELECT URL,Shipping,PaypalShopID,PaypalCurrency,IF(PaypalVenmoSupport=1,'true',null) as PaypalVenmoSupport,IF(AfterPay=1,'true',null) as AfterPay,IF(Klarna=1,'true',null) as Klarna,IF(Affirm=1,'true',null) as Affirm,FreeShipText,CreateDate,UpdateDate,Description,Returns,FreeShipMin,BaseShipRate,ReturnDays,ReturnShipFree,ReturnCondition,ReturnNotes FROM PayNShip",
             idFieldName: 'URL',
             name: 'PayNShip'
           },

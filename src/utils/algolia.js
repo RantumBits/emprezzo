@@ -43,8 +43,8 @@ const queries = [
   },
   {
     query: productQuery,
-    transformer: ({ prod }) => flatten(prod.products.edges),
-    indexName: `empProducts`,
+    transformer: ({ data }) => flatten(data.products.edges),
+    indexName: `empProducts_tmp`,
     settings,
   },
 ]
