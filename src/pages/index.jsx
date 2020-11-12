@@ -83,7 +83,7 @@ const Index = ({ data }) => {
   const rowProductsEdges = data.allMysqlShopifyView.edges;
   const rowallMysqlShopifyProductsAllEdges = data.allMysqlShopifyProductsAll ? data.allMysqlShopifyProductsAll.edges : [];
   const rowallMysqlCrunchBaseViewEdges = data.allMysqlCrunchBaseView ? data.allMysqlCrunchBaseView.edges : [];
-  const limit = 100;
+  const limit = 1000;
   const maxProducts = 7;
   const maxVisibleItems = 10;
   const [visibleItems, setVisibleItems] = React.useState(maxVisibleItems);
@@ -237,19 +237,19 @@ const Index = ({ data }) => {
 
   const electronicsShopEdges = _.filter(edges, ({ node }) => node.category && node.category.indexOf("Electronics") >= 0)
   const combinedElectronicsShopEdges = combineEdgesForShops(electronicsShopEdges);
-  
+
   const homeShopEdges = _.filter(edges, ({ node }) => node.category && node.category.indexOf("Home and Office") >= 0)
   const combinedHomeShopEdges = combineEdgesForShops(homeShopEdges);
-  
+
   const apparelShopEdges = _.filter(edges, ({ node }) => node.category && node.category.indexOf("Apparel") >= 0)
   const combinedApparelShopEdges = combineEdgesForShops(apparelShopEdges);
-  
+
   const toysShopEdges = _.filter(edges, ({ node }) => node.category && node.category.indexOf("Toys") >= 0)
   const combinedToysShopEdges = combineEdgesForShops(toysShopEdges);
-  
+
   const footwearShopEdges = _.filter(edges, ({ node }) => node.category && node.category.indexOf("Footwear") >= 0)
   const combinedFootwearShopEdges = combineEdgesForShops(footwearShopEdges);
-  
+
   const mainViewEdges = data.allMysqlMainView.edges;
   let listShopifyProductsAllEdges = [];
   //Creating a new dataset with original product nodes and shop columns from MainView
@@ -294,7 +294,7 @@ const Index = ({ data }) => {
           <ViewImage>
             <div style={{ 'textAlign': 'center', }}>
               <img
-                src={node.profile_image_url || node.ProfilePicURL || "/logo/logo.png"}
+                src={ node.ProfilePicURL || node.profile_image_url || "/logo/logo.png"}
                 onError={defaultImageOnError}
                 style={{
                   objectFit: 'cover',

@@ -1,5 +1,5 @@
 const shopQuery = `{
-  shops: allMysqlMainView {
+  shops: MainView {
     edges {
       node {
         objectID: UniqueKey
@@ -7,6 +7,23 @@ const shopQuery = `{
         slug: UserName
         tags: tags
         about: about
+      }
+    }
+  }
+}`
+
+const productQuery = `{
+  products: ShopifyProductsAll {
+    edges {
+      node {
+        ProductID: ProductID
+        VariantIDs: VariantID
+        VendorName: VendorName
+        Title: Title
+        Description: description
+        MaxPrice: MaxPrice
+        Price: Price
+        ImageURL: ImageURL
       }
     }
   }
@@ -24,5 +41,12 @@ const queries = [
     indexName: `uncommonry`,
     settings,
   },
+  {
+    query: productQuery,
+    transformer: ({ data }) => flatten(data.products.edges),
+    indexName: `empProducts`,
+    settings,
+  },
 ]
+
 module.exports = queries

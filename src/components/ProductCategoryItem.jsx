@@ -8,7 +8,7 @@ import { Dialog } from "@reach/dialog";
 import "@reach/dialog/styles.css";
 
 const Wrapper = styled.article`
-  margin: 0.7rem;
+  margin: 0.3rem;
   position: relative;
   z-index: 100;
   border-radius: ${props => props.theme.borderRadius.default};
@@ -105,17 +105,19 @@ const Vendor = styled.h5`
 
 const Title = styled.div`
   margin: 0;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.2rem;
   text-transform: capitalize;
+  font-size: .8em;
+
 `;
 const SubTitle = styled.h5`
   margin: 0;
   margin-bottom: 0.6rem;
 `;
 const Price = styled.div`
-  font-size: 1rem;
+  font-size: 0.5rem;
   margin: 0;
-  display: none;
+
 `;
 
 const StyledDialog = styled(Dialog)`
@@ -133,6 +135,7 @@ const StyledDialog = styled(Dialog)`
   img {
     max-height: 300px;
     max-width: 50%;
+    margin-right: 3%;
   }
   span {
     padding-left: 2rem;
@@ -187,9 +190,8 @@ const ProductCategoryItem = ({ path, cover, title, vendorname, variant, price, n
       </Image>
       <StyledLink href="javascript:void(0)" onClick={() => openDialog()} title={vendorname}>
         <Information>
-          <Vendor>{node.name || vendorname}</Vendor>
           <Title>{_.truncate(title.toLowerCase(), { length: 22, omission: '' })}</Title>
-          <SubTitle>{variant}</SubTitle>
+
           <Price><strike>{displayMaxPrice}</strike> ${price}</Price>
         </Information>
       </StyledLink>
@@ -203,15 +205,20 @@ const ProductCategoryItem = ({ path, cover, title, vendorname, variant, price, n
           <img src={cover} />
           <div>  <h3>{node.Title}</h3>
 
-          <b><strike>{displayMaxPrice}</strike> ${node.Price}</b><br/>
-          Buy at  <i>{node.name || vendorname}</i><br/>
-          <p>{node.Description && node.Description.substring(0, 250)}</p>
+            <p><i>Available at {node.name || vendorname} from  <strike>{displayMaxPrice}</strike> ${node.Price}</i></p>
+
+
+
+          <p>{node.Description && node.Description.substring(0, 220)}</p>
+
+        {convertToSelectList(node.VariantTitle)}
           </div>
+
         </div>
 
-        <br />
-        <div></div>
-        {convertToSelectList(node.VariantTitle)}
+
+
+
         <br />
         <div>
           <a href={node.ProductURL} target="_blank" class="button">Buy at {node.name || vendorname}</a>

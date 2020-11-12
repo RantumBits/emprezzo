@@ -134,7 +134,7 @@ module.exports = {
           {
             statement: "SELECT CrunchBase.*,InstagramHistory.* from CrunchBase LEFT JOIN InstagramHistory ON TRIM(TRAILING '/' FROM CrunchBase.URL) = TRIM(TRAILING '/' FROM InstagramHistory.ExternalURL)",
             idFieldName: 'URL',
-            name: 'CrunchBaseView' 
+            name: 'CrunchBaseView'
           }
         ]
       }

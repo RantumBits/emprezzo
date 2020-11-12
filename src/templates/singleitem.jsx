@@ -20,6 +20,7 @@ import {
   FaYoutube,
   FaRegLaugh,
   FaChartLine,
+  FaAt,
 } from 'react-icons/fa';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
@@ -249,7 +250,7 @@ const SingleItem = ({ data, pageContext }) => {
   //console.log("*** relatedShops",relatedShops);
 
   //Extracting Products from MySQL Data
-  const maxProducts = 5;
+  const maxProducts = 10;
   const rowShopifyViewEdges = data.allMysqlShopifyView.edges;
   //filtering top 3 for current AlexaURL
   const filteredProductView = _.filter(rowShopifyViewEdges, ({ node }) =>
@@ -565,19 +566,20 @@ const SingleItem = ({ data, pageContext }) => {
         key={node.PhotoLink}
         style={{ padding: ismobile && '15px', width: !ismobile && '30%' }}
       >
-        <a href={node.ShortCodeURL} target="_blank">
-          <ViewImage>
+
+          <ViewImage   style={{ height: '200px'}}>
+            <a href={node.ShortCodeURL} target="_blank">
             {node.mysqlImage && (
               <Image
                 fluid={node.mysqlImage.childImageSharp.fluid}
-                alt={node.Caption}
+                alt={node.Caption && node.Caption.substring(0, 140) + '...'}
                 style={{ height: '200px', width: '100%', margin: 'auto' }}
               />
             )}
             {!node.mysqlImage && (
               <img
                 src={node.PhotoLink}
-                alt={node.Caption}
+                alt={node.Caption && node.Caption.substring(0, 140) + '...'}
                 style={{
                   objectFit: 'cover',
                   height: '200px',
@@ -586,10 +588,11 @@ const SingleItem = ({ data, pageContext }) => {
                 }}
               />
             )}
+              </a>
           </ViewImage>
-        </a>
+
         <ViewInfo className="info" style={{ color: ismobile && 'white' }}>
-          {node.Caption && node.Caption.substring(0, 200) + '...'}
+          {node.Caption && node.Caption.substring(0, 140) + '...'}
         </ViewInfo>
       </ViewCard>
     );
@@ -604,7 +607,7 @@ const SingleItem = ({ data, pageContext }) => {
       );
     } else if (node.ProfilePicURL) {
       return (
-        <img src={node.ProfilePicURL} className="profileimage" onError={defaultImageOnError} style={{ width: '100px', height: '100px', 'border-radius': '100%' }} title={name} alt={name} />
+        <img src={node.ProfilePicURL} className="profileimage" onError={defaultImageOnError} style={{ width: '100px', height: '100px', 'border-radius': '100%', margin: '3%' }} title={name} alt={name} />
       );
     } else {
       return (
@@ -623,7 +626,7 @@ const SingleItem = ({ data, pageContext }) => {
     <Layout>
       <SEO
         title={`Discover ${name}: Best Sellers, Coupons, & Stats `}
-        description={`Find best sellers and popular products from ${name} on emprezzo. See social media growth, search popularity, and more stats online stores selling ${tagsList}. `}
+        description={`${name} is a  See social media growth, search popularity, and more stats online stores selling ${tagsList}. `}
         pathname={AlexaURL}
       />
       <Header title={name} children={subtitle} likeEnabled={{ storeName: name, storeURL: AlexaURL, storeProfileImage: (firstRowDataView && firstRowDataView.node.ProfilePicURL) }} />
@@ -632,8 +635,37 @@ const SingleItem = ({ data, pageContext }) => {
           {firstRowDataView && renderProfilePicURL(firstRowDataView.node, name)}
           <div style={{ paddingLeft: '15px' }}>
 
-            <Content input={about} />
-            <br />  <span className="stat_title">{tags}</span>
+           <b>{name}</b> produces and sells {category.toLowerCase()} products including {tags} and more. The company sells direct-to-consumer on its website.
+           {rowShopifyProductSummary.PriceMin &&
+                rowShopifyProductSummary.PriceMax && (
+                  <span>
+                   &nbsp;Prices range from ${rowShopifyProductSummary.PriceMin} - ${rowShopifyProductSummary.PriceMax} with an average price of ${rowShopifyProductSummary.PriceAvg}.</span>
+                )}
+           {socialDetails && (
+                  <span>
+                  &nbsp;The {name} brand can be found on
+                     {socialDetails.InstagramLink && (
+                      " Instagram, "
+                     )}
+                     {socialDetails.FacebookLink && (
+                      " Facebook, "
+                     )}
+                     {socialDetails.PinterestLink && (
+                    " Pinterest, "
+                     )}
+                     {socialDetails.TikTok && (
+                    " TikTok, "
+                     )}
+                     {socialDetails.TwitterLink && (
+                    " Twitter, "
+                     )}
+                     {socialDetails.YouTubeLink && (
+                      " Youtube, "
+                     )}
+                     and here on Emprezzo.&nbsp;
+                  </span>
+                 )}
+
             <Statistics>
 
 
@@ -666,14 +698,15 @@ const SingleItem = ({ data, pageContext }) => {
         )}
         <Tabs>
           <TabList>
-            {listShopifyBestSellersEdges &&
-              listShopifyBestSellersEdges.length > 0 && (
-                <Tab style={TabStyle}>Best sellers</Tab>
-              )}
+
             {visibleShopifyClassicProductsEdges &&
               visibleShopifyClassicProductsEdges.length > 0 && (
                 <Tab style={TabStyle}>Shop {name}</Tab>
               )}
+              {listShopifyBestSellersEdges &&
+                listShopifyBestSellersEdges.length > 0 && (
+                  <Tab style={TabStyle}>Best sellers</Tab>
+                )}
             {listShopifyNewProductsEdges &&
               listShopifyNewProductsEdges.length > 0 && (
                 <Tab style={TabStyle}>New products</Tab>
@@ -682,18 +715,18 @@ const SingleItem = ({ data, pageContext }) => {
               listShopifySaleProducts.length > 0 && (
                 <Tab style={TabStyle}>Sale</Tab>
               )}
+              {listShopifyGiftCards &&
+                listShopifyGiftCards.length > 0 && (
+                  <Tab style={TabStyle}>Gift Cards</Tab>
+                )}
           </TabList>
 
-          {listShopifyBestSellersEdges && listShopifyBestSellersEdges.length > 0 && (
-            <TabPanel>
-              {renderProductList(listShopifyBestSellersEdges, 'listShopifyBestSellersEdges')}
-            </TabPanel>
-          )}
+
 
           {visibleShopifyClassicProductsEdges && visibleShopifyClassicProductsEdges.length > 0 && (
             <TabPanel>
               <div style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
-                <span>Sort by &nbsp;</span>
+
                 <select value={sortBy} onChange={changeSortBy}>
                   <option value="PublishedDate"> Date </option>
                   {isPositionPresent &&
@@ -703,7 +736,7 @@ const SingleItem = ({ data, pageContext }) => {
                   {isDiscountPctPresent &&
                     <option value="DiscountPct"> Discount % </option>
                   }
-                </select>                
+                </select> &nbsp;
                 <button className="button" onClick={changeSortOrder}>{sortOrder}</button>
               </div>
               {renderProductList(visibleShopifyClassicProductsEdges, 'visibleShopifyClassicProductsEdges')}
@@ -716,7 +749,11 @@ const SingleItem = ({ data, pageContext }) => {
               }
             </TabPanel>
           )}
-
+          {listShopifyBestSellersEdges && listShopifyBestSellersEdges.length > 0 && (
+            <TabPanel>
+              {renderProductList(listShopifyBestSellersEdges, 'listShopifyBestSellersEdges')}
+            </TabPanel>
+          )}
           {listShopifyNewProductsEdges && listShopifyNewProductsEdges.length > 0 && (
             <TabPanel>
               {renderProductList(listShopifyNewProductsEdges, 'listShopifyNewProductsEdges')}
@@ -728,26 +765,27 @@ const SingleItem = ({ data, pageContext }) => {
               {renderProductList(listShopifySaleProducts, 'listShopifySaleProducts')}
             </TabPanel>
           )}
+          {listShopifyGiftCards &&
+            listShopifyGiftCards.length > 0 && (
+                <TabPanel>
+
+                <PostSectionGrid>
+                  {listShopifyGiftCards.map(({ node, index }) => {
+                    return renderProduct(node, 'Giftcard-' + index);
+                  })}
+                </PostSectionGrid>
+              </TabPanel>
+            )}
         </Tabs>
 
         {FreeShipText && FreeShipText.length > 0 && (
           <h3>get free shipping at {name}</h3>
         )}
         <p>{get100Words(FreeShipText)}</p>
-        {listShopifyGiftCards &&
-          listShopifyGiftCards.length > 0 && (
-            <div>
-              <h3>Gift cards available</h3>
-              <PostSectionGrid>
-                {listShopifyGiftCards.map(({ node, index }) => {
-                  return renderProduct(node, 'Giftcard-' + index);
-                })}
-              </PostSectionGrid>
-            </div>
-          )}
+
         <br />
         {listInstaPostEdges && listInstaPostEdges.length > 0 && (
-          <h3>See posts from @{firstRowDataView.node.UserName}</h3>
+          <h3>See recent posts from @{firstRowDataView.node.UserName}</h3>
         )}
         {socialDetails && (
           <SocialIcons>
@@ -769,6 +807,11 @@ const SingleItem = ({ data, pageContext }) => {
             {socialDetails.TwitterLink && (
               <a href={socialDetails.TwitterLink} target="_blank">
                 <FaTwitterSquare size="32" color="black" />
+              </a>
+            )}
+            {socialDetails.TikTokLink && (
+              <a href={socialDetails.TikTokLink} target="_blank">
+                <FaAt size="32" color="black" />
               </a>
             )}
             {socialDetails.YouTubeLink && (
@@ -819,7 +862,7 @@ const SingleItem = ({ data, pageContext }) => {
                     <Link key={index} to={`/shops/${shop.UserName}/`}>
                       {shop.name && <h3>{shop.name}</h3>}
                     </Link>
-                    {shop.about && <div>{_.truncate(shop.about, { length: 200, omission: '...' })}</div>}
+                    {shop.about && <div>{_.truncate(shop.about, { length: 140, omission: '...' })}</div>}
                   </PostSectionContent>
                 </span>
               ))}
@@ -844,10 +887,11 @@ const SingleItem = ({ data, pageContext }) => {
         <h3>{name} data and charts</h3>
         <Tabs>
           <TabList>
-            <Tab style={TabStyle}>Product Prices</Tab>
+                {rowShopifyProductSummary.PriceListActive && (<Tab style={TabStyle}>Product Prices</Tab>)}
             <Tab style={TabStyle}>Traffic rank</Tab>
             <Tab style={TabStyle}>Time on site</Tab>
           </TabList>
+            {rowShopifyProductSummary.PriceListActive && (
           <TabPanel>
             <Statistics>
               <StatisticItem>
@@ -908,6 +952,7 @@ const SingleItem = ({ data, pageContext }) => {
               />
             )}
           </TabPanel>
+        )}
           <TabPanel>
             {chartRankData && (
               <ReactFrappeChart
@@ -971,6 +1016,7 @@ const SingleItem = ({ data, pageContext }) => {
                 <TabPanel>
                   <ReactFrappeChart
                     type="axis-mixed"
+                    colors={['#743ee2']}
                     title="Facebook"
                     height={250}
                     axisOptions={{
