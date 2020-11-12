@@ -14,7 +14,7 @@ const shopQuery = `{
 
 const productQuery = `{
   products: allMysqlShopifyProductsAll {
-    edges(first:100) {
+    edges {
       node {
         id: ProductID
         VariantIDs: VariantID
@@ -26,7 +26,7 @@ const productQuery = `{
         ImageURL: ImageURL
       }
     }
-  }
+  } LIMIT 100
 }`
 const flatten = arr =>
   arr.map(({ node: { frontmatter, ...rest } }) => ({
