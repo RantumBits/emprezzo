@@ -20,7 +20,7 @@ const productQuery = `{
         VariantIDs: VariantID
         VendorName: VendorName
         Title: Title
-        Description: description
+        Description: Description
         MaxPrice: MaxPrice
         Price: Price
         ImageURL: ImageURL
@@ -43,7 +43,7 @@ const queries = [
   },
   {
     query: productQuery,
-    transformer: ({ data }) => flatten(data.products.edges),
+    transformer: ({ prod }) => flatten(prod.products.edges),
     indexName: `empProducts`,
     settings,
   },
