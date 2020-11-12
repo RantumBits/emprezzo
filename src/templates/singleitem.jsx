@@ -635,7 +635,7 @@ const SingleItem = ({ data, pageContext }) => {
           {firstRowDataView && renderProfilePicURL(firstRowDataView.node, name)}
           <div style={{ paddingLeft: '15px' }}>
 
-           <b>{name}</b> produces and sells {category.toLowerCase()} products including {tags} and more. The company sells direct-to-consumer on its website.
+           <b>{name}</b> produces and sells {category} products {tags} and more. The company sells direct-to-consumer on its website.
            {rowShopifyProductSummary.PriceMin &&
                 rowShopifyProductSummary.PriceMax && (
                   <span>
