@@ -15,7 +15,7 @@ const shopQuery = `{
 const productQuery = `{
   products: allMysqlShopifyProductsAll {
     edges {
-      node {
+      node (limit: 100) {
         id: ProductID
         VariantIDs: VariantID
         VendorName: VendorName
@@ -43,7 +43,7 @@ const queries = [
   },
   {
     query: productQuery,
-    first: 100,
+    limit: 100,
     transformer: ({ data }) => flatten(data.products.edges),
     indexName: `empProducts`,
     settings,
