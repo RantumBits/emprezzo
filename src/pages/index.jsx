@@ -355,7 +355,7 @@ const Index = ({ data }) => {
   }
   return (
     <Layout title={'emprezzo | Discover great independent shops & direct-to-consumer brands'} description="Discover the best online storess & direct-to-consumer brands" >
-      <Header title="Discover great brands & online shops" subtitle="shop directly & support independent business"></Header>
+      <Header title="Discover great brands & online shops" subtitle="shop direct & support independent business"></Header>
       {/* <p className="center"><a href ="/randomshop" className="button button">Discover a  shop</a></p> */}
       <div className="center">
 
