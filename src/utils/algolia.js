@@ -16,7 +16,7 @@ const productQuery = `{
   products: allMysqlShopifyProductsAll {
     edges {
       node {
-        ObjectID: ProductID
+        id: ProductID
         VariantIDs: VariantID
         VendorName: VendorName
         Title: Title
