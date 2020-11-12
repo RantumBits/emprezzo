@@ -26,7 +26,7 @@ const productQuery = `{
         ImageURL: ImageURL
       }
     }
-  } LIMIT 100
+  }
 }`
 const flatten = arr =>
   arr.map(({ node: { frontmatter, ...rest } }) => ({
@@ -43,6 +43,7 @@ const queries = [
   },
   {
     query: productQuery,
+    first: 100,
     transformer: ({ data }) => flatten(data.products.edges),
     indexName: `empProducts`,
     settings,
