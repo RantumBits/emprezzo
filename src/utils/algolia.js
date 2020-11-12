@@ -13,9 +13,9 @@ const shopQuery = `{
 }`
 
 const productQuery = `{
-  products: allMysqlShopifyProductsAll {
+  products: allMysqlShopifyProductsAll(limit: 100) {
     edges {
-      node (limit: 100) {
+      node {
         id: ProductID
         VariantIDs: VariantID
         VendorName: VendorName
