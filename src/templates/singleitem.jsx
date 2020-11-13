@@ -1240,7 +1240,7 @@ export const query = graphql`
           PriceMax
           PriceAvg
           CountProducts
-          renderProfilePicURL
+          ProfileImageUrl
         }
       }
     }
