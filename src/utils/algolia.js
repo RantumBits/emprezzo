@@ -2,17 +2,18 @@ const shopQuery = `{
   shops: allMysqlMainView(limit:10) {
     edges {
       node {
-        id: name
+        id: UserName
         title: name
-        slug: UserName
+        url: url
         tags: tags
         about: about
         category: category
-        FreeShipMin: FreeShipMin
-        BaseShipRate: BaseShipRate
-        ReturnDays: ReturnDays
-        ReturnShipFree: ReturnShipFree
-        PriceMin: PriceMin
+        freeShipMin: FreeShipMin
+        baseShipRate: BaseShipRate
+        returnDays: ReturnDays
+        returnShipFree: ReturnShipFree
+        priceMin: PriceMin
+        image: ProfilePicURL
       }
     }
   }
@@ -35,7 +36,7 @@ const productQuery = `{
         PublishedDate: PublishedDate
         Position: Position
         ProductURL: ProductURL
-        
+
       }
     }
   }
