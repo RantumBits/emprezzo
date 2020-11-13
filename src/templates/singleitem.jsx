@@ -1344,6 +1344,14 @@ export const query = graphql`
           VendorURL
           PublishedDate
           UpdateDate
+          UserName
+          tags
+          category
+          FreeShipMin
+          BaseShipRate
+          ReturnDays
+          ReturnShipFree
+          ProfilePicURL
         }
       }
     }

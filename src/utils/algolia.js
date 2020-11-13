@@ -3,7 +3,8 @@ const shopQuery = `{
     edges {
       node {
         id: UserName
-        title: name
+        shopName: name
+        emprezzoID: UserName
         url: url
         tags: tags
         about: about
@@ -24,18 +25,24 @@ const productQuery = `{
     edges {
       node {
         id: ProductID
-        VariantIDs: VariantID
-        VendorName: VendorName
-        Title: Title
-        Description: Description
-        MaxPrice: MaxPrice
-        Price: Price
-        ImageURL: ImageURL
-        VendorUrl: VendorURL
-        UpdateDate: UpdateDate
-        PublishedDate: PublishedDate
-        Position: Position
-        ProductURL: ProductURL
+        name: Title
+        description: Description
+        maxPrice: MaxPrice
+        price: Price
+        imageURL: ImageURL
+        updateDate: UpdateDate
+        publishedDate: PublishedDate
+        sellingRank: Position
+        productURL: ProductURL
+        shopName: name
+        emprezzoID: UserName
+        shopTags: tags
+        shopCategory: category
+        freeShipMin: FreeShipMin
+        baseShipRate: BaseShipRate
+        returnDays: ReturnDays
+        returnShipFree: ReturnShipFree
+        shopImage: ProfilePicURL
 
       }
     }
