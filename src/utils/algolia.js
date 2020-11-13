@@ -1,19 +1,25 @@
 const shopQuery = `{
-  shops: allMysqlMainView {
+  shops: allMysqlMainView(limit:10) {
     edges {
       node {
-        objectID: UniqueKey
+        id: name
         title: name
         slug: UserName
         tags: tags
         about: about
+        category: category
+        FreeShipMin: FreeShipMin
+        BaseShipRate: BaseShipRate
+        ReturnDays: ReturnDays
+        ReturnShipFree: ReturnShipFree
+        PriceMin: PriceMin
       }
     }
   }
 }`
 
 const productQuery = `{
-  products: allMysqlShopifyProductsAll(limit: 1000) {
+  products: allMysqlShopifyProductsAll(limit: 10) {
     edges {
       node {
         id: ProductID
@@ -24,6 +30,12 @@ const productQuery = `{
         MaxPrice: MaxPrice
         Price: Price
         ImageURL: ImageURL
+        VendorUrl: VendorURL
+        UpdateDate: UpdateDate
+        PublishedDate: PublishedDate
+        Position: Position
+        ProductURL: ProductURL
+        
       }
     }
   }

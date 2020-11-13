@@ -157,7 +157,7 @@ const CategoryWrapper = styled.div`
 
 const SingleItem = ({ data, pageContext }) => {
   const { next, prev } = pageContext;
-  const {
+  let {
     AlexaURL,
     InstaFollowers,
     InstaFollowing,
@@ -180,6 +180,7 @@ const SingleItem = ({ data, pageContext }) => {
     about,
     signup_promos,
   } = data.mysqlMainView;
+  if (AlexaURL.substring(-1) != '/') AlexaURL += "/";
 
   const allMysqlMainViewEdges = data.allMysqlMainView.edges;
   const rowallMysqlCrunchBaseViewEdges = data.allMysqlCrunchBaseView ? data.allMysqlCrunchBaseView.edges : [];
@@ -222,22 +223,20 @@ const SingleItem = ({ data, pageContext }) => {
   //filtering top 3 for current instagram id
   const filteredDataView = _.filter(rowDataViewEdges, ({ node }) => node.AlexaURL == AlexaURL);
   const listPostEdges = _.slice(filteredDataView, 0, maxPosts);
-  let firstRowDataView = listPostEdges && listPostEdges.length ? listPostEdges[0] : null;
+  let firstRowDataView = listPostEdges && listPostEdges.length ? listPostEdges[0] : [];
   //adding profileimage to firstrow
-  if (firstRowDataView) {
-    var crunchBaseData = _.filter(rowallMysqlCrunchBaseViewEdges, ({ node }) => node.URL == firstRowDataView.node.AlexaURL)
-    var crunchBaseRow = crunchBaseData.length > 0 ? crunchBaseData[0] : [];
-    //adding PayNShip data to firstrow
-    var payNShipData = _.filter(rowallMysqlPayNShipEdges, ({ node }) => node.URL == firstRowDataView.node.AlexaURL)
-    var payNShipRow = payNShipData.length > 0 ? payNShipData[0] : [];
-    firstRowDataView = {
-      node: {
-        ...firstRowDataView.node,
-        ...crunchBaseRow.node,
-        ...payNShipRow.node,
-      }
+  var crunchBaseData = _.filter(rowallMysqlCrunchBaseViewEdges, ({ node }) => node.URL == AlexaURL)
+  var crunchBaseRow = crunchBaseData.length > 0 ? crunchBaseData[0] : [];
+  //adding PayNShip data to firstrow
+  var payNShipData = _.filter(rowallMysqlPayNShipEdges, ({ node }) => node.URL == AlexaURL)
+  var payNShipRow = payNShipData.length > 0 ? payNShipData[0] : [];
+  firstRowDataView = {
+    node: {
+      ...firstRowDataView.node,
+      ...crunchBaseRow.node,
+      ...payNShipRow.node,
     }
-  }//end if (firstRowDataView)
+  }
 
   //Now filtering instagram posts if the image or caption is not present
   const listInstaPostEdges = _.filter(listPostEdges, ({ node }) => node.PhotoLink);
@@ -265,9 +264,8 @@ const SingleItem = ({ data, pageContext }) => {
   const relatedShops = getRelatedShops(data.mysqlMainView, combinedMainDataEdges);
   const combinedRelatedShops = [];
   relatedShops.map(({ shop, points }) => {
-    const inputID = shop.AlexaURL;
     //filter for profileimage
-    var crunchBaseData = _.filter(rowallMysqlCrunchBaseViewEdges, ({ node }) => node.URL == inputID)
+    var crunchBaseData = _.filter(rowallMysqlCrunchBaseViewEdges, ({ node }) => node.URL == AlexaURL)
     var crunchBaseRow = crunchBaseData.length > 0 ? crunchBaseData[0] : [];
     let newNode = {
       points,
@@ -303,8 +301,11 @@ const SingleItem = ({ data, pageContext }) => {
   //Extracting classic products
   let filteredShopifyClassicProducts = _.sortBy(_.filter(rowallMysqlShopifyProductsAllEdges, ({ node }) => node.Title.toLowerCase().indexOf("gift card") < 0 && node.Title.toLowerCase().indexOf("shipping") < 0 && node.Title.toLowerCase().indexOf("insurance") < 0), ({ node }) => node.PublishedDate);
   //Now applying sorting
-  filteredShopifyClassicProducts = _.sortBy(filteredShopifyClassicProducts, ({ node }) => sortOrder != "DESC" && sortBy != "UpdateDate" ? node[sortBy] : -node[sortBy])
-  filteredShopifyClassicProducts = _.sortBy(filteredShopifyClassicProducts, ({ node }) => sortOrder != "DESC" && sortBy == "UpdateDate" ? new Date(node[sortBy]) : -(new Date(node[sortBy])))
+  if (sortBy != "UpdateDate") {
+    filteredShopifyClassicProducts = _.sortBy(filteredShopifyClassicProducts, ({ node }) => sortOrder != "DESC" ? node[sortBy] : -node[sortBy])
+  } else {
+    filteredShopifyClassicProducts = _.sortBy(filteredShopifyClassicProducts, ({ node }) => sortOrder != "DESC" ? new Date(node[sortBy]) : -(new Date(node[sortBy])))
+  }
   //Now limiting the items as per limit
   const visibleShopifyClassicProductsEdges = _.slice(filteredShopifyClassicProducts, 0, visibleItems);
   if (showMore && visibleShopifyClassicProductsEdges.length >= filteredShopifyClassicProducts.length) setShowMore(false);
@@ -705,11 +706,21 @@ const SingleItem = ({ data, pageContext }) => {
             {firstRowDataView &&
               <>
                 <br /><br />
-                <div>Free shipping on orders over ${firstRowDataView.node.FreeShipMin}</div>
-                <div>Base shipping rate: ${firstRowDataView.node.BaseShipRate}</div>
-                <div>Offers {firstRowDataView.node.ReturnDays} day returns.</div>
-                <div>Return shipping is : {firstRowDataView.node.ReturnShipFree}</div>
-                <div>Return condition: {firstRowDataView.node.ReturnCondition} {firstRowDataView.node.ReturnNotes}</div>
+                {firstRowDataView.node.FreeShipMin && firstRowDataView.node.FreeShipMin != "#" &&
+                  <div>Free shipping on orders over ${firstRowDataView.node.FreeShipMin}</div>
+                }
+                {firstRowDataView.node.BaseShipRate && firstRowDataView.node.BaseShipRate != "#" &&
+                  <div>Base shipping rate: ${firstRowDataView.node.BaseShipRate}</div>
+                }
+                {firstRowDataView.node.ReturnDays && firstRowDataView.node.ReturnDays != "#" &&
+                  <div>Offers {firstRowDataView.node.ReturnDays} day returns.</div>
+                }
+                {firstRowDataView.node.ReturnShipFree && firstRowDataView.node.ReturnShipFree != "#" &&
+                  <div>Return shipping is : {firstRowDataView.node.ReturnShipFree}</div>
+                }
+                {firstRowDataView.node.ReturnCondition && firstRowDataView.node.ReturnCondition != "#" &&
+                  <div>Return condition: {firstRowDataView.node.ReturnCondition} {firstRowDataView.node.ReturnNotes}</div>
+                }
               </>
             }
 
@@ -1219,6 +1230,17 @@ export const query = graphql`
           tags
           name
           about
+          url
+          Description
+          FreeShipMin
+          BaseShipRate
+          ReturnDays
+          ReturnShipFree
+          PriceMin
+          PriceMax
+          PriceAvg
+          CountProducts
+          renderProfilePicURL
         }
       }
     }
@@ -1354,7 +1376,7 @@ export const query = graphql`
       edges {
         node {
           URL
-          profile_image_url          
+          profile_image_url
         }
       }
     }
