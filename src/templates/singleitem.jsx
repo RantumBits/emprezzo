@@ -1313,7 +1313,7 @@ export const query = graphql`
           UserName
           Title
           ProductURL
-          Description
+          metaDescription
           ImageURL
           Price
           FreeShipText
