@@ -25,7 +25,7 @@ const productQuery = `{
     edges {
       node {
         id: UniqueKey
-        productID:
+        productID: productID 
         name: Title
         description: Description
         maxPrice: MaxPrice
