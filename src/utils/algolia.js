@@ -27,7 +27,7 @@ const productQuery = `{
         id: UniqueKey
         productID: ProductID
         name: Title
-        description: Description
+        description: productDesc
         maxPrice: MaxPrice
         price: Price
         imageURL: ImageURL
