@@ -1231,7 +1231,7 @@ export const query = graphql`
           name
           about
           url
-          Description
+          metaDescription
           FreeShipMin
           BaseShipRate
           ReturnDays
@@ -1325,7 +1325,7 @@ export const query = graphql`
       edges {
         node {
           DiscountAmt
-          Description
+          productDesc
           DiscountPct
           HasVariants
           ImageURL
