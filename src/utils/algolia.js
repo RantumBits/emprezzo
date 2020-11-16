@@ -39,6 +39,7 @@ const productQuery = `{
         emprezzoID: UserName
         shopTags: tags
         shopCategory: category
+        shopDescription: Description
         freeShipMin: FreeShipMin
         baseShipRate: BaseShipRate
         returnDays: ReturnDays
