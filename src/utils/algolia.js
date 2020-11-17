@@ -24,7 +24,7 @@ const productQuery = `{
   products: allMysqlShopifyProductsAll(limit: 6000) {
     edges {
       node {
-        id: ProductID
+        id: UniqueKey
         productID: ProductID
         name: Title
         description: productDesc
