@@ -2,7 +2,7 @@ const shopQuery = `{
   shops: allMysqlMainView(limit:1000) {
     edges {
       node {
-        id: UniqueKey
+        id: UserName
         shopName: name
         emprezzoID: UserName
         url: url
@@ -21,10 +21,10 @@ const shopQuery = `{
 }`
 
 const productQuery = `{
-  products: allMysqlShopifyProductsAll(limit: 5000) {
+  products: allMysqlShopifyProductsAll(limit: 6000) {
     edges {
       node {
-        id: UniqueKey
+        id: ProductID
         productID: ProductID
         name: Title
         description: productDesc
