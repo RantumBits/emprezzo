@@ -1,5 +1,5 @@
 const shopQuery = `{
-  shops: allMysqlMainView(limit:1000) {
+  shops: allMysqlMainView() {
     edges {
       node {
         id: UniqueKey
@@ -21,7 +21,7 @@ const shopQuery = `{
 }`
 
 const productQuery = `{
-  products: allMysqlShopifyProductsAll(limit: 2500) {
+  products: allMysqlShopifyProductsAll(limit: 5000) {
     edges {
       node {
         id: UniqueKey
