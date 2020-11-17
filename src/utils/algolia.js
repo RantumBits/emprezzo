@@ -1,5 +1,5 @@
 const shopQuery = `{
-  shops: allMysqlMainView() {
+  shops: allMysqlMainView(limit:1000) {
     edges {
       node {
         id: UniqueKey
