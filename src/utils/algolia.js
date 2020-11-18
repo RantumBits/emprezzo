@@ -26,7 +26,7 @@ const productQuery = `{
       node {
         objectID: UniqueKey
         id: UniqueKey
-        productID: ShopifyProductsAll.ProductID
+        productID: ProductID
         name: Title
         description: productDesc
         maxPrice: MaxPrice
