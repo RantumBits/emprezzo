@@ -22,7 +22,7 @@ const shopQuery = `{
 }`
 
 const productQuery = `{
-  products: allMysqlShopifyProductsAll(limit: 500) {
+  products: allMysqlShopifyProductsAll(limit: 1500) {
     edges {
       node {
         objectID: UniqueID
@@ -46,6 +46,7 @@ const productQuery = `{
         returnDays: ReturnDays
         returnShipFree: ReturnShipFree
         shopImage: ProfilePicURL
+        globalRank: GlobalRank
 
       }
     }
