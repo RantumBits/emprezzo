@@ -95,7 +95,7 @@ module.exports = {
             name: 'Pages'
           },
           {
-            statement: 'SELECT \n    CONCAT(VendorURL, FLOOR(RAND() * 10000)) AS UniqueKey,\n     ShopifyProductsAll.*,\n    ShopifyDesc.Description as productDesc,\n    Tags.*,\n    PayNShip.*,\n    InstagramHistory.*\nFROM\n    ShopifyProductsAll\n        LEFT JOIN\n    ShopifyDesc ON ShopifyDesc.ProductID = ShopifyProductsAll.ProductID\n        LEFT JOIN\n    Tags ON TRIM(TRAILING \'/\' FROM ShopifyProductsAll.VendorURL) = TRIM(TRAILING \'/\' FROM Tags.url)\n    LEFT JOIN\n    PayNShip ON TRIM(TRAILING \'/\' FROM ShopifyProductsAll.VendorURL) = TRIM(TRAILING \'/\' FROM PayNShip.URL)\n    LEFT JOIN\n    SocialIDView ON TRIM(TRAILING \'/\' FROM ShopifyProductsAll.VendorURL) = TRIM(TRAILING \'/\' FROM SocialIDView.URL)\n	 LEFT JOIN\n    InstagramHistory ON TRIM(TRAILING \'/\' FROM SocialIDView.Instagram) = TRIM(TRAILING \'/\' FROM InstagramHistory.UserName)',
+            statement: 'SELECT CONCAT(VendorURL, FLOOR(RAND() * 10000)) AS UniqueKey, LOWER(CONCAT(SUBSTRING(ShopifyProductsAll.VendorURL,9,4),'-',ShopifyProductsAll.ProductID)) AS UniqueID,    ShopifyProductsAll.*,    ShopifyDesc.Description as productDesc,    Tags.*,    PayNShip.*,    InstagramHistory.*FROM    ShopifyProductsAll        LEFT JOIN    ShopifyDesc ON ShopifyDesc.ProductID = ShopifyProductsAll.ProductID        LEFT JOIN    Tags ON TRIM(TRAILING '/' FROM ShopifyProductsAll.VendorURL) = TRIM(TRAILING '/' FROM Tags.url)    LEFT JOIN    PayNShip ON TRIM(TRAILING '/' FROM ShopifyProductsAll.VendorURL) = TRIM(TRAILING '/' FROM PayNShip.URL)    LEFT JOIN    SocialIDView ON TRIM(TRAILING '/' FROM ShopifyProductsAll.VendorURL) = TRIM(TRAILING '/' FROM SocialIDView.URL)	 LEFT JOIN    InstagramHistory ON TRIM(TRAILING '/' FROM SocialIDView.Instagram) = TRIM(TRAILING '/' FROM InstagramHistory.UserName) WHERE VendorURL IS NOT NULL',
             idFieldName: 'UniqueKey',
             name: 'ShopifyProductsAll'
           },
@@ -160,7 +160,7 @@ module.exports = {
         appId: process.env.GATSBY_ALGOLIA_APP_ID,
         apiKey: process.env.ALGOLIA_ADMIN_KEY,
         queries,
-        chunkSize: 10000, // default: 1000
+        chunkSize: 1000, // default: 1000
       },
     },
     `gatsby-plugin-styled-components`,
