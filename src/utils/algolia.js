@@ -22,7 +22,7 @@ const shopQuery = `{
 }`
 
 const productQuery = `{
-  products: allMysqlShopifyProductsAll(limit: 6500) {
+  products: allMysqlShopifyProductsAll(limit: 1500) {
     edges {
       node {
         objectID: UniqueID
