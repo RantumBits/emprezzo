@@ -15,6 +15,7 @@ const shopQuery = `{
         returnShipFree: ReturnShipFree
         priceMin: PriceMin
         image: ProfilePicURL
+        updateDate: AlexaRankView.CreateDate
       }
     }
   }
