@@ -1241,6 +1241,7 @@ export const query = graphql`
           PriceAvg
           CountProducts
           ProfilePicURL
+          CreateDate
         }
       }
     }
