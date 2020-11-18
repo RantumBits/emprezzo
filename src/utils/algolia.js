@@ -46,7 +46,7 @@ const productQuery = `{
         returnDays: ReturnDays
         returnShipFree: ReturnShipFree
         shopImage: ProfilePicURL
-        globalRank: GlobalRank
+        globalRank: GlobalRankOrder
 
       }
     }
