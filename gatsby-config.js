@@ -69,76 +69,76 @@ module.exports = {
           database: process.env.MYSQL_DB
         },
         queries: [
-                  {
-                    statement: 'SELECT * FROM ShopifyView WHERE AlexaURL IS NOT NULL',
-                    idFieldName: 'ProductURL',
-                    name: 'ShopifyView'
-                  },
-                  {
-                    statement: 'SELECT * FROM RankView_Paypal WHERE AlexaURL IS NOT NULL',
-                    idFieldName: 'AlexaURL',
-                    name: 'RankViewPaypal'
-                  },
-                  {
-                    statement: 'SELECT * FROM RankView_PayLater WHERE AlexaURL IS NOT NULL',
-                    idFieldName: 'AlexaURL',
-                    name: 'RankViewPayLater'
-                  },
-                  {
-                    statement: 'SELECT * FROM Tags WHERE url IS NOT NULL',
-                    idFieldName: 'url',
-                    name: 'Tags'
-                  },
-                  {
-                    statement: 'SELECT CONCAT(TOPIC,FLOOR(RAND()*10000)) AS UniqueKey,Pages.* FROM Pages',
-                    idFieldName: 'UniqueKey',
-                    name: 'Pages'
-                  },
-                  {
-                    statement: 'SELECT \n    CONCAT(VendorURL, FLOOR(RAND() * 10000)) AS UniqueKey,\n    ShopifyProductsAll.*,\n    ShopifyDesc.Description,\n    Tags.*,\n    PayNShip.*,\n    InstagramHistory.*\nFROM\n    ShopifyProductsAll\n        LEFT JOIN\n    ShopifyDesc ON ShopifyDesc.ProductID = ShopifyProductsAll.ProductID\n        LEFT JOIN\n    Tags ON TRIM(TRAILING \'/\' FROM ShopifyProductsAll.VendorURL) = TRIM(TRAILING \'/\' FROM Tags.url)\n    LEFT JOIN\n    PayNShip ON TRIM(TRAILING \'/\' FROM ShopifyProductsAll.VendorURL) = TRIM(TRAILING \'/\' FROM PayNShip.URL)\n    LEFT JOIN\n    SocialIDView ON TRIM(TRAILING \'/\' FROM ShopifyProductsAll.VendorURL) = TRIM(TRAILING \'/\' FROM SocialIDView.URL)\n	 LEFT JOIN\n    InstagramHistory ON TRIM(TRAILING \'/\' FROM SocialIDView.Instagram) = TRIM(TRAILING \'/\' FROM InstagramHistory.UserName)',
-                    idFieldName: 'UniqueKey',
-                    name: 'ShopifyProductsAll'
-                  },
-                  {
-                    statement: 'SELECT CONCAT(VendorURL,FLOOR(RAND()*10000)) AS UniqueKey,ShopifyProductSummary.* FROM ShopifyProductSummary',
-                    //statement: "SELECT 1 AS UniqueKey, '2' AS VendorURL, 3 AS PriceAvg, 4 AS PriceAvgTop10, 5 AS PriceMin, 6 AS PriceMax, 7 AS CountProducts, 8 AS PriceListActive, 9 AS DateListActive FROM DUAL",
-                    idFieldName: 'UniqueKey',
-                    name: 'ShopifyProductSummary'
-                  },
-                  {
-                    statement: 'SELECT CONCAT(URL,FLOOR(RAND()*10000)) AS UniqueKey,SocialHistory.* FROM SocialHistory',
-                    idFieldName: 'UniqueKey',
-                    name: 'SocialHistory'
-                  },
-                  {
-                    statement: "SELECT URL,Shipping,PaypalShopID,PaypalCurrency,IF(PaypalVenmoSupport=1,'true',null) as PaypalVenmoSupport,IF(AfterPay=1,'true',null) as AfterPay,IF(Klarna=1,'true',null) as Klarna,IF(Affirm=1,'true',null) as Affirm,FreeShipText,CreateDate,UpdateDate,Description,Returns,FreeShipMin,BaseShipRate,ReturnDays,ReturnShipFree,ReturnCondition,ReturnNotes FROM PayNShip",
-                    idFieldName: 'URL',
-                    name: 'PayNShip'
-                  },
-                  {
-                    statement: "SELECT \n    CONCAT(AlexaRankView.URL, FLOOR(RAND() * 10000)) AS UniqueKey,\n    AlexaRankView.URL AS AlexaURL,\n    AlexaRankView.*,\n    Tags.*,\n    SocialIDView.*,\n    RankHistory.*,\n    PayNShip.*,\n    ShopifyProductSummary.*,\n    InstagramHistory.*\nFROM\n    AlexaRankView\n        LEFT JOIN\n    Tags ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM Tags.url)\n        LEFT JOIN\n    SocialIDView ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM SocialIDView.URL)\n        LEFT JOIN\n    RankHistory ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM RankHistory.url)\n        LEFT JOIN\n    PayNShip ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM PayNShip.URL)\n        LEFT JOIN\n    ShopifyProductSummary ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM ShopifyProductSummary.VendorURL)\n        LEFT JOIN\n    InstagramHistory ON TRIM(TRAILING \'/\' FROM SocialIDView.Instagram) = TRIM(TRAILING \'/\' FROM InstagramHistory.UserName)",
-                    idFieldName: 'AlexaURL',
-                    name: 'MainView'
-                  },
-                  {
-                    statement: 'SELECT * FROM SocialIDView WHERE URL IS NOT NULL',
-                    idFieldName: 'URL',
-                    name: 'SocialIDView'
-                  },
-                  {
-                    statement: "Select CONCAT(UserName,FLOOR(RAND()*10000)) AS UniqueKey, DataView.*,CONCAT('https://instagram.com/p/',DataView.ShortCode) AS ShortCodeURL FROM DataView WHERE UserName IS NOT NULL ORDER BY activity DESC",
-                    idFieldName: 'UniqueKey',
-                    name: 'DataView'
-                    //,remoteImageFieldNames: ['ProfilePicURL']
-                  },
-                  {
-                    statement: "SELECT CrunchBase.*,InstagramHistory.* from CrunchBase LEFT JOIN InstagramHistory ON TRIM(TRAILING '/' FROM CrunchBase.URL) = TRIM(TRAILING '/' FROM InstagramHistory.ExternalURL)",
-                    idFieldName: 'URL',
-                    name: 'CrunchBaseView'
-                  }
-                ]
-              }
-            },
+          {
+            statement: 'SELECT * FROM ShopifyView WHERE AlexaURL IS NOT NULL',
+            idFieldName: 'ProductURL',
+            name: 'ShopifyView'
+          },
+          {
+            statement: 'SELECT * FROM RankView_Paypal WHERE AlexaURL IS NOT NULL',
+            idFieldName: 'AlexaURL',
+            name: 'RankViewPaypal'
+          },
+          {
+            statement: 'SELECT * FROM RankView_PayLater WHERE AlexaURL IS NOT NULL',
+            idFieldName: 'AlexaURL',
+            name: 'RankViewPayLater'
+          },
+          {
+            statement: 'SELECT * FROM Tags WHERE url IS NOT NULL',
+            idFieldName: 'url',
+            name: 'Tags'
+          },
+          {
+            statement: 'SELECT CONCAT(TOPIC,FLOOR(RAND()*10000)) AS UniqueKey,Pages.* FROM Pages',
+            idFieldName: 'UniqueKey',
+            name: 'Pages'
+          },
+          {
+            statement: 'SELECT \n    CONCAT(VendorURL, FLOOR(RAND() * 10000)) AS UniqueKey,\n    ShopifyProductsAll.*,\n    ShopifyDesc.Description as productDesc,\n    Tags.*,\n    PayNShip.*,\n    InstagramHistory.*\nFROM\n    ShopifyProductsAll\n        LEFT JOIN\n    ShopifyDesc ON ShopifyDesc.ProductID = ShopifyProductsAll.ProductID\n        LEFT JOIN\n    Tags ON TRIM(TRAILING \'/\' FROM ShopifyProductsAll.VendorURL) = TRIM(TRAILING \'/\' FROM Tags.url)\n    LEFT JOIN\n    PayNShip ON TRIM(TRAILING \'/\' FROM ShopifyProductsAll.VendorURL) = TRIM(TRAILING \'/\' FROM PayNShip.URL)\n    LEFT JOIN\n    SocialIDView ON TRIM(TRAILING \'/\' FROM ShopifyProductsAll.VendorURL) = TRIM(TRAILING \'/\' FROM SocialIDView.URL)\n	 LEFT JOIN\n    InstagramHistory ON TRIM(TRAILING \'/\' FROM SocialIDView.Instagram) = TRIM(TRAILING \'/\' FROM InstagramHistory.UserName)',
+            idFieldName: 'UniqueKey',
+            name: 'ShopifyProductsAll'
+          },
+          {
+            statement: 'SELECT CONCAT(VendorURL,FLOOR(RAND()*10000)) AS UniqueKey,ShopifyProductSummary.* FROM ShopifyProductSummary',
+            //statement: "SELECT 1 AS UniqueKey, '2' AS VendorURL, 3 AS PriceAvg, 4 AS PriceAvgTop10, 5 AS PriceMin, 6 AS PriceMax, 7 AS CountProducts, 8 AS PriceListActive, 9 AS DateListActive FROM DUAL",
+            idFieldName: 'UniqueKey',
+            name: 'ShopifyProductSummary'
+          },
+          {
+            statement: 'SELECT CONCAT(URL,FLOOR(RAND()*10000)) AS UniqueKey,SocialHistory.* FROM SocialHistory',
+            idFieldName: 'UniqueKey',
+            name: 'SocialHistory'
+          },
+          {
+            statement: "SELECT URL,Shipping,PaypalShopID,PaypalCurrency,IF(PaypalVenmoSupport=1,'true',null) as PaypalVenmoSupport,IF(AfterPay=1,'true',null) as AfterPay,IF(Klarna=1,'true',null) as Klarna,IF(Affirm=1,'true',null) as Affirm,FreeShipText,CreateDate,UpdateDate,Description,Returns,FreeShipMin,BaseShipRate,ReturnDays,ReturnShipFree,ReturnCondition,ReturnNotes FROM PayNShip",
+            idFieldName: 'URL',
+            name: 'PayNShip'
+          },
+          {
+            statement: "SELECT \n    CONCAT(AlexaRankView.URL, FLOOR(RAND() * 10000)) AS UniqueKey,\n    AlexaRankView.URL AS AlexaURL,\n    AlexaRankView.*,\n    Tags.*,\n    SocialIDView.*,\n    RankHistory.*,\n    PayNShip.*,\n    ShopifyProductSummary.*,\n    InstagramHistory.*\nFROM\n    AlexaRankView\n        LEFT JOIN\n    Tags ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM Tags.url)\n        LEFT JOIN\n    SocialIDView ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM SocialIDView.URL)\n        LEFT JOIN\n    RankHistory ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM RankHistory.url)\n        LEFT JOIN\n    PayNShip ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM PayNShip.URL)\n        LEFT JOIN\n    ShopifyProductSummary ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM ShopifyProductSummary.VendorURL)\n        LEFT JOIN\n    InstagramHistory ON TRIM(TRAILING \'/\' FROM SocialIDView.Instagram) = TRIM(TRAILING \'/\' FROM InstagramHistory.UserName) LIMIT 10",
+            idFieldName: 'AlexaURL',
+            name: 'MainView'
+          },
+          {
+            statement: 'SELECT * FROM SocialIDView WHERE URL IS NOT NULL',
+            idFieldName: 'URL',
+            name: 'SocialIDView'
+          },
+          {
+            statement: "Select CONCAT(UserName,FLOOR(RAND()*10000)) AS UniqueKey, DataView.*,CONCAT('https://instagram.com/p/',DataView.ShortCode) AS ShortCodeURL FROM DataView WHERE UserName IS NOT NULL ORDER BY activity DESC",
+            idFieldName: 'UniqueKey',
+            name: 'DataView'
+            //,remoteImageFieldNames: ['ProfilePicURL']
+          },
+          {
+            statement: "SELECT CrunchBase.*,InstagramHistory.* from CrunchBase LEFT JOIN InstagramHistory ON TRIM(TRAILING '/' FROM CrunchBase.URL) = TRIM(TRAILING '/' FROM InstagramHistory.ExternalURL)",
+            idFieldName: 'URL',
+            name: 'CrunchBaseView'
+          }
+        ]
+      }
+    },
     {
       resolve: 'gatsby-plugin-emotion',
       options: {
@@ -160,7 +160,7 @@ module.exports = {
         appId: process.env.GATSBY_ALGOLIA_APP_ID,
         apiKey: process.env.ALGOLIA_ADMIN_KEY,
         queries,
-        chunkSize: 1000, // default: 1000
+        chunkSize: 10000, // default: 1000
       },
     },
     `gatsby-plugin-styled-components`,
