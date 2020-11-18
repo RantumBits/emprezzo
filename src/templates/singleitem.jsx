@@ -1345,6 +1345,7 @@ export const query = graphql`
           VendorName
           VendorURL
           GlobalRankOrder
+          SocialRankScore
           PublishedDate
           UpdateDate
           UserName
