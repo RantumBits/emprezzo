@@ -3,6 +3,7 @@ const shopQuery = `{
     edges {
       node {
         id: UniqueID
+        random: UniqueKey
         shopName: name
         emprezzoID: UniqueID
         url: url
@@ -22,10 +23,11 @@ const shopQuery = `{
 }`
 
 const productQuery = `{
-  products: allMysqlShopifyProductsAll(limit: 7500) {
+  products: allMysqlShopifyProductsAll(limit: 15000) {
     edges {
       node {
         objectID: UniqueID
+        random: UniqueKey
         productID: ProductID
         name: Title
         description: productDesc
@@ -46,8 +48,8 @@ const productQuery = `{
         returnDays: ReturnDays
         returnShipFree: ReturnShipFree
         shopImage: ProfilePicURL
-        globalRank: GlobalRankOrder
-
+        trafficRank: GlobalRankOrder
+        socialRankScore: SocialRankScore
       }
     }
   }
