@@ -6,6 +6,7 @@ import styled from '@emotion/styled';
 import { Header, PostList } from 'components';
 import HomeCarouselItem from '../components/HomeCarouselItem';
 import ProductCategoryItem from '../components/ProductCategoryItem';
+import AlgoliaProductList from '../components/AlgoliaProductList';
 import { Layout } from 'layouts';
 import Search from 'components/search';
 import _ from 'lodash';
@@ -99,8 +100,8 @@ const Index = ({ data }) => {
     },
     tablet: {
       breakpoint: { max: 1024, min: 464 },
-      items: 4,
-      slidesToSlide: 4 // optional, default to 1.
+      items: 2,
+      slidesToSlide: 3 // optional, default to 1.
     },
     mobile: {
       breakpoint: { max: 464, min: 0 },
@@ -294,7 +295,7 @@ const Index = ({ data }) => {
           <ViewImage>
             <div style={{ 'textAlign': 'center', }}>
               <img
-                src={ node.ProfilePicURL || node.profile_image_url || "/logo/logo.png"}
+                src={node.ProfilePicURL || node.profile_image_url || "/logo/logo.png"}
                 onError={defaultImageOnError}
                 style={{
                   objectFit: 'cover',
@@ -343,7 +344,7 @@ const Index = ({ data }) => {
             selectedItem={1}
             showArrows={true}
             showStatus={false}
-            responsive={responsive} 
+            responsive={responsive}
           >
             {limitedEdges.map((node) => {
               return renderProduct(node);
@@ -432,7 +433,7 @@ const Index = ({ data }) => {
 
 
 
-
+    {/*       
       <LazyLoad height={200} once offset={[-200, 0]}>
         <SectionHeading>Discover best selling products</SectionHeading>
         <CategoryWrapper>
@@ -442,8 +443,8 @@ const Index = ({ data }) => {
               cover={getProductImage(node)}
               path={`/shops/${node.UserName}/`}
               vendorname={node.VendorName}
-              title={isMobile?``:node.Title}
-              price={isMobile?``:node.Price}
+              title={isMobile ? `` : node.Title}
+              price={isMobile ? `` : node.Price}
               node={node}
             />
           ))}
@@ -455,9 +456,14 @@ const Index = ({ data }) => {
             </button>
           </div>
         }
+      </LazyLoad> */}
+
+      <LazyLoad height={200} once offset={[-200, 0]}>
+        <SectionHeading>Discover best selling products</SectionHeading>
+        <ShopWrapper>
+          <AlgoliaProductList />
+        </ShopWrapper>
       </LazyLoad>
-
-
 
 
       <ShopWrapper>

@@ -1,29 +1,38 @@
 const shopQuery = `{
-  shops: allMysqlMainView(limit:1000) {
+  shops: allMysqlMainView(limit:300) {
     edges {
       node {
         id: UniqueID
         random: UniqueKey
+        emprezzoID: UserName
         shopName: name
         emprezzoID: UniqueID
         url: url
         tags: tags
         about: about
-        category: category
+        shopTags: tags
+        shopCategory: category
         freeShipMin: FreeShipMin
         baseShipRate: BaseShipRate
         returnDays: ReturnDays
         returnShipFree: ReturnShipFree
         priceMin: PriceMin
-        image: ProfilePicURL
+        priceMax: PriceMax
+        priceAvg: PriceAvg
+        productCount: CountProducts
         updateDate: CreateDate
+        shopDescription: Description
+        proudctList: TitleList
+        shopImage: ProfilePicURL
+        trafficRank: GlobalRankOrder
+        socialRankScore: SocialRankScore
       }
     }
   }
 }`
 
 const productQuery = `{
-  products: allMysqlShopifyProductsAll(limit: 1000) {
+  products: allMysqlShopifyProductsAll(limit: 100) {
     edges {
       node {
         objectID: UniqueID
@@ -68,7 +77,7 @@ const queries = [
     settings,
   },
   {
-    query: productQuery,
+    //query: productQuery,
     transformer: ({ data }) => flatten(data.products.edges),
     indexName: `empProducts`,
     settings,

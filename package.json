@@ -67,6 +67,7 @@
     "gatsby-transformer-remark": "^2.6.21",
     "gatsby-transformer-sharp": "^2.2.13",
     "inquirer": "^7.3.3",
+    "instantsearch.css": "^7.4.5",
     "lodash": "^4.17.19",
     "logo-scrape": "^1.1.0",
     "material-ui-slider": "^3.0.8",
