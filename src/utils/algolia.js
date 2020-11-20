@@ -1,12 +1,11 @@
 const shopQuery = `{
-  shops: allMysqlMainView(limit:300) {
+  shops: allMysqlMainView(limit:1) {
     edges {
       node {
         id: UniqueID
         random: UniqueKey
         emprezzoID: UserName
         shopName: name
-        emprezzoID: UniqueID
         url: url
         tags: tags
         about: about
@@ -32,7 +31,7 @@ const shopQuery = `{
 }`
 
 const productQuery = `{
-  products: allMysqlShopifyProductsAll(limit: 100) {
+  products: allMysqlShopifyProductsAll(limit: 1 ) {
     edges {
       node {
         objectID: UniqueID
@@ -76,12 +75,12 @@ const queries = [
     indexName: `uncommonry`,
     settings,
   },
-  {
+  // {
     //query: productQuery,
-    transformer: ({ data }) => flatten(data.products.edges),
-    indexName: `empProducts`,
-    settings,
-  },
+  //  transformer: ({ data }) => flatten(data.products.edges),
+  //  indexName: `empProducts`,
+  //  settings,
+  //},
 ]
 
 module.exports = queries
