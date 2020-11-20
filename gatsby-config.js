@@ -162,7 +162,7 @@ module.exports = {
         queries,
         chunkSize: 1000, // default: 1000
         enablePartialUpdates: true,
-        matchFields: ['updateDate'],
+        matchFields: ['price'],
       },
     },
     `gatsby-plugin-styled-components`,
