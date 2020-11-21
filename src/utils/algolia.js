@@ -1,5 +1,5 @@
 const shopQuery = `{
-  shops: allMysqlMainView(limit:1) {
+  shops: allMysqlMainView(limit:1000) {
     edges {
       node {
         id: UniqueID
@@ -22,7 +22,8 @@ const shopQuery = `{
         updateDate: CreateDate
         shopDescription: Description
         proudctList: TitleList
-        shopImage: ProfilePicURL
+        shopImage: ProfileImage
+        shopImage2: ProfilePicURL
         trafficRank: GlobalRankOrder
         socialRankScore: SocialRankScore
       }
@@ -31,7 +32,7 @@ const shopQuery = `{
 }`
 
 const productQuery = `{
-  products: allMysqlShopifyProductsAll(limit: 1 ) {
+  products: allMysqlShopifyProductsAll(limit: 100 ) {
     edges {
       node {
         objectID: UniqueID
@@ -55,7 +56,6 @@ const productQuery = `{
         baseShipRate: BaseShipRate
         returnDays: ReturnDays
         returnShipFree: ReturnShipFree
-        shopImage: ProfilePicURL
         trafficRank: GlobalRankOrder
         socialRankScore: SocialRankScore
       }
@@ -75,12 +75,12 @@ const queries = [
     indexName: `uncommonry`,
     settings,
   },
-  // {
-    //query: productQuery,
-  //  transformer: ({ data }) => flatten(data.products.edges),
-  //  indexName: `empProducts`,
-  //  settings,
-  //},
+  {
+    query: productQuery,
+    transformer: ({ data }) => flatten(data.products.edges),
+    indexName: `empProducts`,
+    settings,
+  },
 ]
 
 module.exports = queries
