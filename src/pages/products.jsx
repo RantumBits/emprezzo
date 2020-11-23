@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import { Header } from 'components';
+import AlgoliaProductList from '../components/AlgoliaProductList';
 import ProductCategoryItem from '../components/ProductCategoryItem';
 import { Layout } from 'layouts';
 import _ from 'lodash';
@@ -206,127 +207,23 @@ const Products = ({ data, pageContext }) => {
     <Layout title={'Shopify Products | Disover great products from indepedent online stores'} description="Discover the best products from hundreds of independent online stores in one place. An alternative to Amazon Marketplace online shopping.">
       <Header title="🧐 Disover great products from Shopify stores" />
       <div>
-        <CategoryHeading>Popular Products from Featured Brands</CategoryHeading>
-
-        <CarouselWrapper>
-          <Carousel
-            swipeable={false}
-            draggable={false}
-            showDots={false}
-            responsive={responsive}
-            keyBoardControl={true}
-          >
-            {visibleFeaturedProducts.map(({ node }, index) => (
-              <ProductCategoryItem
-                key={`FeaturedProducts-${index}`}
-                cover={getProductImage(node)}
-                path={`/shops/${node.UserName}/`}
-                vendorname={node.VendorName}
-                title={node.Title}
-                variant={getProductVariant(node)}
-                price={node.Price}
-                node={node}
-              />
-            ))}
-          </Carousel>
-        </CarouselWrapper>
-
-
-
         <CategoryHeading>Discover great products</CategoryHeading>
-
         <SearchWrapper>
-          <div>
-            <label>Filter by Category:
-            <select value={categoryFilter} onChange={changeCategoryFilter}>
-                <option value="">-</option>
-                {allCategories && allCategories.map(item => (
-                  <option value={item}>{item}</option>
-                ))}
-              </select>
-            </label>
-          </div>
-          Search
-            <input
-            placeholder="filter products"
-            onChange={({ target: { value } }) => {
-              setFilter(value);
-            }}
+          <AlgoliaProductList
+            facetsToShow={'category,brands,storeoffers'}
+            showSearchBox={true}
+            showClearFilter={true}
           />
-          <div>
-            <label>Price Range : Min <input size="4"
-                onChange={({ target: { value } }) => {
-                  setPriceRangeMin(value);
-                }}
-              /> - Max <input size="4"
-                onChange={({ target: { value } }) => {
-                  setPriceRangeMax(value);
-                }}
-              />
-            </label>
-          </div>
-          <div style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
-            Sort by
-            <select value={sortBy} onChange={changeSortBy}>
-              <option value="Price"> Price </option>
-              <option value="UpdateDate"> Date </option>&nbsp;
-            </select>
-            <select value={sortOrder} onChange={changeSortOrder}>
-              <option value="ASC"> △ </option>
-              <option value="DESC"> ▽ </option>
-            </select>
-          </div>
         </SearchWrapper>
-        <LazyLoad height={200} once offset={[-200, 0]}>
-          <CategoryWrapper>
-            {listShopifyProductsAllEdges.map(({ node }, index) => (
-              <ProductCategoryItem
-                key={`SaleProductsAll-${index}`}
-                cover={getProductImage(node)}
-                path={`/shops/${node.UserName}/`}
-                vendorname={node.VendorName}
-                title={node.Title}
-                variant={getProductVariant(node)}
-                price={node.Price}
-                node={node}
-              />
-            ))}
-          </CategoryWrapper>
-        </LazyLoad>
-
-        {showMore && listShopifyProductsAllEdges.length > 0 &&
-          <div className="center">
-            <button className="button" onClick={increaseLimit} style={{ cursor: "pointer" }}>
-              Load More
-            </button>
-          </div>
-        }
 
         <LazyLoad height={200} once offset={[-200, 0]}>
           {listShopifySaleProducts && listShopifySaleProducts.length > 0 &&
             <CategoryHeading>Sale Products</CategoryHeading>
           }
           <CarouselWrapper>
-            <Carousel
-              swipeable={false}
-              draggable={false}
-              showDots={false}
-              responsive={responsive}
-              keyBoardControl={true}
-            >
-              {listShopifySaleProducts.map(({ node }, index) => (
-                <ProductCategoryItem
-                  key={`SaleProducts-${index}`}
-                  cover={getProductImage(node)}
-                  path={`/shops/${node.UserName}/`}
-                  vendorname={node.VendorName}
-                  title={node.Title}
-                  variant={getProductVariant(node)}
-                  price={node.Price}
-                  node={node}
-                />
-              ))}
-            </Carousel>
+            <AlgoliaProductList
+              defaultFilter="onSale=1"
+            />
           </CarouselWrapper>
         </LazyLoad>
         <LazyLoad height={200} once offset={[-200, 0]}>
@@ -334,26 +231,9 @@ const Products = ({ data, pageContext }) => {
             <CategoryHeading>Gift Cards</CategoryHeading>
           }
           <CarouselWrapper>
-            <Carousel
-              swipeable={false}
-              draggable={false}
-              showDots={false}
-              responsive={responsive}
-              keyBoardControl={true}
-            >
-              {listShopifyGiftCards.map(({ node }, index) => (
-                <ProductCategoryItem
-                  key={`GiftCards-${index}`}
-                  cover={getProductImage(node)}
-                  path={`/shops/${node.UserName}/`}
-                  vendorname={node.VendorName}
-                  title={node.Title}
-                  variant={getProductVariant(node)}
-                  price={node.Price}
-                  node={node}
-                />
-              ))}
-            </Carousel>
+            <AlgoliaProductList
+              defaultSearchTerm="gift card"
+            />
           </CarouselWrapper>
         </LazyLoad>
       </div>

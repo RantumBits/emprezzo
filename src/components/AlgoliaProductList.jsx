@@ -8,7 +8,6 @@ import {
   Hits,
   SearchBox,
   Pagination,
-  Highlight,
   ClearRefinements,
   RefinementList,
   Configure,
@@ -70,33 +69,74 @@ const RightPanel = styled.div`
   }
 `;
 
-const FilterHeading = styled.div `
+const FilterHeading = styled.div`
   font-size: 0.8rem;
   text-transform: uppercase;
   font-weight: bold;
   margin: 8px 0 5px 0
 `;
 
-const AlgoliaProductList = () => {
-  const searchClient = algoliasearch(
+const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, showClearFilter, facetsToShow, showSearchBox }) => {
+  const algoliaClient = algoliasearch(
     process.env.GATSBY_ALGOLIA_APP_ID,
     process.env.GATSBY_ALGOLIA_SEARCH_KEY
   );
+  const searchClient = {
+    search(requests) {
+      if (requests.length > 0 && defaultSearchTerm) requests[0].params.query = defaultSearchTerm
+      return algoliaClient.search(requests);
+    },
+  };
   const searchIndexName = `empProducts`;
 
   return (
     <SearchWrapper>
       <InstantSearch indexName={searchIndexName} searchClient={searchClient}>
         <LeftPanel>
-          <ClearRefinements />
-          <FilterHeading>Category</FilterHeading>
-          <RefinementList attribute="shopCategory" />
-          <FilterHeading>Brands</FilterHeading>
-          <RefinementList attribute="shopName" />
-          <Configure hitsPerPage={10} />
+          {showClearFilter &&
+            <ClearRefinements />
+          }
+          {facetsToShow && facetsToShow.indexOf("category") >= 0 &&
+            <>
+              <FilterHeading>Category</FilterHeading>
+              <RefinementList attribute="shopCategory" />
+            </>
+          }
+          {facetsToShow && facetsToShow.indexOf("brands") >= 0 &&
+            <>
+              <FilterHeading>Brands</FilterHeading>
+              <RefinementList attribute="shopName" />
+            </>
+          }
+          {facetsToShow && facetsToShow.indexOf("storeoffers") >= 0 &&
+            <>
+              <FilterHeading>Store Offers</FilterHeading>
+              <RefinementList
+                attribute="freeShipMin"
+                transformItems={items =>
+                  items.filter(item => (item.label == 0)).map(item => ({
+                    ...item,
+                    label: "Free Shipping",
+                  }))
+                }
+              />
+              <RefinementList
+                attribute="returnShipFree"
+                transformItems={items =>
+                  items.filter(item => (item.label == 'Yes')).map(item => ({
+                    ...item,
+                    label: "Free Returns",
+                  }))
+                }
+              />
+            </>
+          }
+          <Configure hitsPerPage={10} filters={defaultFilter} />
         </LeftPanel>
         <RightPanel>
-          <SearchBox />
+          {showSearchBox &&
+            <SearchBox />
+          }
           <Hits hitComponent={AlgoliaProductItem} />
           <Pagination />
         </RightPanel>

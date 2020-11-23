@@ -295,7 +295,7 @@ const Index = ({ data }) => {
           <ViewImage>
             <div style={{ 'textAlign': 'center', }}>
               <img
-                src={node.ProfilePicURL || node.profile_image_url || "/logo/logo.png"}
+                src={node.ProfileImage || node.ProfilePicURL || node.profile_image_url || "/logo/logo.png"}
                 onError={defaultImageOnError}
                 style={{
                   objectFit: 'cover',
@@ -433,7 +433,7 @@ const Index = ({ data }) => {
 
 
 
-    {/*       
+      {/*       
       <LazyLoad height={200} once offset={[-200, 0]}>
         <SectionHeading>Discover best selling products</SectionHeading>
         <CategoryWrapper>
@@ -461,7 +461,11 @@ const Index = ({ data }) => {
       <LazyLoad height={200} once offset={[-200, 0]}>
         <SectionHeading>Discover best selling products</SectionHeading>
         <ShopWrapper>
-          <AlgoliaProductList />
+        <AlgoliaProductList
+            facetsToShow={'category,brands,storeoffers'}
+            showSearchBox={true}
+            showClearFilter={true}
+          />
         </ShopWrapper>
       </LazyLoad>
 
@@ -544,6 +548,7 @@ export const query = graphql`
           LocalRank
           Pinterest
           TOS
+          ProfileImage
           TikTok
           Twitter
           UserName

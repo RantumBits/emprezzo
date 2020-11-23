@@ -58,6 +58,7 @@ const productQuery = `{
         returnShipFree: ReturnShipFree
         trafficRank: GlobalRankOrder
         socialRankScore: SocialRankScore
+        onSale: OnSale
       }
     }
   }

@@ -10,6 +10,7 @@ import { getRelatedShops } from '../components/RelatedShops'
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
 import ProductCategoryItem from '../components/ProductCategoryItem';
+import AlgoliaProductList from '../components/AlgoliaProductList';
 import { useMediaQuery } from 'react-responsive';
 import ReactFrappeChart from 'react-frappe-charts';
 import {
@@ -164,6 +165,7 @@ const SingleItem = ({ data, pageContext }) => {
     GlobalRank,
     LocalRank,
     TOS,
+    ProfileImage,
     UserName,
     category,
     tags,
@@ -637,6 +639,10 @@ const SingleItem = ({ data, pageContext }) => {
       return (
         <Image fluid={node.mysqlImages[0].childImageSharp.fluid} style={{ width: '100px', height: '100px' }} title={name} alt={name} />
       );
+    } else if (ProfileImage) {
+      return (
+        <img src={ProfileImage} className="profileimage" onError={defaultImageOnError} style={{ width: '100px', height: '100px', 'border-radius': '100%', margin: '3%' }} title={name} alt={name} />
+      );
     } else if (node.ProfilePicURL) {
       return (
         <img src={node.ProfilePicURL} className="profileimage" onError={defaultImageOnError} style={{ width: '100px', height: '100px', 'border-radius': '100%', margin: '3%' }} title={name} alt={name} />
@@ -783,25 +789,12 @@ const SingleItem = ({ data, pageContext }) => {
 
           {visibleShopifyClassicProductsEdges && visibleShopifyClassicProductsEdges.length > 0 && (
             <TabPanel>
-              <div style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
-
-                <select value={sortBy} onChange={changeSortBy}>
-                  <option value="UpdateDate"> Date </option>
-                  {isPositionPresent &&
-                    <option value="Position"> Position </option>
-                  }
-                  <option value="Price"> Price </option>
-                </select> &nbsp;
-                <button className="button" onClick={changeSortOrder}>{(sortOrder == "DESC") ? "▽" : "△"}</button>
-              </div>
-              {renderProductList(visibleShopifyClassicProductsEdges, 'visibleShopifyClassicProductsEdges')}
-              {showMore && visibleShopifyClassicProductsEdges.length > 0 &&
-                <div className="center">
-                  <button className="button" onClick={increaseLimit} style={{ cursor: "pointer" }}>
-                    Load More
-                  </button>
-                </div>
-              }
+              <AlgoliaProductList
+                defaultFilter={`emprezzoID:"${UserName}"`}
+                facetsToShow={'category'}
+                showSearchBox={true}
+                showClearFilter={true}
+              />              
             </TabPanel>
           )}
           {listShopifyBestSellersEdges && listShopifyBestSellersEdges.length > 0 && (
@@ -1199,6 +1192,7 @@ export const query = graphql`
       LocalRank
       TOS
       UserName
+      ProfileImage
       category
       tags
       FBLikes
@@ -1241,6 +1235,7 @@ export const query = graphql`
           PriceAvg
           CountProducts
           ProfilePicURL
+          ProfileImage
           CreateDate
         }
       }
