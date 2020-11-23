@@ -182,7 +182,7 @@ const SingleItem = ({ data, pageContext }) => {
     about,
     signup_promos,
   } = data.mysqlMainView;
-  if (AlexaURL.substring(-1) != '/') AlexaURL += "/";
+  if (AlexaURL.slice(-1) != '/') AlexaURL += "/";
 
   const allMysqlMainViewEdges = data.allMysqlMainView.edges;
   const rowallMysqlCrunchBaseViewEdges = data.allMysqlCrunchBaseView ? data.allMysqlCrunchBaseView.edges : [];
@@ -222,15 +222,15 @@ const SingleItem = ({ data, pageContext }) => {
   //Extracting Posts from MySQL Data
   const maxPosts = 3;
   const rowDataViewEdges = data.allMysqlDataView.edges;
-  //filtering top 3 for current instagram id
-  const filteredDataView = _.filter(rowDataViewEdges, ({ node }) => node.AlexaURL == AlexaURL);
+  //filtering top 3 for current instagram id  
+  const filteredDataView = _.filter(rowDataViewEdges, ({ node }) => node.AlexaURL == AlexaURL || node.AlexaURL == AlexaURL.substring(0, AlexaURL.length - 1));
   const listPostEdges = _.slice(filteredDataView, 0, maxPosts);
   let firstRowDataView = listPostEdges && listPostEdges.length ? listPostEdges[0] : [];
   //adding profileimage to firstrow
-  var crunchBaseData = _.filter(rowallMysqlCrunchBaseViewEdges, ({ node }) => node.URL == AlexaURL)
+  var crunchBaseData = _.filter(rowallMysqlCrunchBaseViewEdges, ({ node }) => node.URL == AlexaURL || node.URL == AlexaURL.substring(0, AlexaURL.length - 1))
   var crunchBaseRow = crunchBaseData.length > 0 ? crunchBaseData[0] : [];
   //adding PayNShip data to firstrow
-  var payNShipData = _.filter(rowallMysqlPayNShipEdges, ({ node }) => node.URL == AlexaURL)
+  var payNShipData = _.filter(rowallMysqlPayNShipEdges, ({ node }) => node.URL == AlexaURL || node.URL == AlexaURL.substring(0, AlexaURL.length - 1))
   var payNShipRow = payNShipData.length > 0 ? payNShipData[0] : [];
   firstRowDataView = {
     node: {
@@ -242,9 +242,7 @@ const SingleItem = ({ data, pageContext }) => {
 
   //Now filtering instagram posts if the image or caption is not present
   const listInstaPostEdges = _.filter(listPostEdges, ({ node }) => node.PhotoLink);
-  //console.log("*****++listInstaPostEdges+++********")
-  //console.log(listInstaPostEdges)
-
+  
   //Creating a new dataset with original nodes and required columns from DataView
   let combinedMainDataEdges = [];
   allMysqlMainViewEdges.map((edge) => {
@@ -429,6 +427,7 @@ const SingleItem = ({ data, pageContext }) => {
     rowSocialHistoryEdges,
     ({ node }) => node.Instagram == UserName
   );
+
   let facebookChartData = null;
   let instagramChartData = null;
   let pinterestChartData = null;
@@ -794,7 +793,7 @@ const SingleItem = ({ data, pageContext }) => {
                 facetsToShow={'category'}
                 showSearchBox={true}
                 showClearFilter={true}
-              />              
+              />
             </TabPanel>
           )}
           {listShopifyBestSellersEdges && listShopifyBestSellersEdges.length > 0 && (
@@ -1038,17 +1037,12 @@ const SingleItem = ({ data, pageContext }) => {
           <div style={{ flex: '30%' }}>
             {chartSocialData && chartSocialData.labels && chartSocialData.labels.length > 0 && (
               <ReactFrappeChart
-
                 type="donut"
                 title="Total fans by platform"
                 height={300}
-
-
                 data={chartSocialData}
-
               />
             )}
-
           </div>
           <div style={{ flex: '60%' }}>
             <Tabs >

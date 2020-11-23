@@ -44,6 +44,7 @@ const Image = styled.div`
   border-radius: ${props => props.theme.borderRadius.default};
   img {
     border-radius: ${props => props.theme.borderRadius.default};
+    width: 100%;
   }
   > div {
     position: static !important;
@@ -151,7 +152,7 @@ const StyledDialog = styled(Dialog)`
 }
 `;
 
-const AlgoliaProductItem = (props) => {
+const AlgoliaUncommonryItem = (props) => {
   const [showDialog, setShowDialog] = React.useState(false);
   const openDialog = () => setShowDialog(true);
   const closeDialog = () => setShowDialog(false);
@@ -178,17 +179,17 @@ const AlgoliaProductItem = (props) => {
       {props && props.hit &&
         <>
           <Image>
-            <a href={`/shops/${props.hit.emprezzoID}/`} title={props.hit.name} target="_blank">
-              {props.hit.imageURL &&
-                <img src={props.hit.imageURL} style={{ objectFit: 'fill' }} />
+            <a href={`/shops/${props.hit.emprezzoID}/`} title={props.hit.shopName} target="_blank">
+              {props.hit.shopImage &&
+                <img src={props.hit.shopImage} style={{ objectFit: 'fill' }} />
               }
             </a>
           </Image>
           <StyledLink href="javascript:void(0)" onClick={() => openDialog()} title={props.hit.shopName}>
             <Information>
-              <Title><Highlight attribute="name" hit={props.hit} /></Title>
-              {props.hit.price &&
-                <Price>${props.hit.price}</Price>
+              <Title><Highlight attribute="shopName" hit={props.hit} /></Title>
+              {props.hit.priceAvg &&
+                <Price>${props.hit.priceAvg}</Price>
               }
             </Information>
           </StyledLink>
@@ -197,14 +198,14 @@ const AlgoliaProductItem = (props) => {
               <span aria-hidden>X</span>
             </button>
             <div className="dialogImageDescription">
-              {props.hit.imageURL &&
-                <img src={props.hit.imageURL} />
+              {props.hit.shopImage &&
+                <img src={props.hit.shopImage} />
               }
               <div>
-                <h3>{props.hit.name}</h3>
-                <p><i>Available at {props.hit.name || props.hit.shopName} from ${props.hit.price}</i></p>
-                <p>{props.hit.description && props.hit.description.substring(0, 220)}</p>
-                {convertToSelectList(props.hit.VariantTitle)}
+                <h3>{props.hit.shopName}</h3>
+                <p><i>Available at {props.hit.shopName} from ${props.hit.priceAvg}</i></p>
+                <p>{props.hit.shopDescription && props.hit.shopDescription.substring(0, 220)}</p>
+                {convertToSelectList(props.hit.proudctList)}
               </div>
             </div>
             <br />
@@ -220,4 +221,4 @@ const AlgoliaProductItem = (props) => {
   );
 }
 
-export default AlgoliaProductItem;
+export default AlgoliaUncommonryItem;

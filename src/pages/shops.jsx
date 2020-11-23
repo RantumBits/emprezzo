@@ -8,6 +8,7 @@ import { Header, BlogList } from 'components';
 import { Layout } from 'layouts';
 import _ from 'lodash';
 import { useMediaQuery } from 'react-responsive'
+import AlgoliaProductList from '../components/AlgoliaProductList';
 import Slider from '@material-ui/core/Slider';
 import { Dialog } from "@reach/dialog";
 import "@reach/dialog/styles.css";
@@ -238,7 +239,15 @@ const TopShopifyStores = ({ location, data }) => {
   return (
     <Layout title={'Discover popular independent stores and direct to consumer brands'} description='Discover popular independent stores and direct to consumer brands. Shop the best and most popular Shopify shop on emprezzo.'>
       <Header title="Discover Great Online Shops" subtitle=""></Header>
-      <Dialog isOpen={showDialog} onDismiss={closeMoreDialog}>
+      <ShopsWrapper>
+          <AlgoliaProductList
+            facetsToShow={'category,brands,storeoffers'}
+            showSearchBox={true}
+            showClearFilter={true}
+            searchIndexName={`uncommonry`}
+          />
+        </ShopsWrapper>
+      {/* <Dialog isOpen={showDialog} onDismiss={closeMoreDialog}>
         <span dangerouslySetInnerHTML={{ __html: dialogText }} />
         <button onClick={closeMoreDialog}>
           Close
@@ -391,7 +400,7 @@ const TopShopifyStores = ({ location, data }) => {
             Load More
           </button>
         </div>
-      }
+      } */}
       <ShopsWrapper>
         <div className="intro_text">
           <h3>Discover top Shopify stores of 2020</h3>

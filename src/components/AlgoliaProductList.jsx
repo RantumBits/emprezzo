@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import _ from 'lodash';
 import AlgoliaProductItem from './AlgoliaProductItem'
+import AlgoliaUncommonryItem from './AlgoliaUncommonryItem'
 import algoliasearch from 'algoliasearch/lite';
 import {
   InstantSearch,
@@ -15,19 +16,20 @@ import {
 import 'instantsearch.css/themes/algolia.css';
 
 const SearchWrapper = styled.div`
-  width: 100vw;  
+  width: 100%;  
+  display: flex;
 `;
 
 const LeftPanel = styled.div`
   float: left;
-  width: 250px;
+  width: 20vw;
 
   .ais-ClearRefinements-button {
     background-color: #C04CFD;
   }
 
   .ais-RefinementList-item {
-    margin-bottom: 0px;
+    margin-bottom: 0px;    
   }
 
   .ais-RefinementList-labelText {
@@ -41,13 +43,14 @@ const LeftPanel = styled.div`
 `;
 
 const RightPanel = styled.div`
-  margin-left: 260px;
+  width: 80vw;
   @media (max-width: 700px) {
     margin-left: 0px;
     display: block;
   }
 
   .ais-Hits-item, .ais-Results-item {
+    padding: 0px;
     width: calc(20% - 1rem);
     @media (max-width: 700px) {
       width: calc(50% - 1rem);
@@ -76,7 +79,7 @@ const FilterHeading = styled.div`
   margin: 8px 0 5px 0
 `;
 
-const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, showClearFilter, facetsToShow, showSearchBox }) => {
+const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, showClearFilter, facetsToShow, showSearchBox, searchIndexName }) => {
   const algoliaClient = algoliasearch(
     process.env.GATSBY_ALGOLIA_APP_ID,
     process.env.GATSBY_ALGOLIA_SEARCH_KEY
@@ -87,7 +90,7 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, showClearFilter,
       return algoliaClient.search(requests);
     },
   };
-  const searchIndexName = `empProducts`;
+  searchIndexName = searchIndexName || `empProducts`;
 
   return (
     <SearchWrapper>
@@ -137,7 +140,12 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, showClearFilter,
           {showSearchBox &&
             <SearchBox />
           }
-          <Hits hitComponent={AlgoliaProductItem} />
+          {searchIndexName == 'empProducts' &&
+            <Hits hitComponent={AlgoliaProductItem} />
+          }
+          {searchIndexName == 'uncommonry' &&
+            <Hits hitComponent={AlgoliaUncommonryItem} />
+          }
           <Pagination />
         </RightPanel>
       </InstantSearch>
