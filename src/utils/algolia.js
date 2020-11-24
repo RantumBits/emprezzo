@@ -60,7 +60,7 @@ const productQuery = `{
         socialRankScore: SocialRankScore
         onSale: OnSale
         discountPct: DiscountPct
-        available: Available
+        
       }
     }
   }
