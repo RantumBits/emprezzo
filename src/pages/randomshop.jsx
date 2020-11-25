@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { navigate } from "@reach/router"
 
 const RandomShop = ({ data }) => {
-  const { edges } = data.allMysqlMainView;  
+  const { edges } = data.allMysqlMainView;
   const combinedEdges = edges;
   /*
   const rowRankViewEdges = data.allMysqlRankView.edges;

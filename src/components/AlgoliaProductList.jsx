@@ -18,7 +18,7 @@ import {
 import 'instantsearch.css/themes/algolia.css';
 
 const SearchWrapper = styled.div`
-  width: 100%;  
+  width: 100%;
   display: flex;
 `;
 
@@ -39,7 +39,7 @@ const LeftPanel = styled.div`
   }
 
   .ais-RefinementList-item {
-    margin-bottom: 0px;    
+    margin-bottom: 0px;
   }
 
   .ais-RefinementList-labelText {
@@ -71,7 +71,7 @@ const RightPanel = styled.div`
     width: calc(20% - 1rem);
     @media (max-width: 700px) {
       width: calc(50% - 1rem);
-    } 
+    }
   }
 
   .ais-Pagination-item--selected .ais-Pagination-link {
@@ -112,7 +112,7 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, showClearFilter,
   return (
     <SearchWrapper>
       <InstantSearch indexName={searchIndexName} searchClient={searchClient}>
-        <LeftPanel>          
+        <LeftPanel>
           {showClearFilter &&
             <ClearRefinements />
           }
@@ -122,9 +122,9 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, showClearFilter,
               { value: 'empProducts_UpdatedDate_Desc', label: 'UpdatedDate desc.' },
               { value: 'empProducts_UpdatedDate_Asc', label: 'UpdatedDate asc.' },
               { value: 'empProducts_SellingRank_Desc', label: 'SellingRank desc.' },
-              { value: 'empProducts_SellingRank_Asc', label: 'SellingRank asc.' },              
+              { value: 'empProducts_SellingRank_Asc', label: 'SellingRank asc.' },
               { value: 'empProducts_Price_Desc', label: 'Price desc.' },
-              { value: 'empProducts_Price_Asc', label: 'Price asc.' },              
+              { value: 'empProducts_Price_Asc', label: 'Price asc.' },
             ]}
           />
           {facetsToShow && facetsToShow.indexOf("category") >= 0 &&
@@ -191,7 +191,7 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, showClearFilter,
               />
             </>
           }
-          <Configure hitsPerPage={10} filters={defaultFilter} />
+          <Configure hitsPerPage={15} filters={defaultFilter} />
         </LeftPanel>
         <RightPanel>
           {showSearchBox &&

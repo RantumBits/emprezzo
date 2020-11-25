@@ -58,7 +58,7 @@ const CarouselWrapper = styled.div`
 const Products = ({ data, pageContext }) => {
   const rowallMysqlShopifyProductsAllEdges = data.allMysqlShopifyProductsAll ? data.allMysqlShopifyProductsAll.edges : [];
   const mainViewEdges = data.allMysqlMainView.edges;
-  const maxFeaturedItems = 10;
+  const maxFeaturedItems = 15;
   const maxProducts = 25;
   const [limit, setLimit] = React.useState(maxFeaturedItems);
   const [showMore, setShowMore] = React.useState(true);
@@ -204,38 +204,20 @@ const Products = ({ data, pageContext }) => {
   if (listShopifyProductsAllEdges.length >= rowallMysqlShopifyProductsAllEdges.length) setShowMore(false);
 
   return (
-    <Layout title={'Shopify Products | Disover great products from indepedent online stores'} description="Discover the best products from hundreds of independent online stores in one place. An alternative to Amazon Marketplace online shopping.">
-      <Header title="🧐 Disover great products from Shopify stores" />
+    <Layout title={'Discover great products from independent brands'} description="Search thousands of products from independent stores and direct-to-consumer brands. Shop the emprezzo marketplace alternative to discover great products support independent businesses.">
+      <Header title="emprezzo product marketplace" description="🧐 Discover great products from independent brands" />
       <div>
         <CategoryHeading>Discover great products</CategoryHeading>
         <SearchWrapper>
           <AlgoliaProductList
-            facetsToShow={'category,pricerangeslider,storeoffers'}
+            facetsToShow={'category,storeoffers'}
             showSearchBox={true}
             showClearFilter={true}
           />
         </SearchWrapper>
 
-        <LazyLoad height={200} once offset={[-200, 0]}>
-          {listShopifySaleProducts && listShopifySaleProducts.length > 0 &&
-            <CategoryHeading>Sale Products</CategoryHeading>
-          }
-          <CarouselWrapper>
-            <AlgoliaProductList
-              defaultFilter="onSale=1"
-            />
-          </CarouselWrapper>
-        </LazyLoad>
-        <LazyLoad height={200} once offset={[-200, 0]}>
-          {listShopifyGiftCards && listShopifyGiftCards.length > 0 &&
-            <CategoryHeading>Gift Cards</CategoryHeading>
-          }
-          <CarouselWrapper>
-            <AlgoliaProductList
-              defaultSearchTerm="gift card"
-            />
-          </CarouselWrapper>
-        </LazyLoad>
+
+
       </div>
     </Layout>
   );

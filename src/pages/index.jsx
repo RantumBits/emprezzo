@@ -86,7 +86,7 @@ const Index = ({ data }) => {
   const rowallMysqlCrunchBaseViewEdges = data.allMysqlCrunchBaseView ? data.allMysqlCrunchBaseView.edges : [];
   const limit = 1000;
   const maxProducts = 7;
-  const maxVisibleItems = 10;
+  const maxVisibleItems = 15;
   const [visibleItems, setVisibleItems] = React.useState(maxVisibleItems);
   const [showMore, setShowMore] = React.useState(true);
 
@@ -477,7 +477,7 @@ const Index = ({ data }) => {
         <p>Major online retailers and marketplaces are convenient, but often don't feature the best brands and products. They charge high fees, sell knockoffs, and favor fast & cheap over innovative & enduring.</p>
         <p>There are hundreds of brands that sell directly to consumers on their own sites. Many offer free shipping, discounts to new customers, and other perks of shopping directly. We developed a database of 500+ shops and 20,000+ products that can be searched and filtered by keywords, free shipping offers, price, return policies, etc. The database is constantly growing and updated with new data.</p>
         <p>Help support independent business. Before making a purchase from a major retail site, search for an independent shopping alternative at emprezzo.</p>
-                 
+
 
       </ShopWrapper>
     </Layout >

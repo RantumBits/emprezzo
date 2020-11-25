@@ -237,183 +237,19 @@ const TopShopifyStores = ({ location, data }) => {
   }
 
   return (
-    <Layout title={'Discover popular independent stores and direct to consumer brands'} description='Discover popular independent stores and direct to consumer brands. Shop the best and most popular Shopify shop on emprezzo.'>
-      <Header title="Discover Great Online Shops" subtitle=""></Header>
+    <Layout title={'Discover great independent online stores'} description='Discover great independent online stores. Search hundreds of independent shops and direct-to-consumer brands. Filter by average price, free shipping, and more.'>
+      <Header title="Discover great independent online stores" subtitle="Search hundreds of independent shops and direct-to-consumer brands "></Header>
       <ShopsWrapper>
           <AlgoliaProductList
-            facetsToShow={'category,brands,storeoffers'}
+            facetsToShow={'category,pricerangeslider,brands,storeoffers'}
             showSearchBox={true}
             showClearFilter={true}
             searchIndexName={`uncommonry`}
           />
         </ShopsWrapper>
-      {/* <Dialog isOpen={showDialog} onDismiss={closeMoreDialog}>
-        <span dangerouslySetInnerHTML={{ __html: dialogText }} />
-        <button onClick={closeMoreDialog}>
-          Close
-        </button>
-      </Dialog>
+    
       <ShopsWrapper>
-        <div className="intro_text">
-          <h3>Discover Great Online Shops</h3>
-          <p>Discover popular independent stores and direct to consumer brands</p>
-        </div>
-        <div style={{ display: "flex", width: "100%", paddingBottom: "10px" }}>
-          <label>Filter by Category:
-            <select value={categoryFilter} onChange={changeCategoryFilter}>
-              <option value="">-</option>
-              {allCategories && allCategories.map(item => (
-                <option value={item}>{item}</option>
-              ))}
-            </select>
-          </label>
-        </div>
-        <div style={{ display: "flex", width: "100%" }}>
-          <label>Filter Results:
-            <input type="text"
-              value={filterText}
-              onChange={(e) => setFilterText(e.target.value)}
-            />
-          </label>
-        </div>
-        <div style={{ display: "flex", width: "100%" }}>
-          <label>
-            <input type="checkbox" style={{ margin: "0.5rem" }}
-              checked={filterPaypalShopID}
-              onChange={() => setFilterPaypalShopID(!filterPaypalShopID)}
-            />
-          PayPal
-        </label>
-          <label>
-            <input type="checkbox" style={{ margin: "0.5rem" }}
-              checked={filterFreeShipText}
-              onChange={() => setFilterFreeShipText(!filterFreeShipText)}
-            />
-          Free Shipping
-        </label>
-          <label>
-            <input type="checkbox" style={{ margin: "0.5rem" }}
-              checked={filterPayPalVenmoSupport}
-              onChange={() => setFilterPayPalVenmoSupport(!filterPayPalVenmoSupport)}
-            />
-          Venmo
-        </label>
-          <label>
-            <input type="checkbox" style={{ margin: "0.5rem" }}
-              checked={filterBuyNowPayLater}
-              onChange={() => setFilterBuyNowPayLater(!filterBuyNowPayLater)}
-            />
-          Buy now, pay later
-        </label>
-        </div>
-        <div style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
-          Display by
-          <select value={sortBy} onChange={changeSortBy}>
-            <option value="GlobalRank">Traffic rank</option>
-            <option value="GlobalRank_Change">Rank change</option>
-            <option value="TotalFollowers">Total fans</option>
-          </select>
-        </div>
-        <div style={{ width: "80%", display: "flex" }}>
-          <span style={{ width: "20%" }}>Average Price : </span>
-          <Slider
-            value={sliderAvgPrice}
-            onChange={handerSliderAvgPriceChange}
-            min={0}
-            max={sliderAvgPrice[1] + 50}
-            valueLabelDisplay="auto"
-            aria-labelledby="range-slider-avg"
 
-          />
-        </div>
-        <div style={{ width: "80%", display: "flex" }}>
-          <span style={{ width: "20%" }}>Price Range : </span>
-          <Slider
-            value={sliderPriceRange}
-            onChange={handerSliderPriceRangeChange}
-            min={0}
-            max={sliderPriceRange[1] + 50}
-            valueLabelDisplay="auto"
-            aria-labelledby="range-slider-range"
-          />
-        </div>
-        <TableWrapper>
-          <StickyTableWrapper>
-            <TableStickyHeader>
-              <thead>
-                <tr>
-                  <th style={{ width: "3%" }}><strong>#</strong></th>
-                  <th style={{ width: "3%" }}></th>
-
-                  <th><strong>Store</strong></th>
-                  {!isMobile &&
-                    <>
-                      <th style={{ width: "20%" }}></th>
-                      <th><strong>TrafficRank</strong></th>
-                    </>
-                  }
-                  <th><strong>TotalFollowers</strong></th>
-                  {!isMobile &&
-                    <>
-                      <th><strong>Avg Price</strong></th>
-                      <th><strong>Price Range</strong></th>
-                      <th><strong>Rank Change</strong></th>
-                    </>
-                  }
-                </tr>
-              </thead>
-              <tbody>
-                {listEdges.map((node, index) => (
-                  <tr key={index} id={`post-${index}`}>
-                    <td>{index + 1}</td>
-                    <td><a href="javascript:void(0)" onClick={() => openMoreDialog(node)}>&gt;&gt;</a></td>
-                    <td>
-                      <Link to={`/shops/${node.UserName}/`}>
-                        {renderProfilePicURL(node)}
-                      </Link>
-                    </td>
-                    {!isMobile &&
-                      <>
-                        <td><Link to={`/shops/${node.UserName}/`} title={node.name}>{node.name}</Link></td>
-                        <td>{node.GlobalRank}</td>
-                      </>
-                    }
-                    <td>{node.TotalFollowers}</td>
-                    {!isMobile &&
-                      <>
-                        <td>${(node.PriceAvg || 0)}</td>
-                        <td>${(node.PriceMin || 0)}{" - "}${(node.PriceMax || 0)}</td>
-                        <td>{node.GlobalRank_Change}</td>
-                      </>
-                    }
-                  </tr>
-                ))}
-              </tbody>
-            </TableStickyHeader>
-          </StickyTableWrapper>
-        </TableWrapper>
-
-      </ShopsWrapper >
-      { showMore && listEdges.length > 0 && listEdges.length < edges.length &&
-        <div className="center">
-          <button className="button" onClick={increaseLimit}>
-            Load More
-          </button>
-        </div>
-      } */}
-      <ShopsWrapper>
-        <div className="intro_text">
-          <h3>Discover top Shopify stores of 2020</h3>
-          <p>Find the top Shopify stores by traffic & social media activity. See some of the best Shopify store examples.</p><p>Search in header for more Shopify stores or <a href="/randomshop">discover a shop</a></p>
-          <h3>How is the list of top Shopify stores ranked?</h3>
-          <p>The stores are ranked based upon their SocialScore and overall web rank. The social score is derived from factors such as followers, fans, and activity on social media accounts. Web rank is based upon the websites estimated search engine ranking, as well as average time on site by visitors.</p>
-          <h3>What are some great Shopify stores examples? </h3>
-          <p>This list is an excellent resource for seeing examples of Shopify stores. These are some of the most popular Shopify stores and are great for getting ideas for your own store.</p>
-          <h3>What are Shopify stores?</h3>
-          <p>Shpoify stores are online stores running on the Shopify ecommece platorm. They are typically indpendent businesses selling directly to customers. The sites are hosted by Shopify, which generally handles the payment as well, making Shopify sites safe and secure.</p>
-          <h3>How many Shopify stores are there?</h3>
-          <p>As of July 2020, there are approximately 1,422,815 live Shopify sites. 3.6% of the top 1M sites are powerd by Shopify. 5.29% of the top 10k sites are powered by Shopify. </p>
-        </div>
       </ShopsWrapper>
     </Layout >
   );

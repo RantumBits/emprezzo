@@ -206,7 +206,7 @@ const AlgoliaProductItem = (props) => {
               }
               <div>
                 <h3>{props.hit.name}</h3>
-                <p><i>Available at {props.hit.name || props.hit.shopName} from ${props.hit.price}</i></p>
+                <p><i>Available at {props.hit.shopName || props.hit.name} from ${props.hit.price}</i></p>
                 <p>{props.hit.description && props.hit.description.substring(0, 220)}</p>
                 {convertToSelectList(props.hit.VariantTitle)}
               </div>
