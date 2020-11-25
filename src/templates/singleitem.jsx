@@ -222,7 +222,7 @@ const SingleItem = ({ data, pageContext }) => {
   //Extracting Posts from MySQL Data
   const maxPosts = 3;
   const rowDataViewEdges = data.allMysqlDataView.edges;
-  //filtering top 3 for current instagram id
+  //filtering top 3 for current instagram id  
   const filteredDataView = _.filter(rowDataViewEdges, ({ node }) => node.AlexaURL == AlexaURL || node.AlexaURL == AlexaURL.substring(0, AlexaURL.length - 1));
   const listPostEdges = _.slice(filteredDataView, 0, maxPosts);
   let firstRowDataView = listPostEdges && listPostEdges.length ? listPostEdges[0] : [];
@@ -242,7 +242,7 @@ const SingleItem = ({ data, pageContext }) => {
 
   //Now filtering instagram posts if the image or caption is not present
   const listInstaPostEdges = _.filter(listPostEdges, ({ node }) => node.PhotoLink);
-
+  
   //Creating a new dataset with original nodes and required columns from DataView
   let combinedMainDataEdges = [];
   allMysqlMainViewEdges.map((edge) => {
@@ -766,7 +766,7 @@ const SingleItem = ({ data, pageContext }) => {
               visibleShopifyClassicProductsEdges.length > 0 && (
                 <Tab style={TabStyle}>Shop {name}</Tab>
               )}
-            {listShopifyBestSellersEdges &&
+            {/* {listShopifyBestSellersEdges &&
               listShopifyBestSellersEdges.length > 0 && (
                 <Tab style={TabStyle}>Best sellers</Tab>
               )}
@@ -781,7 +781,7 @@ const SingleItem = ({ data, pageContext }) => {
             {listShopifyGiftCards &&
               listShopifyGiftCards.length > 0 && (
                 <Tab style={TabStyle}>Gift Cards</Tab>
-              )}
+              )} */}
           </TabList>
 
 
@@ -790,13 +790,13 @@ const SingleItem = ({ data, pageContext }) => {
             <TabPanel>
               <AlgoliaProductList
                 defaultFilter={`emprezzoID:"${UserName}"`}
-                facetsToShow={'category'}
+                facetsToShow={'onsale,giftcard'}
                 showSearchBox={true}
                 showClearFilter={true}
               />
             </TabPanel>
           )}
-          {listShopifyBestSellersEdges && listShopifyBestSellersEdges.length > 0 && (
+          {/* {listShopifyBestSellersEdges && listShopifyBestSellersEdges.length > 0 && (
             <TabPanel>
               {renderProductList(listShopifyBestSellersEdges, 'listShopifyBestSellersEdges')}
             </TabPanel>
@@ -822,7 +822,7 @@ const SingleItem = ({ data, pageContext }) => {
                   })}
                 </PostSectionGrid>
               </TabPanel>
-            )}
+            )} */}
         </Tabs>
 
         {FreeShipText && FreeShipText.length > 0 && (

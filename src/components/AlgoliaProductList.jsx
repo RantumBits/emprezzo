@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import _ from 'lodash';
 import AlgoliaProductItem from './AlgoliaProductItem'
 import AlgoliaUncommonryItem from './AlgoliaUncommonryItem'
+import AlgoliaRangeSlider from './AlgoliaRangeSlider'
 import algoliasearch from 'algoliasearch/lite';
 import {
   InstantSearch,
@@ -11,6 +12,7 @@ import {
   Pagination,
   ClearRefinements,
   RefinementList,
+  SortBy,
   Configure,
 } from 'react-instantsearch-dom';
 import 'instantsearch.css/themes/algolia.css';
@@ -28,6 +30,14 @@ const LeftPanel = styled.div`
     background-color: #C04CFD;
   }
 
+  .ais-SortBy {
+    padding: 0.8rem 0 0.8rem 0;
+  }
+
+  .ais-SortBy-select {
+    font-size: 0.8rem;
+  }
+
   .ais-RefinementList-item {
     margin-bottom: 0px;    
   }
@@ -39,6 +49,13 @@ const LeftPanel = styled.div`
 
   .ais-RefinementList-count {
     font-size: 0.6rem;
+  }
+
+  .ais-RangeSlider {
+    margin: 0.8rem 1rem 2.4rem 1rem;
+  }
+  .rheostat-value {
+    transform: translateX(-70%);
   }
 `;
 
@@ -67,7 +84,7 @@ const RightPanel = styled.div`
     color: #a5abc4;
   }
 
-  ais-Breadcrumb-link, .ais-HierarchicalMenu-link, .ais-Menu-link, .ais-Pagination-link, .ais-RatingMenu-link {
+  .ais-Breadcrumb-link, .ais-HierarchicalMenu-link, .ais-Menu-link, .ais-Pagination-link, .ais-RatingMenu-link {
     color:#C04CFD
   }
 `;
@@ -95,10 +112,21 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, showClearFilter,
   return (
     <SearchWrapper>
       <InstantSearch indexName={searchIndexName} searchClient={searchClient}>
-        <LeftPanel>
+        <LeftPanel>          
           {showClearFilter &&
             <ClearRefinements />
           }
+          <SortBy
+            defaultRefinement="empProducts"
+            items={[
+              { value: 'empProducts_UpdatedDate_Desc', label: 'UpdatedDate desc.' },
+              { value: 'empProducts_UpdatedDate_Asc', label: 'UpdatedDate asc.' },
+              { value: 'empProducts_SellingRank_Desc', label: 'SellingRank desc.' },
+              { value: 'empProducts_SellingRank_Asc', label: 'SellingRank asc.' },              
+              { value: 'empProducts_Price_Desc', label: 'Price desc.' },
+              { value: 'empProducts_Price_Asc', label: 'Price asc.' },              
+            ]}
+          />
           {facetsToShow && facetsToShow.indexOf("category") >= 0 &&
             <>
               <FilterHeading>Category</FilterHeading>
@@ -109,6 +137,35 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, showClearFilter,
             <>
               <FilterHeading>Brands</FilterHeading>
               <RefinementList attribute="shopName" />
+            </>
+          }
+          {facetsToShow && facetsToShow.indexOf("pricerangeslider") >= 0 &&
+            <>
+              <FilterHeading>Average Price</FilterHeading>
+              <AlgoliaRangeSlider attribute="price" />
+            </>
+          }
+          {facetsToShow && facetsToShow.indexOf("onsale") >= 0 &&
+            <>
+              <RefinementList
+                attribute="onSale"
+                transformItems={items =>
+                  items.filter(item => (item.label == '1')).map(item => ({
+                    ...item,
+                    label: "On Sale",
+                  }))
+                }
+              />
+            </>
+          }
+          {facetsToShow && facetsToShow.indexOf("giftcard") >= 0 &&
+            <>
+              <RefinementList
+                attribute="name"
+                transformItems={items =>
+                  items.filter(item => (item.label.toLowerCase().indexOf('gift') >= 0))
+                }
+              />
             </>
           }
           {facetsToShow && facetsToShow.indexOf("storeoffers") >= 0 &&
