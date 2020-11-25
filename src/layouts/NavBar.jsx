@@ -108,18 +108,20 @@ const NavBar = () => {
   return (
     <Headroom calcHeightOnResize disableInlineStyles>
       <StyledLink to="/">
-        <img src={logo} className="logo" title="emprezzo - Discover the best online shopping sites & direct to consumer brands" alt="emprezzo - Discover the best online shopping sites & direct to consumer brands" />
+        <img src={logo} className="logo" title="emprezzo - Discover the best independent shopping sites & direct to consumer brands" alt="emprezzo - Discover the best independent shopping sites & direct to consumer brands" />
       </StyledLink>
       <NavWrapper>
         <Nav>
         <div className="dropdown">
           <Link to="">Discover </Link>
           <div className="dropdown-content">
-              <Link key="2" to="/top-shopify-stores">Top Shopify stores</Link>
-              <Link key="3" to="/amazon-alternatives">Amazon alternatives</Link>
-              <Link key="4" to="/stores-that-accept-paypal">Stores that accept Paypal</Link>
-              <Link key="5" to="/buynow-paylater-stores">Buy now, pay later stores </Link>
-              <Link key="6" to="/products">Shopify products</Link>
+            <Link key="2" to="/products">All shops</Link>
+          //  <Link key="2" to="/top-shopify-stores">Top Shopify stores</Link>
+          //  <Link key="3" to="/amazon-alternatives">Amazon alternatives</Link>
+          //    <Link key="4" to="/stores-that-accept-paypal">Stores that accept Paypal</Link>
+          //    <Link key="5" to="/buynow-paylater-stores">Buy now, pay later stores </Link>
+              <Link key="3" to="/products">All products</Link>
+              <Link key="4" target="_blank" to="https://chrome.google.com/webstore/detail/emprezzo/ojfaaaocbgiojhlapncepdiccfgcjmee">Chrome extension</Link>
           </div>
         </div>
           <SearchWrapper>

@@ -105,7 +105,11 @@ const Title = styled.div`
   margin: 0;
   margin-bottom: 0.2rem;
   text-transform: capitalize;
-  font-size: .8em;
+  font-size: .8rem;
+
+  span {
+    font-size: 0.8rem
+  }
 
 `;
 const SubTitle = styled.h5`
@@ -113,7 +117,7 @@ const SubTitle = styled.h5`
   margin-bottom: 0.6rem;
 `;
 const Price = styled.div`
-  font-size: 0.8rem;
+  font-size: 0.6rem;
   margin: 0;
 
 `;

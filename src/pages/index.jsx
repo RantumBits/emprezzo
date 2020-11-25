@@ -433,7 +433,7 @@ const Index = ({ data }) => {
 
 
 
-      {/*       
+      {/*
       <LazyLoad height={200} once offset={[-200, 0]}>
         <SectionHeading>Discover best selling products</SectionHeading>
         <CategoryWrapper>
@@ -471,13 +471,14 @@ const Index = ({ data }) => {
 
 
       <ShopWrapper>
-        <h3>Discover the best online shopping sites at Emprezzo</h3>
-        <p>There are endless options when shopping online, yet nothing seems like the right fit. Discover the best direct to consumer brands at Emprezzo.</p>
+        <h3>Discover the best independent shopping sites</h3>
+        <p>Shopping is heavily dominated by major retailers. As commerce increasingly shifts from physical to digital means, this balance has shifted more in favor of a small number of mega-retailers with one site making up nearly 50% of all online shopping. This isn't the way the internet was meant to be.</p>
+        <p>Consumers have shifted behaviours from shopping in a relatively open physical world to an environment where results beyond the first page or two are rarely seen. Rather than yielding fewer opportunities, digital commerce should open opportunities for a multitude of focused brands to make exceptional products for a physically widespread audience. </p>
+        <p>Major online retailers and marketplaces are convenient, but often don't feature the best brands and products. They charge high fees, sell knockoffs, and favor fast & cheap over innovative & enduring.</p>
+        <p>There are hundreds of brands that sell directly to consumers on their own sites. Many offer free shipping, discounts to new customers, and other perks of shopping directly. We developed a database of 500+ shops and 20,000+ products that can be searched and filtered by keywords, free shipping offers, price, return policies, etc. The database is constantly growing and updated with new data.</p>
+        <p>Help support independent business. Before making a purchase from a major retail site, search for an independent shopping alternative at emprezzo.</p>
+                 
 
-        <h3>What's the benefit of shopping direct-to-consumer brands?</h3>
-        <p>Direct to consumers stores connect diretly with their customer, which helps reduce costs paid to large reatilers and makertplaces. Marketplaces typically charge sellers for marketing, fulfillment, commission, and additional fees making it hard for stores to turn a profit without increasing costs.</p>
-        <h3>What are the best online shopping sites?</h3>
-        <p>Our lists are compiled based on thousands of data points from social media platforms, trafic data, API tools, and our own research. We present our findings and listed based upon the data retreived. </p>
       </ShopWrapper>
     </Layout >
   );
@@ -589,7 +590,7 @@ export const query = graphql`
       edges {
         node {
           URL
-          profile_image_url          
+          profile_image_url
         }
       }
     }

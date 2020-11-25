@@ -210,7 +210,7 @@ const Products = ({ data, pageContext }) => {
         <CategoryHeading>Discover great products</CategoryHeading>
         <SearchWrapper>
           <AlgoliaProductList
-            facetsToShow={'category,brands,storeoffers'}
+            facetsToShow={'category,pricerangeslider,storeoffers'}
             showSearchBox={true}
             showClearFilter={true}
           />
