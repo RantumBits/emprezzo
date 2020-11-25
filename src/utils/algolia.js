@@ -3,7 +3,7 @@ const shopQuery = `{
     edges {
       node {
         id: UniqueID
-        random: UniqueKey
+        randomShopKey: UniqueKey
         emprezzoID: UserName
         shopName: name
         url: url
@@ -60,7 +60,7 @@ const productQuery = `{
         socialRankScore: SocialRankScore
         onSale: OnSale
         discountPct: DiscountPct
-        
+
       }
     }
   }

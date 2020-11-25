@@ -222,7 +222,7 @@ const SingleItem = ({ data, pageContext }) => {
   //Extracting Posts from MySQL Data
   const maxPosts = 3;
   const rowDataViewEdges = data.allMysqlDataView.edges;
-  //filtering top 3 for current instagram id  
+  //filtering top 3 for current instagram id
   const filteredDataView = _.filter(rowDataViewEdges, ({ node }) => node.AlexaURL == AlexaURL || node.AlexaURL == AlexaURL.substring(0, AlexaURL.length - 1));
   const listPostEdges = _.slice(filteredDataView, 0, maxPosts);
   let firstRowDataView = listPostEdges && listPostEdges.length ? listPostEdges[0] : [];
@@ -242,7 +242,7 @@ const SingleItem = ({ data, pageContext }) => {
 
   //Now filtering instagram posts if the image or caption is not present
   const listInstaPostEdges = _.filter(listPostEdges, ({ node }) => node.PhotoLink);
-  
+
   //Creating a new dataset with original nodes and required columns from DataView
   let combinedMainDataEdges = [];
   allMysqlMainViewEdges.map((edge) => {
@@ -718,10 +718,10 @@ const SingleItem = ({ data, pageContext }) => {
                   <div>Base shipping rate: ${firstRowDataView.node.BaseShipRate}</div>
                 }
                 {firstRowDataView.node.ReturnDays && firstRowDataView.node.ReturnDays != "." &&
-                  <div>Offers {firstRowDataView.node.ReturnDays} day returns.</div>
+                  <div>Offers {firstRowDataView.node.ReturnDays} day returns</div>
                 }
-                {firstRowDataView.node.ReturnShipFree && firstRowDataView.node.ReturnShipFree != "." &&
-                  <div>Return shipping is : {firstRowDataView.node.ReturnShipFree}</div>
+                {firstRowDataView.node.ReturnShipFree && firstRowDataView.node.ReturnShipFree == "Yes" &&
+                  <div>Return shipping is free {firstRowDataView.node.ReturnShipFree}</div>
                 }
                 {firstRowDataView.node.ReturnCondition && firstRowDataView.node.ReturnCondition != "." &&
                   <div>Return condition: {firstRowDataView.node.ReturnCondition} {firstRowDataView.node.ReturnNotes}</div>
@@ -740,25 +740,13 @@ const SingleItem = ({ data, pageContext }) => {
         </div>
 
 
-        <div style={{ margin: '2rem' }}>
-          <a href={AlexaURL} className="button" target="_blank">
-            shop {name}
-          </a>{' '}
-          <a href="/randomshop" className="button buttonalt">
-            Discover a new shop
-          </a>
-        </div>
+
 
         <br />
         {/* List of Products from MySQL View */}
 
 
-        {signup_promos && signup_promos.toLowerCase() != 'n/a' && (
-          <>
-            <Content input={signup_promos} />
-            <br />
-          </>
-        )}
+
         <Tabs>
           <TabList>
 
@@ -917,14 +905,8 @@ const SingleItem = ({ data, pageContext }) => {
           </>
         )}
         <br />
-        <br />
-        <a href="/randomshop" className="button ">
-          Discover a new shop
-        </a>
-        <br />
-        <br />
-        See more online stores tagged: <TagsBlock list={tagsList || []} isLinkToShops={true} />
-        <br />
+
+
 
 
 

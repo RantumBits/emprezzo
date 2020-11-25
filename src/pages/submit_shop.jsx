@@ -7,7 +7,7 @@ import { Layout, Container } from 'layouts';
 const Submit = () => (
   <Layout>
     <Helmet title={'Submit Shop'} />
-    <Header title="Submit a Shop">🧐   Submit a new independent shop to add to the emprezzo database! </Header>
+    <Header title="Submit a Shop">🧐  Submit a new independent shop to add to the emprezzo database! </Header>
     <Container center={{center:"true"}}>
     <form id="submit_shop" action="/success" method="post" role="form" data-netlify="true" data-netlify-honeypot="bot-field">
     <input type="hidden" name="form-name" value="submit_shop" />
