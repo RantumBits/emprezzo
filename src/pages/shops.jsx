@@ -247,7 +247,160 @@ const TopShopifyStores = ({ location, data }) => {
             searchIndexName={`uncommonry`}
           />
         </ShopsWrapper>
-    
+      {/* <Dialog isOpen={showDialog} onDismiss={closeMoreDialog}>
+        <span dangerouslySetInnerHTML={{ __html: dialogText }} />
+        <button onClick={closeMoreDialog}>
+          Close
+        </button>
+      </Dialog>
+      <ShopsWrapper>
+        <div className="intro_text">
+          <h3>Discover Great Online Shops</h3>
+          <p>Discover popular independent stores and direct to consumer brands</p>
+        </div>
+        <div style={{ display: "flex", width: "100%", paddingBottom: "10px" }}>
+          <label>Filter by Category:
+            <select value={categoryFilter} onChange={changeCategoryFilter}>
+              <option value="">-</option>
+              {allCategories && allCategories.map(item => (
+                <option value={item}>{item}</option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <div style={{ display: "flex", width: "100%" }}>
+          <label>Filter Results:
+            <input type="text"
+              value={filterText}
+              onChange={(e) => setFilterText(e.target.value)}
+            />
+          </label>
+        </div>
+        <div style={{ display: "flex", width: "100%" }}>
+          <label>
+            <input type="checkbox" style={{ margin: "0.5rem" }}
+              checked={filterPaypalShopID}
+              onChange={() => setFilterPaypalShopID(!filterPaypalShopID)}
+            />
+          PayPal
+        </label>
+          <label>
+            <input type="checkbox" style={{ margin: "0.5rem" }}
+              checked={filterFreeShipText}
+              onChange={() => setFilterFreeShipText(!filterFreeShipText)}
+            />
+          Free Shipping
+        </label>
+          <label>
+            <input type="checkbox" style={{ margin: "0.5rem" }}
+              checked={filterPayPalVenmoSupport}
+              onChange={() => setFilterPayPalVenmoSupport(!filterPayPalVenmoSupport)}
+            />
+          Venmo
+        </label>
+          <label>
+            <input type="checkbox" style={{ margin: "0.5rem" }}
+              checked={filterBuyNowPayLater}
+              onChange={() => setFilterBuyNowPayLater(!filterBuyNowPayLater)}
+            />
+          Buy now, pay later
+        </label>
+        </div>
+        <div style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
+          Display by
+          <select value={sortBy} onChange={changeSortBy}>
+            <option value="GlobalRank">Traffic rank</option>
+            <option value="GlobalRank_Change">Rank change</option>
+            <option value="TotalFollowers">Total fans</option>
+          </select>
+        </div>
+        <div style={{ width: "80%", display: "flex" }}>
+          <span style={{ width: "20%" }}>Average Price : </span>
+          <Slider
+            value={sliderAvgPrice}
+            onChange={handerSliderAvgPriceChange}
+            min={0}
+            max={sliderAvgPrice[1] + 50}
+            valueLabelDisplay="auto"
+            aria-labelledby="range-slider-avg"
+
+          />
+        </div>
+        <div style={{ width: "80%", display: "flex" }}>
+          <span style={{ width: "20%" }}>Price Range : </span>
+          <Slider
+            value={sliderPriceRange}
+            onChange={handerSliderPriceRangeChange}
+            min={0}
+            max={sliderPriceRange[1] + 50}
+            valueLabelDisplay="auto"
+            aria-labelledby="range-slider-range"
+          />
+        </div>
+        <TableWrapper>
+          <StickyTableWrapper>
+            <TableStickyHeader>
+              <thead>
+                <tr>
+                  <th style={{ width: "3%" }}><strong>#</strong></th>
+                  <th style={{ width: "3%" }}></th>
+
+                  <th><strong>Store</strong></th>
+                  {!isMobile &&
+                    <>
+                      <th style={{ width: "20%" }}></th>
+                      <th><strong>TrafficRank</strong></th>
+                    </>
+                  }
+                  <th><strong>TotalFollowers</strong></th>
+                  {!isMobile &&
+                    <>
+                      <th><strong>Avg Price</strong></th>
+                      <th><strong>Price Range</strong></th>
+                      <th><strong>Rank Change</strong></th>
+                    </>
+                  }
+                </tr>
+              </thead>
+              <tbody>
+                {listEdges.map((node, index) => (
+                  <tr key={index} id={`post-${index}`}>
+                    <td>{index + 1}</td>
+                    <td><a href="javascript:void(0)" onClick={() => openMoreDialog(node)}>&gt;&gt;</a></td>
+                    <td>
+                      <Link to={`/shops/${node.UserName}/`}>
+                        {renderProfilePicURL(node)}
+                      </Link>
+                    </td>
+                    {!isMobile &&
+                      <>
+                        <td><Link to={`/shops/${node.UserName}/`} title={node.name}>{node.name}</Link></td>
+                        <td>{node.GlobalRank}</td>
+                      </>
+                    }
+                    <td>{node.TotalFollowers}</td>
+                    {!isMobile &&
+                      <>
+                        <td>${(node.PriceAvg || 0)}</td>
+                        <td>${(node.PriceMin || 0)}{" - "}${(node.PriceMax || 0)}</td>
+                        <td>{node.GlobalRank_Change}</td>
+                      </>
+                    }
+                  </tr>
+                ))}
+              </tbody>
+            </TableStickyHeader>
+          </StickyTableWrapper>
+        </TableWrapper>
+
+      </ShopsWrapper >
+      { showMore && listEdges.length > 0 && listEdges.length < edges.length &&
+        <div className="center">
+          <button className="button" onClick={increaseLimit}>
+            Load More
+          </button>
+        </div>
+      } */}
       <ShopsWrapper>
 
       </ShopsWrapper>
