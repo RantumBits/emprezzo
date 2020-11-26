@@ -1,8 +1,6 @@
 const config = require('./config/site');
 const queries = require("./src/utils/algolia");
-require("dotenv").config({
-  path: `.env.${process.env.NODE_ENV}`,
-});
+require("dotenv").config();
 
 module.exports = {
   siteMetadata: {
@@ -162,7 +160,7 @@ module.exports = {
         appId: process.env.GATSBY_ALGOLIA_APP_ID,
         apiKey: process.env.ALGOLIA_ADMIN_KEY,
         queries,
-        chunkSize: 1000, // default: 1000
+        chunkSize: 800, // default: 1000
         enablePartialUpdates: true,
         matchFields: ['price', 'shopImage', 'randomShopKey'],
 
