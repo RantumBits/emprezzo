@@ -1309,7 +1309,7 @@ export const query = graphql`
           ReturnDays
           ReturnShipFree
           ProfilePicURL
-          Available
+          
         }
       }
     }
