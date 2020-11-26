@@ -20,11 +20,17 @@ import 'instantsearch.css/themes/algolia.css';
 const SearchWrapper = styled.div`
   width: 100%;
   display: flex;
+  @media (max-width: 700px) {
+    flex-direction: column;
+  }
 `;
 
 const LeftPanel = styled.div`
   float: left;
   width: 20vw;
+  @media (max-width: 700px) {
+    width: 80vw;
+  }
 
   .ais-ClearRefinements-button {
     background-color: #C04CFD;
@@ -48,6 +54,7 @@ const LeftPanel = styled.div`
   }
 
   .ais-RefinementList-count {
+    display: none;
     font-size: 0.6rem;
   }
 

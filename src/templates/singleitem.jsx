@@ -677,11 +677,11 @@ const SingleItem = ({ data, pageContext }) => {
           <div style={{ paddingLeft: '15px' }}>
 
 
-            <i>{category}: {tags}</i><br/><br/>
-          {rowShopifyProductSummary.PriceMin &&
+            <i>{category}: {tags}</i><br /><br />
+            {rowShopifyProductSummary.PriceMin &&
               rowShopifyProductSummary.PriceMax && (
                 <span>
-                  Range: ${rowShopifyProductSummary.PriceMin} - ${rowShopifyProductSummary.PriceMax}<br/></span>
+                  Range: ${rowShopifyProductSummary.PriceMin} - ${rowShopifyProductSummary.PriceMax}<br /></span>
               )}
               Avg: ${rowShopifyProductSummary.PriceAvg}
 
@@ -709,8 +709,8 @@ const SingleItem = ({ data, pageContext }) => {
 
             <div>
 
-          {firstRowDataView.node.PaypalShopID &&  firstRowDataView.node.PaypalShopID !='#' &&   <div>Accepts paypal</div>}
-          {firstRowDataView.node.PaypalVenmoSupport &&  firstRowDataView.node.PaypalVenmoSupport !='#' &&   <div>Accepts venmo</div>}
+              {firstRowDataView.node.PaypalShopID && firstRowDataView.node.PaypalShopID != '#' && <div>Accepts paypal</div>}
+              {firstRowDataView.node.PaypalVenmoSupport && firstRowDataView.node.PaypalVenmoSupport != '#' && <div>Accepts venmo</div>}
 
 
 
@@ -729,11 +729,7 @@ const SingleItem = ({ data, pageContext }) => {
 
         <Tabs>
           <TabList>
-
-            {visibleShopifyClassicProductsEdges &&
-              visibleShopifyClassicProductsEdges.length > 0 && (
-                <Tab style={TabStyle}>Shop {name}</Tab>
-              )}
+            <Tab style={TabStyle}>Shop {name}</Tab>
             {/* {listShopifyBestSellersEdges &&
               listShopifyBestSellersEdges.length > 0 && (
                 <Tab style={TabStyle}>Best sellers</Tab>
@@ -752,18 +748,15 @@ const SingleItem = ({ data, pageContext }) => {
               )} */}
           </TabList>
 
+          <TabPanel>
+            <AlgoliaProductList
+              defaultFilter={`emprezzoID:"${UserName}"`}
+              facetsToShow={'onsale,giftcard'}
+              showSearchBox={true}
+              showClearFilter={true}
+            />
+          </TabPanel>
 
-
-          {visibleShopifyClassicProductsEdges && visibleShopifyClassicProductsEdges.length > 0 && (
-            <TabPanel>
-              <AlgoliaProductList
-                defaultFilter={`emprezzoID:"${UserName}"`}
-                facetsToShow={'onsale,giftcard'}
-                showSearchBox={true}
-                showClearFilter={true}
-              />
-            </TabPanel>
-          )}
           {/* {listShopifyBestSellersEdges && listShopifyBestSellersEdges.length > 0 && (
             <TabPanel>
               {renderProductList(listShopifyBestSellersEdges, 'listShopifyBestSellersEdges')}
@@ -804,166 +797,166 @@ const SingleItem = ({ data, pageContext }) => {
             <Tab style={TabStyle}>Social media stats</Tab>
             {rowShopifyProductSummary.PriceListActive && (<Tab style={TabStyle}>Prices</Tab>)}
             <Tab style={TabStyle}>Traffic rank</Tab>
-              {chartTOSData && (<Tab style={TabStyle}>Time on site</Tab>)}
+            {chartTOSData && (<Tab style={TabStyle}>Time on site</Tab>)}
 
 
           </TabList>
           <TabPanel>
-                <div style={{ display: 'flex' }}>
-                  <div style={{ flex: '30%' }}>
-                  {socialDetails && (
-                    <SocialIcons>
-                      {socialDetails.InstagramLink && (
-                        <a href={socialDetails.InstagramLink} target="_blank">
-                          <FaInstagram size="22" color="#666" />
-                        </a>
-                      )}
-                      {socialDetails.FacebookLink && (
-                        <a href={socialDetails.FacebookLink} target="_blank">
-                          <FaFacebookSquare size="22" color="#666" />
-                        </a>
-                      )}
-                      {socialDetails.PinterestLink && (
-                        <a href={socialDetails.PinterestLink} target="_blank">
-                          <FaPinterestSquare size="22" color="#666" />
-                        </a>
-                      )}
-                      {socialDetails.TwitterLink && (
-                        <a href={socialDetails.TwitterLink} target="_blank">
-                          <FaTwitterSquare size="22" color="#666" />
-                        </a>
-                      )}
-                      {socialDetails.TikTokLink && (
-                        <a href={socialDetails.TikTokLink} target="_blank">
-                          <FaAt size="22" color="#666" />
-                        </a>
-                      )}
-                      {socialDetails.YouTubeLink && (
-                        <a href={socialDetails.YouTubeLink} target="_blank">
-                          <FaYoutube size="22" color="#666" />
-                        </a>
-                      )}
-                    </SocialIcons>
-                  )}
-                    {chartSocialData && chartSocialData.labels && chartSocialData.labels.length > 0 && (
-                      <ReactFrappeChart
-                        type="donut"
-                        title="Total fans by platform"
-                        height={300}
-                        data={chartSocialData}
-                      />
+            <div style={{ display: 'flex' }}>
+              <div style={{ flex: '30%' }}>
+                {socialDetails && (
+                  <SocialIcons>
+                    {socialDetails.InstagramLink && (
+                      <a href={socialDetails.InstagramLink} target="_blank">
+                        <FaInstagram size="22" color="#666" />
+                      </a>
                     )}
-                  </div>
-                  <div style={{ flex: '60%' }}>
-                    <Tabs >
-                      <TabList>
-                        {facebookChartData && <Tab style={TabStyle}>Facebook</Tab>}
-                        {instagramChartData && <Tab style={TabStyle}>Instagram</Tab>}
-                        {pinterestChartData && <Tab style={TabStyle}>Pinterest</Tab>}
-                        {tiktokChartData && <Tab style={TabStyle}>TikTok</Tab>}
-                        {twitterChartData && <Tab style={TabStyle}>Twitter</Tab>}
-                        {youtubeChartData && <Tab style={TabStyle}>Youtube</Tab>}
-                      </TabList>
-                      {facebookChartData && (
-                        <TabPanel>
-                          <ReactFrappeChart
-                            type="axis-mixed"
-                            colors={['#743ee2']}
-                            title="Facebook"
-                            height={250}
-                            axisOptions={{
-                              xAxisMode: 'tick',
-                              xIsSeries: 1,
-                              shortenYAxisNumbers: 1,
-                            }}
-                            data={facebookChartData}
-                          />
-                        </TabPanel>
-                      )}
-                      {instagramChartData && (
-                        <TabPanel>
-                          <ReactFrappeChart
-                            type="axis-mixed"
-                            title="Instagram"
-                            height={250}
-                            axisOptions={{
-                              xAxisMode: 'tick',
-                              xIsSeries: 1,
-                              shortenYAxisNumbers: 1,
-                            }}
-                            lineOptions={{ spline: 1 }}
-                            data={instagramChartData}
-                          />
-                        </TabPanel>
-                      )}
-                      {pinterestChartData && (
-                        <TabPanel>
-                          <ReactFrappeChart
-                            type="axis-mixed"
-                            title="Pinterest"
-                            height={250}
-                            axisOptions={{
-                              xAxisMode: 'tick',
-                              xIsSeries: 1,
-                              shortenYAxisNumbers: 1,
-                            }}
-                            lineOptions={{ spline: 1 }}
-                            data={pinterestChartData}
-                          />
-                        </TabPanel>
-                      )}
-                      {tiktokChartData && (
-                        <TabPanel>
-                          <ReactFrappeChart
-                            type="axis-mixed"
-                            title="Tiktok"
-                            height={250}
-                            axisOptions={{
-                              xAxisMode: 'tick',
-                              xIsSeries: 1,
-                              shortenYAxisNumbers: 1,
-                            }}
-                            lineOptions={{ spline: 1 }}
-                            data={tiktokChartData}
-                          />
-                        </TabPanel>
-                      )}
-                      {twitterChartData && (
-                        <TabPanel>
-                          <ReactFrappeChart
-                            type="axis-mixed"
-                            title="Twitter"
-                            height={250}
-                            axisOptions={{
-                              xAxisMode: 'tick',
-                              xIsSeries: 1,
-                              shortenYAxisNumbers: 1,
-                            }}
-                            lineOptions={{ spline: 1 }}
-                            data={twitterChartData}
-                          />
-                        </TabPanel>
-                      )}
-                      {youtubeChartData && (
-                        <TabPanel>
-                          <ReactFrappeChart
-                            type="axis-mixed"
-                            title="Youtube"
-                            height={250}
-                            axisOptions={{
-                              xAxisMode: 'tick',
-                              xIsSeries: 1,
-                              shortenYAxisNumbers: 1,
-                            }}
-                            lineOptions={{ spline: 1 }}
-                            data={youtubeChartData}
-                          />
-                        </TabPanel>
-                      )}
-                    </Tabs>
-                  </div>
-                </div>
-                </TabPanel>
+                    {socialDetails.FacebookLink && (
+                      <a href={socialDetails.FacebookLink} target="_blank">
+                        <FaFacebookSquare size="22" color="#666" />
+                      </a>
+                    )}
+                    {socialDetails.PinterestLink && (
+                      <a href={socialDetails.PinterestLink} target="_blank">
+                        <FaPinterestSquare size="22" color="#666" />
+                      </a>
+                    )}
+                    {socialDetails.TwitterLink && (
+                      <a href={socialDetails.TwitterLink} target="_blank">
+                        <FaTwitterSquare size="22" color="#666" />
+                      </a>
+                    )}
+                    {socialDetails.TikTokLink && (
+                      <a href={socialDetails.TikTokLink} target="_blank">
+                        <FaAt size="22" color="#666" />
+                      </a>
+                    )}
+                    {socialDetails.YouTubeLink && (
+                      <a href={socialDetails.YouTubeLink} target="_blank">
+                        <FaYoutube size="22" color="#666" />
+                      </a>
+                    )}
+                  </SocialIcons>
+                )}
+                {chartSocialData && chartSocialData.labels && chartSocialData.labels.length > 0 && (
+                  <ReactFrappeChart
+                    type="donut"
+                    title="Total fans by platform"
+                    height={300}
+                    data={chartSocialData}
+                  />
+                )}
+              </div>
+              <div style={{ flex: '60%' }}>
+                <Tabs >
+                  <TabList>
+                    {facebookChartData && <Tab style={TabStyle}>Facebook</Tab>}
+                    {instagramChartData && <Tab style={TabStyle}>Instagram</Tab>}
+                    {pinterestChartData && <Tab style={TabStyle}>Pinterest</Tab>}
+                    {tiktokChartData && <Tab style={TabStyle}>TikTok</Tab>}
+                    {twitterChartData && <Tab style={TabStyle}>Twitter</Tab>}
+                    {youtubeChartData && <Tab style={TabStyle}>Youtube</Tab>}
+                  </TabList>
+                  {facebookChartData && (
+                    <TabPanel>
+                      <ReactFrappeChart
+                        type="axis-mixed"
+                        colors={['#743ee2']}
+                        title="Facebook"
+                        height={250}
+                        axisOptions={{
+                          xAxisMode: 'tick',
+                          xIsSeries: 1,
+                          shortenYAxisNumbers: 1,
+                        }}
+                        data={facebookChartData}
+                      />
+                    </TabPanel>
+                  )}
+                  {instagramChartData && (
+                    <TabPanel>
+                      <ReactFrappeChart
+                        type="axis-mixed"
+                        title="Instagram"
+                        height={250}
+                        axisOptions={{
+                          xAxisMode: 'tick',
+                          xIsSeries: 1,
+                          shortenYAxisNumbers: 1,
+                        }}
+                        lineOptions={{ spline: 1 }}
+                        data={instagramChartData}
+                      />
+                    </TabPanel>
+                  )}
+                  {pinterestChartData && (
+                    <TabPanel>
+                      <ReactFrappeChart
+                        type="axis-mixed"
+                        title="Pinterest"
+                        height={250}
+                        axisOptions={{
+                          xAxisMode: 'tick',
+                          xIsSeries: 1,
+                          shortenYAxisNumbers: 1,
+                        }}
+                        lineOptions={{ spline: 1 }}
+                        data={pinterestChartData}
+                      />
+                    </TabPanel>
+                  )}
+                  {tiktokChartData && (
+                    <TabPanel>
+                      <ReactFrappeChart
+                        type="axis-mixed"
+                        title="Tiktok"
+                        height={250}
+                        axisOptions={{
+                          xAxisMode: 'tick',
+                          xIsSeries: 1,
+                          shortenYAxisNumbers: 1,
+                        }}
+                        lineOptions={{ spline: 1 }}
+                        data={tiktokChartData}
+                      />
+                    </TabPanel>
+                  )}
+                  {twitterChartData && (
+                    <TabPanel>
+                      <ReactFrappeChart
+                        type="axis-mixed"
+                        title="Twitter"
+                        height={250}
+                        axisOptions={{
+                          xAxisMode: 'tick',
+                          xIsSeries: 1,
+                          shortenYAxisNumbers: 1,
+                        }}
+                        lineOptions={{ spline: 1 }}
+                        data={twitterChartData}
+                      />
+                    </TabPanel>
+                  )}
+                  {youtubeChartData && (
+                    <TabPanel>
+                      <ReactFrappeChart
+                        type="axis-mixed"
+                        title="Youtube"
+                        height={250}
+                        axisOptions={{
+                          xAxisMode: 'tick',
+                          xIsSeries: 1,
+                          shortenYAxisNumbers: 1,
+                        }}
+                        lineOptions={{ spline: 1 }}
+                        data={youtubeChartData}
+                      />
+                    </TabPanel>
+                  )}
+                </Tabs>
+              </div>
+            </div>
+          </TabPanel>
           {rowShopifyProductSummary.PriceListActive && (
             <TabPanel>
 
@@ -1098,46 +1091,46 @@ const SingleItem = ({ data, pageContext }) => {
       <SuggestionBar>
         <div style={{ margin: '2rem 2rem 2rem 4rem', 'max-width': '60%' }}>
 
-        <b>{name}</b> produces and sells {category} products {tags} and more. The company sells direct-to-consumer on its website.
+          <b>{name}</b> produces and sells {category} products {tags} and more. The company sells direct-to-consumer on its website.
 
        {rowShopifyProductSummary.PriceMin &&
-          rowShopifyProductSummary.PriceMax && (
+            rowShopifyProductSummary.PriceMax && (
+              <span>
+                &nbsp;Prices range from ${rowShopifyProductSummary.PriceMin} - ${rowShopifyProductSummary.PriceMax} with an average price of ${rowShopifyProductSummary.PriceAvg}.</span>
+            )}
+          {socialDetails && (
             <span>
-              &nbsp;Prices range from ${rowShopifyProductSummary.PriceMin} - ${rowShopifyProductSummary.PriceMax} with an average price of ${rowShopifyProductSummary.PriceAvg}.</span>
-          )}
-        {socialDetails && (
-          <span>
-            &nbsp;The {name} brand can be found on
-            {socialDetails.InstagramLink && (
-              " Instagram, "
-            )}
-            {socialDetails.FacebookLink && (
-              " Facebook, "
-            )}
-            {socialDetails.PinterestLink && (
-              " Pinterest, "
-            )}
-            {socialDetails.TikTok && (
-              " TikTok, "
-            )}
-            {socialDetails.TwitterLink && (
-              " Twitter, "
-            )}
-            {socialDetails.YouTubeLink && (
-              " Youtube, "
-            )}
+              &nbsp;The {name} brand can be found on
+              {socialDetails.InstagramLink && (
+                " Instagram, "
+              )}
+              {socialDetails.FacebookLink && (
+                " Facebook, "
+              )}
+              {socialDetails.PinterestLink && (
+                " Pinterest, "
+              )}
+              {socialDetails.TikTok && (
+                " TikTok, "
+              )}
+              {socialDetails.TwitterLink && (
+                " Twitter, "
+              )}
+              {socialDetails.YouTubeLink && (
+                " Youtube, "
+              )}
                  and here on Emprezzo.&nbsp;
-          </span>
-        )}
+            </span>
+          )}
 
         </div>
 
-        <div style={{ float: 'right', margin: '2rem',   }}>
-        <a href={AlexaURL} className="button" target="_blank">
-          shop {name}
-        </a>{' '}
-        <a href="/randomshop" className="button buttonalt">
-          Discover another shop
+        <div style={{ float: 'right', margin: '2rem', }}>
+          <a href={AlexaURL} className="button" target="_blank">
+            shop {name}
+          </a>{' '}
+          <a href="/randomshop" className="button buttonalt">
+            Discover another shop
       </a>
         </div>
       </SuggestionBar>
@@ -1201,6 +1194,7 @@ export const query = graphql`
           ProfilePicURL
           ProfileImage
           CreateDate
+
         }
       }
     }
@@ -1315,6 +1309,7 @@ export const query = graphql`
           ReturnDays
           ReturnShipFree
           ProfilePicURL
+          Available
         }
       }
     }
