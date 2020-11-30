@@ -167,7 +167,7 @@ module.exports = {
         queries,
         chunkSize: 800, // default: 1000
         enablePartialUpdates: true,
-        matchFields: ['shopName'],
+        matchFields: ['emprezzoID'],
 
       },
     },
