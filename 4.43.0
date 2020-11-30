@@ -1,8 +1,0 @@
-+ webpack@4.44.2
-added 7 packages from 7 contributors, removed 41 packages, updated 3 packages, moved 1 package and audited 3748 packages in 21.733s
-
-252 packages are looking for funding
-  run `npm fund` for details
-
-found 21 vulnerabilities (3 low, 11 moderate, 7 high)
-  run `npm audit fix` to fix them, or `npm audit` for details
