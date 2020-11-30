@@ -107,7 +107,8 @@
     "webpack": "^4.44.2",
     "webpack-dev-server": "^3.11.0",
     "webpack-hot-middleware": "^2.25.0",
-    "webpack-plugin-serve": "^1.2.1"
+    "webpack-plugin-serve": "^1.2.1",
+    "yargs-parser": "^20.2.4"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
