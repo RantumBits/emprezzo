@@ -754,6 +754,7 @@ const SingleItem = ({ data, pageContext }) => {
               facetsToShow={'onsale,giftcard'}
               showSearchBox={true}
               showClearFilter={true}
+              enableCart={true}
             />
           </TabPanel>
 

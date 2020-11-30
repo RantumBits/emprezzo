@@ -116,7 +116,7 @@ module.exports = {
             name: 'PayNShip'
           },
           {
-            statement: "SELECT \n     FLOOR(RAND() * 10000) AS UniqueKey,\n  AlexaRankView.UserName AS UniqueID,\n  AlexaRankView.URL AS AlexaURL,\n    AlexaRankView.*,\n    Tags.*,\n    SocialIDView.*,\n    RankHistory.*,\n    PayNShip.*,\n    ShopifyProductSummary.*,\n    SocialSummary.* ,\n  InstagramHistory.*\n FROM \n    AlexaRankView\n        LEFT JOIN\n    Tags ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM Tags.url)\n        LEFT JOIN\n    SocialIDView ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM SocialIDView.URL)\n        LEFT JOIN\n    RankHistory ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM RankHistory.url)\n        LEFT JOIN\n    PayNShip ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM PayNShip.URL)\n        LEFT JOIN\n    ShopifyProductSummary ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM ShopifyProductSummary.VendorURL)\n      LEFT JOIN\n    SocialSummary ON TRIM(TRAILING \'/\' FROM SocialIDView.Instagram) = TRIM(TRAILING \'/\' FROM SocialSummary.Instagram)   LEFT JOIN\n    InstagramHistory ON TRIM(TRAILING \'/\' FROM SocialIDView.Instagram) = TRIM(TRAILING \'/\' FROM InstagramHistory.UserName) GROUP BY UniqueID",
+            statement: "SELECT \n     FLOOR(RAND() * 10000) AS UniqueKey,\n  AlexaRankView.UserName AS UniqueID,\n  AlexaRankView.URL AS AlexaURL,\n    AlexaRankView.*,\n    Tags.*,\n    SocialIDView.*,\n    RankHistory.*,\n    PayNShip.*,\n    ShopifyProductSummary.*,\n    SocialSummary.* ,\n  InstagramHistory.*\n FROM \n    AlexaRankView\n        LEFT JOIN\n    Tags ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM Tags.url)\n        LEFT JOIN\n    SocialIDView ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM SocialIDView.URL)\n        LEFT JOIN\n    RankHistory ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM RankHistory.url)\n        LEFT JOIN\n    PayNShip ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM PayNShip.URL)\n        LEFT JOIN\n    ShopifyProductSummary ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM ShopifyProductSummary.VendorURL)\n      LEFT JOIN\n    SocialSummary ON TRIM(TRAILING \'/\' FROM SocialIDView.Instagram) = TRIM(TRAILING \'/\' FROM SocialSummary.Instagram)   LEFT JOIN\n    InstagramHistory ON TRIM(TRAILING \'/\' FROM SocialIDView.Instagram) = TRIM(TRAILING \'/\' FROM InstagramHistory.UserName) GROUP BY UniqueID LIMIT 100",
             idFieldName: 'AlexaURL',
             name: 'MainView'
           },
@@ -135,6 +135,11 @@ module.exports = {
             statement: "SELECT CrunchBase.*,InstagramHistory.* from CrunchBase LEFT JOIN InstagramHistory ON TRIM(TRAILING '/' FROM CrunchBase.URL) = TRIM(TRAILING '/' FROM InstagramHistory.ExternalURL)",
             idFieldName: 'URL',
             name: 'CrunchBaseView'
+          },
+          {
+            statement: "SELECT CONCAT(ProductID,FLOOR(RAND()*10000)) AS UniqueKey, CONCAT(SUBSTRING(VendorURL,9,9), ShopifyProducts.ProductID) AS UniqueID, ShopifyProducts.* FROM ShopifyProducts WHERE Available = 0 GROUP BY ProductID LIMIT 1000",
+            idFieldName: 'UniqueKey',
+            name: 'ShopifyProductsAvailableView'
           }
         ]
       }
@@ -162,7 +167,7 @@ module.exports = {
         queries,
         chunkSize: 800, // default: 1000
         enablePartialUpdates: true,
-        matchFields: ['price', 'shopImage', 'randomShopKey'],
+        matchFields: ['shopName'],
 
       },
     },

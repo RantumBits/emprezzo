@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from '@emotion/styled';
 import _ from 'lodash';
+import { CartContext } from './Cart/CartContext'
 import { Highlight } from 'react-instantsearch-dom';
 import theme from '../../config/theme';
 import { Dialog } from "@reach/dialog";
@@ -161,6 +162,20 @@ const AlgoliaProductItem = (props) => {
   const closeDialog = () => setShowDialog(false);
 
   //console.log("**** props", props)
+  const { addProduct, cartItems, increase } = useContext(CartContext);
+  const isInCart = product => {
+    return !!cartItems.find(item => item.id === product.id);
+  }
+  const addToCartWrapper = hit => {
+    const hitToProduct = {
+        id: hit.objectID,
+        name: hit.name,
+        price: hit.price,
+        photo: hit.imageURL,
+    }
+    //increase the quantity if already present, if not add product to cart
+    isInCart(hitToProduct) ? increase(hitToProduct) : addProduct(hitToProduct);
+  }
 
   const convertToSelectList = (variants) => {
     if (variants == null) return;
@@ -211,10 +226,13 @@ const AlgoliaProductItem = (props) => {
                 {convertToSelectList(props.hit.VariantTitle)}
               </div>
             </div>
+            <div className="cart-section">
+              <button onClick={() => addToCartWrapper(props.hit)} style={{ color: "#C04CFD", cursor: "pointer" }}>Add to cart</button>
+            </div>
             <br />
             <div>
-              <a href={props.hit.productURL} target="_blank" class="button">Buy at {props.hit.shopName}</a>
-              <a href={props.hit.emprezzoID ? `/shops/${props.hit.emprezzoID}/` : props.hit.VendorURL} class="button buttonalt">Get shop info</a>
+              <a href={props.hit.productURL} target="_blank" className="button">Buy at {props.hit.shopName}</a>
+              <a href={props.hit.emprezzoID ? `/shops/${props.hit.emprezzoID}/` : props.hit.VendorURL} className="button buttonalt">Get shop info</a>
             </div>
             <br />
           </StyledDialog>

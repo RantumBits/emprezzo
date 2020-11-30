@@ -1,6 +1,6 @@
 const path = require('path');
 const _ = require("lodash");
-
+const algoliasearch = require('algoliasearch');
 
 exports.createSchemaCustomization = ({ actions }) => {
   const { createTypes } = actions
@@ -191,6 +191,60 @@ exports.createPages = ({ graphql, actions }) => {
           });
         });
       })
+    );
+
+    //getting the list of unavailable Products 
+    //Those will need to be set to match the objectID format and set to 'unavailable' in the Algolia index
+    resolve(
+      graphql(
+        `
+          query {
+            allMysqlShopifyProductsAvailableView {
+              edges {
+                node {
+                  Title
+                  VendorURL
+                  ProductID
+                  UniqueID
+                }
+              }
+            }
+          }
+        `
+      ).then(result => {
+        if (result.errors) {
+          return reject(result.errors);
+        }
+        const nonAvailableProducts = result.data.allMysqlShopifyProductsAvailableView.edges;
+        const algoliaClient = algoliasearch(
+          process.env.GATSBY_ALGOLIA_APP_ID,
+          process.env.ALGOLIA_ADMIN_KEY
+        );
+        const searchIndexName = "empProducts"
+        const algoliaIndex = algoliaClient.initIndex(searchIndexName)
+        //dividing the data into chunk to avoid crosing update rate limit
+        // reference: https://www.algolia.com/doc/faq/indexing/is-there-a-rate-limit/
+        const sliceChunkSize = 5000;
+        console.log("**** nonAvailableProducts Processing - Total records = ",nonAvailableProducts.length)
+        console.log("**** nonAvailableProducts Processing - Chunk Size = ", sliceChunkSize)
+        const sliceCount = nonAvailableProducts.length / sliceChunkSize
+        console.log("**** nonAvailableProducts Processing - Number of Chunk(s) = ", Math.ceil(sliceCount))
+        for (let i = 1; i <= Math.ceil(sliceCount); i++) {
+          const startIndex = ((i - 1) * sliceChunkSize);
+          const endIndex = i * sliceChunkSize
+          const productSlice = _.slice(nonAvailableProducts, startIndex, endIndex)
+          const updatePayload = [];
+          productSlice.forEach(({ node }) => {
+            updatePayload.push({
+              available: 0,
+              objectID: node.UniqueID
+            })
+          });
+          algoliaIndex.partialUpdateObjects(updatePayload, { createIfNotExists: false }).then((response) => {
+            console.log("**** nonAvailableProducts Processing - Algolia Response taskID = ", response.taskIDs)
+          });
+        }
+      }) // end of 'available' field processing
     );
 
   });
