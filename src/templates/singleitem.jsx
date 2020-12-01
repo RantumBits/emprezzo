@@ -670,7 +670,8 @@ const SingleItem = ({ data, pageContext }) => {
         description={`${name} is a ${category} brand that sells products related to ${tags} direct to consumers on its website. Prices range from ${rowShopifyProductSummary.PriceMin} - ${rowShopifyProductSummary.PriceMax} with an average price of ${rowShopifyProductSummary.PriceAvg}. See product data about ${name} at emprezzo. `}
         pathname={AlexaURL}
       />
-      <Header title={name} children={subtitle} likeEnabled={{ storeName: name, storeURL: AlexaURL, storeProfileImage: (firstRowDataView && firstRowDataView.node.ProfilePicURL) }} />
+      <Header title={name}
+        description={`${category}: ${tags}`} children={subtitle} likeEnabled={{ storeName: name, storeURL: AlexaURL, storeProfileImage: (firstRowDataView && firstRowDataView.node.ProfilePicURL) }} />
       <Container>
         <div className="profileimage" style={{ display: 'flex' }}>
           {firstRowDataView && renderProfilePicURL(firstRowDataView.node, name)}
@@ -680,50 +681,39 @@ const SingleItem = ({ data, pageContext }) => {
             <i>{category}: {tags}</i><br /><br />
             {rowShopifyProductSummary.PriceMin &&
               rowShopifyProductSummary.PriceMax && (
-                <span>
-                  Range: ${rowShopifyProductSummary.PriceMin} - ${rowShopifyProductSummary.PriceMax}<br /></span>
+                <small>
+                ${rowShopifyProductSummary.PriceMin}-${rowShopifyProductSummary.PriceMax}(${rowShopifyProductSummary.PriceAvg} avg)</small>
               )}
-              Avg: ${rowShopifyProductSummary.PriceAvg}
-
-
-            {firstRowDataView &&
-              <div>
-
-                {firstRowDataView.node.FreeShipMin != "." &&
-                  <div>Free shipping min ${firstRowDataView.node.FreeShipMin}</div>
-                }
-                {firstRowDataView.node.BaseShipRate != "." &&
-                  <div>Lowest shipping: ${firstRowDataView.node.BaseShipRate}</div>
-                }
-                {firstRowDataView.node.ReturnDays != "." && firstRowDataView.node.ReturnDays != "0" &&
-                  <div>Offers {firstRowDataView.node.ReturnDays} day returns</div>
-                }
-                {firstRowDataView.node.ReturnShipFree == "Yes" &&
-                  <div>Return shipping is free {firstRowDataView.node.ReturnShipFree}</div>
-                }
-                {firstRowDataView.node.ReturnCondition && firstRowDataView.node.ReturnCondition != "." && firstRowDataView.node.ReturnCondition != "N/a" &&
-                  <div>Return condition: {firstRowDataView.node.ReturnCondition} {firstRowDataView.node.ReturnNotes}</div>
-                }
-              </div>
-            }
-
-            <div>
-
-              {firstRowDataView.node.PaypalShopID && firstRowDataView.node.PaypalShopID != '#' && <div>Accepts paypal</div>}
-              {firstRowDataView.node.PaypalVenmoSupport && firstRowDataView.node.PaypalVenmoSupport != '#' && <div>Accepts venmo</div>}
 
 
 
-            </div>
+
+
+
 
 
 
           </div>
         </div>
 
+        {firstRowDataView &&
+          <div>
 
-        <br />
-        {/* List of Products from MySQL View */}
+            {firstRowDataView.node.FreeShipMin != "." &&
+              <span>Get free shipping on orders over  ${firstRowDataView.node.FreeShipMin}. </span>
+            }
+            {firstRowDataView.node.BaseShipRate != "." &&
+              <span>Otherwise, shipping rates from ${firstRowDataView.node.BaseShipRate}</span>
+            }
+            {firstRowDataView.node.ReturnDays != "." && firstRowDataView.node.ReturnDays != "0" &&
+              <span>{firstRowDataView.node.ReturnDays} day returns</span>
+            }
+            {firstRowDataView.node.ReturnShipFree != "." && firstRowDataView.node.ReturnShipFree == "Yes" &&
+              <span>and returns are free!</span>
+            }
+
+          </div>
+        }
 
 
 
@@ -787,18 +777,85 @@ const SingleItem = ({ data, pageContext }) => {
             )} */}
         </Tabs>
 
+        <div>
+
+          {firstRowDataView.node.PaypalShopID && firstRowDataView.node.PaypalShopID != '#' && <div>Accepts paypal</div>}
+          {firstRowDataView.node.PaypalVenmoSupport && firstRowDataView.node.PaypalVenmoSupport != '#' && <div>Accepts venmo</div>}
+
+        </div>
+
         {FreeShipText && FreeShipText.length > 0 && (
           <h3>get free shipping at {name}</h3>
         )}
         <p>{get100Words(FreeShipText)}</p>
 
+        <br />
+        {!!combinedRelatedShops.length && (
+          <>
+            <h3>Discover shops similar to {name}</h3>
+            <PostSectionGrid>
+              {combinedRelatedShops && combinedRelatedShops.map(({ shop }, index) => (
+                <span key={index}>
+                  <PostSectionImage>
+                    <Link key={index} to={`/shops/${shop.UserName}/`}>
+                    <img src={shop.ProfilePicURL || shop.profile_image_url || "/logo/logo.png"} alt={shop.name} onError={defaultImageOnError} style={{ height: 'inherit', 'textAlign': 'center', 'borderRadius': '100%' }} />
+                      </Link>
+                  </PostSectionImage>
+                  <PostSectionContent>
+                    <Link key={index} to={`/shops/${shop.UserName}/`}>
+                      {shop.name && <h3>{shop.name}</h3>}
+                    </Link>
+
+                  </PostSectionContent>
+                </span>
+              ))}
+            </PostSectionGrid>
+          </>
+        )}
+
+        {listInstaPostEdges && listInstaPostEdges.length > 0 && (
+          <h3>See recent posts from @{firstRowDataView.node.UserName}</h3>
+        )}
+
+
+        <Content input={firstRowDataView && firstRowDataView.node.Biography} />
+        <br />
+        {/* Show carousel for mobile version */}
+        {isMobile && (
+          <Carousel
+            showThumbs={false}
+            infiniteLoop
+            showIndicators={false}
+            selectedItem={1}
+            showArrows={true}
+            showStatus={false}
+          >
+            {listInstaPostEdges &&
+              listInstaPostEdges.map(({ node }) => {
+                return renderPost(node, true);
+              })}
+          </Carousel>
+        )}
+        {/* Show carousel for mobile version */}
+        {!isMobile && (
+          <ViewContainer>
+            {listInstaPostEdges &&
+              listInstaPostEdges.map(({ node }) => {
+                return renderPost(node);
+              })}
+          </ViewContainer>
+        )}
+
+        <br />
+
+
         <h3>{name} data and charts</h3>
         <Tabs>
           <TabList>
-            <Tab style={TabStyle}>Social media stats</Tab>
+            <Tab style={TabStyle}>Social stats</Tab>
             {rowShopifyProductSummary.PriceListActive && (<Tab style={TabStyle}>Prices</Tab>)}
-            <Tab style={TabStyle}>Traffic rank</Tab>
-            {chartTOSData && (<Tab style={TabStyle}>Time on site</Tab>)}
+            <Tab style={TabStyle}>Traffic</Tab>
+            {chartTOSData && (<Tab style={TabStyle}>Time</Tab>)}
 
 
           </TabList>
@@ -1029,100 +1086,47 @@ const SingleItem = ({ data, pageContext }) => {
 
         </Tabs>
 
-        {listInstaPostEdges && listInstaPostEdges.length > 0 && (
-          <h3>See recent posts from @{firstRowDataView.node.UserName}</h3>
+
+<ViewContainer>
+
+        <b>{name}</b> produces and sells {category} products {tags} and more. The company sells direct-to-consumer on its website.
+
+      {rowShopifyProductSummary.PriceMin &&
+          rowShopifyProductSummary.PriceMax && (
+            <span>
+              &nbsp;Prices range from ${rowShopifyProductSummary.PriceMin} - ${rowShopifyProductSummary.PriceMax} with an average price of ${rowShopifyProductSummary.PriceAvg}.</span>
+          )}
+        {socialDetails && (
+          <span>
+            &nbsp;The {name} brand can be found on
+            {socialDetails.InstagramLink && (
+              " Instagram, "
+            )}
+            {socialDetails.FacebookLink && (
+              " Facebook, "
+            )}
+            {socialDetails.PinterestLink && (
+              " Pinterest, "
+            )}
+            {socialDetails.TikTok && (
+              " TikTok, "
+            )}
+            {socialDetails.TwitterLink && (
+              " Twitter, "
+            )}
+            {socialDetails.YouTubeLink && (
+              " Youtube, "
+            )}
+               and here on Emprezzo.&nbsp;
+          </span>
         )}
-
-
-        <Content input={firstRowDataView && firstRowDataView.node.Biography} />
-        <br />
-        {/* Show carousel for mobile version */}
-        {isMobile && (
-          <Carousel
-            showThumbs={false}
-            infiniteLoop
-            showIndicators={false}
-            selectedItem={1}
-            showArrows={true}
-            showStatus={false}
-          >
-            {listInstaPostEdges &&
-              listInstaPostEdges.map(({ node }) => {
-                return renderPost(node, true);
-              })}
-          </Carousel>
-        )}
-        {/* Show carousel for mobile version */}
-        {!isMobile && (
-          <ViewContainer>
-            {listInstaPostEdges &&
-              listInstaPostEdges.map(({ node }) => {
-                return renderPost(node);
-              })}
-          </ViewContainer>
-        )}
-        <br />
-        {!!combinedRelatedShops.length && (
-          <>
-            <h3>Discover similar shops to {name}</h3>
-            <PostSectionGrid>
-              {combinedRelatedShops && combinedRelatedShops.map(({ shop }, index) => (
-                <span key={index}>
-                  <PostSectionImage>
-                    <img src={shop.ProfilePicURL || shop.profile_image_url || "/logo/logo.png"} alt={shop.name} onError={defaultImageOnError} style={{ height: 'inherit', 'textAlign': 'center', 'borderRadius': '100%' }} />
-                  </PostSectionImage>
-                  <PostSectionContent>
-                    <Link key={index} to={`/shops/${shop.UserName}/`}>
-                      {shop.name && <h3>{shop.name}</h3>}
-                    </Link>
-                    {shop.about && <div>{_.truncate(shop.about, { length: 140, omission: '...' })}</div>}
-                  </PostSectionContent>
-                </span>
-              ))}
-            </PostSectionGrid>
-          </>
-        )}
-        <br />
-
-
-
-
+        </ViewContainer>
 
       </Container>
       <SuggestionBar>
         <div style={{ margin: '2rem 2rem 2rem 4rem', 'max-width': '60%' }}>
 
-          <b>{name}</b> produces and sells {category} products {tags} and more. The company sells direct-to-consumer on its website.
 
-       {rowShopifyProductSummary.PriceMin &&
-            rowShopifyProductSummary.PriceMax && (
-              <span>
-                &nbsp;Prices range from ${rowShopifyProductSummary.PriceMin} - ${rowShopifyProductSummary.PriceMax} with an average price of ${rowShopifyProductSummary.PriceAvg}.</span>
-            )}
-          {socialDetails && (
-            <span>
-              &nbsp;The {name} brand can be found on
-              {socialDetails.InstagramLink && (
-                " Instagram, "
-              )}
-              {socialDetails.FacebookLink && (
-                " Facebook, "
-              )}
-              {socialDetails.PinterestLink && (
-                " Pinterest, "
-              )}
-              {socialDetails.TikTok && (
-                " TikTok, "
-              )}
-              {socialDetails.TwitterLink && (
-                " Twitter, "
-              )}
-              {socialDetails.YouTubeLink && (
-                " Youtube, "
-              )}
-                 and here on Emprezzo.&nbsp;
-            </span>
-          )}
 
         </div>
 
@@ -1310,7 +1314,7 @@ export const query = graphql`
           ReturnDays
           ReturnShipFree
           ProfilePicURL
-          
+
         }
       }
     }
