@@ -244,7 +244,7 @@ const TopShopifyStores = ({ location, data }) => {
             facetsToShow={'category,pricerangeslider,brands,storeoffers'}
             showSearchBox={true}
             showClearFilter={true}
-            searchIndexName={`empProducts`}            
+            searchIndexName={`empProducts`}
           />
         </ShopsWrapper>
       {/* <Dialog isOpen={showDialog} onDismiss={closeMoreDialog}>
@@ -437,6 +437,10 @@ export const query = graphql`
             YTSubs
             name
             about
+            Affirm
+            Klarna
+            AfterPay
+            PaypalVenmoSupport
         }
       }
     }

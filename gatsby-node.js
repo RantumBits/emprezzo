@@ -19,6 +19,10 @@ exports.createSchemaCustomization = ({ actions }) => {
       AmazonPay: Int
       ApplePay: Int
       ShopifyPay: Int
+      PaypalVenmoSupport: Int
+      AfterPay: Int
+      Klarna: Int
+      Affirm: Int 
     }
   `)
   createTypes(`
@@ -196,7 +200,7 @@ exports.createPages = ({ graphql, actions }) => {
       })
     );
 
-    //getting the list of unavailable Products 
+    //getting the list of unavailable Products
     //Those will need to be set to match the objectID format and set to 'unavailable' in the Algolia index
     resolve(
       graphql(
