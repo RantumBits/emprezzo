@@ -16,10 +16,13 @@ exports.createSchemaCustomization = ({ actions }) => {
       TTFollowers: Float
       TTFollowing: Float
       TTLikes : Float
+      AmazonPay: Int
+      ApplePay: Int
+      ShopifyPay: Int
       PaypalVenmoSupport: Int
       AfterPay: Int
       Klarna: Int
-      Affirm: Int 
+      Affirm: Int
     }
   `)
   createTypes(`
@@ -61,6 +64,13 @@ exports.createPages = ({ graphql, actions }) => {
                   name
                   about
                   signup_promos
+                  AmazonPay
+                  ApplePay
+                  ShopifyPay
+                  PaypalVenmoSupport
+                  AfterPay
+                  Klarna
+                  Affirm 
                 }
               }
             }
