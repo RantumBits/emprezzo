@@ -1,6 +1,9 @@
+import { isBrowser } from './utils'
 
 const Storage = (cartItems) => {
-    localStorage.setItem('cart', JSON.stringify(cartItems.length > 0 ? cartItems : []));
+    if (isBrowser()) {
+        window.localStorage.setItem('cart', JSON.stringify(cartItems.length > 0 ? cartItems : []));
+    }
 }
 
 export const sumItems = cartItems => {
@@ -55,7 +58,7 @@ export const CartReducer = (state, action) => {
             return {
                 cartItems: [],
                 ...sumItems([]),
-            }        
+            }
         default:
             return state
 

@@ -1,10 +1,10 @@
 const shopQuery = `{
-  shops: allMysqlMainView(limit:500) {
+  shops: allMysqlMainView(limit:600) {
     edges {
       node {
         id: UniqueID
         randomShopKey: UniqueKey
-        emprezzoID: UserName
+        emprezzoID: UniqueID
         shopName: name
         url: url
         tags: tags
@@ -26,13 +26,22 @@ const shopQuery = `{
         shopImage2: ProfilePicURL
         trafficRank: GlobalRankOrder
         socialRankScore: SocialRankScore
+        amazonPay: AmazonPay
+        applePay: ApplePay
+        venmo: PaypalVenmoSupport
+        paypal: PaypalShopID
+        shopifyPay: ShopifyPay
+        shopifyID: ShopifyID
+        afterpay: AfterPay
+        klarna: Klarna
+        affirm: Affirm
       }
     }
   }
 }`
 
 const productQuery = `{
-  products: allMysqlShopifyProductsAll(limit: 500 ) {
+  products: allMysqlShopifyProductsAll(limit: 2000 ) {
     edges {
       node {
         objectID: UniqueID
@@ -48,7 +57,7 @@ const productQuery = `{
         sellingRank: Position
         productURL: ProductURL
         shopName: name
-        emprezzoID: UserName
+        emprezzoID: emprezzoID
         shopTags: tags
         shopCategory: category
         shopDescription: Description

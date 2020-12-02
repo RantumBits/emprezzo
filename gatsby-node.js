@@ -16,6 +16,9 @@ exports.createSchemaCustomization = ({ actions }) => {
       TTFollowers: Float
       TTFollowing: Float
       TTLikes : Float
+      AmazonPay: Int
+      ApplePay: Int
+      ShopifyPay: Int
     }
   `)
   createTypes(`

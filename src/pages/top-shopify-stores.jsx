@@ -8,7 +8,7 @@ import { Header, BlogList } from 'components';
 import { Layout } from 'layouts';
 import _ from 'lodash';
 import { useMediaQuery } from 'react-responsive'
-import Slider from '@material-ui/core/Slider';
+import { Slider } from 'material-ui-slider';
 import { Dialog } from "@reach/dialog";
 import "@reach/dialog/styles.css";
 

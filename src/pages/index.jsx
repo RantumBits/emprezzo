@@ -89,7 +89,7 @@ const Index = ({ data }) => {
   const maxVisibleItems = 15;
   const [visibleItems, setVisibleItems] = React.useState(maxVisibleItems);
   const [showMore, setShowMore] = React.useState(true);
-
+  
   const isMobile = useMediaQuery({ query: '(max-width: 600px)' });
 
   const responsive = {
@@ -369,7 +369,7 @@ const Index = ({ data }) => {
 
 
 
-
+{/* 
       <Tabs style={TabPanelStyle}>
         <h2>Browse popular online shops</h2>
         <TabList>
@@ -430,7 +430,7 @@ const Index = ({ data }) => {
         )}
 
       </Tabs>
-
+ */}
 
 
       {/*
@@ -462,9 +462,11 @@ const Index = ({ data }) => {
         <SectionHeading>Discover best selling products</SectionHeading>
         <ShopWrapper>
         <AlgoliaProductList
-            facetsToShow={'category,brands,storeoffers'}
+            facetsToShow={'category,prices,storeoffers'}
             showSearchBox={true}
             showClearFilter={true}
+            enableCart={true}
+            enableShopProductSwitch={true}            
           />
         </ShopWrapper>
       </LazyLoad>

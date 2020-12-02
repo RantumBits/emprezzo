@@ -216,6 +216,13 @@ const SingleItem = ({ data, pageContext }) => {
   const isMobile = useMediaQuery({ query: '(max-width: 600px)' });
   //console.log("****** isMobile = " + isMobile)
 
+  const removeTimeFromDate = (datawithtime) => {
+    return _.map(datawithtime, el => {
+      let datetime = _.split(el.trim(), ' ');
+      return datetime && datetime.length > 0 ? datetime[0] : el;
+    });
+  }
+
   //converting comma seperated tags to tags map
   const tagsList = tags ? tags.split(',') : [];
 
@@ -328,10 +335,7 @@ const SingleItem = ({ data, pageContext }) => {
   let chartRankData = null;
   let chartTOSData = null;
   let globalRank_Dates = _.split(data.mysqlMainView.GlobalRank_Dates, ',') || [];
-  let globalRank_Dates_NoTime = _.map(globalRank_Dates, el => {
-    let datetime = _.split(el.trim(), ' ');
-    return datetime && datetime.length > 0 ? datetime[0] : el;
-  });
+  let globalRank_Dates_NoTime = removeTimeFromDate(globalRank_Dates)
 
   //Rank data
   if (data.mysqlMainView.GlobalRank_List) {
@@ -428,107 +432,99 @@ const SingleItem = ({ data, pageContext }) => {
     ({ node }) => node.Instagram == UserName
   );
 
-  let facebookChartData = null;
-  let instagramChartData = null;
-  let pinterestChartData = null;
-  let tiktokChartData = null;
-  let twitterChartData = null;
-  let youtubeChartData = null;
+  let allSocialChartsData = null;
   if (filteredSocialHistory && filteredSocialHistory.length > 0) {
+    let socialLabels = [];
+    let socialDataSet = [];
     if (filteredSocialHistory[0].node.FacebookLikesList) {
-      facebookChartData = {
-        labels: _.split(filteredSocialHistory[0].node.FacebookCreateDates, ','),
-        datasets: [
-          {
-            name: 'Facebook',
-            type: 'line',
-            values: _.split(
-              filteredSocialHistory[0].node.FacebookLikesList,
-              ','
-            ),
-          },
-        ],
-      };
-    }
-    if (filteredSocialHistory[0].node.InstagramFollowersList) {
-      instagramChartData = {
-        labels: _.split(
-          filteredSocialHistory[0].node.InstagramCreateDates,
+      socialLabels = _.union(socialLabels, removeTimeFromDate(_.split(filteredSocialHistory[0].node.FacebookCreateDates, ',')))
+      socialDataSet.push({
+        name: 'Facebook',
+        type: 'line',
+        values: _.split(
+          filteredSocialHistory[0].node.FacebookLikesList,
           ','
         ),
-        datasets: [
-          {
-            name: 'Instagram',
-            type: 'line',
-            values: _.split(
-              filteredSocialHistory[0].node.InstagramFollowersList,
-              ','
-            ),
-          },
-        ],
+      });
+      allSocialChartsData = {
+        labels: socialLabels,
+        datasets: socialDataSet,
+      };
+    }
+
+    if (filteredSocialHistory[0].node.InstagramFollowersList) {
+      socialLabels = _.union(socialLabels, removeTimeFromDate(_.split(filteredSocialHistory[0].node.InstagramCreateDates, ',')))
+      socialDataSet.push({
+        name: 'Instagram',
+        type: 'line',
+        values: _.split(
+          filteredSocialHistory[0].node.InstagramFollowersList,
+          ','
+        ),
+      });
+      allSocialChartsData = {
+        labels: socialLabels,
+        datasets: socialDataSet,
       };
     }
     if (filteredSocialHistory[0].node.PinterestFollowersList) {
-      pinterestChartData = {
-        labels: _.split(
-          filteredSocialHistory[0].node.PinterestCreateDates,
+      socialLabels = _.union(socialLabels, removeTimeFromDate(_.split(filteredSocialHistory[0].node.PinterestCreateDates, ',')))
+      socialDataSet.push({
+        name: 'Pinterest',
+        type: 'line',
+        values: _.split(
+          filteredSocialHistory[0].node.PinterestFollowersList,
           ','
         ),
-        datasets: [
-          {
-            name: 'Pinterest',
-            type: 'line',
-            values: _.split(
-              filteredSocialHistory[0].node.PinterestFollowersList,
-              ','
-            ),
-          },
-        ],
+      });
+      allSocialChartsData = {
+        labels: socialLabels,
+        datasets: socialDataSet,
       };
     }
     if (filteredSocialHistory[0].node.TiktokFollowersList) {
-      tiktokChartData = {
-        labels: _.split(filteredSocialHistory[0].node.TiktokCreateDates, ','),
-        datasets: [
-          {
-            name: 'Tiktok',
-            type: 'line',
-            values: _.split(
-              filteredSocialHistory[0].node.TiktokFollowersList,
-              ','
-            ),
-          },
-        ],
+      socialLabels = _.union(socialLabels, removeTimeFromDate(_.split(filteredSocialHistory[0].node.TiktokCreateDates, ',')))
+      socialDataSet.push({
+        name: 'Tiktok',
+        type: 'line',
+        values: _.split(
+          filteredSocialHistory[0].node.TiktokFollowersList,
+          ','
+        ),
+      });
+      allSocialChartsData = {
+        labels: socialLabels,
+        datasets: socialDataSet,
       };
     }
     if (filteredSocialHistory[0].node.TwitterFollowersList) {
-      twitterChartData = {
-        labels: _.split(filteredSocialHistory[0].node.TwitterCreateDates, ','),
-        datasets: [
-          {
-            name: 'Twitter',
-            type: 'line',
-            values: _.split(
-              filteredSocialHistory[0].node.TwitterFollowersList,
-              ','
-            ),
-          },
-        ],
+      socialLabels = _.union(socialLabels, removeTimeFromDate(_.split(filteredSocialHistory[0].node.TwitterCreateDates, ',')))
+      socialDataSet.push({
+        name: 'Twitter',
+        type: 'line',
+        values: _.split(
+          filteredSocialHistory[0].node.TwitterFollowersList,
+          ','
+        ),
+      });
+      allSocialChartsData = {
+        labels: socialLabels,
+        datasets: socialDataSet,
       };
     }
     if (filteredSocialHistory[0].node.YoutubeSubscribersList) {
-      youtubeChartData = {
-        labels: _.split(filteredSocialHistory[0].node.YoutubeCreateDates, ','),
-        datasets: [
-          {
-            name: 'Youtube',
-            type: 'line',
-            values: _.split(
-              filteredSocialHistory[0].node.YoutubeSubscribersList,
-              ','
-            ),
-          },
-        ],
+      socialLabels = _.union(socialLabels, removeTimeFromDate(_.split(filteredSocialHistory[0].node.YoutubeCreateDates, ',')))
+      socialDataSet.push({
+        name: 'Youtube',
+        type: 'line',
+        values: _.split(
+          filteredSocialHistory[0].node.YoutubeSubscribersList,
+          ','
+        ),
+      });
+      allSocialChartsData = {
+        labels: socialLabels,
+        datasets: socialDataSet,
       };
     }
   }
@@ -682,7 +678,7 @@ const SingleItem = ({ data, pageContext }) => {
             {rowShopifyProductSummary.PriceMin &&
               rowShopifyProductSummary.PriceMax && (
                 <small>
-                ${rowShopifyProductSummary.PriceMin}-${rowShopifyProductSummary.PriceMax}(${rowShopifyProductSummary.PriceAvg} avg)</small>
+                  ${rowShopifyProductSummary.PriceMin}-${rowShopifyProductSummary.PriceMax}(${rowShopifyProductSummary.PriceAvg} avg)</small>
               )}
 
 
@@ -745,6 +741,8 @@ const SingleItem = ({ data, pageContext }) => {
               showSearchBox={true}
               showClearFilter={true}
               enableCart={true}
+              currentShop={{ name: name, link: AlexaURL }}
+              noResultMessage={`Shop direct at <a href=${AlexaURL} target="_blank">${name}</a>`}
             />
           </TabPanel>
 
@@ -798,8 +796,8 @@ const SingleItem = ({ data, pageContext }) => {
                 <span key={index}>
                   <PostSectionImage>
                     <Link key={index} to={`/shops/${shop.UserName}/`}>
-                    <img src={shop.ProfilePicURL || shop.profile_image_url || "/logo/logo.png"} alt={shop.name} onError={defaultImageOnError} style={{ height: 'inherit', 'textAlign': 'center', 'borderRadius': '100%' }} />
-                      </Link>
+                      <img src={shop.ProfilePicURL || shop.profile_image_url || "/logo/logo.png"} alt={shop.name} onError={defaultImageOnError} style={{ height: 'inherit', 'textAlign': 'center', 'borderRadius': '100%' }} />
+                    </Link>
                   </PostSectionImage>
                   <PostSectionContent>
                     <Link key={index} to={`/shops/${shop.UserName}/`}>
@@ -906,112 +904,20 @@ const SingleItem = ({ data, pageContext }) => {
                 )}
               </div>
               <div style={{ flex: '60%' }}>
-                <Tabs >
-                  <TabList>
-                    {facebookChartData && <Tab style={TabStyle}>Facebook</Tab>}
-                    {instagramChartData && <Tab style={TabStyle}>Instagram</Tab>}
-                    {pinterestChartData && <Tab style={TabStyle}>Pinterest</Tab>}
-                    {tiktokChartData && <Tab style={TabStyle}>TikTok</Tab>}
-                    {twitterChartData && <Tab style={TabStyle}>Twitter</Tab>}
-                    {youtubeChartData && <Tab style={TabStyle}>Youtube</Tab>}
-                  </TabList>
-                  {facebookChartData && (
-                    <TabPanel>
-                      <ReactFrappeChart
-                        type="axis-mixed"
-                        colors={['#743ee2']}
-                        title="Facebook"
-                        height={250}
-                        axisOptions={{
-                          xAxisMode: 'tick',
-                          xIsSeries: 1,
-                          shortenYAxisNumbers: 1,
-                        }}
-                        data={facebookChartData}
-                      />
-                    </TabPanel>
-                  )}
-                  {instagramChartData && (
-                    <TabPanel>
-                      <ReactFrappeChart
-                        type="axis-mixed"
-                        title="Instagram"
-                        height={250}
-                        axisOptions={{
-                          xAxisMode: 'tick',
-                          xIsSeries: 1,
-                          shortenYAxisNumbers: 1,
-                        }}
-                        lineOptions={{ spline: 1 }}
-                        data={instagramChartData}
-                      />
-                    </TabPanel>
-                  )}
-                  {pinterestChartData && (
-                    <TabPanel>
-                      <ReactFrappeChart
-                        type="axis-mixed"
-                        title="Pinterest"
-                        height={250}
-                        axisOptions={{
-                          xAxisMode: 'tick',
-                          xIsSeries: 1,
-                          shortenYAxisNumbers: 1,
-                        }}
-                        lineOptions={{ spline: 1 }}
-                        data={pinterestChartData}
-                      />
-                    </TabPanel>
-                  )}
-                  {tiktokChartData && (
-                    <TabPanel>
-                      <ReactFrappeChart
-                        type="axis-mixed"
-                        title="Tiktok"
-                        height={250}
-                        axisOptions={{
-                          xAxisMode: 'tick',
-                          xIsSeries: 1,
-                          shortenYAxisNumbers: 1,
-                        }}
-                        lineOptions={{ spline: 1 }}
-                        data={tiktokChartData}
-                      />
-                    </TabPanel>
-                  )}
-                  {twitterChartData && (
-                    <TabPanel>
-                      <ReactFrappeChart
-                        type="axis-mixed"
-                        title="Twitter"
-                        height={250}
-                        axisOptions={{
-                          xAxisMode: 'tick',
-                          xIsSeries: 1,
-                          shortenYAxisNumbers: 1,
-                        }}
-                        lineOptions={{ spline: 1 }}
-                        data={twitterChartData}
-                      />
-                    </TabPanel>
-                  )}
-                  {youtubeChartData && (
-                    <TabPanel>
-                      <ReactFrappeChart
-                        type="axis-mixed"
-                        title="Youtube"
-                        height={250}
-                        axisOptions={{
-                          xAxisMode: 'tick',
-                          xIsSeries: 1,
-                          shortenYAxisNumbers: 1,
-                        }}
-                        lineOptions={{ spline: 1 }}
-                        data={youtubeChartData}
-                      />
-                    </TabPanel>
-                  )}
-                </Tabs>
+                {allSocialChartsData && (
+                  <ReactFrappeChart
+                    type="axis-mixed"
+                    colors={['#743ee2']}
+                    title="Social Media"
+                    height={250}
+                    axisOptions={{
+                      xAxisMode: 'tick',
+                      xIsSeries: 1,
+                      shortenYAxisNumbers: 1,
+                    }}
+                    data={allSocialChartsData}
+                  />
+                )}
               </div>
             </div>
           </TabPanel>
@@ -1087,39 +993,39 @@ const SingleItem = ({ data, pageContext }) => {
         </Tabs>
 
 
-<ViewContainer>
+        <ViewContainer>
 
-        <b>{name}</b> produces and sells {category} products {tags} and more. The company sells direct-to-consumer on its website.
+          <b>{name}</b> produces and sells {category} products {tags} and more. The company sells direct-to-consumer on its website.
 
       {rowShopifyProductSummary.PriceMin &&
-          rowShopifyProductSummary.PriceMax && (
+            rowShopifyProductSummary.PriceMax && (
+              <span>
+                &nbsp;Prices range from ${rowShopifyProductSummary.PriceMin} - ${rowShopifyProductSummary.PriceMax} with an average price of ${rowShopifyProductSummary.PriceAvg}.</span>
+            )}
+          {socialDetails && (
             <span>
-              &nbsp;Prices range from ${rowShopifyProductSummary.PriceMin} - ${rowShopifyProductSummary.PriceMax} with an average price of ${rowShopifyProductSummary.PriceAvg}.</span>
-          )}
-        {socialDetails && (
-          <span>
-            &nbsp;The {name} brand can be found on
-            {socialDetails.InstagramLink && (
-              " Instagram, "
-            )}
-            {socialDetails.FacebookLink && (
-              " Facebook, "
-            )}
-            {socialDetails.PinterestLink && (
-              " Pinterest, "
-            )}
-            {socialDetails.TikTok && (
-              " TikTok, "
-            )}
-            {socialDetails.TwitterLink && (
-              " Twitter, "
-            )}
-            {socialDetails.YouTubeLink && (
-              " Youtube, "
-            )}
+              &nbsp;The {name} brand can be found on
+              {socialDetails.InstagramLink && (
+                " Instagram, "
+              )}
+              {socialDetails.FacebookLink && (
+                " Facebook, "
+              )}
+              {socialDetails.PinterestLink && (
+                " Pinterest, "
+              )}
+              {socialDetails.TikTok && (
+                " TikTok, "
+              )}
+              {socialDetails.TwitterLink && (
+                " Twitter, "
+              )}
+              {socialDetails.YouTubeLink && (
+                " Youtube, "
+              )}
                and here on Emprezzo.&nbsp;
-          </span>
-        )}
+            </span>
+          )}
         </ViewContainer>
 
       </Container>

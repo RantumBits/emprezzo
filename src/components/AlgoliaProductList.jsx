@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from '@emotion/styled';
 import { css, Global } from '@emotion/core';
 import _ from 'lodash';
@@ -8,6 +8,7 @@ import { CartContext } from './Cart/CartContext'
 import AlgoliaProductItem from './AlgoliaProductItem'
 import AlgoliaUncommonryItem from './AlgoliaUncommonryItem'
 import AlgoliaRangeSlider from './AlgoliaRangeSlider'
+import AlgoliaStateResults from './AlgoliaStateResults'
 import algoliasearch from 'algoliasearch/lite';
 import {
   InstantSearch,
@@ -16,7 +17,7 @@ import {
   Pagination,
   ClearRefinements,
   RefinementList,
-  SortBy,
+  NumericMenu,
   Configure,
 } from 'react-instantsearch-dom';
 import 'instantsearch.css/themes/algolia.css';
@@ -48,11 +49,11 @@ const LeftPanel = styled.div`
     font-size: 0.8rem;
   }
 
-  .ais-RefinementList-item {
+  .ais-RefinementList-item, .ais-NumericMenu-item {
     margin-bottom: 0px;
   }
 
-  .ais-RefinementList-labelText {
+  .ais-RefinementList-labelText , .ais-NumericMenu-labelText {
     margin-left: 5px;
     font-size: 0.8rem;
   }
@@ -107,7 +108,11 @@ const FilterHeading = styled.div`
   margin: 8px 0 5px 0
 `;
 
-const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, showClearFilter, facetsToShow, showSearchBox, searchIndexName, enableCart }) => {
+const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, showClearFilter, facetsToShow, showSearchBox, searchIndexName, enableShopProductSwitch, enableCart, noResultMessage }) => {
+
+  const [currentIndexName, setCurrentIndexName] = React.useState(searchIndexName || `empProducts`)
+  const changeCurrentIndexName = (e) => { setCurrentIndexName(e.target.value) }
+
   const algoliaClient = algoliasearch(
     process.env.GATSBY_ALGOLIA_APP_ID,
     process.env.GATSBY_ALGOLIA_SEARCH_KEY
@@ -118,7 +123,7 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, showClearFilter,
       return algoliaClient.search(requests);
     },
   };
-  searchIndexName = searchIndexName || `empProducts`;
+  noResultMessage = noResultMessage || `No result found`;
   enableCart = enableCart || false;
   const { itemCount } = useContext(CartContext);
 
@@ -133,8 +138,16 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, showClearFilter,
         `}
         />
       }
-      <InstantSearch indexName={searchIndexName} searchClient={searchClient}>
+      <InstantSearch indexName={currentIndexName} searchClient={searchClient}>
         <LeftPanel>
+          {enableShopProductSwitch &&
+            <div style={{ paddingBottom: '0.75rem' }}>
+              <select value={currentIndexName} onChange={changeCurrentIndexName} style={{ padding: '0.25rem 1rem 0.25rem 0.25rem' }}>
+                <option value="empProducts">Products</option>
+                <option value="uncommonry">Shops</option>
+              </select>
+            </div>
+          }
           {showClearFilter &&
             <ClearRefinements />
           }
@@ -143,17 +156,6 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, showClearFilter,
               <CartIcon width="18px" />Cart({itemCount})
             </Link>
           }
-          <SortBy
-            defaultRefinement="empProducts"
-            items={[
-              { value: 'empProducts_UpdatedDate_Desc', label: 'UpdatedDate desc.' },
-              { value: 'empProducts_UpdatedDate_Asc', label: 'UpdatedDate asc.' },
-              { value: 'empProducts_SellingRank_Desc', label: 'SellingRank desc.' },
-              { value: 'empProducts_SellingRank_Asc', label: 'SellingRank asc.' },
-              { value: 'empProducts_Price_Desc', label: 'Price desc.' },
-              { value: 'empProducts_Price_Asc', label: 'Price asc.' },
-            ]}
-          />
           {facetsToShow && facetsToShow.indexOf("category") >= 0 &&
             <>
               <FilterHeading>Category</FilterHeading>
@@ -166,10 +168,24 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, showClearFilter,
               <RefinementList attribute="shopName" />
             </>
           }
-          {facetsToShow && facetsToShow.indexOf("pricerangeslider") >= 0 &&
+          {facetsToShow && facetsToShow.indexOf("pricerangeslider") >= 0 && currentIndexName == 'uncommonry' &&
             <>
               <FilterHeading>Average Price</FilterHeading>
               <AlgoliaRangeSlider attribute="price" />
+            </>
+          }
+          {facetsToShow && facetsToShow.indexOf("prices") >= 0 && currentIndexName == 'empProducts' &&
+            <>
+              <FilterHeading>Prices</FilterHeading>
+              <NumericMenu
+                attribute="price"
+                items={[
+                  { label: 'All' },
+                  { label: 'Under $50', end: 50 },
+                  { label: '$50 - $100', start: 50, end: 100 },
+                  { label: '$100+', start: 100 },
+                ]}
+              />
             </>
           }
           {facetsToShow && facetsToShow.indexOf("onsale") >= 0 &&
@@ -224,10 +240,11 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, showClearFilter,
           {showSearchBox &&
             <SearchBox />
           }
-          {searchIndexName == 'empProducts' &&
+          <AlgoliaStateResults noResultMessage={noResultMessage} />
+          {currentIndexName == 'empProducts' &&
             <Hits hitComponent={AlgoliaProductItem} />
           }
-          {searchIndexName == 'uncommonry' &&
+          {currentIndexName == 'uncommonry' &&
             <Hits hitComponent={AlgoliaUncommonryItem} />
           }
           <Pagination />

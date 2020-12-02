@@ -9,7 +9,7 @@ import { Layout } from 'layouts';
 import _ from 'lodash';
 import { useMediaQuery } from 'react-responsive'
 import AlgoliaProductList from '../components/AlgoliaProductList';
-import Slider from '@material-ui/core/Slider';
+import { Slider } from 'material-ui-slider';
 import { Dialog } from "@reach/dialog";
 import "@reach/dialog/styles.css";
 
@@ -244,7 +244,7 @@ const TopShopifyStores = ({ location, data }) => {
             facetsToShow={'category,pricerangeslider,brands,storeoffers'}
             showSearchBox={true}
             showClearFilter={true}
-            searchIndexName={`uncommonry`}
+            searchIndexName={`empProducts`}            
           />
         </ShopsWrapper>
       {/* <Dialog isOpen={showDialog} onDismiss={closeMoreDialog}>

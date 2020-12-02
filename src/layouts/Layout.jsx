@@ -8,12 +8,14 @@ import { SEO } from 'components';
 import { NavBar, Footer } from 'layouts';
 import theme from '../../config/theme';
 import headroom from '../styles/headroom';
+import CartContextProvider from '../components/Cart/CartContext';
 
 const Layout = ({ children, title, description }) => (
   <ThemeProvider theme={theme}>
-    <Fragment>
-      <Global
-        styles={css`
+    <CartContextProvider>
+      <Fragment>
+        <Global
+          styles={css`
           *,
           *:before,
           *:after {
@@ -56,12 +58,13 @@ const Layout = ({ children, title, description }) => (
 
           ${headroom}
         `}
-      />
-      <SEO title={title} description={description} />
-      <NavBar />
-      {children}
-      <Footer />
-    </Fragment>
+        />
+        <SEO title={title} description={description} />
+        <NavBar />
+        {children}
+        <Footer />
+      </Fragment>
+    </CartContextProvider>
   </ThemeProvider>
 );
 
