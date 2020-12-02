@@ -19,10 +19,18 @@
     "format": "prettier --write src/**/*.{js,jsx}",
     "lint-errors": "eslint src/**/*.{js,jsx} --quiet",
     "lint": "eslint src/**/*.{js,jsx}",
+    "open:android": "npx cap copy android && npx cap update android && npx cap open android",
+    "open:ios": "npx cap copy ios && npx cap update ios && npx cap open ios",
+    "start:android": "npm run build && npx cap copy android && npx cap update android && npx cap open android",
+    "start:ios": "npm run build && npx cap copy ios && npx cap update ios && npx cap open ios",
     "start": "npm run develop"
   },
   "dependencies": {
     "@babel/core": "^7.12.9",
+    "@capacitor/android": "^2.4.4",
+    "@capacitor/cli": "^2.4.4",
+    "@capacitor/core": "^2.4.4",
+    "@capacitor/ios": "^2.4.4",
     "@emotion/core": "^10.0.17",
     "@emotion/styled": "^10.0.17",
     "@material-ui/core": "^3.9.4",

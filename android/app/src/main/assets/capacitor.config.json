@@ -1,0 +1,13 @@
+{
+  "appId": "com.ecomloop.emprezzo",
+  "appName": "emprezzo",
+  "bundledWebRuntime": false,
+  "npmClient": "yarn",
+  "webDir": "public",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  },
+  "cordova": {}
+}
