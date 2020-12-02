@@ -139,7 +139,7 @@ const PostSectionGrid = styled.div`
 
 const PostSectionImage = styled.div`
   width: 100%;
-  height: 6rem;
+  height: 8rem;
   text-align: center;
 
 `;
@@ -674,13 +674,13 @@ const SingleItem = ({ data, pageContext }) => {
           <div style={{ paddingLeft: '15px' }}>
 
 
-            <i>{category}: {tags}</i><br /><br />
+            <b>{category}</b><br/><i>{tags}</i><br />
             {rowShopifyProductSummary.PriceMin &&
               rowShopifyProductSummary.PriceMax && (
                 <small>
                   ${rowShopifyProductSummary.PriceMin}-${rowShopifyProductSummary.PriceMax}(${rowShopifyProductSummary.PriceAvg} avg)</small>
               )}
-
+<br/>
 
 
 
@@ -692,24 +692,7 @@ const SingleItem = ({ data, pageContext }) => {
           </div>
         </div>
 
-        {firstRowDataView &&
-          <div>
 
-            {firstRowDataView.node.FreeShipMin != "." &&
-              <span>Get free shipping on orders over  ${firstRowDataView.node.FreeShipMin}. </span>
-            }
-            {firstRowDataView.node.BaseShipRate != "." &&
-              <span>Otherwise, shipping rates from ${firstRowDataView.node.BaseShipRate}</span>
-            }
-            {firstRowDataView.node.ReturnDays != "." && firstRowDataView.node.ReturnDays != "0" &&
-              <span>{firstRowDataView.node.ReturnDays} day returns</span>
-            }
-            {firstRowDataView.node.ReturnShipFree != "." && firstRowDataView.node.ReturnShipFree == "Yes" &&
-              <span>and returns are free!</span>
-            }
-
-          </div>
-        }
 
 
 
@@ -776,6 +759,24 @@ const SingleItem = ({ data, pageContext }) => {
         </Tabs>
 
         <div>
+        {firstRowDataView &&
+          <div>
+
+            {firstRowDataView.node.FreeShipMin != null &&
+              <span>Get free shipping on orders over  ${firstRowDataView.node.FreeShipMin}. </span>
+            }
+            {firstRowDataView.node.BaseShipRate > 1 &&
+              <span>Otherwise, shipping rates from ${firstRowDataView.node.BaseShipRate}</span>
+            }
+            {firstRowDataView.node.ReturnDays != null && firstRowDataView.node.ReturnDays != "0" &&
+              <span>{firstRowDataView.node.ReturnDays} day returns</span>
+            }
+            {firstRowDataView.node.ReturnShipFree != "." && firstRowDataView.node.ReturnShipFree == "Yes" &&
+              <span>and returns are free!</span>
+            }
+
+          </div>
+        }
 
           {firstRowDataView.node.PaypalShopID && firstRowDataView.node.PaypalShopID != '#' && <div>Accepts paypal</div>}
           {firstRowDataView.node.PaypalVenmoSupport && firstRowDataView.node.PaypalVenmoSupport != '#' && <div>Accepts venmo</div>}
@@ -796,12 +797,12 @@ const SingleItem = ({ data, pageContext }) => {
                 <span key={index}>
                   <PostSectionImage>
                     <Link key={index} to={`/shops/${shop.UserName}/`}>
-                      <img src={shop.ProfilePicURL || shop.profile_image_url || "/logo/logo.png"} alt={shop.name} onError={defaultImageOnError} style={{ height: 'inherit', 'textAlign': 'center', 'borderRadius': '100%' }} />
+                      <img src={shop.ProfilePicURL || shop.profile_image_url || "/logo/logo.png"} title={shop.name} alt={shop.name} onError={defaultImageOnError} style={{ height: 'inherit', 'textAlign': 'center', 'borderRadius': '100%' }} />
                     </Link>
                   </PostSectionImage>
                   <PostSectionContent>
                     <Link key={index} to={`/shops/${shop.UserName}/`}>
-                      {shop.name && <h3>{shop.name}</h3>}
+                      {shop.name && <b>{shop.name}</b>}
                     </Link>
 
                   </PostSectionContent>
@@ -993,7 +994,7 @@ const SingleItem = ({ data, pageContext }) => {
         </Tabs>
 
 
-        <ViewContainer>
+        <Container>
 
           <b>{name}</b> produces and sells {category} products {tags} and more. The company sells direct-to-consumer on its website.
 
@@ -1026,7 +1027,7 @@ const SingleItem = ({ data, pageContext }) => {
                and here on Emprezzo.&nbsp;
             </span>
           )}
-        </ViewContainer>
+        </Container>
 
       </Container>
       <SuggestionBar>
