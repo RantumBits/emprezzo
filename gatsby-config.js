@@ -159,18 +159,7 @@ module.exports = {
       },
     },
     'gatsby-plugin-sharp',
-    {
-      resolve: `gatsby-plugin-algolia`,
-      options: {
-        appId: process.env.GATSBY_ALGOLIA_APP_ID,
-        apiKey: process.env.ALGOLIA_ADMIN_KEY,
-        queries,
-        chunkSize: 800, // default: 1000
-        enablePartialUpdates: true,
-                matchFields: ['emprezzoID','shopImage', 'price'],
-
-      },
-    },
+    
     `gatsby-plugin-styled-components`,
     {
       resolve: 'gatsby-plugin-manifest',
