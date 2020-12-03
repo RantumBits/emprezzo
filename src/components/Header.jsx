@@ -41,7 +41,7 @@ const Text = styled.div`
   align-items: center;
   h1 {
     @media (max-width: ${props => props.theme.breakpoints.s}) {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
     }
     margin-bottom: 0rem;
   }

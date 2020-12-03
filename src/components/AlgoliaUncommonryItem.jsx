@@ -51,7 +51,7 @@ const AlgoliaUncommonryItem = (props) => {
         styles={css`
         .ais-Hits-item {
           width: calc(50% - 1rem) !important;
-          @media (max-width: 700px) {
+          @media (max-width: 600px) {
             width: calc(100% - 1rem) !important;
           }
         }

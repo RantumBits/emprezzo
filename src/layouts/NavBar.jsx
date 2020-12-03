@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, useStaticQuery } from 'gatsby';
 import styled from '@emotion/styled';
 import Headroom from 'react-headroom';
 import logo from '../../static/logo/logo.png';
 import Search from '../components/search'
+import { ShoppingCart, Menu } from "@styled-icons/material"
+import { CartContext } from '../components/Cart/CartContext'
+import { useMediaQuery } from 'react-responsive'
 
 const searchIndices = [
   { name: `uncommonry`, title: `Shops`, type: `shopHit` },
@@ -54,7 +57,7 @@ const Nav = styled.nav`
       cursor: pointer;
     }
     @media (max-width: ${props => props.theme.breakpoints.s}) {
-      margin-left: 0.5rem;
+      margin-left: 0.5rem;      
     }
   }
 
@@ -104,6 +107,8 @@ const SearchWrapper = styled.div`
 `;
 
 const NavBar = () => {
+  const { itemCount } = useContext(CartContext);
+  const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
 
   return (
     <Headroom calcHeightOnResize disableInlineStyles>
@@ -112,18 +117,30 @@ const NavBar = () => {
       </StyledLink>
       <NavWrapper>
         <Nav>
-        <div className="dropdown">
-          <Link to="">Discover </Link>
-          <div className="dropdown-content">
-          <Link key="4" to="/randomshop/">Random shop</Link>
-            <Link key="2" to="/shops/">All shops</Link>
+          <div className="dropdown">
+            <Link to="">
+              {!isMobile &&
+                <span>Discover</span>
+              }
+              {isMobile &&
+                <Menu width="24px" style={{ marginRight: "0.75rem" }} />
+              }
+            </Link>
+            <div className="dropdown-content">
+              <Link key="1" to="/randomshop/">Random shop</Link>
+              <Link key="2" to="/shops/">All shops</Link>
               <Link key="3" to="/products/">All products</Link>
               <Link key="4" target="_blank" to="https://chrome.google.com/webstore/detail/emprezzo/ojfaaaocbgiojhlapncepdiccfgcjmee">Chrome extension</Link>
+            </div>
           </div>
-        </div>
           <SearchWrapper>
             <Search collapse indices={searchIndices} variation={"light"} />
           </SearchWrapper>
+          <div>
+            <Link to="/cart" style={{ display: "flex", margin: "0.5rem", fontSize: "0.85rem" }}>
+              <ShoppingCart width="24px" />({itemCount})
+            </Link>
+          </div>
         </Nav>
       </NavWrapper>
     </Headroom >

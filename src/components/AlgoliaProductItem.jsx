@@ -24,7 +24,7 @@ const Wrapper = styled.article`
     height: 18rem;
   }
 
-  @media (max-width: 700px) {
+  @media (max-width: 600px) {
     flex-basis: 100%;
     max-width: 100%;
     width: 100%;
@@ -45,6 +45,8 @@ const Image = styled.div`
   border-radius: ${props => props.theme.borderRadius.default};
   img {
     border-radius: ${props => props.theme.borderRadius.default};
+    width: 50%;
+    object-fit: fill;
   }
   > div {
     position: static !important;
@@ -97,38 +99,30 @@ const Information = styled.div`
   left: 0;
 `;
 
-const Vendor = styled.h5`
-  margin: 0;
-  margin-bottom: 0.6rem;
-`;
-
 const Title = styled.div`
   margin: 0;
   margin-bottom: 0.2rem;
   text-transform: capitalize;
   font-size: .8rem;
-
+  color: #000;
   span {
     font-size: 0.8rem
   }
 
 `;
-const SubTitle = styled.h5`
-  margin: 0;
-  margin-bottom: 0.6rem;
-`;
+
 const Price = styled.div`
   font-size: 0.6rem;
-  margin: 0;
-
+  margin: 0 0 0.25rem 0 !important;
+  color: #000;
 `;
 
 const StyledDialog = styled(Dialog)`
-@media (max-width: 700px) {
+@media (max-width: 600px) {
   width: 90vw;
 }
 .dialogTitle {
-  @media (max-width: 700px) {
+  @media (max-width: 600px) {
     font-size: 1.5rem;
   }
 }
@@ -144,7 +138,7 @@ const StyledDialog = styled(Dialog)`
     padding-left: 2rem;
   }
 
-  @media (max-width: 700px) {
+  @media (max-width: 600px) {
     display : block;
     img {
       max-width : 100%;
@@ -172,6 +166,7 @@ const AlgoliaProductItem = (props) => {
         name: hit.name,
         price: hit.price,
         photo: hit.imageURL,
+        productURL: hit.productURL,
     }
     //increase the quantity if already present, if not add product to cart
     isInCart(hitToProduct) ? increase(hitToProduct) : addProduct(hitToProduct);
@@ -192,6 +187,7 @@ const AlgoliaProductItem = (props) => {
 
   }
 
+  console.log("**** hit",(props && props.hit))
   return (
     <Wrapper>
       {props && props.hit &&
@@ -199,15 +195,20 @@ const AlgoliaProductItem = (props) => {
           <Image>
             <a href={`/shops/${props.hit.emprezzoID}/`} title={props.hit.name} target="_blank">
               {props.hit.imageURL &&
-                <img src={props.hit.imageURL} style={{ objectFit: 'fill' }} />
+                <img src={props.hit.imageURL} />
               }
             </a>
           </Image>
           <StyledLink href="javascript:void(0)" onClick={() => openDialog()} title={props.hit.shopName}>
             <Information>
-              <Title><Highlight attribute="name" hit={props.hit} /></Title>
+              <Title>{(props.hit.name || "").substring(0,26)}</Title>
               {props.hit.price &&
-                <Price>${props.hit.price}</Price>
+                <Price>
+                  {props.hit.maxPrice && props.hit.maxPrice>props.hit.price &&
+                    <strike>${props.hit.maxPrice}</strike>
+                  }
+                  {` `}${props.hit.price}
+                </Price>
               }
             </Information>
           </StyledLink>
@@ -221,18 +222,15 @@ const AlgoliaProductItem = (props) => {
               }
               <div>
                 <h3>{props.hit.name}</h3>
-                <p><i>Available at {props.hit.shopName || props.hit.name} from ${props.hit.price}</i></p>
+                <p><i>Available at <a href={`/shops/${props.hit.emprezzoID}/`}>{props.hit.shopName || props.hit.name}</a> from ${props.hit.price}</i></p>
                 <p>{props.hit.description && props.hit.description.substring(0, 220)}</p>
                 {convertToSelectList(props.hit.VariantTitle)}
               </div>
             </div>
-            <div className="cart-section">
-              <button onClick={() => addToCartWrapper(props.hit)} style={{ color: "#C04CFD", cursor: "pointer" }}>Add to cart</button>
-            </div>
             <br />
             <div>
               <a href={props.hit.productURL} target="_blank" className="button">Buy at {props.hit.shopName}</a>
-              <a href={props.hit.emprezzoID ? `/shops/${props.hit.emprezzoID}/` : props.hit.VendorURL} className="button buttonalt">Get shop info</a>
+              <a href="javascript:"  onClick={() => addToCartWrapper(props.hit)} className="button buttonalt">Save for later</a>
             </div>
             <br />
           </StyledDialog>

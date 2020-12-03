@@ -1,25 +1,31 @@
 import React, { useContext } from 'react';
 import { PlusCircleIcon, MinusCircleIcon, TrashIcon } from './icons'
+import { Home } from "@styled-icons/material"
 import { CartContext } from './CartContext';
 import { formatNumber } from './utils';
 import styled from '@emotion/styled';
 
 const CartItemWrapper = styled.div`
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: no-wrap;
   padding: 0.5rem 0 0.5rem 0;
-  @media (max-width: 700px) {
+  @media (max-width: 600px) {
     display: block;
   }
 `;
 const CartElementSmall = styled.div`
     padding: .5rem;    
-    flex: 0 0 16.6666666667%;
-    max-width: 16.6666666667%;
+    flex: 0 0 12.5%;
+    max-width: 12.5%;
+`;
+const CartElementMedium = styled.div`
+    padding: .5rem;    
+    flex: 0 0 25%;
+    max-width: 25%;
 `;
 const CartElementBig = styled.div`
     padding: .5rem;    
-    flex: 0 0 50%;
+    flex: 0 0 52%;
     max-width: 50%;
 `;
 const ProductName = styled.h5`
@@ -58,6 +64,8 @@ const CartItem = ({ product }) => {
 
     const { increase, decrease, removeProduct } = useContext(CartContext);
 
+    console.log("****** product", product)
+
     return (
         <CartItemWrapper>
             <CartElementSmall>
@@ -73,24 +81,29 @@ const CartItem = ({ product }) => {
             <CartElementSmall>
                 <Quantity>Qty: {product.quantity}</Quantity>
             </CartElementSmall>
-            <CartElementSmall>
+            <CartElementMedium>
                 <ButtonsWrapper>
                     <button className="btn" onClick={() => increase(product)}>
                         <PlusCircleIcon width={"20px"} />
                     </button>
                     {product.quantity > 1 &&
-                        <button className="btn btn-alt"  onClick={() => decrease(product)}>
+                        <button className="btn btn-alt" onClick={() => decrease(product)}>
                             <MinusCircleIcon width={"20px"} />
                         </button>
                     }
 
                     {product.quantity === 1 &&
-                        <button className="btn btn-alt"  onClick={() => removeProduct(product)}>
+                        <button className="btn btn-alt" onClick={() => removeProduct(product)}>
                             <TrashIcon width={"20px"} />
                         </button>
                     }
+                    {product.productURL &&
+                        <a className="button" href={product.productURL} style={{padding: "0.5em 0.75em"}}>
+                            <Home width={"24px"} />
+                        </a>
+                    }
                 </ButtonsWrapper>
-            </CartElementSmall>
+            </CartElementMedium>
         </CartItemWrapper>
     );
 }

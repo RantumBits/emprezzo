@@ -10,13 +10,13 @@ const Wrapper = styled.div`
 const CartWrapper = styled.div`
   display: flex;
   justify-content: center;
-  @media (max-width: 700px) {
+  @media (max-width: 600px) {
     display: block;
   }
 `;
 const CartItems = styled.div`
-  padding: 1rem;
-  width: 80%;
+  padding-top: 1rem;
+  width: 100%;
 `;
 const CartSummary = styled.div`
     padding: 1rem 0 1rem 0;

@@ -244,7 +244,7 @@ const TopShopifyStores = ({ location, data }) => {
             facetsToShow={'category,pricerangeslider,brands,storeoffers'}
             showSearchBox={true}
             showClearFilter={true}
-            searchIndexName={`empProducts`}
+            searchIndexName={`uncommonry`}
           />
         </ShopsWrapper>
       {/* <Dialog isOpen={showDialog} onDismiss={closeMoreDialog}>

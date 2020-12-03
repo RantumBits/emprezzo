@@ -6,8 +6,8 @@ import DisplayCart from '../components/Cart/DisplayCart';
 
 const Cart = () => (
   <Layout>
-    <Helmet title={'Cart'} />
-    <Header>Your Cart</Header>
+    <Helmet title={'Saved Products'} />
+    <Header>Saved Products</Header>
     <Container>
       <DisplayCart />
     </Container>

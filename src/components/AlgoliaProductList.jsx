@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 import { css, Global } from '@emotion/core';
 import _ from 'lodash';
 import { Link } from 'gatsby'
-import { CartIcon } from './Cart/icons'
 import { CartContext } from './Cart/CartContext'
 import AlgoliaProductItem from './AlgoliaProductItem'
 import AlgoliaUncommonryItem from './AlgoliaUncommonryItem'
@@ -25,20 +24,27 @@ import 'instantsearch.css/themes/algolia.css';
 const SearchWrapper = styled.div`
   width: 100%;
   display: flex;
-  @media (max-width: 700px) {
-    flex-direction: column;
+  @media (max-width: 600px) {
+    font-size: 0.5rem;
   }
 `;
 
 const LeftPanel = styled.div`
   float: left;
   width: 20vw;
-  @media (max-width: 700px) {
+  @media (max-width: 600px) {
     width: 80vw;
+    margin-right: 0.25rem;
+    [class^='ais-'] {
+        font-size: 0rem;
+    }
   }
 
   .ais-ClearRefinements-button {
     background-color: #C04CFD;
+    @media (max-width: 600px) {
+      font-size: 0.5rem;
+    }
   }
 
   .ais-SortBy {
@@ -47,15 +53,32 @@ const LeftPanel = styled.div`
 
   .ais-SortBy-select {
     font-size: 0.8rem;
+    @media (max-width: 600px) {
+      font-size: 0.5rem;
+    }
   }
 
   .ais-RefinementList-item, .ais-NumericMenu-item {
     margin-bottom: 0px;
+    @media (max-width: 600px) {
+      margin: 0;      
+    }    
+  }
+
+  .ais-RefinementList-label , .ais-NumericMenu-label, .ais-RefinementList-checkbox {
+    font-size: 0.8rem;
+    @media (max-width: 600px) {
+      font-size: 0.5rem;  
+    }   
   }
 
   .ais-RefinementList-labelText , .ais-NumericMenu-labelText {
     margin-left: 5px;
     font-size: 0.8rem;
+    @media (max-width: 600px) {
+      font-size: 0.5rem;  
+      line-height: 0.5rem;  
+    }   
   }
 
   .ais-RefinementList-count {
@@ -73,15 +96,18 @@ const LeftPanel = styled.div`
 
 const RightPanel = styled.div`
   width: 80vw;
-  @media (max-width: 700px) {
+  @media (max-width: 600px) {
     margin-left: 0px;
     display: block;
   }
 
   .ais-Hits-item, .ais-Results-item {
     padding: 0px;
-    width: calc(20% - 1rem);
-    @media (max-width: 700px) {
+    width: calc(25% - 1rem);
+    @media (max-width: 900px) {
+      width: calc(33.33% - 1rem);
+    }
+    @media (max-width: 600px) {
       width: calc(50% - 1rem);
     }
   }
@@ -105,7 +131,10 @@ const FilterHeading = styled.div`
   font-size: 0.8rem;
   text-transform: uppercase;
   font-weight: bold;
-  margin: 8px 0 5px 0
+  margin: 8px 0 5px 0;
+  @media (max-width: 600px) {
+    font-size: 0.5rem;
+  }
 `;
 
 const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, showClearFilter, facetsToShow, showSearchBox, searchIndexName, enableShopProductSwitch, enableCart, noResultMessage }) => {
@@ -150,11 +179,6 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, showClearFilter,
           }
           {showClearFilter &&
             <ClearRefinements />
-          }
-          {enableCart &&
-            <Link to="/cart">
-              <CartIcon width="18px" />Cart({itemCount})
-            </Link>
           }
           {facetsToShow && facetsToShow.indexOf("category") >= 0 &&
             <>
