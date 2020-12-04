@@ -37,6 +37,15 @@ a.buttonalt{
   opacity: 50%;
 }
 
+
+
+h4 {margin: 1rem; font-size: .8rem;
+font-family: 'Overpass Mono', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;}
+
+li.ais-Hits-item {
+  border: unset;
+}
+
 .lb-ef-bounce {
   -webkit-transform: unset !important;
     transform: unset !important;

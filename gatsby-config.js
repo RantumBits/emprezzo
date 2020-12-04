@@ -95,7 +95,7 @@ module.exports = {
             name: 'Pages'
           },
           {
-            statement: 'SELECT \n    FLOOR(RAND() * 10000) AS UniqueKey,\n    CONCAT(SUBSTRING(VendorURL,9,9), ShopifyProductsAll.ProductID) AS UniqueID,\n AlexaRankView.UserName AS emprezzoID,\n ShopifyProductsAll.*,\n    IFNULL((ShopifyProductsAll.Price < ShopifyProductsAll.MaxPrice*0.8),0) as OnSale,\n    ShopifyDesc.Description as productDesc,\n     Tags.*,\n    PayNShip.*,\n  AlexaRankView.*,\n  InstagramHistory.*,\n   SocialSummary.* \n  FROM \n    ShopifyProductsAll\n        LEFT JOIN\n    ShopifyDesc ON ShopifyDesc.ProductID = ShopifyProductsAll.ProductID\n        LEFT JOIN\n    Tags ON TRIM(TRAILING \'/\' FROM ShopifyProductsAll.VendorURL) = TRIM(TRAILING \'/\' FROM Tags.url)\n    LEFT JOIN\n    PayNShip ON TRIM(TRAILING \'/\' FROM ShopifyProductsAll.VendorURL) = TRIM(TRAILING \'/\' FROM PayNShip.URL)\n    LEFT JOIN\n    SocialIDView ON TRIM(TRAILING \'/\' FROM ShopifyProductsAll.VendorURL) = TRIM(TRAILING \'/\' FROM SocialIDView.URL)\n LEFT JOIN\n    AlexaRankView ON TRIM(TRAILING \'/\' FROM ShopifyProductsAll.VendorURL) = TRIM(TRAILING \'/\' FROM AlexaRankView.URL)\n	 LEFT JOIN\n    SocialSummary ON TRIM(TRAILING \'/\' FROM SocialIDView.Instagram) = TRIM(TRAILING \'/\' FROM SocialSummary.Instagram) LEFT JOIN\n    InstagramHistory ON TRIM(TRAILING \'/\' FROM SocialIDView.Instagram) = TRIM(TRAILING \'/\' FROM InstagramHistory.UserName) WHERE AlexaRankView.UserName IS NOT NULL GROUP BY UniqueID ORDER BY SocialIDView.CreateDate ASC',
+            statement: 'SELECT \n    FLOOR(RAND() * 10000) AS UniqueKey,\n    CONCAT(SUBSTRING(VendorURL,9,9), ShopifyProductsAll.ProductID) AS UniqueID,\n AlexaRankView.UserName AS emprezzoID,\n ShopifyProductsAll.*,\n    IFNULL((ShopifyProductsAll.Price < ShopifyProductsAll.MaxPrice*0.8),0) as OnSale,\n    ShopifyDesc.Description as productDesc,\n     Tags.*,\n    PayNShip.*,\n  AlexaRankView.*,\n  InstagramHistory.*,\n   SocialSummary.* \n  FROM \n    ShopifyProductsAll\n        LEFT JOIN\n    ShopifyDesc ON ShopifyDesc.ProductID = ShopifyProductsAll.ProductID\n        LEFT JOIN\n    Tags ON TRIM(TRAILING \'/\' FROM ShopifyProductsAll.VendorURL) = TRIM(TRAILING \'/\' FROM Tags.url)\n    LEFT JOIN\n    PayNShip ON TRIM(TRAILING \'/\' FROM ShopifyProductsAll.VendorURL) = TRIM(TRAILING \'/\' FROM PayNShip.URL)\n    LEFT JOIN\n    SocialIDView ON TRIM(TRAILING \'/\' FROM ShopifyProductsAll.VendorURL) = TRIM(TRAILING \'/\' FROM SocialIDView.URL)\n LEFT JOIN\n    AlexaRankView ON TRIM(TRAILING \'/\' FROM ShopifyProductsAll.VendorURL) = TRIM(TRAILING \'/\' FROM AlexaRankView.URL)\n	 LEFT JOIN\n    SocialSummary ON TRIM(TRAILING \'/\' FROM SocialIDView.Instagram) = TRIM(TRAILING \'/\' FROM SocialSummary.Instagram) LEFT JOIN\n    InstagramHistory ON TRIM(TRAILING \'/\' FROM SocialIDView.Instagram) = TRIM(TRAILING \'/\' FROM InstagramHistory.UserName) WHERE AlexaRankView.UserName IS NOT NULL GROUP BY UniqueID ORDER BY SocialIDView.CreateDate DESC',
             idFieldName: 'UniqueKey',
             name: 'ShopifyProductsAll'
           },
@@ -116,7 +116,7 @@ module.exports = {
             name: 'PayNShip'
           },
           {
-            statement: "SELECT \n     FLOOR(RAND() * 100) AS UniqueKey,\n  AlexaRankView.UserName AS UniqueID,\n  AlexaRankView.URL AS AlexaURL,\n    AlexaRankView.*,\n    Tags.*,\n    SocialIDView.*,\n    RankHistory.*,\n    PayNShip.*, IFNULL(PayNShip.AmazonPay,0) as AmazonPay,IFNULL(PayNShip.ApplePay,0) as ApplePay,IFNULL(PayNShip.ShopifyPay,0) as ShopifyPay,IFNULL(PayNShip.PaypalVenmoSupport,0) as PaypalVenmoSupport,IFNULL(PayNShip.Affirm,0) as Affirm,IFNULL(PayNShip.AfterPay,0) as AfterPay, IFNULL(PayNShip.Klarna,0) as Klarna, \n IFNULL(PayNShip.AmazonPay,0) as AmazonPay,    ShopifyProductSummary.*,\n    SocialSummary.* ,\n  InstagramHistory.*\n FROM \n    AlexaRankView\n        LEFT JOIN\n    Tags ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM Tags.url)\n        LEFT JOIN\n    SocialIDView ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM SocialIDView.URL)\n        LEFT JOIN\n    RankHistory ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM RankHistory.url)\n        LEFT JOIN\n    PayNShip ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM PayNShip.URL)\n        LEFT JOIN\n    ShopifyProductSummary ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM ShopifyProductSummary.VendorURL)\n      LEFT JOIN\n    SocialSummary ON TRIM(TRAILING \'/\' FROM SocialIDView.Instagram) = TRIM(TRAILING \'/\' FROM SocialSummary.Instagram)   LEFT JOIN\n    InstagramHistory ON TRIM(TRAILING \'/\' FROM SocialIDView.Instagram) = TRIM(TRAILING \'/\' FROM InstagramHistory.UserName) GROUP BY UniqueID",
+            statement: "SELECT \n     FLOOR(RAND() * 100) AS UniqueKey,\n  AlexaRankView.UserName AS UniqueID,\n  AlexaRankView.URL AS AlexaURL,\n    AlexaRankView.*,\n    Tags.*,\n    SocialIDView.*,\n    RankHistory.*,\n    PayNShip.*, IFNULL(PayNShip.AmazonPay,0) as AmazonPay,IFNULL(PayNShip.ApplePay,0) as ApplePay,IFNULL(PayNShip.ShopifyPay,0) as ShopifyPay,IFNULL(PayNShip.PaypalVenmoSupport,0) as PaypalVenmoSupport,IFNULL(PayNShip.Affirm,0) as Affirm,IFNULL(PayNShip.AfterPay,0) as AfterPay, IFNULL(PayNShip.Klarna,0) as Klarna, \n IFNULL(PayNShip.AmazonPay,0) as AmazonPay,    ShopifyProductSummary.*,\n    SocialSummary.* ,\n  InstagramHistory.*\n FROM \n    AlexaRankView\n        LEFT JOIN\n    Tags ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM Tags.url)\n        LEFT JOIN\n    SocialIDView ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM SocialIDView.URL)\n        LEFT JOIN\n    RankHistory ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM RankHistory.url)\n        LEFT JOIN\n    PayNShip ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM PayNShip.URL)\n        LEFT JOIN\n    ShopifyProductSummary ON TRIM(TRAILING \'/\' FROM AlexaRankView.URL) = TRIM(TRAILING \'/\' FROM ShopifyProductSummary.VendorURL)\n      LEFT JOIN\n    SocialSummary ON TRIM(TRAILING \'/\' FROM SocialIDView.Instagram) = TRIM(TRAILING \'/\' FROM SocialSummary.Instagram)   LEFT JOIN\n    InstagramHistory ON TRIM(TRAILING \'/\' FROM SocialIDView.Instagram) = TRIM(TRAILING \'/\' FROM InstagramHistory.UserName) GROUP BY UniqueID LIMIT 100",
             idFieldName: 'AlexaURL',
             name: 'MainView'
           },
@@ -159,7 +159,18 @@ module.exports = {
       },
     },
     'gatsby-plugin-sharp',
-    
+    {
+      resolve: `gatsby-plugin-algolia`,
+      options: {
+        appId: process.env.GATSBY_ALGOLIA_APP_ID,
+        apiKey: process.env.ALGOLIA_ADMIN_KEY,
+        queries,
+        chunkSize: 800, // default: 1000
+        enablePartialUpdates: true,
+                matchFields: ['emprezzoID','shopImage', 'price','priceAvg'],
+
+      },
+    },
     `gatsby-plugin-styled-components`,
     {
       resolve: 'gatsby-plugin-manifest',

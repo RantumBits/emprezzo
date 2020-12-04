@@ -18,8 +18,8 @@ import 'react-tabs/style/react-tabs.css';
 import '../styles/prism';
 import { useMediaQuery } from 'react-responsive';
 
-const PostSectionHeading = styled.h1`
-  margin-left: 4rem;
+const PostSectionHeading = styled.h3`
+    margin-bottom: .5rem;
 `;
 
 const PostWrapper = styled.div`
@@ -51,8 +51,8 @@ const ShopWrapper = styled.div`
   @media (max-width: 1000px) {
     margin: 4rem 2rem 1rem 2rem;
   }
-  @media (max-width: 700px) {
-    margin: 4rem 1rem 1rem 1rem;
+  @media (max-width: 600px) {
+    margin: 0.5rem;
   }
 `;
 
@@ -89,7 +89,7 @@ const Index = ({ data }) => {
   const maxVisibleItems = 15;
   const [visibleItems, setVisibleItems] = React.useState(maxVisibleItems);
   const [showMore, setShowMore] = React.useState(true);
-  
+
   const isMobile = useMediaQuery({ query: '(max-width: 600px)' });
 
   const responsive = {
@@ -160,6 +160,7 @@ const Index = ({ data }) => {
     flex-wrap: nowrap;
     width: 100%;
     gap: 10px;
+
   `;
 
   const ViewCard = styled.div`
@@ -355,8 +356,8 @@ const Index = ({ data }) => {
     );
   }
   return (
-    <Layout title={'emprezzo | Discover great independent shops & direct-to-consumer brands'} description="Discover the best online storess & direct-to-consumer brands" >
-      <Header title="Discover great brands & online shops" subtitle="shop direct & support independent business"></Header>
+    <Layout title={'emprezzo | Discover great independent online stores'} description="Discover the best online storess & direct-to-consumer brands" >
+      <Header title="Discover great independent online stores" subtitle="shop direct & support independent business"></Header>
       {/* <p className="center"><a href ="/randomshop" className="button button">Discover a  shop</a></p> */}
       <div className="center">
 
@@ -368,8 +369,7 @@ const Index = ({ data }) => {
       </div>
 
 
-
-{/* 
+{/*
       <Tabs style={TabPanelStyle}>
         <h2>Browse popular online shops</h2>
         <TabList>
@@ -459,14 +459,14 @@ const Index = ({ data }) => {
       </LazyLoad> */}
 
       <LazyLoad height={200} once offset={[-200, 0]}>
-        <SectionHeading>Discover best selling products</SectionHeading>
+
         <ShopWrapper>
         <AlgoliaProductList
             facetsToShow={'category,prices,storeoffers'}
             showSearchBox={true}
             showClearFilter={true}
             enableCart={true}
-            enableShopProductSwitch={true}            
+            enableShopProductSwitch={true}
           />
         </ShopWrapper>
       </LazyLoad>

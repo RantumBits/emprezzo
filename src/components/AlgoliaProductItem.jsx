@@ -18,6 +18,10 @@ const Wrapper = styled.article`
   &:hover {
     box-shadow: ${props => props.theme.shadow.feature.small.hover};
     transform: scale(1.04);
+    > div {
+      display: block;
+    }
+    }
   }
 
   @media (max-width: 1000px) {
@@ -28,7 +32,7 @@ const Wrapper = styled.article`
     flex-basis: 100%;
     max-width: 100%;
     width: 100%;
-    height: 7rem;
+    height: 12rem;
   }
 `;
 
@@ -45,8 +49,7 @@ const Image = styled.div`
   border-radius: ${props => props.theme.borderRadius.default};
   img {
     border-radius: ${props => props.theme.borderRadius.default};
-    width: 50%;
-    object-fit: fill;
+
   }
   > div {
     position: static !important;
@@ -55,6 +58,8 @@ const Image = styled.div`
     position: static !important;
   }
 `;
+
+
 
 const StyledLink = styled.a`
   position: absolute;
@@ -70,6 +75,7 @@ const StyledLink = styled.a`
   border-radius: ${props => props.theme.borderRadius.default};
   &:after {
     content: '';
+    text-align: center;
     position: absolute;
     display: block;
     width: 100%;
@@ -82,8 +88,8 @@ const StyledLink = styled.a`
       to bottom,
       rgba(0, 0, 0, 0) 30%,
       rgba(0, 0, 0, 0.2) 60%,
-      rgba(0, 0, 0, 0.3) 80%,
-      rgba(0, 0, 0, 0.5) 100%
+      rgba(0, 0, 0, 0.5) 80%,
+      rgba(0, 0, 0, 0.7) 100%
     );
     z-index: -10;
     border-radius: ${theme.borderRadius.default};
@@ -93,18 +99,35 @@ const StyledLink = styled.a`
 
 const Information = styled.div`
   color: ${props => props.theme.colors.white.light};
-  margin: 0 1rem 1.25rem 1.25rem;
+  margin: 0.5rem;
   position: absolute;
   bottom: 0;
   left: 0;
+  width: 90%;
+  overflow: auto;
+  white-space: nowrap;
 `;
 
 const Title = styled.div`
+
+  text-transform: capitalize;
+  font-size: .8rem;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: auto;
+  color: #ccc;
+  span {
+    font-size: 0.8rem
+  }
+
+`;
+
+const ShopName = styled.div`
   margin: 0;
   margin-bottom: 0.2rem;
   text-transform: capitalize;
-  font-size: .8rem;
-  color: #000;
+  font-size: .6rem;
+  color: #ccc;
   span {
     font-size: 0.8rem
   }
@@ -114,7 +137,8 @@ const Title = styled.div`
 const Price = styled.div`
   font-size: 0.6rem;
   margin: 0 0 0.25rem 0 !important;
-  color: #000;
+  color: #ccc;
+  float: right;
 `;
 
 const StyledDialog = styled(Dialog)`
@@ -126,6 +150,12 @@ const StyledDialog = styled(Dialog)`
     font-size: 1.5rem;
   }
 }
+
+.shopname {
+    display: none;
+}
+
+
 
 .dialogImageDescription {
   display : flex;
@@ -193,25 +223,31 @@ const AlgoliaProductItem = (props) => {
       {props && props.hit &&
         <>
           <Image>
-            <a href={`/shops/${props.hit.emprezzoID}/`} title={props.hit.name} target="_blank">
+            <a href={`/shops/${props.hit.emprezzoID}/`} title={props.hit.name.toLowerCase()} target="_blank">
               {props.hit.imageURL &&
                 <img src={props.hit.imageURL} />
               }
             </a>
           </Image>
+
           <StyledLink href="javascript:void(0)" onClick={() => openDialog()} title={props.hit.shopName}>
             <Information>
-              <Title>{(props.hit.name || "").substring(0,26)}</Title>
+              <ShopName>{(props.hit.shopName || "").substring(0,22)}   {props.hit.maxPrice>props.hit.price &&
+                  <strike>${props.hit.maxPrice}</strike>
+                }
+                  {` `}${props.hit.price}</ShopName>
+              <Title>{(props.hit.name.toLowerCase() || "").substring(0,24)}</Title>
+
               {props.hit.price &&
                 <Price>
-                  {props.hit.maxPrice && props.hit.maxPrice>props.hit.price &&
-                    <strike>${props.hit.maxPrice}</strike>
-                  }
-                  {` `}${props.hit.price}
+
                 </Price>
               }
             </Information>
           </StyledLink>
+
+
+
           <StyledDialog isOpen={showDialog} onDismiss={closeDialog}>
             <button className="close-button" onClick={closeDialog} style={{ float: "right", cursor: "pointer" }}>
               <span aria-hidden>X</span>
@@ -222,7 +258,7 @@ const AlgoliaProductItem = (props) => {
               }
               <div>
                 <h3>{props.hit.name}</h3>
-                <p><i>Available at <a href={`/shops/${props.hit.emprezzoID}/`}>{props.hit.shopName || props.hit.name}</a> from ${props.hit.price}</i></p>
+                <p><i><a href={`/shops/${props.hit.emprezzoID}/`}>{props.hit.shopName || props.hit.name}</a> ${props.hit.price}</i></p>
                 <p>{props.hit.description && props.hit.description.substring(0, 220)}</p>
                 {convertToSelectList(props.hit.VariantTitle)}
               </div>

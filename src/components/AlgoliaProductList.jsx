@@ -33,11 +33,8 @@ const LeftPanel = styled.div`
   float: left;
   width: 20vw;
   @media (max-width: 600px) {
-    width: 80vw;
-    margin-right: 0.25rem;
-    [class^='ais-'] {
-        font-size: 0rem;
-    }
+    display: none;
+
   }
 
   .ais-ClearRefinements-button {
@@ -51,6 +48,8 @@ const LeftPanel = styled.div`
     padding: 0.8rem 0 0.8rem 0;
   }
 
+
+
   .ais-SortBy-select {
     font-size: 0.8rem;
     @media (max-width: 600px) {
@@ -61,24 +60,24 @@ const LeftPanel = styled.div`
   .ais-RefinementList-item, .ais-NumericMenu-item {
     margin-bottom: 0px;
     @media (max-width: 600px) {
-      margin: 0;      
-    }    
+      margin: 0;
+    }
   }
 
   .ais-RefinementList-label , .ais-NumericMenu-label, .ais-RefinementList-checkbox {
     font-size: 0.8rem;
     @media (max-width: 600px) {
-      font-size: 0.5rem;  
-    }   
+      font-size: 0.5rem;
+    }
   }
 
   .ais-RefinementList-labelText , .ais-NumericMenu-labelText {
     margin-left: 5px;
     font-size: 0.8rem;
     @media (max-width: 600px) {
-      font-size: 0.5rem;  
-      line-height: 0.5rem;  
-    }   
+      font-size: 0.5rem;
+      line-height: 0.5rem;
+    }
   }
 
   .ais-RefinementList-count {
@@ -97,8 +96,30 @@ const LeftPanel = styled.div`
 const RightPanel = styled.div`
   width: 80vw;
   @media (max-width: 600px) {
+    width: 95vw;
     margin-left: 0px;
     display: block;
+  }
+
+  .indexSelect {
+    float:left;
+    width: 100px;
+    margin-right: 0.5rem;
+
+  }
+.indexSelect select{
+  padding: 0.3rem;
+width: 100%;
+position: relative;
+background-color: #fff;
+border: 1px solid #c4c8d8;
+border-radius: 5px;
+font-size: 0.7rem;
+color: #a5abc4;
+}
+
+  li.ais-Hits-item a {
+    color: #3a4570;
   }
 
   .ais-Hits-item, .ais-Results-item {
@@ -112,14 +133,26 @@ const RightPanel = styled.div`
     }
   }
 
+  .ais-SearchBox {
+    @media (min-width: 900px) {
+      width: calc(90% - 1rem);
+    }
+    width: 65%;
+
+      margin: 0;
+      display: inline-block;
+  }
+
   .ais-Pagination-item--selected .ais-Pagination-link {
     color: #FFF;
     background-color: #C04CFD;
     border-color:#C04CFD
   }
 
-  .ais-Pagination-item--disabled .ais-Pagination-link {
+  .ais-Pagination-item--disabled .ais-Pagination-link, .ais-Pagination-link, a.ais-Pagination-link {
     color: #a5abc4;
+    padding: .3rem .5rem;
+    font-size: .9rem;
   }
 
   .ais-Breadcrumb-link, .ais-HierarchicalMenu-link, .ais-Menu-link, .ais-Pagination-link, .ais-RatingMenu-link {
@@ -169,14 +202,7 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, showClearFilter,
       }
       <InstantSearch indexName={currentIndexName} searchClient={searchClient}>
         <LeftPanel>
-          {enableShopProductSwitch &&
-            <div style={{ paddingBottom: '0.75rem' }}>
-              <select value={currentIndexName} onChange={changeCurrentIndexName} style={{ padding: '0.25rem 1rem 0.25rem 0.25rem' }}>
-                <option value="empProducts">Products</option>
-                <option value="uncommonry">Shops</option>
-              </select>
-            </div>
-          }
+
           {showClearFilter &&
             <ClearRefinements />
           }
@@ -258,12 +284,25 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, showClearFilter,
               />
             </>
           }
-          <Configure hitsPerPage={15} filters={defaultFilter} />
+          <Configure hitsPerPage={12} filters={defaultFilter} />
         </LeftPanel>
         <RightPanel>
+
+        <div class="searchline">
+        <div class="indexSelect">
+        {enableShopProductSwitch &&
+          <div style={{ paddingBottom: '0.75rem' }}>
+            <select value={currentIndexName} onChange={changeCurrentIndexName}>
+              <option value="empProducts">Products</option>
+              <option value="uncommonry">Shops</option>
+            </select>
+          </div>
+        }
+        </div>
           {showSearchBox &&
             <SearchBox />
           }
+          </div>
           <AlgoliaStateResults noResultMessage={noResultMessage} />
           {currentIndexName == 'empProducts' &&
             <Hits hitComponent={AlgoliaProductItem} />
