@@ -279,7 +279,7 @@ const Index = ({ data }) => {
   const listShopifyBestProducts = _.slice(filteredShopifyBestProducts, 0, limit);
   //Now limiting the items as per limit
   const visibleShopifyBestProducts = _.slice(listShopifyBestProducts, 0, visibleItems);
-  if (visibleShopifyBestProducts.length >= listShopifyBestProducts.length) setShowMore(false);
+  //if (visibleShopifyBestProducts.length >= listShopifyBestProducts.length) setShowMore(false);
 
   //getting newly added products
   //const newlyAddedProducts = _.sortBy(_.filter(listShopifyProductsAllEdges, ({ node }) => node.category && node.category.indexOf("Apparel") >= 0 ), ({ node }) => -node.PublishedDate);

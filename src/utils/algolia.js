@@ -4,7 +4,7 @@ const shopQuery = `{
       node {
         id: UniqueID
         randomShopKey: UniqueKey
-        emprezzoID: UniqueID
+        emprezzoID: emprezzoID
         shopName: name
         url: url
         tags: tags
@@ -86,12 +86,7 @@ const queries = [
     indexName: `uncommonry`,
     settings,
   },
-  {
-    query: productQuery,
-    transformer: ({ data }) => flatten(data.products.edges),
-    indexName: `empProducts`,
-    settings,
-  },
+
 ]
 
 module.exports = queries

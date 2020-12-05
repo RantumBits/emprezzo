@@ -70,7 +70,7 @@ exports.createPages = ({ graphql, actions }) => {
                   PaypalVenmoSupport
                   AfterPay
                   Klarna
-                  Affirm 
+                  Affirm
                 }
               }
             }
