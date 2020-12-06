@@ -80,7 +80,7 @@ const flatten = arr =>
   }))
 const settings = { attributesToSnippet: [`excerpt:20`] }
 const queries = [
-  
+
 ]
 
 module.exports = queries

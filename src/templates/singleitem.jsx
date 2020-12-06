@@ -719,7 +719,7 @@ const SingleItem = ({ data, pageContext }) => {
 
           <TabPanel>
             <AlgoliaProductList
-              defaultFilter={`emprezzoID:"${UserName}"`}
+              defaultFilter={`emprezzoID:"${emprezzoID}"`}
               facetsToShow={'onsale,giftcard'}
               showSearchBox={true}
               showClearFilter={true}
@@ -763,10 +763,10 @@ const SingleItem = ({ data, pageContext }) => {
           <div>
 
             {firstRowDataView.node.FreeShipMin != null &&
-              <span>Get free shipping on orders over  ${firstRowDataView.node.FreeShipMin}. </span>
+              <span>Get free shipping on orders over  ${firstRowDataView.node.FreeShipMin}. <br/></span>
             }
             {firstRowDataView.node.BaseShipRate > 1 &&
-              <span>Otherwise, shipping rates from ${firstRowDataView.node.BaseShipRate}</span>
+              <span>Otherwise, shipping rates from ${firstRowDataView.node.BaseShipRate}.<br/></span>
             }
             {firstRowDataView.node.ReturnDays != null && firstRowDataView.node.ReturnDays != "0" &&
               <span>{firstRowDataView.node.ReturnDays} day returns</span>
@@ -796,12 +796,12 @@ const SingleItem = ({ data, pageContext }) => {
               {combinedRelatedShops && combinedRelatedShops.map(({ shop }, index) => (
                 <span key={index}>
                   <PostSectionImage>
-                    <Link key={index} to={`/shops/${shop.UserName}/`}>
+                    <Link key={index} to={`/shops/${shop.emprezzoID}/`}>
                       <img src={shop.ProfilePicURL || shop.profile_image_url || "/logo/logo.png"} title={shop.name} alt={shop.name} onError={defaultImageOnError} style={{ height: 'inherit', 'textAlign': 'center', 'borderRadius': '100%' }} />
                     </Link>
                   </PostSectionImage>
                   <PostSectionContent>
-                    <Link key={index} to={`/shops/${shop.UserName}/`}>
+                    <Link key={index} to={`/shops/${shop.emprezzoID}/`}>
                       {shop.name && <b>{shop.name}</b>}
                     </Link>
 
@@ -817,7 +817,7 @@ const SingleItem = ({ data, pageContext }) => {
         )}
 
 
-        <Content input={firstRowDataView && firstRowDataView.node.Biography} />
+
         <br />
         {/* Show carousel for mobile version */}
         {isMobile && (
@@ -1027,6 +1027,13 @@ const SingleItem = ({ data, pageContext }) => {
                and here on Emprezzo.&nbsp;
             </span>
           )}
+          <br/>
+          <a href={AlexaURL} className="button" target="_blank">
+            shop {name}
+          </a>{' '}
+          <a href="/randomshop" className="button buttonalt">
+            Discover another shop
+      </a>
         </Container>
 
       </Container>
@@ -1038,12 +1045,7 @@ const SingleItem = ({ data, pageContext }) => {
         </div>
 
         <div style={{ float: 'right', margin: '2rem', }}>
-          <a href={AlexaURL} className="button" target="_blank">
-            shop {name}
-          </a>{' '}
-          <a href="/randomshop" className="button buttonalt">
-            Discover another shop
-      </a>
+
         </div>
       </SuggestionBar>
 

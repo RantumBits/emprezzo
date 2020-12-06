@@ -60,6 +60,7 @@ exports.createPages = ({ graphql, actions }) => {
                   TOS
                   UserName
                   category
+                  emprezzoID
                   tags
                   name
                   about
