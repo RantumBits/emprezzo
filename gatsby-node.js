@@ -85,7 +85,7 @@ exports.createPages = ({ graphql, actions }) => {
 
         //create pages
         mainviewRows.forEach(({ node }, index) => {
-          const path = '/shops/' + node.UserName + '/';
+          const path = '/shops/' + node.emprezzoID + '/';
           const prev = index === 0 ? null : mainviewRows[index - 1].node;
           const next =
             index === mainviewRows.length - 1 ? null : mainviewRows[index + 1].node;
@@ -111,8 +111,8 @@ exports.createPages = ({ graphql, actions }) => {
               }
             }
             tagsList.forEach(tag => {
-              rowPost.frontmatter.title = node.UserName
-              rowPost.frontmatter.path = '/shops/' + node.UserName + '/'
+              rowPost.frontmatter.title = node.emprezzoID
+              rowPost.frontmatter.path = '/shops/' + node.emprezzoID + '/'
               if (!postsByTag[tag]) {
                 postsByTag[tag] = [];
               }

@@ -29,7 +29,7 @@ const shopQuery = `{
         amazonPay: AmazonPay
         applePay: ApplePay
         venmo: PaypalVenmoSupport
-        paypal: PaypalShopID
+        paypal: PaypalVenmoSupport
         shopifyPay: ShopifyPay
         shopifyID: ShopifyID
         afterpay: AfterPay
@@ -80,13 +80,7 @@ const flatten = arr =>
   }))
 const settings = { attributesToSnippet: [`excerpt:20`] }
 const queries = [
-  {
-    query: shopQuery,
-    transformer: ({ data }) => flatten(data.shops.edges),
-    indexName: `uncommonry`,
-    settings,
-  },
-
+  
 ]
 
 module.exports = queries

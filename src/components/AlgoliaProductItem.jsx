@@ -13,7 +13,7 @@ const Wrapper = styled.article`
   border-radius: ${props => props.theme.borderRadius.default};
   {/* box-shadow: ${props => props.theme.shadow.feature.small.default};*/}
   transition: ${props => props.theme.transitions.boom.transition};
-  height: 12rem;
+  height: 16rem;
 
   &:hover {
     box-shadow: ${props => props.theme.shadow.feature.small.hover};

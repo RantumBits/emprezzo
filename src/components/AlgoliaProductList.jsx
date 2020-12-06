@@ -210,12 +210,13 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, showClearFilter,
             <>
               <FilterHeading>Category</FilterHeading>
               <RefinementList attribute="shopCategory" />
+              <  RefinementList attribute="shopCategory" showMore='true' limit='5'/>
             </>
           }
           {facetsToShow && facetsToShow.indexOf("brands") >= 0 &&
             <>
               <FilterHeading>Brands</FilterHeading>
-              <RefinementList attribute="shopName" />
+              <RefinementList attribute="shopName"  showMore='true' limit='5' />
             </>
           }
           {facetsToShow && facetsToShow.indexOf("pricerangeslider") >= 0 && currentIndexName == 'uncommonry' &&
@@ -233,7 +234,8 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, showClearFilter,
                   { label: 'All' },
                   { label: 'Under $50', end: 50 },
                   { label: '$50 - $100', start: 50, end: 100 },
-                  { label: '$100+', start: 100 },
+                  { label: '$100 - $200', start: 100, end: 200 },
+                  { label: '$200+', start: 200 },
                 ]}
               />
             </>

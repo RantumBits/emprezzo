@@ -462,7 +462,7 @@ const Index = ({ data }) => {
 
         <ShopWrapper>
         <AlgoliaProductList
-            facetsToShow={'category,prices,storeoffers'}
+            facetsToShow={'category,prices,storeoffers,brands'}
             showSearchBox={true}
             showClearFilter={true}
             enableCart={true}
