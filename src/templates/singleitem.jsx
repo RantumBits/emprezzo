@@ -679,7 +679,7 @@ const SingleItem = ({ data, pageContext }) => {
             {rowShopifyProductSummary.PriceMin &&
               rowShopifyProductSummary.PriceMax && (
                 <small>
-                  ${rowShopifyProductSummary.PriceMin}-${rowShopifyProductSummary.PriceMax}(${rowShopifyProductSummary.PriceAvg} avg)</small>
+                  ${rowShopifyProductSummary.PriceMin}-${rowShopifyProductSummary.PriceMax} (${rowShopifyProductSummary.PriceAvg} avg)</small>
               )}
 <br/>
 
@@ -812,14 +812,14 @@ const SingleItem = ({ data, pageContext }) => {
             </PostSectionGrid>
           </>
         )}
-
+  <br />
         {listInstaPostEdges && listInstaPostEdges.length > 0 && (
           <h3>See recent posts from @{firstRowDataView.node.UserName}</h3>
         )}
 
 
 
-        <br />
+
         {/* Show carousel for mobile version */}
         {isMobile && (
           <Carousel

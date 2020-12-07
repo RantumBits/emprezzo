@@ -104,7 +104,7 @@ const Information = styled.div`
   bottom: 0;
   left: 0;
   width: 90%;
-  overflow: auto;
+  overflow: hidden;
   white-space: nowrap;
 `;
 
@@ -114,7 +114,7 @@ const Title = styled.div`
   font-size: .8rem;
   font-weight: bold;
   white-space: nowrap;
-  overflow: auto;
+  overflow: hidden;
   color: #ccc;
   span {
     font-size: 0.8rem
