@@ -166,6 +166,7 @@ const SingleItem = ({ data, pageContext }) => {
     LocalRank,
     TOS,
     ProfileImage,
+    emprezzoID,
     UserName,
     category,
     tags,
@@ -721,8 +722,8 @@ const SingleItem = ({ data, pageContext }) => {
             <AlgoliaProductList
               defaultFilter={`emprezzoID:"${emprezzoID}"`}
               facetsToShow={'onsale,giftcard'}
-              showSearchBox={true}
-              showClearFilter={true}
+              showSearchBox={false}
+              showClearFilter={false}
               enableCart={true}
               currentShop={{ name: name, link: AlexaURL }}
               noResultMessage={`Shop direct at <a href=${AlexaURL} target="_blank">${name}</a>`}
@@ -1063,6 +1064,7 @@ export const query = graphql`
       LocalRank
       TOS
       UserName
+      emprezzoID
       ProfileImage
       category
       tags
@@ -1193,6 +1195,7 @@ export const query = graphql`
       edges {
         node {
           DiscountAmt
+          emprezzoID
           Description
           productDesc
           DiscountPct
