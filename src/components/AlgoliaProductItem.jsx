@@ -144,6 +144,8 @@ const Price = styled.div`
 const StyledDialog = styled(Dialog)`
 @media (max-width: 600px) {
   width: 90vw;
+  padding: 1.5rem;
+  margin: 11vh auto 5vh auto;
 }
 .dialogTitle {
   @media (max-width: 600px) {
@@ -155,23 +157,40 @@ const StyledDialog = styled(Dialog)`
     display: none;
 }
 
+.dialogDescription {
+height: 9rem;
+overflow: auto;
+border-bottom: 1px dotted #ccc;
+margin-top: 0.5rem;
+}
 
+[data-reach-dialog-content] {
+  @media (max-width: 600px) {
+
+  }
+}
+.dialogImage{
+  text-align:center;
+  min-width: 40%;
+}
 
 .dialogImageDescription {
   display : flex;
   img {
-    max-height: 300px;
-    max-width: 50%;
+    max-height : 14rem;
+    max-width: 80%;
     margin-right: 3%;
   }
   span {
-    padding-left: 2rem;
+    padding-left: 0rem;
   }
 
   @media (max-width: 600px) {
     display : block;
     img {
-      max-width : 100%;
+      max-height : 12rem;
+      margin: auto;
+
     }
     span {
       padding-left: 0rem;
@@ -253,22 +272,24 @@ const AlgoliaProductItem = (props) => {
               <span aria-hidden>X</span>
             </button>
             <div className="dialogImageDescription">
+                <div className="dialogImage">
               {props.hit.imageURL &&
                 <img src={props.hit.imageURL} />
               }
-              <div>
-                <h3>{props.hit.name}</h3>
-                <p><i><a href={`/shops/${props.hit.emprezzoID}/`}>{props.hit.shopName || props.hit.name}</a> ${props.hit.price}</i></p>
-                <p>{props.hit.description && props.hit.description.substring(0, 220)}</p>
+              </div>
+              <div className="dialogRight">
+                <h3 style={{ 'font-size': '1.1rem', 'margin-bottom':'9px' }}>{props.hit.name}</h3>
+                <span style={{ 'margin-bottom':'12px', 'font-style': 'italic' }}><a href={`/shops/${props.hit.emprezzoID}/`}>{props.hit.shopName || props.hit.name}</a> ${props.hit.price}</span>
+                <div className="dialogDescription">{props.hit.description && props.hit.description}</div>
                 {convertToSelectList(props.hit.VariantTitle)}
               </div>
             </div>
             <br />
             <div>
-              <a href={props.hit.productURL} target="_blank" className="button">Buy at {props.hit.shopName}</a>
+              <a href={props.hit.productURL} target="_blank" className="button">Shop at {props.hit.shopName}</a>
               <a href="javascript:"  onClick={() => addToCartWrapper(props.hit)} className="button buttonalt">Save for later</a>
             </div>
-            <br />
+
           </StyledDialog>
         </>
       }

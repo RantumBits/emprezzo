@@ -70,8 +70,11 @@ const Header = ({ children, title, date, subtitle, cover, socialDetails, likeEna
       <img src={cover || {} || [] || ''} style={{ width: '100%', objectFit: 'fill', objectPosition: '50% 50%' }} />
     }
     <Text>
-      <h1>{title}</h1>
-      <h4>{subtitle}</h4>
+ {likeEnabled &&
+        <img src={likeEnabled.storeProfileImage} title={title} alt={title} style={{ 'margin-top': '4rem', height: '100px', 'textAlign': 'center', 'borderRadius': '100%' }} />
+      }
+      <h3 style={{ 'margin-bottom': '0.5rem'}}>{title}</h3>
+            <h4>{subtitle}</h4>
       {socialDetails &&
         <SocialIcons>
           {socialDetails.InstagramLink &&
@@ -116,7 +119,7 @@ const Header = ({ children, title, date, subtitle, cover, socialDetails, likeEna
           data-item_url={likeEnabled.storeURL}
           data-item_title={likeEnabled.storeName}
           data-item_image={likeEnabled.storeProfileImage}
-          data-lazy_load="false" 
+          data-lazy_load="false"
           data-tooltip_enabled="false"
           data-site_id="5f795f90943ec9bf477cbfbe"
         >
