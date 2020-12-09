@@ -20,7 +20,6 @@ import {
   Configure,
 } from 'react-instantsearch-dom';
 import 'instantsearch.css/themes/algolia.css';
-
 const SearchWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -107,16 +106,33 @@ const RightPanel = styled.div`
     margin-right: 0.5rem;
 
   }
-.indexSelect select{
-  padding: 0.3rem;
-width: 100%;
-position: relative;
-background-color: #fff;
-border: 1px solid #c4c8d8;
-border-radius: 5px;
-font-size: 0.7rem;
-color: #a5abc4;
-}
+  .indexSelect select{
+    padding: 0.3rem;
+    width: 100%;
+    position: relative;
+    background-color: #fff;
+    border: 1px solid #c4c8d8;
+    border-radius: 5px;
+    font-size: 0.7rem;
+    color: #a5abc4;
+  }
+
+  .saleFacet {
+    float:left;
+    width: 100px;
+    margin-right: 0.5rem;
+  }
+  .saleFacet .ais-RefinementList-count {
+    display: none;
+  }
+  .saleFacet .ais-RefinementList-labelText , .ais-NumericMenu-labelText {
+    margin-left: 5px;
+    font-size: 0.8rem;
+    @media (max-width: 600px) {
+      font-size: 0.5rem;
+      line-height: 0.5rem;
+    }
+  }
 
   li.ais-Hits-item a {
     color: #3a4570;
@@ -170,7 +186,7 @@ const FilterHeading = styled.div`
   }
 `;
 
-const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, showClearFilter, facetsToShow, showSearchBox, searchIndexName, enableShopProductSwitch, enableCart, noResultMessage }) => {
+const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, hideLeftPanel, showClearFilter, facetsToShow, showSearchBox, searchIndexName, enableShopProductSwitch, enableCart, noResultMessage }) => {
 
   const [currentIndexName, setCurrentIndexName] = React.useState(searchIndexName || `empProducts`)
   const changeCurrentIndexName = (e) => { setCurrentIndexName(e.target.value) }
@@ -201,109 +217,151 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, showClearFilter,
         />
       }
       <InstantSearch indexName={currentIndexName} searchClient={searchClient}>
-        <LeftPanel>
+        {!hideLeftPanel &&
+          <LeftPanel>
 
-          {showClearFilter &&
-            <ClearRefinements />
-          }
-          {facetsToShow && facetsToShow.indexOf("category") >= 0 &&
-            <>
-              <FilterHeading>Category</FilterHeading>
-              <RefinementList attribute="shopCategory" />
-              <  RefinementList attribute="shopCategory" showMore='true' limit='5'/>
-            </>
-          }
-          {facetsToShow && facetsToShow.indexOf("brands") >= 0 &&
-            <>
-              <FilterHeading>Brands</FilterHeading>
-              <RefinementList attribute="shopName"  showMore='true' limit='5' />
-            </>
-          }
-          {facetsToShow && facetsToShow.indexOf("pricerangeslider") >= 0 && currentIndexName == 'uncommonry' &&
-            <>
-              <FilterHeading>Average Price</FilterHeading>
-              <AlgoliaRangeSlider attribute="price" />
-            </>
-          }
-          {facetsToShow && facetsToShow.indexOf("prices") >= 0 && currentIndexName == 'empProducts' &&
-            <>
-              <FilterHeading>Prices</FilterHeading>
-              <NumericMenu
-                attribute="price"
-                items={[
-                  { label: 'All' },
-                  { label: 'Under $50', end: 50 },
-                  { label: '$50 - $100', start: 50, end: 100 },
-                  { label: '$100 - $200', start: 100, end: 200 },
-                  { label: '$200+', start: 200 },
-                ]}
-              />
-            </>
-          }
-          {facetsToShow && facetsToShow.indexOf("onsale") >= 0 &&
-            <>
-              <RefinementList
-                attribute="onSale"
-                transformItems={items =>
-                  items.filter(item => (item.label == '1')).map(item => ({
-                    ...item,
-                    label: "On Sale",
-                  }))
-                }
-              />
-            </>
-          }
-          {facetsToShow && facetsToShow.indexOf("giftcard") >= 0 &&
-            <>
-              <RefinementList
-                attribute="name"
-                transformItems={items =>
-                  items.filter(item => (item.label.toLowerCase().indexOf('gift') >= 0))
-                }
-              />
-            </>
-          }
-          {facetsToShow && facetsToShow.indexOf("storeoffers") >= 0 &&
-            <>
-              <FilterHeading>Store Offers</FilterHeading>
-              <RefinementList
-                attribute="freeShipMin"
-                transformItems={items =>
-                  items.filter(item => (item.label == 0)).map(item => ({
-                    ...item,
-                    label: "Free Shipping",
-                  }))
-                }
-              />
-              <RefinementList
-                attribute="returnShipFree"
-                transformItems={items =>
-                  items.filter(item => (item.label == 'Yes')).map(item => ({
-                    ...item,
-                    label: "Free Returns",
-                  }))
-                }
-              />
-            </>
-          }
-          <Configure hitsPerPage={12} filters={defaultFilter} />
-        </LeftPanel>
-        <RightPanel>
+            {showClearFilter &&
+              <ClearRefinements />
+            }
+            {facetsToShow && facetsToShow.indexOf("category") >= 0 &&
+              <>
+                <FilterHeading>Category</FilterHeading>
+                <RefinementList attribute="shopCategory" showMore='true' limit='7' />
+              </>
+            }
+            {facetsToShow && facetsToShow.indexOf("brands") >= 0 && currentIndexName != 'uncommonry' &&
+              <>
+                <FilterHeading>Brands</FilterHeading>
+                <RefinementList attribute="shopName" showMore='true' limit='5' />
+              </>
+            }
+            {facetsToShow && facetsToShow.indexOf("payments") >= 0 && currentIndexName == 'uncommonry' &&
+              <>
+                <FilterHeading>Payments</FilterHeading>
+                <RefinementList
+                  attribute="shopifyPay"
+                  transformItems={items =>
+                    items.filter(item => (item.label == '1')).map(item => ({
+                      ...item,
+                      label: "Shop Pay",
+                    }))
+                  }
+                />
+                <RefinementList
+                  attribute="paypal"
+                  transformItems={items =>
+                    items.filter(item => (item.label == '1')).map(item => ({
+                      ...item,
+                      label: "Paypal",
+                    }))
+                  }
+                />
+                <RefinementList
+                  attribute="applePay"
+                  transformItems={items =>
+                    items.filter(item => (item.label == '1')).map(item => ({
+                      ...item,
+                      label: "Apple Pay",
+                    }))
+                  }
+                />
+                <RefinementList
+                  attribute="amazonPay"
+                  transformItems={items =>
+                    items.filter(item => (item.label == '1')).map(item => ({
+                      ...item,
+                      label: "Amazon Pay",
+                    }))
+                  }
+                />
+              </>
+            }
+            {facetsToShow && facetsToShow.indexOf("pricerangeslider") >= 0 && currentIndexName == 'uncommonry' &&
+              <>
+                <FilterHeading>Average Price</FilterHeading>
+                <AlgoliaRangeSlider attribute="price" />
+              </>
+            }
+            {facetsToShow && facetsToShow.indexOf("prices") >= 0 && currentIndexName == 'empProducts' &&
+              <>
+                <FilterHeading>Prices</FilterHeading>
+                <NumericMenu
+                  attribute="price"
+                  items={[
+                    { label: 'All' },
+                    { label: 'Under $50', end: 50 },
+                    { label: '$50 - $100', start: 50, end: 100 },
+                    { label: '$100 - $200', start: 100, end: 200 },
+                    { label: '$200+', start: 200 },
+                  ]}
+                />
+              </>
+            }
+            {facetsToShow && facetsToShow.indexOf("giftcard") >= 0 &&
+              <>
+                <RefinementList
+                  attribute="name"
+                  transformItems={items =>
+                    items.filter(item => (item.label.toLowerCase().indexOf('gift') >= 0))
+                  }
+                />
+              </>
+            }
+            {facetsToShow && facetsToShow.indexOf("storeoffers") >= 0 &&
+              <>
+                <FilterHeading>Store Offers</FilterHeading>
+                <RefinementList
+                  attribute="freeShipMin"
+                  transformItems={items =>
+                    items.filter(item => (item.label == 0)).map(item => ({
+                      ...item,
+                      label: "Free Shipping",
+                    }))
+                  }
+                />
+                <RefinementList
+                  attribute="returnShipFree"
+                  transformItems={items =>
+                    items.filter(item => (item.label == 'Yes')).map(item => ({
+                      ...item,
+                      label: "Free Returns",
+                    }))
+                  }
+                />
+              </>
+            }
 
-        <div class="searchline">
-        <div class="indexSelect">
-        {enableShopProductSwitch &&
-          <div style={{ paddingBottom: '0.75rem' }}>
-            <select value={currentIndexName} onChange={changeCurrentIndexName}>
-              <option value="empProducts">Products</option>
-              <option value="uncommonry">Shops</option>
-            </select>
-          </div>
+          </LeftPanel>
         }
-        </div>
-          {showSearchBox &&
-            <SearchBox />
-          }
+        <RightPanel>
+          <Configure hitsPerPage={12} filters={defaultFilter} />
+          <div class="searchline">
+            <div class="indexSelect">
+              {enableShopProductSwitch &&
+                <div style={{ paddingBottom: '0.75rem' }}>
+                  <select value={currentIndexName} onChange={changeCurrentIndexName}>
+                    <option value="empProducts">Products</option>
+                    <option value="uncommonry">Shops</option>
+                  </select>
+                </div>
+              }
+            </div>
+            {facetsToShow && facetsToShow.indexOf("onsale") >= 0 &&
+              <div class="saleFacet">
+                <RefinementList
+                  attribute="onSale"
+                  transformItems={items =>
+                    items.filter(item => (item.label == '1')).map(item => ({
+                      ...item,
+                      label: "On Sale",
+                    }))
+                  }
+                />
+              </div>
+            }
+            {showSearchBox &&
+              <SearchBox />
+            }
           </div>
           <AlgoliaStateResults noResultMessage={noResultMessage} />
           {currentIndexName == 'empProducts' &&

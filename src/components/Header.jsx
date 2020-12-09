@@ -70,29 +70,9 @@ const Header = ({ children, title, date, subtitle, cover, socialDetails, likeEna
       <img src={cover || {} || [] || ''} style={{ width: '100%', objectFit: 'fill', objectPosition: '50% 50%' }} />
     }
     <Text>
+
  {likeEnabled &&
         <img src={likeEnabled.storeProfileImage} title={title} alt={title} style={{ 'margin-top': '4rem', height: '100px', 'textAlign': 'center', 'borderRadius': '100%' }} />
-      }
-      <h3 style={{ 'margin-bottom': '0.5rem'}}>{title}</h3>
-            <h4>{subtitle}</h4>
-      {socialDetails &&
-        <SocialIcons>
-          {socialDetails.InstagramLink &&
-            <a href={socialDetails.InstagramLink} target="_blank"><FaInstagram size="32" color="black" /></a>
-          }
-          {socialDetails.FacebookLink &&
-            <a href={socialDetails.FacebookLink} target="_blank"><FaFacebookSquare size="32" color="black" /></a>
-          }
-          {socialDetails.PinterestLink &&
-            <a href={socialDetails.PinterestLink} target="_blank"><FaPinterestSquare size="32" color="black" /></a>
-          }
-          {socialDetails.TwitterLink &&
-            <a href={socialDetails.TwitterLink} target="_blank"><FaTwitterSquare size="32" color="black" /></a>
-          }
-          {socialDetails.YouTubeLink &&
-            <a href={socialDetails.YouTubeLink} target="_blank"><FaYoutube size="32" color="black" /></a>
-          }
-        </SocialIcons>
       }
       {likeEnabled &&
         <span
@@ -125,6 +105,28 @@ const Header = ({ children, title, date, subtitle, cover, socialDetails, likeEna
         >
         </span>
       }
+      <h3 style={{ 'margin-bottom': '0.5rem'}}>{title}</h3>
+            <h4>{subtitle}</h4>
+      {socialDetails &&
+        <SocialIcons>
+          {socialDetails.InstagramLink &&
+            <a href={socialDetails.InstagramLink} target="_blank"><FaInstagram size="32" color="black" /></a>
+          }
+          {socialDetails.FacebookLink &&
+            <a href={socialDetails.FacebookLink} target="_blank"><FaFacebookSquare size="32" color="black" /></a>
+          }
+          {socialDetails.PinterestLink &&
+            <a href={socialDetails.PinterestLink} target="_blank"><FaPinterestSquare size="32" color="black" /></a>
+          }
+          {socialDetails.TwitterLink &&
+            <a href={socialDetails.TwitterLink} target="_blank"><FaTwitterSquare size="32" color="black" /></a>
+          }
+          {socialDetails.YouTubeLink &&
+            <a href={socialDetails.YouTubeLink} target="_blank"><FaYoutube size="32" color="black" /></a>
+          }
+        </SocialIcons>
+      }
+
       {children && <Subtitle dangerouslySetInnerHTML={{ __html: children }} />}
     </Text>
   </Wrapper>

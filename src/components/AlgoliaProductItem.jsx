@@ -13,7 +13,7 @@ const Wrapper = styled.article`
   border-radius: ${props => props.theme.borderRadius.default};
   {/* box-shadow: ${props => props.theme.shadow.feature.small.default};*/}
   transition: ${props => props.theme.transitions.boom.transition};
-  height: 16rem;
+  height: 14rem;
 
   &:hover {
     box-shadow: ${props => props.theme.shadow.feature.small.hover};
@@ -25,14 +25,14 @@ const Wrapper = styled.article`
   }
 
   @media (max-width: 1000px) {
-    height: 18rem;
+    height: 10rem;
   }
 
   @media (max-width: 600px) {
     flex-basis: 100%;
     max-width: 100%;
     width: 100%;
-    height: 12rem;
+    height: 10rem;
   }
 `;
 
@@ -236,13 +236,12 @@ const AlgoliaProductItem = (props) => {
 
   }
 
-  console.log("**** hit",(props && props.hit))
   return (
     <Wrapper>
       {props && props.hit &&
         <>
           <Image>
-            <a href={`/shops/${props.hit.emprezzoID}/`} title={props.hit.name.toLowerCase()} target="_blank">
+            <a href={`/shops/${props.hit.emprezzoID}/`} title={props.hit.name && props.hit.name.toLowerCase()} target="_blank">
               {props.hit.imageURL &&
                 <img src={props.hit.imageURL} />
               }
@@ -255,7 +254,7 @@ const AlgoliaProductItem = (props) => {
                   <strike>${props.hit.maxPrice}</strike>
                 }
                   {` `}${props.hit.price}</ShopName>
-              <Title>{(props.hit.name.toLowerCase() || "").substring(0,24)}</Title>
+              <Title>{props.hit.name && props.hit.name.toLowerCase().substring(0,24)}</Title>
 
               {props.hit.price &&
                 <Price>

@@ -23,11 +23,13 @@ import {
   FaChartLine,
   FaAt,
   FaPaypal,
-  FaAmazonPay,
+  FaAmazon,
   FaShopify,
-  FaApplePay,
+  FaApple,
   FaTags,
   FaTruck,
+  FaRegStar,
+  FaBoxOpen,
   FaUndoAlt,
 } from 'react-icons/fa';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -59,14 +61,26 @@ const Title = styled.h1`
   }
 `;
 
-const Subtitle = styled.h5`
+const Subtitle = styled.p`
   @media (max-width: ${props => props.theme.breakpoints.s}) {
-    font-size: 0.6rem;
+    font-size: 0.8rem;
+  }
+font-family: 'Jost','Segoe UI','Roboto','Candal',-apple-system,'BlinkMacSystemFont','Segoe UI','Helvetica','Arial',sans-serif;
+  line-height: 1.5;
+  margin-top: 1rem;
+  margin-bottom: 0rem;
+`;
+
+const Stat = styled.p`
+  font-size: 1rem;
+  @media (max-width: ${props => props.theme.breakpoints.s}) {
+    font-size: 0.7rem;
   }
   font-family: 'Overpass Mono', 'Consolas', 'Open Sans', -apple-system,
     'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   line-height: 1.5;
-  margin-top: 1rem;
+  margin-top: 0rem;
+  margin-bottom: 0rem;
 `;
 
 const Statistics = styled.div`
@@ -84,6 +98,8 @@ const Statistics = styled.div`
 
 const TabStyle = {
   marginBottom: '0px',
+  padding: '6px',
+  'font-size': '14px',
 
 };
 
@@ -198,6 +214,10 @@ const SingleItem = ({ data, pageContext }) => {
     name,
     about,
     signup_promos,
+    AmazonPay,
+    ApplePay,
+    ShopifyPay,
+    PaypalShopID,
   } = data.mysqlMainView;
   if (AlexaURL.slice(-1) != '/') AlexaURL += "/";
 
@@ -676,6 +696,8 @@ const SingleItem = ({ data, pageContext }) => {
     return productImage;
   }
 
+  console.log("*** firstRowDataView", firstRowDataView)
+
   return (
     <Layout>
       <SEO
@@ -691,45 +713,59 @@ const SingleItem = ({ data, pageContext }) => {
           <div style={{ paddingLeft: '5px' }}>
 
             <Title>{name}</Title>
-            <Subtitle><b>{category}</b><br/><i>{tags}</i></Subtitle>
+            <Subtitle><b>{category}</b><br /><i>{tags}</i><br/></Subtitle>
+            <Stat>{rowShopifyProductSummary.PriceMin &&
+          rowShopifyProductSummary.PriceMax && (
+            <small>
+              ${rowShopifyProductSummary.PriceMin}-${rowShopifyProductSummary.PriceMax} (${rowShopifyProductSummary.PriceAvg} avg)</small>
+          )}
+</Stat>
 
-          {firstRowDataView.node.PaypalShopID && firstRowDataView.node.PaypalShopID != '#' && (
-                <FaPaypal size="16" color="#666" />
-            )}
-        
 
 
+            <Stat>PAY&nbsp; 
+            {PaypalShopID && PaypalShopID != '#' &&
+              <span  style={{paddingRight: "0.25rem"}}><FaPaypal size="16" color="#666" /></span>
+            }
+            {AmazonPay == '1' &&
+              <span  style={{paddingRight: "0.25rem"}}><FaAmazon size="16" color="#666" /></span>
+            }
+            {ShopifyPay && ShopifyPay == '1' &&
+              <span  style={{paddingRight: "0.25rem"}}><FaShopify size="16" color="#666" /></span>
+            }
+            {ApplePay && ApplePay == '1' &&
+              <span  style={{paddingRight: "0.25rem"}}><FaApple size="16" color="#666" /></span>
+            }
+
+</Stat>
 
 
+<Stat>
 
             {firstRowDataView &&
               <div>
 
                 {firstRowDataView.node.FreeShipMin != null && firstRowDataView.node.FreeShipMin != 0 &&
-                  <span><FaTruck size="16" color="#666" class="icon"/> Free shipping over ${firstRowDataView.node.FreeShipMin}<br/></span>
+                  <span><FaTruck size="16" color="#666" class="icon" title="free shipping info"/> Free shipping over ${firstRowDataView.node.FreeShipMin}<br /></span>
                 }
                 {firstRowDataView.node.FreeShipMin == 0 &&
-                  <span><FaTruck size="16" color="#666" class="icon" /> Most orders ship free!<br/></span>
+                  <span><FaTruck size="16" color="#666" class="icon" title="free shipping on most orders"/> Most orders ship free!<br /></span>
                 }
                 {firstRowDataView.node.BaseShipRate > 1 &&
-                  <span>Standard shipping rates from ${firstRowDataView.node.BaseShipRate}.<br/></span>
+                  <span><FaBoxOpen size="16" color="#666" class="icon" title="shipping rates" /> Rates from ${firstRowDataView.node.BaseShipRate}<br /></span>
                 }
                 {firstRowDataView.node.ReturnDays != null && firstRowDataView.node.ReturnDays != "0" &&
-                  <span><FaUndoAlt size="16" color="#666" /> {firstRowDataView.node.ReturnDays} day returns </span>
+                  <span><FaUndoAlt size="16" color="#666" /> {firstRowDataView.node.ReturnDays} day returns</span>
                 }
                 {firstRowDataView.node.ReturnShipFree != "." && firstRowDataView.node.ReturnShipFree == "Yes" &&
-                  <span>and returns are free!</span>
+                  <span><br/><FaRegStar size="16" color="#666" /> Returns ship free!</span>
                 }
 
               </div>
             }
 
-            {rowShopifyProductSummary.PriceMin &&
-              rowShopifyProductSummary.PriceMax && (
-                <small>
-                  ${rowShopifyProductSummary.PriceMin}-${rowShopifyProductSummary.PriceMax} (${rowShopifyProductSummary.PriceAvg} avg)</small>
-              )}
-<br/>
+</Stat>
+            <br />
 
 
 
@@ -769,9 +805,10 @@ const SingleItem = ({ data, pageContext }) => {
           <TabPanel>
             <AlgoliaProductList
               defaultFilter={`emprezzoID:"${emprezzoID}"`}
+              hideLeftPanel={true}
               facetsToShow={'onsale,giftcard'}
               showSearchBox={true}
-              showClearFilter={true}
+              showClearFilter={false}
               enableCart={true}
               currentShop={{ name: name, link: AlexaURL }}
               noResultMessage={`Shop direct at <a href=${AlexaURL} target="_blank">${name}</a>`}
@@ -809,10 +846,7 @@ const SingleItem = ({ data, pageContext }) => {
 
 
 
-        {FreeShipText && FreeShipText.length > 0 && (
-          <h3>get free shipping at {name}</h3>
-        )}
-        <p>{get100Words(FreeShipText)}</p>
+
 
         <br />
         {!!combinedRelatedShops.length && (
@@ -837,7 +871,7 @@ const SingleItem = ({ data, pageContext }) => {
             </PostSectionGrid>
           </>
         )}
-  <br />
+        <br />
         {listInstaPostEdges && listInstaPostEdges.length > 0 && (
           <h3>See recent posts from @{firstRowDataView.node.UserName}</h3>
         )}
@@ -874,10 +908,53 @@ const SingleItem = ({ data, pageContext }) => {
         <br />
 
 
-        <h3>{name} data and charts</h3>
+        <h3>About {name}</h3>
+          <b>{name}</b> produces and sells {category} products {tags} and more. The company sells direct-to-consumer on its website.
+
+      {rowShopifyProductSummary.PriceMin &&
+            rowShopifyProductSummary.PriceMax && (
+              <span>
+                &nbsp;Prices range from ${rowShopifyProductSummary.PriceMin} - ${rowShopifyProductSummary.PriceMax} with an average price of ${rowShopifyProductSummary.PriceAvg}.</span>
+            )}
+          {socialDetails && (
+            <span>
+              &nbsp;The {name} brand can be found on
+              {socialDetails.InstagramLink && (
+                " Instagram, "
+              )}
+              {socialDetails.FacebookLink && (
+                " Facebook, "
+              )}
+              {socialDetails.PinterestLink && (
+                " Pinterest, "
+              )}
+              {socialDetails.TikTok && (
+                " TikTok, "
+              )}
+              {socialDetails.TwitterLink && (
+                " Twitter, "
+              )}
+              {socialDetails.YouTubeLink && (
+                " Youtube, "
+              )}
+               and here on Emprezzo.&nbsp;
+            </span>
+          )}
+          <br />
+          <a href={AlexaURL} className="button" target="_blank">
+            shop {name}
+          </a>{' '}
+          <a href="/randomshop" className="button buttonalt">
+            Discover another shop
+      </a>
+      <div>
+      <br/>
+</div>
+        <h3 style={{ 'top-margin': '1rem' }}>{name} data and charts</h3>
         <Tabs>
           <TabList>
-            <Tab style={TabStyle}>Social stats</Tab>
+            <Tab style={TabStyle}>Fans</Tab>
+            <Tab style={TabStyle}>Growth</Tab>
             {rowShopifyProductSummary.PriceListActive && (<Tab style={TabStyle}>Prices</Tab>)}
             <Tab style={TabStyle}>Traffic</Tab>
             {chartTOSData && (<Tab style={TabStyle}>Time</Tab>)}
@@ -885,42 +962,9 @@ const SingleItem = ({ data, pageContext }) => {
 
           </TabList>
           <TabPanel>
-            <div style={{ display: 'flex' }}>
-              <div style={{ flex: '30%' }}>
-                {socialDetails && (
-                  <SocialIcons>
-                    {socialDetails.InstagramLink && (
-                      <a href={socialDetails.InstagramLink} target="_blank">
-                        <FaInstagram size="22" color="#666" />
-                      </a>
-                    )}
-                    {socialDetails.FacebookLink && (
-                      <a href={socialDetails.FacebookLink} target="_blank">
-                        <FaFacebookSquare size="22" color="#666" />
-                      </a>
-                    )}
-                    {socialDetails.PinterestLink && (
-                      <a href={socialDetails.PinterestLink} target="_blank">
-                        <FaPinterestSquare size="22" color="#666" />
-                      </a>
-                    )}
-                    {socialDetails.TwitterLink && (
-                      <a href={socialDetails.TwitterLink} target="_blank">
-                        <FaTwitterSquare size="22" color="#666" />
-                      </a>
-                    )}
-                    {socialDetails.TikTokLink && (
-                      <a href={socialDetails.TikTokLink} target="_blank">
-                        <FaAt size="22" color="#666" />
-                      </a>
-                    )}
-                    {socialDetails.YouTubeLink && (
-                      <a href={socialDetails.YouTubeLink} target="_blank">
-                        <FaYoutube size="22" color="#666" />
-                      </a>
-                    )}
-                  </SocialIcons>
-                )}
+
+              <div style={{ flex: '100%' }}>
+
                 {chartSocialData && chartSocialData.labels && chartSocialData.labels.length > 0 && (
                   <ReactFrappeChart
                     type="donut"
@@ -930,12 +974,14 @@ const SingleItem = ({ data, pageContext }) => {
                   />
                 )}
               </div>
+                </TabPanel>
+                <TabPanel>
               <div style={{ flex: '60%' }}>
                 {allSocialChartsData && (
                   <ReactFrappeChart
                     type="axis-mixed"
                     colors={['#743ee2']}
-                    title="Social Media"
+                    title="Social media follower growth by platform"
                     height={250}
                     axisOptions={{
                       xAxisMode: 'tick',
@@ -946,7 +992,7 @@ const SingleItem = ({ data, pageContext }) => {
                   />
                 )}
               </div>
-            </div>
+
           </TabPanel>
           {rowShopifyProductSummary.PriceListActive && (
             <TabPanel>
@@ -989,6 +1035,7 @@ const SingleItem = ({ data, pageContext }) => {
           <TabPanel>
             {chartRankData && (
               <ReactFrappeChart
+                title="Alexa traffic rank over time"
                 type="axis-mixed"
                 colors={['#743ee2']}
                 height={250}
@@ -1002,6 +1049,7 @@ const SingleItem = ({ data, pageContext }) => {
             {chartTOSData && (
               <ReactFrappeChart
                 type="axis-mixed"
+                title="Average time spent on site"
                 colors={['#743ee2']}
                 height={250}
                 axisOptions={{ xAxisMode: 'tick', xIsSeries: 1 }}
@@ -1020,47 +1068,7 @@ const SingleItem = ({ data, pageContext }) => {
         </Tabs>
 
 
-        <Container>
 
-          <b>{name}</b> produces and sells {category} products {tags} and more. The company sells direct-to-consumer on its website.
-
-      {rowShopifyProductSummary.PriceMin &&
-            rowShopifyProductSummary.PriceMax && (
-              <span>
-                &nbsp;Prices range from ${rowShopifyProductSummary.PriceMin} - ${rowShopifyProductSummary.PriceMax} with an average price of ${rowShopifyProductSummary.PriceAvg}.</span>
-            )}
-          {socialDetails && (
-            <span>
-              &nbsp;The {name} brand can be found on
-              {socialDetails.InstagramLink && (
-                " Instagram, "
-              )}
-              {socialDetails.FacebookLink && (
-                " Facebook, "
-              )}
-              {socialDetails.PinterestLink && (
-                " Pinterest, "
-              )}
-              {socialDetails.TikTok && (
-                " TikTok, "
-              )}
-              {socialDetails.TwitterLink && (
-                " Twitter, "
-              )}
-              {socialDetails.YouTubeLink && (
-                " Youtube, "
-              )}
-               and here on Emprezzo.&nbsp;
-            </span>
-          )}
-          <br/>
-          <a href={AlexaURL} className="button" target="_blank">
-            shop {name}
-          </a>{' '}
-          <a href="/randomshop" className="button buttonalt">
-            Discover another shop
-      </a>
-        </Container>
 
       </Container>
       <SuggestionBar>
@@ -1111,6 +1119,11 @@ export const query = graphql`
       GlobalRank_Dates
       GlobalRank_List
       TOS_List
+      AmazonPay
+      ApplePay
+      ShopifyPay
+      PaypalShopID
+      emprezzoID
     }
     allMysqlMainView {
       edges {
@@ -1138,7 +1151,7 @@ export const query = graphql`
           ProfilePicURL
           ProfileImage
           CreateDate
-
+          emprezzoID
         }
       }
     }

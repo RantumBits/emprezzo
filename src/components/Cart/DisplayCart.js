@@ -8,7 +8,6 @@ const Wrapper = styled.div`
   text-align: center;
 `;
 const CartWrapper = styled.div`
-  display: flex;
   justify-content: center;
   @media (max-width: 600px) {
     display: block;
@@ -20,28 +19,27 @@ const CartItems = styled.div`
 `;
 const CartSummary = styled.div`
     padding: 1rem 0 1rem 0;
-    width: 20%;
 `;
 const CartSummaryBody = styled.div`
-    text-align: left;
-    position: relative;
     display: flex;
-    flex-direction: column;
-    min-width: 0;
-    word-wrap: break-word;
-    background-color: #fff;
+    flex-direction: row;
     background-clip: border-box;
     border: 1px solid rgba(0,0,0,.125);
     flex: 1 1 auto;
     min-height: 1px;
     padding: 1.25rem;
-
-    p {
-        font-size: .875rem;
-        font-weight: 200;
-        margin-bottom: .25rem;
-        margin-top: 0;
-    }    
+    @media (max-width: 600px) {
+        flex-direction: column;
+    }
+`;
+const CartSummaryElement = styled.div`
+    padding: .5rem;    
+    flex: 0 0 25%;
+    max-width: 25%;
+    @media (max-width: 600px) {
+        flex: 0 0 99%;
+        max-width: 99%;
+    }
 `;
 
 const DisplayCart = () => {
@@ -59,14 +57,18 @@ const DisplayCart = () => {
                     </CartItems>
                     <CartSummary>
                         <CartSummaryBody>
-                            <p>Total Items</p>
-                            <h4>{itemCount}</h4>
-                            <p>Total Payment</p>
-                            <h3>{formatNumber(total)}</h3>
-                            <hr />
-                            <div>
-                                <button type="button" className="button" onClick={clearCart}>CLEAR</button>
-                            </div>
+                            <CartSummaryElement></CartSummaryElement>
+                            <CartSummaryElement>
+                                <div>Total Items: </div><h4>{itemCount}</h4>
+                            </CartSummaryElement>
+                            <CartSummaryElement>
+                                <div>Total Payment: </div><h3>{formatNumber(total)}</h3>
+                            </CartSummaryElement>
+                            <CartSummaryElement>
+                                <div>
+                                    <button type="button" className="button" onClick={clearCart}>CLEAR</button>
+                                </div>
+                            </CartSummaryElement>
                         </CartSummaryBody>
                     </CartSummary>
                 </CartWrapper>

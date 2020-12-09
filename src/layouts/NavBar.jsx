@@ -57,7 +57,7 @@ const Nav = styled.nav`
       cursor: pointer;
     }
     @media (max-width: ${props => props.theme.breakpoints.s}) {
-      margin-left: 0.5rem;      
+      margin-left: 0.5rem;
     }
   }
 
@@ -128,9 +128,10 @@ const NavBar = () => {
             </Link>
             <div className="dropdown-content">
               <Link key="1" to="/randomshop/">Random shop</Link>
-              <Link key="2" to="/shops/">All shops</Link>
-              <Link key="3" to="/products/">All products</Link>
-              <Link key="4" target="_blank" to="https://chrome.google.com/webstore/detail/emprezzo/ojfaaaocbgiojhlapncepdiccfgcjmee">Chrome extension</Link>
+              <Link key="2" to="/gift-cards/">Gift cards</Link>
+
+
+              <Link key="3" target="_blank" to="https://chrome.google.com/webstore/detail/emprezzo/ojfaaaocbgiojhlapncepdiccfgcjmee">Chrome extension</Link>
             </div>
           </div>
           <SearchWrapper>
@@ -138,7 +139,7 @@ const NavBar = () => {
           </SearchWrapper>
           <div>
             <Link to="/cart" style={{ display: "flex", margin: "0.5rem", fontSize: "0.85rem" }}>
-              <ShoppingCart width="24px" />({itemCount})
+              <ShoppingCart width="24px" />{itemCount}
             </Link>
           </div>
         </Nav>

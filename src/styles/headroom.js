@@ -37,7 +37,18 @@ a.buttonalt{
   opacity: 50%;
 }
 
-[data-reach-dialog-overlay]{zindex: 10;}
+button.ais-RefinementList-showMore, .ais-RefinementList-showMore:focus:focus {
+    background: #C04CFD;
+    opacity: 40%;
+
+}
+
+button.ais-RefinementList-showMore:hover {
+    background: #C04CFD;
+    opacity: 80%;
+}
+
+[data-reach-dialog-overlay]{z-index: 10;}
 
 h4 {margin: 1rem; font-size: .8rem;
 font-family: 'Overpass Mono', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;}

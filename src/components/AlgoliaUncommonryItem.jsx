@@ -4,6 +4,25 @@ import { css, Global } from '@emotion/core';
 import _ from 'lodash';
 import { Highlight } from 'react-instantsearch-dom';
 import theme from '../../config/theme';
+import {
+  FaInstagram,
+  FaFacebookSquare,
+  FaPinterestSquare,
+  FaTwitterSquare,
+  FaYoutube,
+  FaRegLaugh,
+  FaChartLine,
+  FaAt,
+  FaPaypal,
+  FaAmazon,
+  FaShopify,
+  FaApple,
+  FaTags,
+  FaTruck,
+  FaRegStar,
+  FaBoxOpen,
+  FaUndoAlt,
+} from 'react-icons/fa';
 
 const Wrapper = styled.div`
   display: flex;
@@ -32,15 +51,31 @@ const Information = styled.div`
   justify-content: space-between;
 `;
 
-const Title = styled.span`
-  font-size: 14px;
+const Title = styled.h3`
+  font-size: 18px;
   text-transform: capitalize;
   font-weight: bold;
+  margin-bottom: 0px;
+`;
+
+const Tags = styled.span`
+  font-size: 14px;
+  font-family: 'Jost','Segoe UI','Roboto','Candal',-apple-system,'BlinkMacSystemFont','Segoe UI','Helvetica','Arial',sans-serif;
+  font-weight: 300;
+  margin-bottom: 4px;
+
+`;
+
+const Stats = styled.span`
+  font-size: 12px;
+
+
   margin-bottom: 8px;
+
 `;
 
 const Price = styled.small`
-  
+
 `;
 
 const AlgoliaUncommonryItem = (props) => {
@@ -65,14 +100,54 @@ const AlgoliaUncommonryItem = (props) => {
             </Image>
           </a>
           <Information>
-            <a href={`/shops/${props.hit.emprezzoID}/`} title={props.hit.shopName} target="_blank">
+            <a href={`/shops/${props.hit.emprezzoID}/`} title={props.hit.shopName}>
               <div>
                 <Title>{props.hit.shopName}</Title>
-                <br />
-                <i>{props.hit.shopTags}</i><br />
-                <Price>Avg price: ${props.hit.price}</Price>
+
+
+                <Tags>{props.hit.shopCategory}: {props.hit.shopTags}</Tags>
+                <Stats> {props.hit.priceMin &&  <span  style={{paddingRight: "0"}}><br/> ${Math.round(props.hit.priceMin)}-${Math.round(props.hit.priceMax)} / ${Math.round(props.hit.priceAvg)} avg</span>
+
+              }<br/></Stats>
+
+                 <Stats><b>PAY</b> {props.hit.paypal == '1' &&
+                  <span  style={{paddingRight: "0.25rem"}}><FaPaypal size="14" color="#666" /></span>
+                }
+                {props.hit.shopifyPay == '1' &&
+                  <span  style={{paddingRight: "0.25rem"}}><FaShopify size="14" color="#666" /></span>
+                }
+                {props.hit.applePay == '1' &&
+                  <span  style={{paddingRight: "0.25rem"}}><FaApple size="14" color="#666" /></span>
+                }
+                {props.hit.amazonPay == '1' &&
+                  <span  style={{paddingRight: "0.25rem"}}><FaAmazon size="14" color="#666" /></span>
+                }<br/>
+                </Stats>
+
+
                 {` `}
-                <Price>Free ship min: ${props.hit.freeShipMin}</Price>
+                <Stats>
+                {props.hit.freeShipMin != null && props.hit.freeShipMin != 0 &&
+                  <span><FaTruck size="14" color="#666" class="icon" title="Free shipping minimum"/> ${props.hit.freeShipMin}+</span>
+                }
+                {props.hit.freeShipMin == 0 &&
+                  <span title="most orders ship free!"><FaTruck size="14" color="#666" class="icon" title="Get free shipping on most orders!"/>* </span>
+                }
+
+                {props.hit.baseShipRate > 0 &&
+                  <span> <FaBoxOpen paddingRight='2px' size="14" color="#666" class="icon" title="Shipping rates from" />${props.hit.baseShipRate}+ </span>
+                }
+                {props.hit.returnDays != null && props.hit.returnDays != "0" &&
+                  <span title={`${props.hit.returnDays} day returns`}> <FaUndoAlt paddingRight='5px' size="14" color="#666" />{props.hit.returnDays} </span>
+                }
+                {props.hit.returnShipFree != "." && props.hit.returnShipFree == "Yes" &&
+                  <span> <FaRegStar size="14" color="#666" title="Most returns ship free"/></span>
+                }
+
+
+
+
+                </Stats>
                 <br />
               </div>
             </a>
