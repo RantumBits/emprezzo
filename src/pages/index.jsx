@@ -7,6 +7,7 @@ import { Header, PostList } from 'components';
 import HomeCarouselItem from '../components/HomeCarouselItem';
 import ProductCategoryItem from '../components/ProductCategoryItem';
 import AlgoliaProductList from '../components/AlgoliaProductList';
+import ShopifyCheckout from '../components/Cart/ShopifyCheckout'
 import { Layout } from 'layouts';
 import Search from 'components/search';
 import _ from 'lodash';
@@ -36,7 +37,12 @@ const PostWrapper = styled.div`
   }
 `;
 
-
+const CheckoutWrapper = styled.div`
+text-align: center;
+.shopify-buy-frame--product{
+  display: inline-flex;
+}
+`;
 
 const SectionHeading = styled.h3`
   margin-left: 4rem;
@@ -360,16 +366,14 @@ const Index = ({ data }) => {
       <Header title="Discover great independent online stores" subtitle="shop direct & support independent business"></Header>
       {/* <p className="center"><a href ="/randomshop" className="button button">Discover a  shop</a></p> */}
       <div className="center">
-
-
-      </div>
-      <div className="center">
-
         <a href="/randomshop/" className="button ">Discover a new shop</a>
       </div>
+      <CheckoutWrapper>
+        <ShopifyCheckout uniqueComponentID="6130779062445" buttonText="BUY GIFT CARD" />
+      </CheckoutWrapper>
 
 
-{/*
+      {/*
       <Tabs style={TabPanelStyle}>
         <h2>Browse popular online shops</h2>
         <TabList>
@@ -461,7 +465,7 @@ const Index = ({ data }) => {
       <LazyLoad height={200} once offset={[-200, 0]}>
 
         <ShopWrapper>
-        <AlgoliaProductList
+          <AlgoliaProductList
             facetsToShow={'category,prices,storeoffers,brands,payments'}
             showSearchBox={true}
             showClearFilter={true}

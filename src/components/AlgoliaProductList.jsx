@@ -93,7 +93,7 @@ const LeftPanel = styled.div`
 `;
 
 const RightPanel = styled.div`
-  width: 80vw;
+  width: 90vw;
   @media (max-width: 600px) {
     width: 95vw;
     margin-left: 0px;
@@ -104,7 +104,9 @@ const RightPanel = styled.div`
     float:left;
     width: 100px;
     margin-right: 0.5rem;
-
+    @media (max-width: 900px) {
+      width: calc(15% - 1rem);
+    }
   }
   .indexSelect select{
     padding: 0.3rem;
@@ -151,7 +153,7 @@ const RightPanel = styled.div`
 
   .ais-SearchBox {
     @media (min-width: 900px) {
-      width: calc(90% - 1rem);
+      width: calc(85% - 1rem);
     }
     width: 65%;
 

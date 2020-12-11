@@ -807,7 +807,7 @@ const SingleItem = ({ data, pageContext }) => {
         pathname={AlexaURL}
       />
       <Header
-        description={`${category}: ${tags}`} children={subtitle} likeEnabled={{ storeName: name, storeURL: AlexaURL, storeProfileImage: (firstRowDataView && firstRowDataView.node.ProfilePicURL) }} />
+        description={`${category}: ${tags}`} children={subtitle} likeEnabled={{ storeName: name, storeURL: AlexaURL, storeProfileImage: ProfileImage || (firstRowDataView && firstRowDataView.node.ProfilePicURL) }} />
       <Container>
         <div className="profileimage" style={{ display: 'flex' }}>
           {/*firstRowDataView && renderProfilePicURL(firstRowDataView.node, name)*/}
@@ -958,7 +958,7 @@ const SingleItem = ({ data, pageContext }) => {
                 <span key={index}>
                   <PostSectionImage>
                     <Link key={index} to={`/shops/${shop.emprezzoID}/`}>
-                      <img src={shop.ProfilePicURL || shop.profile_image_url || "/logo/logo.png"} title={shop.name} alt={shop.name} onError={defaultImageOnError} style={{ height: 'inherit', 'textAlign': 'center', 'borderRadius': '100%' }} />
+                      <img src={shop.ProfileImage || shop.ProfilePicURL || shop.profile_image_url || "/logo/logo.png"} title={shop.name} alt={shop.name} onError={defaultImageOnError} style={{ height: 'inherit', 'textAlign': 'center', 'borderRadius': '100%' }} />
                     </Link>
                   </PostSectionImage>
                   <PostSectionContent>

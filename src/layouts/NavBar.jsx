@@ -6,6 +6,7 @@ import logo from '../../static/logo/logo.png';
 import Search from '../components/search'
 import { ShoppingCart, Menu } from "@styled-icons/material"
 import { CartContext } from '../components/Cart/CartContext'
+import ShopifyCheckout from '../components/Cart/ShopifyCheckout'
 import { useMediaQuery } from 'react-responsive'
 
 const searchIndices = [
