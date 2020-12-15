@@ -246,6 +246,7 @@ export const query = graphql`
           VariantImageURL
           VariantTitle
           VariantUpdateDate
+          VariantPrice
           VendorName
           VendorURL
           Description

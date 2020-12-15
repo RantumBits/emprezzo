@@ -107,6 +107,9 @@ const RightPanel = styled.div`
     @media (max-width: 900px) {
       width: calc(15% - 1rem);
     }
+    @media (max-width: 600px) {
+      width: calc(35% - 1rem);
+    }
   }
   .indexSelect select{
     padding: 0.3rem;
@@ -188,7 +191,7 @@ const FilterHeading = styled.div`
   }
 `;
 
-const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, hideLeftPanel, showClearFilter, facetsToShow, showSearchBox, searchIndexName, enableShopProductSwitch, enableCart, noResultMessage }) => {
+const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, hideLeftPanel, showClearFilter, facetsToShow, showSearchBox, searchIndexName, enableShopProductSwitch, enableCart,  noResultMessage }) => {
 
   const [currentIndexName, setCurrentIndexName] = React.useState(searchIndexName || `empProducts`)
   const changeCurrentIndexName = (e) => { setCurrentIndexName(e.target.value) }

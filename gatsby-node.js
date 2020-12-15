@@ -240,7 +240,7 @@ exports.createPages = ({ graphql, actions }) => {
         //dividing the data into chunk to avoid crosing update rate limit
         // reference: https://www.algolia.com/doc/faq/indexing/is-there-a-rate-limit/
         const sliceChunkSize = 5000;
-        console.log("**** nonAvailableProducts Processing - Total records = ",nonAvailableProducts.length)
+        console.log("**** nonAvailableProducts Processing - Total records = ", nonAvailableProducts.length)
         console.log("**** nonAvailableProducts Processing - Chunk Size = ", sliceChunkSize)
         const sliceCount = nonAvailableProducts.length / sliceChunkSize
         console.log("**** nonAvailableProducts Processing - Number of Chunk(s) = ", Math.ceil(sliceCount))
@@ -249,15 +249,20 @@ exports.createPages = ({ graphql, actions }) => {
           const endIndex = i * sliceChunkSize
           const productSlice = _.slice(nonAvailableProducts, startIndex, endIndex)
           const updatePayload = [];
+          const deletePayload = [];
           productSlice.forEach(({ node }) => {
             updatePayload.push({
               available: 0,
               objectID: node.UniqueID
             })
+            deletePayload.push(node.UniqueID)
           });
-          algoliaIndex.partialUpdateObjects(updatePayload, { createIfNotExists: false }).then((response) => {
-            console.log("**** nonAvailableProducts Processing - Algolia Response taskID = ", response.taskIDs)
-          });
+          // algoliaIndex.partialUpdateObjects(updatePayload, { createIfNotExists: false }).then((response) => {
+          //   console.log("**** nonAvailableProducts Processing - Algolia Response taskID = ", response.taskIDs)
+          // });
+          // algoliaIndex.deleteObjects(deletePayload).then(({objectIDs}) => {
+          //   console.log("**** nonAvailableProducts Processing - Algolia Object IDs sent for deletion = ", objectIDs)
+          // });
         }
       }) // end of 'available' field processing
     );

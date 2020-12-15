@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import styled from '@emotion/styled';
 import _ from 'lodash';
 import { CartContext } from './Cart/CartContext'
+import ShopifyCart from './Cart/ShopifyCart';
 import { Highlight } from 'react-instantsearch-dom';
 import theme from '../../config/theme';
 import { Dialog } from "@reach/dialog";
@@ -204,18 +205,18 @@ const AlgoliaProductItem = (props) => {
   const openDialog = () => setShowDialog(true);
   const closeDialog = () => setShowDialog(false);
 
-  //console.log("**** props", props)
+  //console.log("**** props=AlgoliaProductItem=", props)
   const { addProduct, cartItems, increase } = useContext(CartContext);
   const isInCart = product => {
     return !!cartItems.find(item => item.id === product.id);
   }
   const addToCartWrapper = hit => {
     const hitToProduct = {
-        id: hit.objectID,
-        name: hit.name,
-        price: hit.price,
-        photo: hit.imageURL,
-        productURL: hit.productURL,
+      id: hit.objectID,
+      name: hit.name,
+      price: hit.price,
+      photo: hit.imageURL,
+      productURL: hit.productURL,
     }
     //increase the quantity if already present, if not add product to cart
     isInCart(hitToProduct) ? increase(hitToProduct) : addProduct(hitToProduct);
@@ -250,11 +251,11 @@ const AlgoliaProductItem = (props) => {
 
           <StyledLink href="javascript:void(0)" onClick={() => openDialog()} title={props.hit.shopName}>
             <Information>
-              <ShopName>{(props.hit.shopName || "").substring(0,22)}   {props.hit.maxPrice>props.hit.price &&
-                  <strike>${props.hit.maxPrice}</strike>
-                }
-                  {` `}${props.hit.price}</ShopName>
-              <Title>{props.hit.name && props.hit.name.toLowerCase().substring(0,24)}</Title>
+              <ShopName>{(props.hit.shopName || "").substring(0, 22)}   {props.hit.maxPrice > props.hit.price &&
+                <strike>${props.hit.maxPrice}</strike>
+              }
+                {` `}${props.hit.price}</ShopName>
+              <Title>{props.hit.name && props.hit.name.toLowerCase().substring(0, 24)}</Title>
 
               {props.hit.price &&
                 <Price>
@@ -271,14 +272,14 @@ const AlgoliaProductItem = (props) => {
               <span aria-hidden>X</span>
             </button>
             <div className="dialogImageDescription">
-                <div className="dialogImage">
-              {props.hit.imageURL &&
-                <img src={props.hit.imageURL} />
-              }
+              <div className="dialogImage">
+                {props.hit.imageURL &&
+                  <img src={props.hit.imageURL} />
+                }
               </div>
               <div className="dialogRight">
-                <h3 style={{ 'font-size': '1.1rem', 'margin-bottom':'9px' }}>{props.hit.name}</h3>
-                <span style={{ 'margin-bottom':'12px', 'font-style': 'italic' }}><a href={`/shops/${props.hit.emprezzoID}/`}>{props.hit.shopName || props.hit.name}</a> ${props.hit.price}</span>
+                <h3 style={{ 'font-size': '1.1rem', 'margin-bottom': '9px' }}>{props.hit.name}</h3>
+                <span style={{ 'margin-bottom': '12px', 'font-style': 'italic' }}><a href={`/shops/${props.hit.emprezzoID}/`}>{props.hit.shopName || props.hit.name}</a> ${props.hit.price}</span>
                 <div className="dialogDescription">{props.hit.description && props.hit.description}</div>
                 {convertToSelectList(props.hit.VariantTitle)}
               </div>
@@ -286,7 +287,26 @@ const AlgoliaProductItem = (props) => {
             <br />
             <div>
               <a href={props.hit.productURL} target="_blank" className="button">Shop at {props.hit.shopName}</a>
-              <a href="javascript:"  onClick={() => addToCartWrapper(props.hit)} className="button buttonalt">Save for later</a>
+              <a href="javascript:" onClick={() => addToCartWrapper(props.hit)} className="button buttonalt">Save for later</a>
+              <ShopifyCart
+                variantId={"Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8zNzcwNTYyMzczMjM5Nw=="}
+                quantity={1}
+                customAttributes={[
+                  {
+                    key: "productName",
+                    value: props.hit.name
+                  }, {
+                    key: "price",
+                    value: "" + props.hit.price
+                  }, {
+                    key: "productURL",
+                    value: props.hit.productURL
+                  }, {
+                    key: "productID",
+                    value: "" + props.hit.productID
+                  }
+                ]}
+              />
             </div>
 
           </StyledDialog>

@@ -1,5 +1,5 @@
 const shopQuery = `{
-  shops: allMysqlMainView(limit:600) {
+  shops: allMysqlMainView(limit:1000) {
     edges {
       node {
         id: UniqueID
@@ -41,7 +41,7 @@ const shopQuery = `{
 }`
 
 const productQuery = `{
-  products: allMysqlShopifyProductsAll(limit: 50000 ) {
+  products: allMysqlShopifyProductsAll(limit: 30000 ) {
     edges {
       node {
         objectID: UniqueID
@@ -69,6 +69,10 @@ const productQuery = `{
         socialRankScore: SocialRankScore
         onSale: OnSale
         discountPct: DiscountPct
+        variantIDs: VariantID
+        variantPrice: VariantPrice
+        variantImageURL: VariantImageURL
+        variantTitles: VariantTitle
       }
     }
   }
@@ -80,7 +84,18 @@ const flatten = arr =>
   }))
 const settings = { attributesToSnippet: [`excerpt:20`] }
 const queries = [
-
+  {
+    query: shopQuery,
+    transformer: ({ data }) => flatten(data.shops.edges),
+    indexName: `uncommonry`,
+    settings,
+  },
+  {
+    query: productQuery,
+    transformer: ({ data }) => flatten(data.products.edges),
+    indexName: `empProducts`,
+    settings,
+  },
 ]
 
 module.exports = queries

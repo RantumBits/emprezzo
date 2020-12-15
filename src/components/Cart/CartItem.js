@@ -16,7 +16,7 @@ const CartItemWrapper = styled.div`
   }
 `;
 const CartElementSmall = styled.div`
-    padding: .5rem;    
+    padding: .5rem;
     flex: 0 0 12.5%;
     max-width: 12.5%;
     @media (max-width: 600px) {
@@ -25,7 +25,7 @@ const CartElementSmall = styled.div`
     }
 `;
 const CartElementMedium = styled.div`
-    padding: .5rem;    
+    padding: .5rem;
     flex: 0 0 25%;
     max-width: 25%;
     @media (max-width: 600px) {
@@ -34,7 +34,7 @@ const CartElementMedium = styled.div`
     }
 `;
 const CartElementBig = styled.div`
-    padding: .5rem;    
+    padding: .5rem;
     flex: 0 0 52%;
     max-width: 50%;
     @media (max-width: 600px) {
@@ -63,7 +63,7 @@ const ButtonsWrapper = styled.span`
         margin-right: .5rem;
         margin-bottom: .25rem;
         text-align: center;
-        vertical-align: middle;  
+        vertical-align: middle;
         color: #fff;
         background-color: #1a1a1a;
         border-color: #1a1a1a;
