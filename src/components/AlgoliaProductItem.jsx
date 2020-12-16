@@ -217,6 +217,9 @@ const AlgoliaProductItem = (props) => {
       price: hit.price,
       photo: hit.imageURL,
       productURL: hit.productURL,
+      emprezzoID: hit.emprezzoID,
+      shopName: hit.shopName,
+      description: hit.description,
     }
     //increase the quantity if already present, if not add product to cart
     isInCart(hitToProduct) ? increase(hitToProduct) : addProduct(hitToProduct);

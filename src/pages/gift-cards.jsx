@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { Header } from 'components';
 import AlgoliaProductList from '../components/AlgoliaProductList';
 import ShopifyCheckout from '../components/Cart/ShopifyCheckout'
+import BuyGiftCard from '../components/Cart/BuyGiftCard'
 import { Layout } from 'layouts';
 import _ from 'lodash';
 
@@ -27,11 +28,12 @@ const SearchWrapper = styled.div`
 
 const GiftCard = () => {
   return (
-    <Layout title={'Discover great products from independent brands'} description="Search thousands of products from independent stores and direct-to-consumer brands. Shop the emprezzo marketplace alternative to discover great products support independent businesses.">
-      <Header title="emprezzo product marketplace" description="🧐 Discover great products from independent brands" />
-      <CategoryHeading>Discover great gift cards</CategoryHeading>
-      <SearchWrapper>        
-        <ShopifyCheckout uniqueComponentID="6155771576495" buttonText="BUY GIFT CARD" />
+    <Layout title={'Shop gift cards from hundreds of direct to consumer brands and indepdent retailers'} description="Discover and shop for digital gift cards and gift certificates from hundreds of amazing online stores. ">
+      <Header title="Shop gift cards" subtitle="🧐 Shop gift cards from hundreds of direct to consumer brands and indepdent retailers" />
+
+      <SearchWrapper>
+        {/* <ShopifyCheckout uniqueComponentID="6155771576495" buttonText="BUY GIFT CARD" /> */}
+        <center style={{width: "-webkit-fill-available"}}><BuyGiftCard /></center>
         <AlgoliaProductList
           defaultSearchTerm={'gift card'}
           facetsToShow={'category,brands,prices'}
@@ -44,4 +46,3 @@ const GiftCard = () => {
 };
 
 export default GiftCard;
-

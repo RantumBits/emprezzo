@@ -31,6 +31,7 @@ class LineItem extends Component {
 
   render() {
     const itemTitle = (this.getCustomAttribute("shopName")+" Gift Card") || this.props.line_item.title
+    const itemPrice = this.getCustomAttribute("price") || this.props.line_item.variant.price || 0
     return (
       <li className="Line-item">
         <div className="Line-item__img">
@@ -52,7 +53,7 @@ class LineItem extends Component {
               <button className="Line-item__quantity-update" onClick={() => this.incrementQuantity(this.props.line_item.id)}>+</button>
             </div>
             <span className="Line-item__price">
-              $ {(this.props.line_item.quantity * this.getCustomAttribute("price")).toFixed(2)}
+              $ {(this.props.line_item.quantity * itemPrice).toFixed(2)}
             </span>
             <button className="Line-item__remove" onClick={() => this.props.removeLineItemInCart(this.props.line_item.id)}>×</button>
           </div>

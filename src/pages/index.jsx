@@ -8,6 +8,7 @@ import HomeCarouselItem from '../components/HomeCarouselItem';
 import ProductCategoryItem from '../components/ProductCategoryItem';
 import AlgoliaProductList from '../components/AlgoliaProductList';
 import ShopifyCheckout from '../components/Cart/ShopifyCheckout'
+import BuyGiftCard from '../components/Cart/BuyGiftCard'
 import { Layout } from 'layouts';
 import Search from 'components/search';
 import _ from 'lodash';
@@ -369,7 +370,7 @@ const Index = ({ data }) => {
         <a href="/randomshop/" className="button ">Discover a new shop</a>
       </div>
       <CheckoutWrapper>
-        <ShopifyCheckout uniqueComponentID="6130779062445" buttonText="BUY GIFT CARD" />
+      <center style={{width: "-webkit-fill-available"}}><BuyGiftCard /></center>
       </CheckoutWrapper>
 
 

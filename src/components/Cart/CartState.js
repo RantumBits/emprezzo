@@ -8,6 +8,7 @@ const initialState = {
     client: null,
     checkout: { lineItems: [] },
     products: [],
+    giftcardProduct: {},
     shop: {},
     visibility: false
 };
@@ -36,12 +37,15 @@ const actions = {
     },
     initializeProducts: (store) => {
         store.state.client.product.fetchAll().then((res) => {
-            // res.map((item) => {
-            //     console.log(item.id, item.title, item.variants[0].id)
-            // })
+            res.map((item) => {
+                console.log(item.id, item.title, item.id, item.variants[0].id)
+            })
+            //Gift card exchange
             const giftCardPlaceholder = _.filter(res, (item) => item.id == "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzYxNTU3NjU1NDcxODM=")
-            //console.log("***** giftCardPlaceholder", giftCardPlaceholder)
             store.setState({ products: giftCardPlaceholder });
+            //emprezzo gift card
+            const gcProduct = _.filter(res, (item) => item.id == "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzYxNTU3NzE1NzY0OTU=")
+            store.setState({ giftcardProduct: gcProduct[0] });
         });
     },
     initializeShops: (store) => {
@@ -54,6 +58,18 @@ const actions = {
             isCartOpen: true,
         });
         const variantId = "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8zNzg0ODk5MTAwNjg5NQ==";
+        customAttributes = customAttributes || [];
+        const lineItemsToAdd = [{ variantId, quantity: parseInt(quantity, 10), customAttributes }]
+        const checkoutId = store.state.checkout.id
+        return store.state.client.checkout.addLineItems(checkoutId, lineItemsToAdd).then(res => {
+            store.setState({ checkout: res });
+        });
+    },
+    addGiftCardToCart: (store, variantId, quantity, customAttributes) => {
+        store.setState({
+            isCartOpen: true,
+        });
+        //const variantId = "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8zNzg0OTAwMTAzMzkwMw==";
         customAttributes = customAttributes || [];
         const lineItemsToAdd = [{ variantId, quantity: parseInt(quantity, 10), customAttributes }]
         const checkoutId = store.state.checkout.id

@@ -944,33 +944,36 @@ const SingleItem = ({ data, pageContext }) => {
         </Tabs>
 
 
+        <Tabs>
+          <TabList>
+            <Tab style={TabStyle}>Shop {name}</Tab>
+            {/* {listShopifyBestSellersEdges &&
+              listShopifyBestSellersEdges.length > 0 && (
+                <Tab style={TabStyle}>Best sellers</Tab>
+              )}
+            {listShopifyNewProductsEdges &&
+              listShopifyNewProductsEdges.length > 0 && (
+                <Tab style={TabStyle}>New products</Tab>
+              )}
+            {listShopifySaleProducts &&
+              listShopifySaleProducts.length > 0 && (
+                <Tab style={TabStyle}>Sale</Tab>
+              )}
+            {listShopifyGiftCards &&
+              listShopifyGiftCards.length > 0 && (
+                <Tab style={TabStyle}>Gift Cards</Tab>
+              )} */}
+          </TabList>
+
+          
+
+        </Tabs>
+
 
 
 
         <br />
-        {!!combinedRelatedShops.length && (
-          <>
-            <h3>Discover shops similar to {name}</h3>
-            <PostSectionGrid>
-              {combinedRelatedShops && combinedRelatedShops.map(({ shop }, index) => (
-                <span key={index}>
-                  <PostSectionImage>
-                    <Link key={index} to={`/shops/${shop.emprezzoID}/`}>
-                      <img src={shop.ProfileImage || shop.ProfilePicURL || shop.profile_image_url || "/logo/logo.png"} title={shop.name} alt={shop.name} onError={defaultImageOnError} style={{ height: 'inherit', 'textAlign': 'center', 'borderRadius': '100%' }} />
-                    </Link>
-                  </PostSectionImage>
-                  <PostSectionContent>
-                    <Link key={index} to={`/shops/${shop.emprezzoID}/`}>
-                      {shop.name && <b>{shop.name}</b>}
-                    </Link>
 
-                  </PostSectionContent>
-                </span>
-              ))}
-            </PostSectionGrid>
-          </>
-        )}
-        <br />
         {listInstaPostEdges && listInstaPostEdges.length > 0 && (
           <h3>See recent posts from @{firstRowDataView.node.UserName}</h3>
         )}
@@ -1047,7 +1050,30 @@ const SingleItem = ({ data, pageContext }) => {
             Discover another shop
       </a>
       <div>
-          <br />
+      <br/>
+      {!!combinedRelatedShops.length && (
+        <>
+          <h3>Discover shops similar to {name}</h3>
+          <PostSectionGrid>
+            {combinedRelatedShops && combinedRelatedShops.map(({ shop }, index) => (
+              <span key={index}>
+                <PostSectionImage>
+                  <Link key={index} to={`/shops/${shop.emprezzoID}/`}>
+                    <img src={shop.ProfileImage || shop.ProfilePicURL || shop.profile_image_url || "/logo/logo.png"} title={shop.name} alt={shop.name} onError={defaultImageOnError} style={{ height: 'inherit', 'textAlign': 'center', 'borderRadius': '100%' }} />
+                  </Link>
+                </PostSectionImage>
+                <PostSectionContent>
+                  <Link key={index} to={`/shops/${shop.emprezzoID}/`}>
+                    {shop.name && <b>{shop.name}</b>}
+                  </Link>
+
+                </PostSectionContent>
+              </span>
+            ))}
+          </PostSectionGrid>
+        </>
+      )}
+      <br />
 </div>
         <h3 style={{ 'top-margin': '1rem' }}>{name} data and charts</h3>
         <Tabs>
