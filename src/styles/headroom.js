@@ -5,7 +5,7 @@ const headroom = css`
   .headroom-wrapper {
     position: fixed;
     width: 100%;
-    z-index: 2000;
+    z-index: 10;
     top: 0;
   }
   .css-14za4wp.eqxxxtn1, .css-woc7hc.eqxxxtn0 {

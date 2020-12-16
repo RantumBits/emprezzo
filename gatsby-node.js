@@ -210,6 +210,7 @@ exports.createPages = ({ graphql, actions }) => {
 
     //getting the list of unavailable Products
     //Those will need to be set to match the objectID format and set to 'unavailable' in the Algolia index
+/*    
     resolve(
       graphql(
         `
@@ -260,13 +261,13 @@ exports.createPages = ({ graphql, actions }) => {
           // algoliaIndex.partialUpdateObjects(updatePayload, { createIfNotExists: false }).then((response) => {
           //   console.log("**** nonAvailableProducts Processing - Algolia Response taskID = ", response.taskIDs)
           // });
-          // algoliaIndex.deleteObjects(deletePayload).then(({objectIDs}) => {
-          //   console.log("**** nonAvailableProducts Processing - Algolia Object IDs sent for deletion = ", objectIDs)
-          // });
+          algoliaIndex.deleteObjects(deletePayload).then(({objectIDs}) => {
+            console.log("**** nonAvailableProducts Processing - Algolia Object IDs sent for deletion = ", objectIDs)
+          });
         }
       }) // end of 'available' field processing
     );
-
+*/
   });
 };
 

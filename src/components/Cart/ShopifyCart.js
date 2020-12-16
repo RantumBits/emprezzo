@@ -19,17 +19,17 @@ const ShopifyCart = (props) => {
 
     return (
         <div className="App">
-                {!globalState.isCartOpen &&
-                    <div className="App__view-cart-wrapper">
-                        <button className="App__view-cart1" onClick={() => globalActions.handleCartOpen()}>Cart</button>
-                    </div>
-                }
+            {/* {!globalState.isCartOpen &&
+                <div className="App__view-cart-wrapper">
+                    <button className="App__view-cart1" onClick={() => globalActions.handleCartOpen()}>Cart</button>
+                </div>
+            } */}
             {/* <Products
                 products={globalState.products}
                 client={globalState.client}
                 addVariantToCart={globalActions.addVariantToCart}
             /> */}
-            <button className="Product__buy button" onClick={() => globalActions.addVariantToCart(props.variantId, props.quantity, props.customAttributes)}>Add to Cart</button>
+            <button className="Product__buy button" onClick={() => globalActions.addVariantToCart(props.quantity, props.customAttributes)}>Add to Cart</button>
             <Cart
                 checkout={globalState.checkout}
                 isCartOpen={globalState.isCartOpen}

@@ -191,7 +191,7 @@ const FilterHeading = styled.div`
   }
 `;
 
-const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, hideLeftPanel, showClearFilter, facetsToShow, showSearchBox, searchIndexName, enableShopProductSwitch, enableCart,  noResultMessage }) => {
+const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, hideLeftPanel, showClearFilter, facetsToShow, showSearchBox, searchIndexName, enableShopProductSwitch, enableCart, noResultMessage }) => {
 
   const [currentIndexName, setCurrentIndexName] = React.useState(searchIndexName || `empProducts`)
   const changeCurrentIndexName = (e) => { setCurrentIndexName(e.target.value) }

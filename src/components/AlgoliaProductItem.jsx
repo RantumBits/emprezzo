@@ -288,25 +288,32 @@ const AlgoliaProductItem = (props) => {
             <div>
               <a href={props.hit.productURL} target="_blank" className="button">Shop at {props.hit.shopName}</a>
               <a href="javascript:" onClick={() => addToCartWrapper(props.hit)} className="button buttonalt">Save for later</a>
-              <ShopifyCart
-                variantId={"Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8zNzcwNTYyMzczMjM5Nw=="}
-                quantity={1}
-                customAttributes={[
-                  {
-                    key: "productName",
-                    value: props.hit.name
-                  }, {
-                    key: "price",
-                    value: "" + props.hit.price
-                  }, {
-                    key: "productURL",
-                    value: props.hit.productURL
-                  }, {
-                    key: "productID",
-                    value: "" + props.hit.productID
-                  }
-                ]}
-              />
+              {(props.hit.name || "").toLowerCase().indexOf("gift card") >= 0 &&
+                <ShopifyCart
+                  quantity={1}
+                  customAttributes={[
+                    {
+                      key: "productName",
+                      value: props.hit.name
+                    }, {
+                      key: "price",
+                      value: "" + props.hit.price
+                    }, {
+                      key: "imageURL",
+                      value: props.hit.imageURL
+                    }, {
+                      key: "productURL",
+                      value: props.hit.productURL
+                    }, {
+                      key: "productID",
+                      value: "" + props.hit.productID
+                    }, {
+                      key: "shopName",
+                      value: "" + props.hit.shopName
+                    }
+                  ]}
+                />
+              }
             </div>
 
           </StyledDialog>

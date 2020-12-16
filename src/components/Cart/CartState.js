@@ -23,8 +23,8 @@ const actions = {
     initializeStoreClient: (store) => {
         if (store.state.client == null) {
             const localClient = Client.buildClient({
-                storefrontAccessToken: 'df2587edeb636a70f1fcdbcf4ff2a8ed',
-                domain: 'ecomloop-com.myshopify.com'
+                storefrontAccessToken: '0c291ce7693710e4baf0db2cf74576ca',
+                domain: 'emprezzo.myshopify.com'
             });
             store.setState({ client: localClient });
         }
@@ -36,9 +36,11 @@ const actions = {
     },
     initializeProducts: (store) => {
         store.state.client.product.fetchAll().then((res) => {
-            const giftCardPlaceholder = _.filter(res, (item) => item.id == "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzYxMjgxNzk0NDU5MzM=")
-            //console.log("**** giftCardPlaceholder",giftCardPlaceholder)
-            //Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzYxMjgxNzk0NDU5MzM=
+            // res.map((item) => {
+            //     console.log(item.id, item.title, item.variants[0].id)
+            // })
+            const giftCardPlaceholder = _.filter(res, (item) => item.id == "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzYxNTU3NjU1NDcxODM=")
+            //console.log("***** giftCardPlaceholder", giftCardPlaceholder)
             store.setState({ products: giftCardPlaceholder });
         });
     },
@@ -47,10 +49,11 @@ const actions = {
             store.setState({ shop: res });
         });
     },
-    addVariantToCart: (store, variantId, quantity, customAttributes) => {
+    addVariantToCart: (store, quantity, customAttributes) => {
         store.setState({
             isCartOpen: true,
         });
+        const variantId = "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8zNzg0ODk5MTAwNjg5NQ==";
         customAttributes = customAttributes || [];
         const lineItemsToAdd = [{ variantId, quantity: parseInt(quantity, 10), customAttributes }]
         const checkoutId = store.state.checkout.id

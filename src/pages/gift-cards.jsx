@@ -31,7 +31,7 @@ const GiftCard = () => {
       <Header title="emprezzo product marketplace" description="🧐 Discover great products from independent brands" />
       <CategoryHeading>Discover great gift cards</CategoryHeading>
       <SearchWrapper>        
-        {/* <ShopifyCheckout uniqueComponentID="6128179445933" buttonText="BUY GIFT CARD" /> */}
+        <ShopifyCheckout uniqueComponentID="6155771576495" buttonText="BUY GIFT CARD" />
         <AlgoliaProductList
           defaultSearchTerm={'gift card'}
           facetsToShow={'category,brands,prices'}

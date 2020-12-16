@@ -22,7 +22,7 @@ class LineItem extends Component {
     const allCustAttrs = this.props.line_item.customAttributes || []
     let value = "";
     allCustAttrs.map((attr) => {
-      console.log(attr.key, attr.value)
+      //console.log(attr.key, attr.value)
       if (attr.key == key)
         value = attr.value
     })
@@ -30,11 +30,11 @@ class LineItem extends Component {
   }
 
   render() {
-    console.log("**** this.props.line_item=", this.getCustomAttribute("productName"))
+    const itemTitle = (this.getCustomAttribute("shopName")+" Gift Card") || this.props.line_item.title
     return (
       <li className="Line-item">
         <div className="Line-item__img">
-          {this.props.line_item.variant.image ? <img src={this.props.line_item.variant.image.src} alt={`${this.props.line_item.title} product shot`} /> : null}
+          <img  src={this.getCustomAttribute("imageURL") || this.props.line_item.variant.image.src} alt={`${this.props.line_item.title} product shot`} />
         </div>
         <div className="Line-item__content">
           <div className="Line-item__content-row">
@@ -42,7 +42,7 @@ class LineItem extends Component {
               {this.props.line_item.variant.title}
             </div> */}
             <span className="Line-item__title">
-              {this.getCustomAttribute("productName") || this.props.line_item.title}
+              {itemTitle}
             </span>
           </div>
           <div className="Line-item__content-row">
@@ -52,7 +52,7 @@ class LineItem extends Component {
               <button className="Line-item__quantity-update" onClick={() => this.incrementQuantity(this.props.line_item.id)}>+</button>
             </div>
             <span className="Line-item__price">
-              $ {(this.props.line_item.quantity * this.props.line_item.variant.price).toFixed(2)}
+              $ {(this.props.line_item.quantity * this.getCustomAttribute("price")).toFixed(2)}
             </span>
             <button className="Line-item__remove" onClick={() => this.props.removeLineItemInCart(this.props.line_item.id)}>×</button>
           </div>

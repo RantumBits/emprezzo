@@ -135,7 +135,7 @@ const CartItem = ({ product }) => {
                 </div>
                 <br />
                 <div>
-                    <a href={product.productURL} target="_blank" className="button">Buy at {product.shopName}</a>
+                    <a href={product.productURL} target="_blank" className="button">Shop at {product.shopName}</a>
                 </div>
                 <br />
             </>

@@ -3,7 +3,7 @@ import Helmet from 'react-helmet';
 
 const ShopifyCheckout = (props) => {
     const buttonText = props.buttonText || "BUY GIFT CARD"
-    const uniqueComponentID = props.uniqueComponentID || "6127692185773"
+    const uniqueComponentID = props.uniqueComponentID || "6155771576495"
     return (
         <React.Fragment>
             <Helmet>
@@ -28,8 +28,8 @@ const ShopifyCheckout = (props) => {
                         }
                         function ShopifyBuyInit() {
                             let client = ShopifyBuy.buildClient({
-                            domain: 'ecomloop-com.myshopify.com',
-                            storefrontAccessToken: 'df2587edeb636a70f1fcdbcf4ff2a8ed',
+                            domain: 'emprezzo.myshopify.com',
+                            storefrontAccessToken: '0c291ce7693710e4baf0db2cf74576ca',
                             });
                             ShopifyBuy.UI.onReady(client).then(function (ui) {
                             //skipp if the component with same ID is already created
