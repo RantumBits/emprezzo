@@ -31,7 +31,7 @@ class LineItem extends Component {
 
   render() {
     const itemTitle = (this.getCustomAttribute("shopName")+" Gift Card") || this.props.line_item.title
-    const itemPrice = this.getCustomAttribute("price") || this.props.line_item.variant.price || 0
+    //console.log("**** lineitem",this.props.line_item.quantity,this.props.line_item.variant.price)
     return (
       <li className="Line-item">
         <div className="Line-item__img">
@@ -47,13 +47,13 @@ class LineItem extends Component {
             </span>
           </div>
           <div className="Line-item__content-row">
-            <div className="Line-item__quantity-container">
+            {/* <div className="Line-item__quantity-container">
               <button className="Line-item__quantity-update" onClick={() => this.decrementQuantity(this.props.line_item.id)}>-</button>
               <span className="Line-item__quantity">{this.props.line_item.quantity}</span>
               <button className="Line-item__quantity-update" onClick={() => this.incrementQuantity(this.props.line_item.id)}>+</button>
-            </div>
-            <span className="Line-item__price">
-              $ {(this.props.line_item.quantity * itemPrice).toFixed(2)}
+            </div> */}
+            <span className="Line-item__price1">
+              $ {(this.props.line_item.quantity * this.props.line_item.variant.price).toFixed(2)}
             </span>
             <button className="Line-item__remove" onClick={() => this.props.removeLineItemInCart(this.props.line_item.id)}>×</button>
           </div>

@@ -11,6 +11,8 @@ const CategoryHeading = styled.h1`
   margin-left: 4rem;
 `;
 
+
+
 const SearchWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -24,16 +26,21 @@ const SearchWrapper = styled.div`
   @media (max-width: 700px) {
     margin: 1rem 1rem 1rem 1rem;
   }
+  .indexSelect {
+      display: none;
+  }
+
+
 `;
 
 const GiftCard = () => {
   return (
     <Layout title={'Shop gift cards from hundreds of direct to consumer brands and indepdent retailers'} description="Discover and shop for digital gift cards and gift certificates from hundreds of amazing online stores. ">
-      <Header title="Shop gift cards" subtitle="🧐 Shop gift cards from hundreds of direct to consumer brands and indepdent retailers" />
+      <Header title="Shop gift cards" subtitle="Shop gift cards from hundreds of great shops" />
 
       <SearchWrapper>
         {/* <ShopifyCheckout uniqueComponentID="6155771576495" buttonText="BUY GIFT CARD" /> */}
-        <center style={{width: "-webkit-fill-available"}}><BuyGiftCard /></center>
+
         <AlgoliaProductList
           defaultSearchTerm={'gift card'}
           facetsToShow={'category,brands,prices'}

@@ -26,9 +26,12 @@ import {
 
 const Wrapper = styled.div`
   display: flex;
-  padding: 3px;
+  padding: 0.5rem;
   margin: 2px;
-  min-height: 80px;
+  min-height: 60px;
+  @media (min-width: 600px) {
+    height: 130px;
+  }
 `;
 
 const Image = styled.div`
@@ -46,6 +49,7 @@ const Image = styled.div`
 
 
 const Information = styled.div`
+  width: 75%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -59,16 +63,18 @@ const Title = styled.h3`
 `;
 
 const Tags = styled.span`
-  font-size: 14px;
+  font-size: 12px;
   font-family: 'Jost','Segoe UI','Roboto','Candal',-apple-system,'BlinkMacSystemFont','Segoe UI','Helvetica','Arial',sans-serif;
   font-weight: 300;
-  margin-bottom: 4px;
-
+  margin: 5px 0;;
+  white-space: none;
+  overflow: hidden; word-wrap: none; text-overflow: ellipsis;
+  display: block;
 `;
 
 const Stats = styled.span`
   font-size: 12px;
-
+  display: block;
 
   margin-bottom: 8px;
 
@@ -86,6 +92,9 @@ const AlgoliaUncommonryItem = (props) => {
         styles={css`
         .ais-Hits-item {
           width: calc(50% - 1rem) !important;
+          @media (min-width: 1200px) {
+            width: calc(33% - 1rem) !important;
+          }
           @media (max-width: 600px) {
             width: calc(100% - 1rem) !important;
           }
@@ -94,11 +103,13 @@ const AlgoliaUncommonryItem = (props) => {
       />
       {props && props.hit &&
         <>
+        <div style={{width: "25%"}}>
           <a href={`/shops/${props.hit.emprezzoID}/`} title={props.hit.shopName} target="_blank">
             <Image>
               <img src={props.hit.shopImage || props.hit.imageURL} />
             </Image>
           </a>
+          </div>
           <Information>
             <a href={`/shops/${props.hit.emprezzoID}/`} title={props.hit.shopName}>
               <div>
@@ -106,11 +117,14 @@ const AlgoliaUncommonryItem = (props) => {
 
 
                 <Tags>{props.hit.shopCategory}: {props.hit.shopTags}</Tags>
-                <Stats> {props.hit.priceMin &&  <span  style={{paddingRight: "0"}}><br/> ${Math.round(props.hit.priceMin)}-${Math.round(props.hit.priceMax)} / ${Math.round(props.hit.priceAvg)} avg</span>
+                <Stats> {props.hit.priceMin &&  <span  style={{paddingRight: "0"}}>${Math.round(props.hit.priceMin)}-${Math.round(props.hit.priceMax)} / ${Math.round(props.hit.priceAvg)} avg</span>
 
-              }<br/></Stats>
+              }</Stats>
 
-                 <Stats><b>PAY</b> {props.hit.paypal == '1' &&
+                 <Stats>
+
+                 {/*
+                   <b>PAY</b> {props.hit.paypal == '1' &&
                   <span  style={{paddingRight: "0.25rem"}}><FaPaypal size="14" color="#666" /></span>
                 }
                 {props.hit.shopifyPay == '1' &&
@@ -121,12 +135,8 @@ const AlgoliaUncommonryItem = (props) => {
                 }
                 {props.hit.amazonPay == '1' &&
                   <span  style={{paddingRight: "0.25rem"}}><FaAmazon size="14" color="#666" /></span>
-                }<br/>
-                </Stats>
-
-
-                {` `}
-                <Stats>
+                }
+        */}
                 {props.hit.freeShipMin != null && props.hit.freeShipMin != 0 &&
                   <span><FaTruck size="14" color="#666" class="icon" title="Free shipping minimum"/> ${props.hit.freeShipMin}+</span>
                 }

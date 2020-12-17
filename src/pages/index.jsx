@@ -54,7 +54,7 @@ const ShopWrapper = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin: 4rem 4rem 1rem 4rem;
+  margin: 3rem 4rem 1rem 3rem;
   @media (max-width: 1000px) {
     margin: 4rem 2rem 1rem 2rem;
   }
@@ -364,15 +364,16 @@ const Index = ({ data }) => {
   }
   return (
     <Layout title={'emprezzo | Discover great independent online stores'} description="Discover the best online storess & direct-to-consumer brands" >
-      <Header title="Discover great independent online stores" subtitle="shop direct & support independent business"></Header>
+      <Header title="Discover great online stores" subtitle="shop direct & support independent business"></Header>
       {/* <p className="center"><a href ="/randomshop" className="button button">Discover a  shop</a></p> */}
-      <div className="center">
+    {/*  <div className="center">
         <a href="/randomshop/" className="button ">Discover a new shop</a>
       </div>
+
       <CheckoutWrapper>
       <center style={{width: "-webkit-fill-available"}}><BuyGiftCard /></center>
       </CheckoutWrapper>
-
+*/}
 
       {/*
       <Tabs style={TabPanelStyle}>
@@ -472,6 +473,7 @@ const Index = ({ data }) => {
             showClearFilter={true}
             enableCart={true}
             enableShopProductSwitch={true}
+            searchIndexName={'uncommonry'}
           />
         </ShopWrapper>
       </LazyLoad>

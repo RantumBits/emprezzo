@@ -6,7 +6,7 @@ import logo from '../../static/logo/logo.png';
 import Search from '../components/search'
 import { ShoppingCart, Menu } from "@styled-icons/material"
 import { CartContext } from '../components/Cart/CartContext'
-import ShopifyCheckout from '../components/Cart/ShopifyCheckout'
+import Cart from '../components/Cart/components/Cart'
 import { useMediaQuery } from 'react-responsive'
 
 const searchIndices = [
@@ -112,40 +112,43 @@ const NavBar = () => {
   const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
 
   return (
-    <Headroom calcHeightOnResize disableInlineStyles>
-      <StyledLink to="/">
-        <img src={logo} className="logo" title="emprezzo - Discover the best independent shopping sites & direct to consumer brands" alt="emprezzo - Discover the best independent shopping sites & direct to consumer brands" />
-      </StyledLink>
-      <NavWrapper>
-        <Nav>
-          <div className="dropdown">
-            <Link to="">
-              {!isMobile &&
-                <span>Discover</span>
-              }
-              {isMobile &&
-                <Menu width="24px" style={{ marginRight: "0.75rem" }} />
-              }
-            </Link>
-            <div className="dropdown-content">
-              <Link key="1" to="/randomshop/">Random shop</Link>
-              <Link key="2" to="/gift-cards/">Gift cards</Link>
+    <>
+      <Headroom calcHeightOnResize disableInlineStyles>
+        <StyledLink to="/">
+          <img src={logo} className="logo" title="emprezzo - Discover the best independent shopping sites & direct to consumer brands" alt="emprezzo - Discover the best independent shopping sites & direct to consumer brands" />
+        </StyledLink>
+        <NavWrapper>
+          <Nav>
+            <div className="dropdown">
+              <Link to="">
+                {!isMobile &&
+                  <span>Discover</span>
+                }
+                {isMobile &&
+                  <Menu width="24px" style={{ marginRight: "0.75rem" }} />
+                }
+              </Link>
+              <div className="dropdown-content">
+                <Link key="1" to="/randomshop/">Random shop</Link>
+                <Link key="2" to="/gift-cards/">Gift cards</Link>
 
 
-              <Link key="3" target="_blank" to="https://chrome.google.com/webstore/detail/emprezzo/ojfaaaocbgiojhlapncepdiccfgcjmee">Chrome extension</Link>
+                <Link key="3" target="_blank" to="https://chrome.google.com/webstore/detail/emprezzo/ojfaaaocbgiojhlapncepdiccfgcjmee">Chrome extension</Link>
+              </div>
             </div>
-          </div>
-          <SearchWrapper>
-            <Search collapse indices={searchIndices} variation={"light"} />
-          </SearchWrapper>
-          <div>
-            <Link to="/cart" style={{ display: "flex", margin: "0.5rem", fontSize: "0.85rem" }}>
-              <ShoppingCart width="24px" />{itemCount}
-            </Link>
-          </div>
-        </Nav>
-      </NavWrapper>
-    </Headroom >
+            <SearchWrapper>
+              <Search collapse indices={searchIndices} variation={"light"} />
+            </SearchWrapper>
+            <div>
+              <Link to="/cart" style={{ display: "flex", margin: "0.5rem", fontSize: "0.85rem" }}>
+                <ShoppingCart width="24px" />{itemCount}
+              </Link>
+            </div>
+          </Nav>
+        </NavWrapper>
+      </Headroom >
+      <Cart />
+    </>
   );
 
 }

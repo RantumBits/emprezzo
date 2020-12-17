@@ -8,6 +8,7 @@ const initialState = {
     client: null,
     checkout: { lineItems: [] },
     products: [],
+    giftcardExchangeProduct: {},
     giftcardProduct: {},
     shop: {},
     visibility: false
@@ -37,12 +38,13 @@ const actions = {
     },
     initializeProducts: (store) => {
         store.state.client.product.fetchAll().then((res) => {
-            res.map((item) => {
-                console.log(item.id, item.title, item.id, item.variants[0].id)
-            })
+            // res.map((item) => {
+            //     console.log(item.id, item.title, item.id, item.variants.length, item.variants[0].id)
+            // })
+            store.setState({ products: res });
             //Gift card exchange
             const giftCardPlaceholder = _.filter(res, (item) => item.id == "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzYxNTU3NjU1NDcxODM=")
-            store.setState({ products: giftCardPlaceholder });
+            store.setState({ giftcardExchangeProduct: giftCardPlaceholder[0] });
             //emprezzo gift card
             const gcProduct = _.filter(res, (item) => item.id == "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzYxNTU3NzE1NzY0OTU=")
             store.setState({ giftcardProduct: gcProduct[0] });
@@ -57,7 +59,7 @@ const actions = {
         store.setState({
             isCartOpen: true,
         });
-        const variantId = "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8zNzg0ODk5MTAwNjg5NQ==";
+        const variantId = store.state.giftcardExchangeProduct.variants[0].id;
         customAttributes = customAttributes || [];
         const lineItemsToAdd = [{ variantId, quantity: parseInt(quantity, 10), customAttributes }]
         const checkoutId = store.state.checkout.id
@@ -69,7 +71,6 @@ const actions = {
         store.setState({
             isCartOpen: true,
         });
-        //const variantId = "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8zNzg0OTAwMTAzMzkwMw==";
         customAttributes = customAttributes || [];
         const lineItemsToAdd = [{ variantId, quantity: parseInt(quantity, 10), customAttributes }]
         const checkoutId = store.state.checkout.id

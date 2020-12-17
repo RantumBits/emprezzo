@@ -6,6 +6,7 @@ import { Link } from 'gatsby'
 import { CartContext } from './Cart/CartContext'
 import AlgoliaProductItem from './AlgoliaProductItem'
 import AlgoliaUncommonryItem from './AlgoliaUncommonryItem'
+import BuyGiftCard from '../components/Cart/BuyGiftCard'
 import AlgoliaRangeSlider from './AlgoliaRangeSlider'
 import AlgoliaStateResults from './AlgoliaStateResults'
 import algoliasearch from 'algoliasearch/lite';
@@ -43,6 +44,8 @@ const LeftPanel = styled.div`
     }
   }
 
+
+
   .ais-SortBy {
     padding: 0.8rem 0 0.8rem 0;
   }
@@ -55,6 +58,8 @@ const LeftPanel = styled.div`
       font-size: 0.5rem;
     }
   }
+
+
 
   .ais-RefinementList-item, .ais-NumericMenu-item {
     margin-bottom: 0px;
@@ -99,27 +104,69 @@ const RightPanel = styled.div`
     margin-left: 0px;
     display: block;
   }
+  .searchline {
+
+      display: flex;
+
+    margin: 0 0 1em 0;
+  }
+
+
+
+  .ais-SearchBox-input{
+    padding: 0.5rem 1.8remm;
+    height: 50px;
+  }
+  .giftCard {
+    text-align: center;
+    margin-left: 1em;
+    @media (max-width: 900px) {
+      margin-left: 0.5em;
+    }
+  }
+
+  button.Product__buy.button {
+      @media (max-width: 800px) {
+    padding: 2px;
+  }
+  }
+
+  .GiftCard--BuyButton {
+
+    @media (max-width: 800px) {
+      font-size: 1.4em;
+      padding: 0px;
+    }
+  }
 
   .indexSelect {
     float:left;
-    width: 100px;
+    width: 18%;
+    height: 50px;
+
     margin-right: 0.5rem;
     @media (max-width: 900px) {
       width: calc(15% - 1rem);
+
     }
     @media (max-width: 600px) {
       width: calc(35% - 1rem);
     }
   }
   .indexSelect select{
-    padding: 0.3rem;
+    padding: 0.5rem;
     width: 100%;
     position: relative;
     background-color: #fff;
     border: 1px solid #c4c8d8;
     border-radius: 5px;
-    font-size: 0.7rem;
+    font-size: 1rem;
     color: #a5abc4;
+    height: 50px;
+    @media (max-width: 600px) {
+      font-size: 0.8rem;
+    padding: 0.25rem;
+    }
   }
 
   .saleFacet {
@@ -146,6 +193,7 @@ const RightPanel = styled.div`
   .ais-Hits-item, .ais-Results-item {
     padding: 0px;
     width: calc(25% - 1rem);
+    margin: 0.5em;
     @media (max-width: 900px) {
       width: calc(33.33% - 1rem);
     }
@@ -156,9 +204,9 @@ const RightPanel = styled.div`
 
   .ais-SearchBox {
     @media (min-width: 900px) {
-      width: calc(85% - 1rem);
+      width: calc(60% - 1rem);
     }
-    width: 65%;
+    width: 60%;
 
       margin: 0;
       display: inline-block;
@@ -202,6 +250,7 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, hideLeftPanel, s
   );
   const searchClient = {
     search(requests) {
+
       if (requests.length > 0 && defaultSearchTerm) requests[0].params.query = defaultSearchTerm
       return algoliaClient.search(requests);
     },
@@ -231,7 +280,7 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, hideLeftPanel, s
             {facetsToShow && facetsToShow.indexOf("category") >= 0 &&
               <>
                 <FilterHeading>Category</FilterHeading>
-                <RefinementList attribute="shopCategory" showMore='true' limit='7' />
+                <RefinementList attribute="shopCategory" showMore='true' limit='5' />
               </>
             }
             {facetsToShow && facetsToShow.indexOf("brands") >= 0 && currentIndexName != 'uncommonry' &&
@@ -289,6 +338,7 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, hideLeftPanel, s
             }
             {facetsToShow && facetsToShow.indexOf("prices") >= 0 && currentIndexName == 'empProducts' &&
               <>
+
                 <FilterHeading>Prices</FilterHeading>
                 <NumericMenu
                   attribute="price"
@@ -345,8 +395,8 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, hideLeftPanel, s
               {enableShopProductSwitch &&
                 <div style={{ paddingBottom: '0.75rem' }}>
                   <select value={currentIndexName} onChange={changeCurrentIndexName}>
-                    <option value="empProducts">Products</option>
                     <option value="uncommonry">Shops</option>
+                    <option value="empProducts">Products</option>
                   </select>
                 </div>
               }
@@ -364,13 +414,20 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, hideLeftPanel, s
                 />
               </div>
             }
+
             {showSearchBox &&
               <SearchBox />
+
             }
+            <div class="giftCard">
+              <BuyGiftCard />
+            </div>
+
           </div>
           <AlgoliaStateResults noResultMessage={noResultMessage} />
           {currentIndexName == 'empProducts' &&
             <Hits hitComponent={AlgoliaProductItem} />
+
           }
           {currentIndexName == 'uncommonry' &&
             <Hits hitComponent={AlgoliaUncommonryItem} />

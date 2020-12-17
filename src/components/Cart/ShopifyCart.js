@@ -29,14 +29,7 @@ const ShopifyCart = (props) => {
                 client={globalState.client}
                 addVariantToCart={globalActions.addVariantToCart}
             /> */}
-            <button className="Product__buy button" onClick={() => globalActions.addVariantToCart(props.quantity, props.customAttributes)}>Add to Cart</button>
-            <Cart
-                checkout={globalState.checkout}
-                isCartOpen={globalState.isCartOpen}
-                handleCartClose={globalActions.handleCartClose}
-                updateQuantityInCart={globalActions.updateQuantityInCart}
-                removeLineItemInCart={globalActions.removeLineItemInCart}
-            />
+            <button className="Product__buy button" onClick={() => globalActions.addVariantToCart(props.quantity, props.customAttributes)}>Add to Cart</button>            
         </div>
     );
 }

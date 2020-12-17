@@ -37,6 +37,8 @@ margin-top: 0.5rem;
   min-width: 40%;
 }
 
+
+
 .dialogImageDescription {
   display : flex;
   img {
@@ -116,15 +118,8 @@ const BuyGiftCard = (props) => {
         <div className="GiftCard--BuyButton">
             {globalState.giftcardProduct &&
                 <>
-                    <button className="Product__buy button" onClick={() => openDialog()}>Buy Emprezzo Gift Card</button>
-                    <br/><small>a single card for hundreds of amazing stores </small>
-                    <Cart
-                        checkout={globalState.checkout}
-                        isCartOpen={globalState.isCartOpen}
-                        handleCartClose={globalActions.handleCartClose}
-                        updateQuantityInCart={globalActions.updateQuantityInCart}
-                        removeLineItemInCart={globalActions.removeLineItemInCart}
-                    />
+                    <button className="Product__buy button" onClick={() => openDialog()}>Buy Gift Card</button>
+                    <br/><small>one card, many shops </small>
                     <StyledDialog isOpen={showDialog} onDismiss={closeDialog}>
                         <button className="close-button" onClick={closeDialog} style={{ float: "right", cursor: "pointer" }}>
                             <span aria-hidden>X</span>
