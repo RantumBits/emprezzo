@@ -6,6 +6,7 @@ import { Link } from 'gatsby'
 import { CartContext } from './Cart/CartContext'
 import AlgoliaProductItem from './AlgoliaProductItem'
 import AlgoliaUncommonryItem from './AlgoliaUncommonryItem'
+import AlgoliaEmailsItem from './AlgoliaEmailsItem'
 import BuyGiftCard from '../components/Cart/BuyGiftCard'
 import AlgoliaRangeSlider from './AlgoliaRangeSlider'
 import AlgoliaStateResults from './AlgoliaStateResults'
@@ -432,6 +433,9 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, hideLeftPanel, s
           {currentIndexName == 'uncommonry' &&
             <Hits hitComponent={AlgoliaUncommonryItem} />
           }
+          {currentIndexName == 'emails' &&
+            <Hits hitComponent={AlgoliaEmailsItem} />
+          }          
           <Pagination />
         </RightPanel>
       </InstantSearch>

@@ -2,6 +2,7 @@ import React from "react";
 import useGlobalHook from "use-global-hook";
 import Client from 'shopify-buy';
 import _ from 'lodash';
+import { isBrowser } from './utils'
 
 const initialState = {
     isCartOpen: false,
@@ -13,6 +14,30 @@ const initialState = {
     shop: {},
     visibility: false
 };
+
+const setLocalStorage = (value) => {
+    if (isBrowser()) {
+        window.localStorage.setItem('shopifycart', JSON.stringify(value));
+    }
+}
+
+const getLocalStorage = () => {
+    return ((isBrowser() && window.localStorage.getItem('shopifycart')) ? JSON.parse(window.localStorage.getItem('shopifycart')) : []);
+}
+
+const removeItemFromLocalStorage = (cart) => {
+    if (isBrowser() && cart && cart.lineItems) {
+        const newList = [];
+        cart.lineItems.map((lineitem) => {
+            newList.push({
+                variantId: lineitem.variant.id,
+                quantity: lineitem.quantity,
+                customAttributes: lineitem.customAttributes
+            })
+        });
+        setLocalStorage(newList)
+    }
+}
 
 const actions = {
     addToCounter: (store, amount) => {
@@ -34,6 +59,15 @@ const actions = {
     initializeCheckout: (store) => {
         store.state.client.checkout.create().then((res) => {
             store.setState({ checkout: res });
+
+            //getting from localstorage if it exists
+            const lineItemsToAdd = getLocalStorage();
+            if (lineItemsToAdd) {
+                const checkoutId = store.state.checkout.id
+                return store.state.client.checkout.addLineItems(checkoutId, lineItemsToAdd).then(response => {
+                    store.setState({ checkout: response });
+                });
+            }
         });
     },
     initializeProducts: (store) => {
@@ -61,7 +95,13 @@ const actions = {
         });
         const variantId = store.state.giftcardExchangeProduct.variants[0].id;
         customAttributes = customAttributes || [];
+        customAttributes.push({
+            key: "uniqueID",
+            value: "" + (new Date().getTime())
+        })
+        console.log("customAttributes", customAttributes)
         const lineItemsToAdd = [{ variantId, quantity: parseInt(quantity, 10), customAttributes }]
+        setLocalStorage(_.concat(getLocalStorage(), lineItemsToAdd)); //add item to localstorage
         const checkoutId = store.state.checkout.id
         return store.state.client.checkout.addLineItems(checkoutId, lineItemsToAdd).then(res => {
             store.setState({ checkout: res });
@@ -72,7 +112,12 @@ const actions = {
             isCartOpen: true,
         });
         customAttributes = customAttributes || [];
+        customAttributes.push({
+            key: "uniqueID",
+            value: "" + (new Date().getTime())
+        })
         const lineItemsToAdd = [{ variantId, quantity: parseInt(quantity, 10), customAttributes }]
+        setLocalStorage(_.concat(getLocalStorage(), lineItemsToAdd)); //add item to localstorage
         const checkoutId = store.state.checkout.id
         return store.state.client.checkout.addLineItems(checkoutId, lineItemsToAdd).then(res => {
             store.setState({ checkout: res });
@@ -87,8 +132,8 @@ const actions = {
     },
     removeLineItemInCart: (store, lineItemId) => {
         const checkoutId = store.state.checkout.id
-
         return store.state.client.checkout.removeLineItems(checkoutId, [lineItemId]).then(res => {
+            removeItemFromLocalStorage(res);
             store.setState({ checkout: res });
         });
     },

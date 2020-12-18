@@ -493,7 +493,7 @@ const SingleItem = ({ data, pageContext }) => {
     }
     if (filteredSocialHistory[0].node.InstagramFollowersList) {
       instagramChartData = {
-        labels: removeTimeFromDate(_.split(filteredSocialHistory[0].node.InstagramCreateDates,',')),
+        labels: removeTimeFromDate(_.split(filteredSocialHistory[0].node.InstagramCreateDates, ',')),
         datasets: [
           {
             name: 'Instagram',
@@ -508,7 +508,7 @@ const SingleItem = ({ data, pageContext }) => {
     }
     if (filteredSocialHistory[0].node.PinterestFollowersList) {
       pinterestChartData = {
-        labels: removeTimeFromDate(_.split(filteredSocialHistory[0].node.PinterestCreateDates,',')),
+        labels: removeTimeFromDate(_.split(filteredSocialHistory[0].node.PinterestCreateDates, ',')),
         datasets: [
           {
             name: 'Pinterest',
@@ -814,56 +814,56 @@ const SingleItem = ({ data, pageContext }) => {
             <Title>{name}</Title>
             <Subtitle><b>{category}</b><br /><i>{tags}</i><br /></Subtitle>
             <Stat>{rowShopifyProductSummary.PriceMin &&
-          rowShopifyProductSummary.PriceMax && (
-            <small>
-              ${rowShopifyProductSummary.PriceMin}-${rowShopifyProductSummary.PriceMax} (${rowShopifyProductSummary.PriceAvg} avg)</small>
-          )}
-</Stat>
+              rowShopifyProductSummary.PriceMax && (
+                <small>
+                  ${rowShopifyProductSummary.PriceMin}-${rowShopifyProductSummary.PriceMax} (${rowShopifyProductSummary.PriceAvg} avg)</small>
+              )}
+            </Stat>
 
 
 
             <Stat>PAY&nbsp;
             {PaypalShopID && PaypalShopID != '#' &&
                 <span style={{ paddingRight: "0.25rem" }}><FaPaypal size="16" color="#666" /></span>
-            }
-            {AmazonPay == '1' &&
+              }
+              {AmazonPay == '1' &&
                 <span style={{ paddingRight: "0.25rem" }}><FaAmazon size="16" color="#666" /></span>
-            }
-            {ShopifyPay && ShopifyPay == '1' &&
+              }
+              {ShopifyPay && ShopifyPay == '1' &&
                 <span style={{ paddingRight: "0.25rem" }}><FaShopify size="16" color="#666" /></span>
-            }
-            {ApplePay && ApplePay == '1' &&
+              }
+              {ApplePay && ApplePay == '1' &&
                 <span style={{ paddingRight: "0.25rem" }}><FaApple size="16" color="#666" /></span>
-            }
+              }
 
-</Stat>
+            </Stat>
 
 
-<Stat>
+            <Stat>
 
-            {firstRowDataView &&
-              <div>
+              {firstRowDataView &&
+                <div>
 
-                {firstRowDataView.node.FreeShipMin != null && firstRowDataView.node.FreeShipMin != 0 &&
+                  {firstRowDataView.node.FreeShipMin != null && firstRowDataView.node.FreeShipMin != 0 &&
                     <span><FaTruck size="16" color="#666" class="icon" title="free shipping info" /> Free shipping over ${firstRowDataView.node.FreeShipMin}<br /></span>
-                }
-                {firstRowDataView.node.FreeShipMin == 0 &&
+                  }
+                  {firstRowDataView.node.FreeShipMin == 0 &&
                     <span><FaTruck size="16" color="#666" class="icon" title="free shipping on most orders" /> Most orders ship free!<br /></span>
-                }
-                {firstRowDataView.node.BaseShipRate > 1 &&
+                  }
+                  {firstRowDataView.node.BaseShipRate > 1 &&
                     <span><FaBoxOpen size="16" color="#666" class="icon" title="shipping rates" /> Rates from ${firstRowDataView.node.BaseShipRate}<br /></span>
-                }
-                {firstRowDataView.node.ReturnDays != null && firstRowDataView.node.ReturnDays != "0" &&
+                  }
+                  {firstRowDataView.node.ReturnDays != null && firstRowDataView.node.ReturnDays != "0" &&
                     <span><FaUndoAlt size="16" color="#666" /> {firstRowDataView.node.ReturnDays} day returns</span>
-                }
-                {firstRowDataView.node.ReturnShipFree != "." && firstRowDataView.node.ReturnShipFree == "Yes" &&
+                  }
+                  {firstRowDataView.node.ReturnShipFree != "." && firstRowDataView.node.ReturnShipFree == "Yes" &&
                     <span><br /><FaRegStar size="16" color="#666" /> Returns ship free!</span>
-                }
+                  }
 
-              </div>
-            }
+                </div>
+              }
 
-</Stat>
+            </Stat>
             <br />
 
 
@@ -946,7 +946,7 @@ const SingleItem = ({ data, pageContext }) => {
 
         <Tabs>
           <TabList>
-            <Tab style={TabStyle}>Shop {name}</Tab>
+            <Tab style={TabStyle}>Recent emails</Tab>
             {/* {listShopifyBestSellersEdges &&
               listShopifyBestSellersEdges.length > 0 && (
                 <Tab style={TabStyle}>Best sellers</Tab>
@@ -967,11 +967,19 @@ const SingleItem = ({ data, pageContext }) => {
 
 
 
+
+
+          <TabPanel>
+        <AlgoliaProductList
+          searchIndexName={"emails"}
+          defaultSearchTerm={AlexaURL}
+          showSearchBox={true}
+          hideLeftPanel={true}
+        />
+        </TabPanel>
+
+
         </Tabs>
-
-
-
-
         <br />
 
         {listInstaPostEdges && listInstaPostEdges.length > 0 && (
@@ -1011,76 +1019,76 @@ const SingleItem = ({ data, pageContext }) => {
 
 
         <h3>About {name}</h3>
-          <b>{name}</b> produces and sells {category} products {tags} and more. The company sells direct-to-consumer on its website.
+        <b>{name}</b> produces and sells {category} products {tags} and more. The company sells direct-to-consumer on its website.
 
       {rowShopifyProductSummary.PriceMin &&
-            rowShopifyProductSummary.PriceMax && (
-              <span>
-                &nbsp;Prices range from ${rowShopifyProductSummary.PriceMin} - ${rowShopifyProductSummary.PriceMax} with an average price of ${rowShopifyProductSummary.PriceAvg}.</span>
-            )}
-          {socialDetails && (
+          rowShopifyProductSummary.PriceMax && (
             <span>
-              &nbsp;The {name} brand can be found on
-              {socialDetails.InstagramLink && (
-                " Instagram, "
-              )}
-              {socialDetails.FacebookLink && (
-                " Facebook, "
-              )}
-              {socialDetails.PinterestLink && (
-                " Pinterest, "
-              )}
-              {socialDetails.TikTok && (
-                " TikTok, "
-              )}
-              {socialDetails.TwitterLink && (
-                " Twitter, "
-              )}
-              {socialDetails.YouTubeLink && (
-                " Youtube, "
-              )}
-               and here on Emprezzo.&nbsp;
-            </span>
+              &nbsp;Prices range from ${rowShopifyProductSummary.PriceMin} - ${rowShopifyProductSummary.PriceMax} with an average price of ${rowShopifyProductSummary.PriceAvg}.</span>
           )}
-          <div class="shopButtons" style={{ 'margin-top': '1em' }}>
+        {socialDetails && (
+          <span>
+            &nbsp;The {name} brand can be found on
+            {socialDetails.InstagramLink && (
+              " Instagram, "
+            )}
+            {socialDetails.FacebookLink && (
+              " Facebook, "
+            )}
+            {socialDetails.PinterestLink && (
+              " Pinterest, "
+            )}
+            {socialDetails.TikTok && (
+              " TikTok, "
+            )}
+            {socialDetails.TwitterLink && (
+              " Twitter, "
+            )}
+            {socialDetails.YouTubeLink && (
+              " Youtube, "
+            )}
+               and here on Emprezzo.&nbsp;
+          </span>
+        )}
+        <div class="shopButtons" style={{ 'margin-top': '1em' }}>
           <a href={AlexaURL} className="button" target="_blank">
             shop {name}
           </a>{' '}
           <a href="/randomshop" className="button buttonalt">
             Discover another shop
       </a>
-      </div>
-      <div>
-      <br/>
-      {!!combinedRelatedShops.length && (
-        <>
-          <h3>Discover shops similar to {name}</h3>
-          <PostSectionGrid>
-            {combinedRelatedShops && combinedRelatedShops.map(({ shop }, index) => (
-              <span key={index}>
-                <PostSectionImage>
-                  <Link key={index} to={`/shops/${shop.emprezzoID}/`}>
-                    <img src={shop.ProfileImage || shop.ProfilePicURL || shop.profile_image_url || "/logo/logo.png"} title={shop.name} alt={shop.name} onError={defaultImageOnError} style={{ height: 'inherit', 'textAlign': 'center', 'borderRadius': '100%' }} />
-                  </Link>
-                </PostSectionImage>
-                <PostSectionContent>
-                  <Link key={index} to={`/shops/${shop.emprezzoID}/`}>
-                    {shop.name && <b>{shop.name}</b>}
-                  </Link>
+        </div>
+        <div>
+          <br />
+          {!!combinedRelatedShops.length && (
+            <>
+              <h3>Discover shops similar to {name}</h3>
+              <PostSectionGrid>
+                {combinedRelatedShops && combinedRelatedShops.map(({ shop }, index) => (
+                  <span key={index}>
+                    <PostSectionImage>
+                      <Link key={index} to={`/shops/${shop.emprezzoID}/`}>
+                        <img src={shop.ProfileImage || shop.ProfilePicURL || shop.profile_image_url || "/logo/logo.png"} title={shop.name} alt={shop.name} onError={defaultImageOnError} style={{ height: 'inherit', 'textAlign': 'center', 'borderRadius': '100%' }} />
+                      </Link>
+                    </PostSectionImage>
+                    <PostSectionContent>
+                      <Link key={index} to={`/shops/${shop.emprezzoID}/`}>
+                        {shop.name && <b>{shop.name}</b>}
+                      </Link>
 
-                </PostSectionContent>
-              </span>
-            ))}
-          </PostSectionGrid>
-        </>
-      )}
-      <br />
-</div>
+                    </PostSectionContent>
+                  </span>
+                ))}
+              </PostSectionGrid>
+            </>
+          )}
+          <br />
+        </div>
         <h3 style={{ 'top-margin': '1rem' }}>{name} data and charts</h3>
         <Tabs>
           <TabList>
-            <Tab style={TabStyle}>Fan growth</Tab>
-            <Tab style={TabStyle}>Social</Tab>
+            <Tab style={TabStyle}>Fans</Tab>
+            <Tab style={TabStyle}>Breakdown</Tab>
 
             {rowShopifyProductSummary.PriceListActive && (<Tab style={TabStyle}>Prices</Tab>)}
             <Tab style={TabStyle}>Traffic</Tab>
@@ -1088,132 +1096,131 @@ const SingleItem = ({ data, pageContext }) => {
 
 
           </TabList>
+          <TabPanel>
           <div style={{ flex: '60%' }}>
-          <Tabs >
-            <TabList>
-              {facebookChartData && <Tab style={TabStyle}>Facebook</Tab>}
-              {instagramChartData && <Tab style={TabStyle}>Instagram</Tab>}
-              {pinterestChartData && <Tab style={TabStyle}>Pinterest</Tab>}
-              {tiktokChartData && <Tab style={TabStyle}>TikTok</Tab>}
-              {twitterChartData && <Tab style={TabStyle}>Twitter</Tab>}
-              {youtubeChartData && <Tab style={TabStyle}>Youtube</Tab>}
-            </TabList>
-            {facebookChartData && (
-              <TabPanel>
-              <ReactFrappeChart
-                type="axis-mixed"
-                colors={['#743ee2']}
-                  title="Facebook"
-                height={250}
-                axisOptions={{
-                  xAxisMode: 'tick',
-                  xIsSeries: 1,
-                  shortenYAxisNumbers: 1,
-                }}
-                  data={facebookChartData}
-              />
-              </TabPanel>
-            )}
-            {instagramChartData && (
-              <TabPanel>
-                <ReactFrappeChart
-                  type="axis-mixed"
-                  title="Instagram"
-                  height={250}
-                  axisOptions={{
-                    xAxisMode: 'tick',
-                    xIsSeries: 1,
-                    shortenYAxisNumbers: 1,
-                  }}
-                  lineOptions={{ spline: 1 }}
-                  data={instagramChartData}
-                />
-              </TabPanel>
-            )}
-            {pinterestChartData && (
-              <TabPanel>
-                <ReactFrappeChart
-                  type="axis-mixed"
-                  title="Pinterest"
-                  height={250}
-                  axisOptions={{
-                    xAxisMode: 'tick',
-                    xIsSeries: 1,
-                    shortenYAxisNumbers: 1,
-                  }}
-                  lineOptions={{ spline: 1 }}
-                  data={pinterestChartData}
-                />
-              </TabPanel>
-            )}
-            {tiktokChartData && (
-              <TabPanel>
-                <ReactFrappeChart
-                  type="axis-mixed"
-                  title="Tiktok"
-                  height={250}
-                  axisOptions={{
-                    xAxisMode: 'tick',
-                    xIsSeries: 1,
-                    shortenYAxisNumbers: 1,
-                  }}
-                  lineOptions={{ spline: 1 }}
-                  data={tiktokChartData}
-                />
-              </TabPanel>
-            )}
-            {twitterChartData && (
-              <TabPanel>
-                <ReactFrappeChart
-                  type="axis-mixed"
-                  title="Twitter"
-                  height={250}
-                  axisOptions={{
-                    xAxisMode: 'tick',
-                    xIsSeries: 1,
-                    shortenYAxisNumbers: 1,
-                  }}
-                  lineOptions={{ spline: 1 }}
-                  data={twitterChartData}
-                />
-              </TabPanel>
-            )}
-            {youtubeChartData && (
-              <TabPanel>
-                <ReactFrappeChart
-                  type="axis-mixed"
-                  title="Youtube"
-                  height={250}
-                  axisOptions={{
-                    xAxisMode: 'tick',
-                    xIsSeries: 1,
-                    shortenYAxisNumbers: 1,
-                  }}
-                  lineOptions={{ spline: 1 }}
-                  data={youtubeChartData}
-                />
-              </TabPanel>
-            )}
-          </Tabs>
+            <Tabs >
+              <TabList>
+                {facebookChartData && <Tab style={TabStyle}>Facebook</Tab>}
+                {instagramChartData && <Tab style={TabStyle}>Instagram</Tab>}
+                {pinterestChartData && <Tab style={TabStyle}>Pinterest</Tab>}
+                {tiktokChartData && <Tab style={TabStyle}>TikTok</Tab>}
+                {twitterChartData && <Tab style={TabStyle}>Twitter</Tab>}
+                {youtubeChartData && <Tab style={TabStyle}>Youtube</Tab>}
+              </TabList>
+              {facebookChartData && (
+                <TabPanel>
+                  <ReactFrappeChart
+                    type="axis-mixed"
+                    colors={['#743ee2']}
+                    title="Facebook"
+                    height={250}
+                    axisOptions={{
+                      xAxisMode: 'tick',
+                      xIsSeries: 1,
+                      shortenYAxisNumbers: 1,
+                    }}
+                    data={facebookChartData}
+                  />
+                </TabPanel>
+              )}
+              {instagramChartData && (
+                <TabPanel>
+                  <ReactFrappeChart
+                    type="axis-mixed"
+                    title="Instagram"
+                    height={250}
+                    axisOptions={{
+                      xAxisMode: 'tick',
+                      xIsSeries: 1,
+                      shortenYAxisNumbers: 1,
+                    }}
+                    lineOptions={{ spline: 1 }}
+                    data={instagramChartData}
+                  />
+                </TabPanel>
+              )}
+              {pinterestChartData && (
+                <TabPanel>
+                  <ReactFrappeChart
+                    type="axis-mixed"
+                    title="Pinterest"
+                    height={250}
+                    axisOptions={{
+                      xAxisMode: 'tick',
+                      xIsSeries: 1,
+                      shortenYAxisNumbers: 1,
+                    }}
+                    lineOptions={{ spline: 1 }}
+                    data={pinterestChartData}
+                  />
+                </TabPanel>
+              )}
+              {tiktokChartData && (
+                <TabPanel>
+                  <ReactFrappeChart
+                    type="axis-mixed"
+                    title="Tiktok"
+                    height={250}
+                    axisOptions={{
+                      xAxisMode: 'tick',
+                      xIsSeries: 1,
+                      shortenYAxisNumbers: 1,
+                    }}
+                    lineOptions={{ spline: 1 }}
+                    data={tiktokChartData}
+                  />
+                </TabPanel>
+              )}
+              {twitterChartData && (
+                <TabPanel>
+                  <ReactFrappeChart
+                    type="axis-mixed"
+                    title="Twitter"
+                    height={250}
+                    axisOptions={{
+                      xAxisMode: 'tick',
+                      xIsSeries: 1,
+                      shortenYAxisNumbers: 1,
+                    }}
+                    lineOptions={{ spline: 1 }}
+                    data={twitterChartData}
+                  />
+                </TabPanel>
+              )}
+              {youtubeChartData && (
+                <TabPanel>
+                  <ReactFrappeChart
+                    type="axis-mixed"
+                    title="Youtube"
+                    height={250}
+                    axisOptions={{
+                      xAxisMode: 'tick',
+                      xIsSeries: 1,
+                      shortenYAxisNumbers: 1,
+                    }}
+                    lineOptions={{ spline: 1 }}
+                    data={youtubeChartData}
+                  />
+                </TabPanel>
+              )}
+            </Tabs>
           </div>
+          </TabPanel>
           <TabPanel>
 
-              <div style={{ flex: '100%' }}>
+            <div style={{ flex: '100%' }}>
 
-                {chartSocialData && chartSocialData.labels && chartSocialData.labels.length > 0 && (
-                  <ReactFrappeChart
-                    type="donut"
-                    title="Total fans by platform"
-                    height={300}
-                    data={chartSocialData}
-                  />
-                )}
-              </div>
-                </TabPanel>
-                <TabPanel>
-
-
+              {chartSocialData && chartSocialData.labels && chartSocialData.labels.length > 0 && (
+                <ReactFrappeChart
+                  type="donut"
+                  title="Total fans by platform"
+                  height={300}
+                  data={chartSocialData}
+                />
+              )}
+            </div>
           </TabPanel>
+
           {rowShopifyProductSummary.PriceListActive && (
             <TabPanel>
 
