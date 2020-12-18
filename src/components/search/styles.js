@@ -78,7 +78,7 @@ export const HitsWrapper = styled.div`
   z-index: 999;
   -webkit-overflow-scrolling: touch;
   position: absolute;
-  right: ${props => (props.homepage ? `35%` : `25%`)};
+  right: ${props => (props.homepage ? `35%` : `0`)};
   top: calc(100% + 0.5em);
   width: 80vw;
   max-width: 30em;

@@ -23,7 +23,7 @@ export default connectHits(function HitComp({ type, hits, onClick }) {
       //remove the highlighting
       text = text.replace("<ais-highlight-0000000000>", "");
       text = text.replace("</ais-highlight-0000000000>", "");
-      text = text.substring(0, 140) + "...";
+      text = text.substring(0, 100) + "...";
       //add the highlighting back
       text = text.replace(hit._highlightResult.shopDescription.matchedWords[0], "<ais-highlight-0000000000>" + hit._highlightResult.shopDescription.matchedWords[0] + "</ais-highlight-0000000000>")
       hit._highlightResult.shopDescription.value = text;
