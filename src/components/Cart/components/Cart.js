@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import LineItem from './LineItem';
 import useGlobal from "../CartState"
+import BuyPledgeling from "../BuyPledgeling"
 import Helmet from "react-helmet"
 import "./Cart.css"
 import styled from '@emotion/styled';
@@ -35,9 +36,6 @@ const Cart = (props) => {
   return (
     <>
       <div className={`Cart ${globalState.isCartOpen ? 'Cart--open' : ''}`}>
-        <Helmet>
-          <script id="plg-round-up" src="https://hello.pledgeling.com/assets/shop/round-up.js" async></script>
-        </Helmet>
         <header className="Cart__header">
           <h2>Your cart</h2>
           <button
@@ -50,7 +48,7 @@ const Cart = (props) => {
           {line_items}
         </ul>
         <footer className="Cart__footer">
-          <div data-round-up-via-pledgeling="6155798839471"></div>
+          <BuyPledgeling />
           <div className="Cart-info clearfix">
             <div className="Cart-info__total Cart-info__small">Subtotal</div>
             <div className="Cart-info__pricing">

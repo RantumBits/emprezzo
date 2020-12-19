@@ -214,7 +214,7 @@ const AlgoliaProductItem = (props) => {
     const hitToProduct = {
       id: hit.objectID,
       name: hit.name,
-      price: hit.price,
+      price: currentPrice,
       photo: hit.imageURL,
       productURL: hit.productURL,
       emprezzoID: hit.emprezzoID,
@@ -225,14 +225,23 @@ const AlgoliaProductItem = (props) => {
     isInCart(hitToProduct) ? increase(hitToProduct) : addProduct(hitToProduct);
   }
 
-  const convertToSelectList = (variants) => {
+  const [currentPrice, setCurrentPrice] = React.useState(props.hit.price)
+  const [currentVariantText, setCurrentVariantText] = React.useState()
+  const handleVariantChange = (event) => {
+    setCurrentPrice(event.target.value)
+    setCurrentVariantText(event.target[event.target.selectedIndex].text)
+  }
+
+  const convertToSelectList = (variants, variantPrices, variantIDs) => {
     if (variants == null) return;
     if (variants.toLowerCase() == "default title") return;
     const list = variants.split(",");
+    const prices = variantPrices.split(",");
+    const IDs = variantIDs.split(",");
     return (
-      <div>Options: <select>
+      <div>Options: <select onChange={event => handleVariantChange(event)}>
         {list.map((item, index) => (
-          <option key={index}>{item}</option>
+          <option key={index} data={IDs[index]} value={prices[index] ? prices[index].trim() : 0}>{item}</option>
         ))}
       </select>
       </div>
@@ -254,17 +263,11 @@ const AlgoliaProductItem = (props) => {
 
           <StyledLink href="javascript:void(0)" onClick={() => openDialog()} title={props.hit.shopName}>
             <Information>
-              <ShopName>{(props.hit.shopName || "").substring(0, 22)}   {props.hit.maxPrice > props.hit.price &&
+              <ShopName>{(props.hit.shopName || "").substring(0, 22)}   {props.hit.maxPrice > currentPrice &&
                 <strike>${props.hit.maxPrice}</strike>
               }
-                {` `}${props.hit.price}</ShopName>
+                {` `}${currentPrice}</ShopName>
               <Title>{props.hit.name && props.hit.name.toLowerCase().substring(0, 24)}</Title>
-
-              {props.hit.price &&
-                <Price>
-
-                </Price>
-              }
             </Information>
           </StyledLink>
 
@@ -282,9 +285,11 @@ const AlgoliaProductItem = (props) => {
               </div>
               <div className="dialogRight">
                 <h3 style={{ 'font-size': '1.1rem', 'margin-bottom': '9px' }}>{props.hit.name}</h3>
-                <span style={{ 'margin-bottom': '12px', 'font-style': 'italic' }}><a href={`/shops/${props.hit.emprezzoID}/`}>{props.hit.shopName || props.hit.name}</a> ${props.hit.price}</span>
+                <span style={{ 'margin-bottom': '12px', 'font-style': 'italic' }}><a href={`/shops/${props.hit.emprezzoID}/`}>{props.hit.shopName || props.hit.name}</a> ${currentPrice}</span>
                 <div className="dialogDescription">{props.hit.description && props.hit.description}</div>
-                {convertToSelectList(props.hit.VariantTitle)}
+                <div style={{ 'marginTop': '1rem' }}>
+                  {convertToSelectList(props.hit.variantTitles, props.hit.variantPrice, props.hit.variantIDs)}
+                </div>
               </div>
             </div>
             <br />
@@ -293,14 +298,14 @@ const AlgoliaProductItem = (props) => {
               <a href="javascript:" onClick={() => addToCartWrapper(props.hit)} className="button buttonalt">Save for later</a>
               {(props.hit.name || "").toLowerCase().indexOf("gift card") >= 0 &&
                 <ShopifyCart
-                  quantity={props.hit.price}
+                  quantity={parseInt(currentPrice,10)}
                   customAttributes={[
                     {
                       key: "productName",
                       value: props.hit.name
                     }, {
                       key: "price",
-                      value: "" + props.hit.price
+                      value: "" + (currentPrice || props.hit.price)
                     }, {
                       key: "imageURL",
                       value: props.hit.imageURL
@@ -313,6 +318,9 @@ const AlgoliaProductItem = (props) => {
                     }, {
                       key: "shopName",
                       value: "" + props.hit.shopName
+                    }, {
+                      key: "variant",
+                      value: ""+currentVariantText
                     }
                   ]}
                 />

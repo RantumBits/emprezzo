@@ -11,6 +11,8 @@ const initialState = {
     products: [],
     giftcardExchangeProduct: {},
     giftcardProduct: {},
+    pledgelingProduct: {},
+    pledgelingAdded: false,
     shop: {},
     visibility: false
 };
@@ -82,6 +84,9 @@ const actions = {
             //emprezzo gift card
             const gcProduct = _.filter(res, (item) => item.id == "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzYxNTU3NzE1NzY0OTU=")
             store.setState({ giftcardProduct: gcProduct[0] });
+            //pledgeling 
+            const pledgeProduct = _.filter(res, (item) => item.id == "Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0LzYxNTU3OTg4Mzk0NzE=")
+            store.setState({ pledgelingProduct: pledgeProduct[0] });
         });
     },
     initializeShops: (store) => {
@@ -99,7 +104,6 @@ const actions = {
             key: "uniqueID",
             value: "" + (new Date().getTime())
         })
-        console.log("customAttributes", customAttributes)
         const lineItemsToAdd = [{ variantId, quantity: parseInt(quantity, 10), customAttributes }]
         setLocalStorage(_.concat(getLocalStorage(), lineItemsToAdd)); //add item to localstorage
         const checkoutId = store.state.checkout.id
@@ -123,6 +127,24 @@ const actions = {
             store.setState({ checkout: res });
         });
     },
+    addPledgelingToCart: (store, variantId, quantity, customAttributes) => {
+        store.setState({
+            isCartOpen: true,
+        });
+        customAttributes = customAttributes || [];
+        customAttributes.push({
+            key: "uniqueID",
+            value: "" + (new Date().getTime())
+        })
+        const lineItemsToAdd = [{ variantId, quantity: parseInt(quantity, 10), customAttributes }]
+        const checkoutId = store.state.checkout.id
+        return store.state.client.checkout.addLineItems(checkoutId, lineItemsToAdd).then(res => {
+            store.setState({
+                checkout: res,
+                pledgelingAdded: true
+            });
+        });
+    },
     updateQuantityInCart: (store, lineItemId, quantity) => {
         const checkoutId = store.state.checkout.id
         const lineItemsToUpdate = [{ id: lineItemId, quantity: parseInt(quantity, 10) }]
@@ -132,9 +154,18 @@ const actions = {
     },
     removeLineItemInCart: (store, lineItemId) => {
         const checkoutId = store.state.checkout.id
+        const itemBeingRemoved = _.filter(store.state.checkout.lineItems, (item) => item.id == lineItemId)
         return store.state.client.checkout.removeLineItems(checkoutId, [lineItemId]).then(res => {
             removeItemFromLocalStorage(res);
-            store.setState({ checkout: res });
+            store.setState({
+                checkout: res
+            });
+            //checking if the pledgeling item is remove then show the buy pledgeling button
+            if (itemBeingRemoved[0].variant.product.id == store.state.pledgelingProduct.id) {
+                store.setState({
+                    pledgelingAdded: false
+                });
+            }
         });
     },
     handleCartOpen: (store) => {

@@ -969,14 +969,16 @@ const SingleItem = ({ data, pageContext }) => {
 
 
 
-          <TabPanel>
-        <AlgoliaProductList
-          searchIndexName={"emails"}
-          defaultSearchTerm={AlexaURL}
-          showSearchBox={true}
-          hideLeftPanel={true}
-        />
-        </TabPanel>
+          <TabPanel>          
+            <AlgoliaProductList
+              searchIndexName={"emails"}
+              defaultSearchTerm={(AlexaURL||"").replace(/^(?:https?:\/\/)?(?:www\.)?/i, "").split('/')[0]}
+              hideCTAButton={true}
+              showSearchBox={true}
+              hideLeftPanel={true}
+              itemsPerPage={3}
+            />
+          </TabPanel>
 
 
         </Tabs>
@@ -1097,114 +1099,114 @@ const SingleItem = ({ data, pageContext }) => {
 
           </TabList>
           <TabPanel>
-          <div style={{ flex: '60%' }}>
-            <Tabs >
-              <TabList>
-                {facebookChartData && <Tab style={TabStyle}>Facebook</Tab>}
-                {instagramChartData && <Tab style={TabStyle}>Instagram</Tab>}
-                {pinterestChartData && <Tab style={TabStyle}>Pinterest</Tab>}
-                {tiktokChartData && <Tab style={TabStyle}>TikTok</Tab>}
-                {twitterChartData && <Tab style={TabStyle}>Twitter</Tab>}
-                {youtubeChartData && <Tab style={TabStyle}>Youtube</Tab>}
-              </TabList>
-              {facebookChartData && (
-                <TabPanel>
-                  <ReactFrappeChart
-                    type="axis-mixed"
-                    colors={['#743ee2']}
-                    title="Facebook"
-                    height={250}
-                    axisOptions={{
-                      xAxisMode: 'tick',
-                      xIsSeries: 1,
-                      shortenYAxisNumbers: 1,
-                    }}
-                    data={facebookChartData}
-                  />
-                </TabPanel>
-              )}
-              {instagramChartData && (
-                <TabPanel>
-                  <ReactFrappeChart
-                    type="axis-mixed"
-                    title="Instagram"
-                    height={250}
-                    axisOptions={{
-                      xAxisMode: 'tick',
-                      xIsSeries: 1,
-                      shortenYAxisNumbers: 1,
-                    }}
-                    lineOptions={{ spline: 1 }}
-                    data={instagramChartData}
-                  />
-                </TabPanel>
-              )}
-              {pinterestChartData && (
-                <TabPanel>
-                  <ReactFrappeChart
-                    type="axis-mixed"
-                    title="Pinterest"
-                    height={250}
-                    axisOptions={{
-                      xAxisMode: 'tick',
-                      xIsSeries: 1,
-                      shortenYAxisNumbers: 1,
-                    }}
-                    lineOptions={{ spline: 1 }}
-                    data={pinterestChartData}
-                  />
-                </TabPanel>
-              )}
-              {tiktokChartData && (
-                <TabPanel>
-                  <ReactFrappeChart
-                    type="axis-mixed"
-                    title="Tiktok"
-                    height={250}
-                    axisOptions={{
-                      xAxisMode: 'tick',
-                      xIsSeries: 1,
-                      shortenYAxisNumbers: 1,
-                    }}
-                    lineOptions={{ spline: 1 }}
-                    data={tiktokChartData}
-                  />
-                </TabPanel>
-              )}
-              {twitterChartData && (
-                <TabPanel>
-                  <ReactFrappeChart
-                    type="axis-mixed"
-                    title="Twitter"
-                    height={250}
-                    axisOptions={{
-                      xAxisMode: 'tick',
-                      xIsSeries: 1,
-                      shortenYAxisNumbers: 1,
-                    }}
-                    lineOptions={{ spline: 1 }}
-                    data={twitterChartData}
-                  />
-                </TabPanel>
-              )}
-              {youtubeChartData && (
-                <TabPanel>
-                  <ReactFrappeChart
-                    type="axis-mixed"
-                    title="Youtube"
-                    height={250}
-                    axisOptions={{
-                      xAxisMode: 'tick',
-                      xIsSeries: 1,
-                      shortenYAxisNumbers: 1,
-                    }}
-                    lineOptions={{ spline: 1 }}
-                    data={youtubeChartData}
-                  />
-                </TabPanel>
-              )}
-            </Tabs>
-          </div>
+            <div style={{ flex: '60%' }}>
+              <Tabs >
+                <TabList>
+                  {facebookChartData && <Tab style={TabStyle}>Facebook</Tab>}
+                  {instagramChartData && <Tab style={TabStyle}>Instagram</Tab>}
+                  {pinterestChartData && <Tab style={TabStyle}>Pinterest</Tab>}
+                  {tiktokChartData && <Tab style={TabStyle}>TikTok</Tab>}
+                  {twitterChartData && <Tab style={TabStyle}>Twitter</Tab>}
+                  {youtubeChartData && <Tab style={TabStyle}>Youtube</Tab>}
+                </TabList>
+                {facebookChartData && (
+                  <TabPanel>
+                    <ReactFrappeChart
+                      type="axis-mixed"
+                      colors={['#743ee2']}
+                      title="Facebook"
+                      height={250}
+                      axisOptions={{
+                        xAxisMode: 'tick',
+                        xIsSeries: 1,
+                        shortenYAxisNumbers: 1,
+                      }}
+                      data={facebookChartData}
+                    />
+                  </TabPanel>
+                )}
+                {instagramChartData && (
+                  <TabPanel>
+                    <ReactFrappeChart
+                      type="axis-mixed"
+                      title="Instagram"
+                      height={250}
+                      axisOptions={{
+                        xAxisMode: 'tick',
+                        xIsSeries: 1,
+                        shortenYAxisNumbers: 1,
+                      }}
+                      lineOptions={{ spline: 1 }}
+                      data={instagramChartData}
+                    />
+                  </TabPanel>
+                )}
+                {pinterestChartData && (
+                  <TabPanel>
+                    <ReactFrappeChart
+                      type="axis-mixed"
+                      title="Pinterest"
+                      height={250}
+                      axisOptions={{
+                        xAxisMode: 'tick',
+                        xIsSeries: 1,
+                        shortenYAxisNumbers: 1,
+                      }}
+                      lineOptions={{ spline: 1 }}
+                      data={pinterestChartData}
+                    />
+                  </TabPanel>
+                )}
+                {tiktokChartData && (
+                  <TabPanel>
+                    <ReactFrappeChart
+                      type="axis-mixed"
+                      title="Tiktok"
+                      height={250}
+                      axisOptions={{
+                        xAxisMode: 'tick',
+                        xIsSeries: 1,
+                        shortenYAxisNumbers: 1,
+                      }}
+                      lineOptions={{ spline: 1 }}
+                      data={tiktokChartData}
+                    />
+                  </TabPanel>
+                )}
+                {twitterChartData && (
+                  <TabPanel>
+                    <ReactFrappeChart
+                      type="axis-mixed"
+                      title="Twitter"
+                      height={250}
+                      axisOptions={{
+                        xAxisMode: 'tick',
+                        xIsSeries: 1,
+                        shortenYAxisNumbers: 1,
+                      }}
+                      lineOptions={{ spline: 1 }}
+                      data={twitterChartData}
+                    />
+                  </TabPanel>
+                )}
+                {youtubeChartData && (
+                  <TabPanel>
+                    <ReactFrappeChart
+                      type="axis-mixed"
+                      title="Youtube"
+                      height={250}
+                      axisOptions={{
+                        xAxisMode: 'tick',
+                        xIsSeries: 1,
+                        shortenYAxisNumbers: 1,
+                      }}
+                      lineOptions={{ spline: 1 }}
+                      data={youtubeChartData}
+                    />
+                  </TabPanel>
+                )}
+              </Tabs>
+            </div>
           </TabPanel>
           <TabPanel>
 

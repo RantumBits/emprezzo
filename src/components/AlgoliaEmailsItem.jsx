@@ -2,8 +2,6 @@ import React, { useContext } from 'react';
 import { css, Global } from '@emotion/core';
 import styled from '@emotion/styled';
 import _ from 'lodash';
-import { CartContext } from './Cart/CartContext'
-import ShopifyCart from './Cart/ShopifyCart';
 import { Highlight } from 'react-instantsearch-dom';
 import theme from '../../config/theme';
 import { Dialog } from "@reach/dialog";
@@ -60,8 +58,6 @@ const Image = styled.div`
     position: static !important;
   }
 `;
-
-
 
 const StyledLink = styled.a`
   position: absolute;
@@ -207,40 +203,6 @@ const AlgoliaEmailsItem = (props) => {
   const closeDialog = () => setShowDialog(false);
 
   //console.log("**** props=AlgoliaEmailsItem=", props)
-  const { addProduct, cartItems, increase } = useContext(CartContext);
-  const isInCart = product => {
-    return !!cartItems.find(item => item.id === product.id);
-  }
-  const addToCartWrapper = hit => {
-    const hitToProduct = {
-      id: hit.objectID,
-      name: hit.name,
-      price: hit.price,
-      photo: hit.imageURL,
-      productURL: hit.productURL,
-      emprezzoID: hit.emprezzoID,
-      shopName: hit.shopName,
-      description: hit.description,
-    }
-    //increase the quantity if already present, if not add product to cart
-    isInCart(hitToProduct) ? increase(hitToProduct) : addProduct(hitToProduct);
-  }
-
-  const convertToSelectList = (variants) => {
-    if (variants == null) return;
-    if (variants.toLowerCase() == "default title") return;
-    const list = variants.split(",");
-    return (
-      <div>Options: <select>
-        {list.map((item, index) => (
-          <option key={index}>{item}</option>
-        ))}
-      </select>
-      </div>
-    )
-
-  }
-
   return (
     <Wrapper>
       <Global
@@ -266,14 +228,8 @@ const AlgoliaEmailsItem = (props) => {
           <StyledLink href="javascript:void(0)" onClick={() => openDialog()} title={props.hit.shopName}>
             <Information>
               <ShopName>{(props.hit.shopName || "").substring(0, 22)}
-                {` `}${props.hit.date}</ShopName>
+                {` `}{props.hit.date}</ShopName>
               <Title>{props.hit.subject && props.hit.subject.toLowerCase().substring(0, 24)}</Title>
-
-              {props.hit.price &&
-                <Price>
-
-                </Price>
-              }
             </Information>
           </StyledLink>
 
@@ -283,25 +239,14 @@ const AlgoliaEmailsItem = (props) => {
             <button className="close-button" onClick={closeDialog} style={{ float: "right", cursor: "pointer" }}>
               <span aria-hidden>X</span>
             </button>
-            <div className="dialogImageDescription">
-              <div className="dialogImage">
-                {props.hit.screenshot && props.hit.screenshot != "-" &&
-                  <img src={props.hit.screenshot} />
-                }
-              </div>
-              <div className="dialogRight">
-                <h3 style={{ 'font-size': '1.1rem', 'margin-bottom': '9px' }}>{props.hit.subject}</h3>
-                <span style={{ 'margin-bottom': '12px', 'font-style': 'italic' }}> {props.hit.date}</span>
-                <div className="dialogDescription">{props.hit.description && props.hit.description}</div>
-                {convertToSelectList(props.hit.VariantTitle)}
-              </div>
+            <div>
+              {props.hit.screenshot && props.hit.screenshot != "-" &&
+                <img src={props.hit.screenshot} />
+              }
+              <h3 style={{ 'font-size': '1.1rem', 'margin-bottom': '9px' }}>{props.hit.subject}</h3>
+              <span style={{ 'margin-bottom': '12px', 'font-style': 'italic' }}> {props.hit.date}</span>
+              <div className="dialogDescription">{props.hit.description && props.hit.description}</div>
             </div>
-            <br />
-            {/* <div>
-              <a href={props.hit.productURL} target="_blank" className="button">Shop at {props.hit.shopName}</a>
-              <a href="javascript:" onClick={() => addToCartWrapper(props.hit)} className="button buttonalt">Save for later</a>              
-            </div> */}
-
           </StyledDialog>
         </>
       }

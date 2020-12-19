@@ -240,7 +240,7 @@ const FilterHeading = styled.div`
   }
 `;
 
-const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, hideLeftPanel, showClearFilter, facetsToShow, showSearchBox, searchIndexName, enableShopProductSwitch, enableCart, noResultMessage }) => {
+const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, itemsPerPage, hideLeftPanel, hideCTAButton, showClearFilter, facetsToShow, showSearchBox, searchIndexName, enableShopProductSwitch, enableCart, noResultMessage }) => {
 
   const [currentIndexName, setCurrentIndexName] = React.useState(searchIndexName || `empProducts`)
   const changeCurrentIndexName = (e) => { setCurrentIndexName(e.target.value) }
@@ -258,6 +258,7 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, hideLeftPanel, s
   };
   noResultMessage = noResultMessage || `No result found`;
   enableCart = enableCart || false;
+  itemsPerPage = itemsPerPage || 12;
   const { itemCount } = useContext(CartContext);
 
   return (
@@ -390,7 +391,7 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, hideLeftPanel, s
           </LeftPanel>
         }
         <RightPanel>
-          <Configure hitsPerPage={12} filters={defaultFilter} />
+          <Configure hitsPerPage={itemsPerPage} filters={defaultFilter} />
           <div class="searchline">
             <div class="indexSelect">
               {enableShopProductSwitch &&
@@ -420,10 +421,11 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, hideLeftPanel, s
               <SearchBox />
 
             }
-            <div class="giftCard">
-              <BuyGiftCard />
-            </div>
-
+            {!hideCTAButton &&
+              <div class="giftCard">
+                <BuyGiftCard />
+              </div>
+            }
           </div>
           <AlgoliaStateResults noResultMessage={noResultMessage} />
           {currentIndexName == 'empProducts' &&
@@ -435,7 +437,7 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, hideLeftPanel, s
           }
           {currentIndexName == 'emails' &&
             <Hits hitComponent={AlgoliaEmailsItem} />
-          }          
+          }
           <Pagination />
         </RightPanel>
       </InstantSearch>
