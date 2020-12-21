@@ -11,6 +11,7 @@ import BuyGiftCard from '../components/Cart/BuyGiftCard'
 import AlgoliaRangeSlider from './AlgoliaRangeSlider'
 import AlgoliaStateResults from './AlgoliaStateResults'
 import algoliasearch from 'algoliasearch/lite';
+import aa from "search-insights";
 import {
   InstantSearch,
   Hits,
@@ -20,8 +21,10 @@ import {
   RefinementList,
   NumericMenu,
   Configure,
+  connectHitInsights,
 } from 'react-instantsearch-dom';
 import 'instantsearch.css/themes/algolia.css';
+
 const SearchWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -251,7 +254,6 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, itemsPerPage, hi
   );
   const searchClient = {
     search(requests) {
-
       if (requests.length > 0 && defaultSearchTerm) requests[0].params.query = defaultSearchTerm
       return algoliaClient.search(requests);
     },
@@ -260,6 +262,19 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, itemsPerPage, hi
   enableCart = enableCart || false;
   itemsPerPage = itemsPerPage || 12;
   const { itemCount } = useContext(CartContext);
+
+  aa('init', {
+    appId: process.env.GATSBY_ALGOLIA_APP_ID,
+    apiKey: process.env.GATSBY_ALGOLIA_SEARCH_KEY
+  });
+
+  const [currentHitComponent, setCurrentHitComponent] = React.useState();
+  React.useEffect(() => {
+    if (currentIndexName == 'empProducts') setCurrentHitComponent(() => connectHitInsights(aa)(AlgoliaProductItem));
+    if (currentIndexName == 'uncommonry') setCurrentHitComponent(() => connectHitInsights(aa)(AlgoliaUncommonryItem));
+    if (currentIndexName == 'emails') setCurrentHitComponent(() => connectHitInsights(aa)(AlgoliaEmailsItem));
+  }, [currentIndexName]);
+  //console.log("currentHitComponent = ", currentHitComponent)
 
   return (
     <SearchWrapper>
@@ -391,7 +406,7 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, itemsPerPage, hi
           </LeftPanel>
         }
         <RightPanel>
-          <Configure hitsPerPage={itemsPerPage} filters={defaultFilter} />
+          <Configure clickAnalytics={true} hitsPerPage={itemsPerPage} filters={defaultFilter} />
           <div class="searchline">
             <div class="indexSelect">
               {enableShopProductSwitch &&
@@ -428,16 +443,7 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, itemsPerPage, hi
             }
           </div>
           <AlgoliaStateResults noResultMessage={noResultMessage} />
-          {currentIndexName == 'empProducts' &&
-            <Hits hitComponent={AlgoliaProductItem} />
-
-          }
-          {currentIndexName == 'uncommonry' &&
-            <Hits hitComponent={AlgoliaUncommonryItem} />
-          }
-          {currentIndexName == 'emails' &&
-            <Hits hitComponent={AlgoliaEmailsItem} />
-          }
+          <Hits hitComponent={currentHitComponent} />
           <Pagination />
         </RightPanel>
       </InstantSearch>
