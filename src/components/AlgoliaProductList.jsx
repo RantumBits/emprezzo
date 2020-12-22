@@ -15,6 +15,7 @@ import aa from "search-insights";
 import {
   InstantSearch,
   Hits,
+  InfiniteHits,
   SearchBox,
   Pagination,
   ClearRefinements,
@@ -22,7 +23,9 @@ import {
   NumericMenu,
   Configure,
   connectHitInsights,
+  connectSearchBox,
 } from 'react-instantsearch-dom';
+import Autocomplete from './search/AutoComplete';
 import 'instantsearch.css/themes/algolia.css';
 
 const SearchWrapper = styled.div`
@@ -112,10 +115,12 @@ const RightPanel = styled.div`
 
       display: flex;
 
-    margin: 0 0 1em 0;
+    margin: 0 0 2em 0;
   }
 
-
+  .searchContainer {
+    width: 60%;
+  }
 
   .ais-SearchBox-input{
     padding: 0.5rem 1.8remm;
@@ -138,9 +143,15 @@ const RightPanel = styled.div`
   .GiftCard--BuyButton {
 
     @media (max-width: 800px) {
+        display:none;
+      diplay: block;
       font-size: 1.4em;
       padding: 0px;
     }
+  }
+
+  form.ais-SearchBox-form {
+        margin-bottom: 1em;
   }
 
   .indexSelect {
@@ -208,9 +219,9 @@ const RightPanel = styled.div`
 
   .ais-SearchBox {
     @media (min-width: 900px) {
-      width: calc(60% - 1rem);
+      width: calc(80% - 1rem);
     }
-    width: 60%;
+    width: 100%;
 
       margin: 0;
       display: inline-block;
@@ -231,6 +242,27 @@ const RightPanel = styled.div`
   .ais-Breadcrumb-link, .ais-HierarchicalMenu-link, .ais-Menu-link, .ais-Pagination-link, .ais-RatingMenu-link {
     color:#C04CFD
   }
+
+  .suggestions {
+
+    width: 70%;
+    font-style: italic;
+    display: inline-block;
+    margin: 0 0 0 0.5em;
+    @media (max-width: 900px) {
+      width: 90%;
+    }
+    .ais-InfiniteHits-loadMore {
+      display : none;
+    }
+    .ais-InfiniteHits-item {
+      margin: 0px;
+      width: auto;
+      border: 0px;
+      box-shadow: none;
+      padding: 0 0.3em;
+    }
+  }
 `;
 
 const FilterHeading = styled.div`
@@ -242,11 +274,19 @@ const FilterHeading = styled.div`
     font-size: 0.5rem;
   }
 `;
+const VirtualSearchBox = connectSearchBox(() => null);
 
-const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, itemsPerPage, hideLeftPanel, hideCTAButton, showClearFilter, facetsToShow, showSearchBox, searchIndexName, enableShopProductSwitch, enableCart, noResultMessage }) => {
+const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, itemsPerPage, hideLeftPanel, hideCTAButton, showClearFilter, facetsToShow, showSearchBox, showSearchSuggestions, searchIndexName, enableShopProductSwitch, enableCart, noResultMessage }) => {
 
   const [currentIndexName, setCurrentIndexName] = React.useState(searchIndexName || `empProducts`)
-  const changeCurrentIndexName = (e) => { setCurrentIndexName(e.target.value) }
+  const changeCurrentIndexName = (e) => { setCurrentIndexName(e.target.value); setCurrentSuggestionIndexName(getSuggestionIndex(e.target.value)); setSuggestionQuery(''); }
+
+  const getSuggestionIndex = (mainIndexName) => {
+    if (mainIndexName == 'empProducts') return ('empProducts_query_suggestions');
+    if (mainIndexName == 'uncommonry') return ('uncommonry_query_suggestions')
+  }
+  const [currentSuggestionIndexName, setCurrentSuggestionIndexName] = React.useState(getSuggestionIndex(currentIndexName))
+  const [suggestionQuery, setSuggestionQuery] = React.useState();
 
   const algoliaClient = algoliasearch(
     process.env.GATSBY_ALGOLIA_APP_ID,
@@ -274,7 +314,13 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, itemsPerPage, hi
     if (currentIndexName == 'uncommonry') setCurrentHitComponent(() => connectHitInsights(aa)(AlgoliaUncommonryItem));
     if (currentIndexName == 'emails') setCurrentHitComponent(() => connectHitInsights(aa)(AlgoliaEmailsItem));
   }, [currentIndexName]);
-  //console.log("currentHitComponent = ", currentHitComponent)
+  //console.log("setSuggestionQuery = ", suggestionQuery)
+
+  const AlgoliaSuggestions = ({ hit }) => {
+    return (
+      <a href="javascript:" onClick={() => setSuggestionQuery(hit.query)}>{hit.query}</a>
+    );
+  }
 
   return (
     <SearchWrapper>
@@ -288,6 +334,7 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, itemsPerPage, hi
         />
       }
       <InstantSearch indexName={currentIndexName} searchClient={searchClient}>
+        <VirtualSearchBox defaultRefinement={suggestionQuery} />
         {!hideLeftPanel &&
           <LeftPanel>
 
@@ -369,8 +416,10 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, itemsPerPage, hi
                 />
               </>
             }
-            {facetsToShow && facetsToShow.indexOf("giftcard") >= 0 &&
+            {/*
+            {facetsToShow && facetsToShow.indexOf("giftcard") >= 0 && currentIndexName == 'empProducts' &&
               <>
+                <FilterHeading>Gift Card</FilterHeading>
                 <RefinementList
                   attribute="name"
                   transformItems={items =>
@@ -379,6 +428,22 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, itemsPerPage, hi
                 />
               </>
             }
+            {facetsToShow && facetsToShow.indexOf("gifimage") >= 0 && currentIndexName == 'empProducts' &&
+              <>
+                <FilterHeading>GIF</FilterHeading>
+                <RefinementList
+                  attribute="imageURL"
+                  transformItems={items =>
+                    items.filter(item => (item.label.indexOf('.gif') >= 0)).map(item => ({
+                      ...item,
+                      label: "GIF",
+                    }))
+                  }
+                />
+              </>
+            }
+            */}
+
             {facetsToShow && facetsToShow.indexOf("storeoffers") >= 0 &&
               <>
                 <FilterHeading>Store Offers</FilterHeading>
@@ -431,17 +496,33 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, itemsPerPage, hi
                 />
               </div>
             }
-
+          <div class="searchContainer">
             {showSearchBox &&
-              <SearchBox />
+              <>
+                <SearchBox defaultRefinement={suggestionQuery} />
+              </>
+            }<br style={{ clear: 'both' }} />
+            <span style={{ 'font-weight': 'bold', 'padding': '0 1em 1em 0' }}>Trending </span>
+            {showSearchSuggestions && currentSuggestionIndexName &&
+              <div className="suggestions">
 
+                <InstantSearch
+                  searchClient={searchClient}
+                  indexName={currentSuggestionIndexName}
+                >
+                  <Configure hitsPerPage={5} />
+                  <InfiniteHits hitComponent={AlgoliaSuggestions} />
+                </InstantSearch>
+              </div>
             }
+            </div>
             {!hideCTAButton &&
               <div class="giftCard">
                 <BuyGiftCard />
               </div>
             }
           </div>
+
           <AlgoliaStateResults noResultMessage={noResultMessage} />
           <Hits hitComponent={currentHitComponent} />
           <Pagination />

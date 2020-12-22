@@ -11,7 +11,7 @@
     "url": "https://github.com/emprezzo/"
   },
   "scripts": {
-    "develop": "gatsby develop",
+    "develop": "GATSBY_EXPERIMENTAL_DEV_SSR=true gatsby develop",
     "build": "gatsby build",
     "serve": "gatsby serve",
     "clean": "rm -rf public && rm -rf .cache",
@@ -86,6 +86,7 @@
     "prismjs": "^1.22.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
+    "react-autosuggest": "^10.0.4",
     "react-dom": "^16.8.0",
     "react-frappe-charts": "^4.0.0",
     "react-headroom": "^3.0.1",

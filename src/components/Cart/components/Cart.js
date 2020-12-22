@@ -47,8 +47,11 @@ const Cart = (props) => {
         <ul className="Cart__line-items">
           {line_items}
         </ul>
-        <footer className="Cart__footer">
+        <ul>
           <BuyPledgeling />
+        </ul>
+        <footer className="Cart__footer">
+
           <div className="Cart-info clearfix">
             <div className="Cart-info__total Cart-info__small">Subtotal</div>
             <div className="Cart-info__pricing">

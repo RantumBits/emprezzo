@@ -66,85 +66,117 @@ margin-top: 0.5rem;
 
 const BuyPledgeling = (props) => {
 
-    const [globalState, globalActions] = useGlobal();
+  const [globalState, globalActions] = useGlobal();
 
-    const [selectedVariant, setSelectedVariant] = React.useState((globalState.pledgelingProduct && globalState.pledgelingProduct.variants && globalState.pledgelingProduct.variants[0]));
-    const [selectedVariantImage, setSelectedVariantImage] = React.useState();
+  const [selectedVariant, setSelectedVariant] = React.useState((globalState.pledgelingProduct && globalState.pledgelingProduct.variants && globalState.pledgelingProduct.variants[0]));
+  const [selectedVariantImage, setSelectedVariantImage] = React.useState();
 
-    let defaultOptionValues = {};
-    globalState.pledgelingProduct && globalState.pledgelingProduct.options && globalState.pledgelingProduct.options.forEach((selector) => {
-        defaultOptionValues[selector.name] = selector.values[0].value;
-    });
-    const [selectedOptions, setSelectedOptions] = React.useState(defaultOptionValues);
+  let defaultOptionValues = {};
+  globalState.pledgelingProduct && globalState.pledgelingProduct.options && globalState.pledgelingProduct.options.forEach((selector) => {
+    defaultOptionValues[selector.name] = selector.values[0].value;
+  });
+  const [selectedOptions, setSelectedOptions] = React.useState(defaultOptionValues);
+  const [selectedRadioOption, setSelectedRadioOption] = React.useState(globalState.pledgelingProduct && globalState.pledgelingProduct.options && globalState.pledgelingProduct.options[0].values && globalState.pledgelingProduct.options[0].values[0].value);
 
-    const [showDialog, setShowDialog] = React.useState(false);
-    const openDialog = () => {
-        setSelectedVariant(globalState.pledgelingProduct && globalState.pledgelingProduct.variants && globalState.pledgelingProduct.variants[0])
-        setShowDialog(true);
+  // const [showDialog, setShowDialog] = React.useState(false);
+  // const openDialog = () => {
+  //   setSelectedVariant(globalState.pledgelingProduct && globalState.pledgelingProduct.variants && globalState.pledgelingProduct.variants[0])
+  //   setShowDialog(true);
+  // }
+  // const closeDialog = () => setShowDialog(false);
+
+  React.useEffect(() => {
+    if (globalState.client == null) {
+      globalActions.initializeStoreClient()
+      globalActions.initializeCheckout();
+      globalActions.initializeProducts();
+      globalActions.initializeShops();
     }
-    const closeDialog = () => setShowDialog(false);
+  }, [globalState.client]);
 
-    React.useEffect(() => {
-        if (globalState.client == null) {
-            globalActions.initializeStoreClient()
-            globalActions.initializeCheckout();
-            globalActions.initializeProducts();
-            globalActions.initializeShops();
-        }
-    }, [globalState.client]);
+  let variantQuantity = 1
+  // let variantImage = selectedVariantImage || (globalState.pledgelingProduct && globalState.pledgelingProduct.images && globalState.pledgelingProduct.images[0])
+  // let variantSelectors = globalState.pledgelingProduct.options && globalState.pledgelingProduct.options.map((option) => {
+  //   return (
+  //     <VariantSelector
+  //       key={option.id.toString()}
+  //       option={option}
+  //       handleOptionChange={handleOptionChange}
+  //     />
+  //   );
+  // });
 
-    let variantImage = selectedVariantImage || (globalState.pledgelingProduct && globalState.pledgelingProduct.images && globalState.pledgelingProduct.images[0])
-    let variantQuantity = 1
-    let variantSelectors = globalState.pledgelingProduct.options && globalState.pledgelingProduct.options.map((option) => {
-        return (
-            <VariantSelector
-                key={option.id.toString()}
-                option={option}
-                handleOptionChange={handleOptionChange}
-            />
-        );
-    });
+  function handleOptionChange(event) {
+    const target = event.target
+    let currentSelectedOptions = selectedOptions;
+    currentSelectedOptions[target.name] = target.value;
+    const selectedVariant = globalState.client.product.helpers.variantForOptions(globalState.pledgelingProduct, currentSelectedOptions)
+    setSelectedVariant(selectedVariant)
+    setSelectedVariantImage(selectedVariant.attrs.image)
+  }
 
-    function handleOptionChange(event) {
-        const target = event.target
-        let currentSelectedOptions = selectedOptions;
-        currentSelectedOptions[target.name] = target.value;
-        const selectedVariant = globalState.client.product.helpers.variantForOptions(globalState.pledgelingProduct, currentSelectedOptions)
-        setSelectedVariant(selectedVariant)
-        setSelectedVariantImage(selectedVariant.attrs.image)
-    }
+  function handleRadioChange(event) {
+    setSelectedRadioOption(event.target.value)
+    handleOptionChange(event)
+  }
 
-    return (
-        <div className="GiftCard--BuyButton">
-            {globalState.pledgelingProduct && !globalState.pledgelingAdded &&
-                <>
-                    <button className="Product__buy button" onClick={() => openDialog()}>Add Pledgeling</button>
-                    <StyledDialog isOpen={showDialog} onDismiss={closeDialog}>
-                        <button className="close-button" onClick={closeDialog} style={{ float: "right", cursor: "pointer" }}>
-                            <span aria-hidden>X</span>
-                        </button>
-                        <div className="dialogImageDescription">
-                            <div className="dialogImage">
-                            {variantImage &&
-                                <img src={variantImage.src} />
-                            }
-                            </div>
-                            <div className="dialogRight">
-                                <h3>{globalState.pledgelingProduct.title}</h3>
-                                <p><i>${selectedVariant && selectedVariant.price}</i></p>
-                                <p>{variantSelectors}</p>
-                                  <div className="dialogDescription">{globalState.pledgelingProduct.description && globalState.pledgelingProduct.description}</div>
-                            </div>
-                        </div>
-                        <br />
-                        <div>
-                            <button className="Product__buy button" onClick={() => { globalActions.addPledgelingToCart(selectedVariant.id,variantQuantity); closeDialog(); }}>Add to cart</button>
-                        </div>
-                    </StyledDialog>
-                </>
-            }
-        </div >
-    );
+  return (
+    <div className="GiftCard--BuyButton">
+
+      {globalState.pledgelingProduct && !globalState.pledgelingAdded &&
+
+        <>
+        <b style={{ marginBottom: "0.75rem", fontSize: "1rem" }}>Help provide meals</b><br/>
+        <small>We're matching donations made through the end of 2020!</small>
+          {globalState.pledgelingProduct.options && globalState.pledgelingProduct.options.map((option) => {
+            return (
+              <div style={{ display: "block" }}>
+                {option.values.map((item, index) => {
+                  return (
+                    <div style={{ display: "flex" }}>
+                      <input
+                        style={{ margin: "0.5rem" }}
+                        type="radio"
+                        name={option.name}
+                        value={item.value}
+                        key={`${option.name}-${item.value}`}
+                        checked={selectedRadioOption == item.value}
+                        onChange={handleRadioChange}
+                      />
+                      <span>{`${item.value}`}</span>
+                    </div>
+                  )
+                })}
+              </div>
+            )
+          })}
+          <button className="Product__buy button buttonalt" onClick={() => { globalActions.addPledgelingToCart(selectedVariant.id, variantQuantity); }}>Make a donation</button>
+          {/* <StyledDialog isOpen={showDialog} onDismiss={closeDialog}>
+            <button className="close-button" onClick={closeDialog} style={{ float: "right", cursor: "pointer" }}>
+              <span aria-hidden>X</span>
+            </button>
+            <div className="dialogImageDescription">
+              <div className="dialogImage">
+                {variantImage &&
+                  <img src={variantImage.src} />
+                }
+              </div>
+              <div className="dialogRight">
+                <h3>{globalState.pledgelingProduct.title}</h3>
+                <p><i>${selectedVariant && selectedVariant.price}</i></p>
+                <p>{variantSelectors}</p>
+                <div className="dialogDescription">{globalState.pledgelingProduct.description && globalState.pledgelingProduct.description}</div>
+              </div>
+            </div>
+            <br />
+            <div>
+              <button className="Product__buy button" onClick={() => { globalActions.addPledgelingToCart(selectedVariant.id, variantQuantity); closeDialog(); }}>Add to cart</button>
+            </div>
+          </StyledDialog> */}
+        </>
+      }
+    </div >
+  );
 }
 
 export default BuyPledgeling;

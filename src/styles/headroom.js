@@ -33,8 +33,12 @@ p.center {
     text-align:center;
     position:relative;
 }
-a.buttonalt{
+a.buttonalt, .buttonalt{
   opacity: 50%;
+}
+
+.buttonalt:hover{
+  opacity: 80%;
 }
 
 button.ais-RefinementList-showMore, .ais-RefinementList-showMore:focus:focus {
@@ -42,7 +46,9 @@ button.ais-RefinementList-showMore, .ais-RefinementList-showMore:focus:focus {
     opacity: 40%;
 
 }
-
+div#tidio-chat{
+  z-index: 2;
+}
 button.ais-RefinementList-showMore:hover {
     background: #C04CFD;
     opacity: 80%;
