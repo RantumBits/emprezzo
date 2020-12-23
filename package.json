@@ -12,6 +12,7 @@
   },
   "scripts": {
     "develop": "GATSBY_EXPERIMENTAL_DEV_SSR=true gatsby develop",
+    "local": "gatsby develop",
     "build": "gatsby build",
     "serve": "gatsby serve",
     "clean": "rm -rf public && rm -rf .cache",

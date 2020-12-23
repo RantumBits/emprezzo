@@ -25,7 +25,6 @@ import {
   connectHitInsights,
   connectSearchBox,
 } from 'react-instantsearch-dom';
-import Autocomplete from './search/AutoComplete';
 import 'instantsearch.css/themes/algolia.css';
 
 const SearchWrapper = styled.div`
@@ -314,7 +313,6 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, itemsPerPage, hi
     if (currentIndexName == 'uncommonry') setCurrentHitComponent(() => connectHitInsights(aa)(AlgoliaUncommonryItem));
     if (currentIndexName == 'emails') setCurrentHitComponent(() => connectHitInsights(aa)(AlgoliaEmailsItem));
   }, [currentIndexName]);
-  //console.log("setSuggestionQuery = ", suggestionQuery)
 
   const AlgoliaSuggestions = ({ hit }) => {
     return (
@@ -402,7 +400,6 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, itemsPerPage, hi
             }
             {facetsToShow && facetsToShow.indexOf("prices") >= 0 && currentIndexName == 'empProducts' &&
               <>
-
                 <FilterHeading>Prices</FilterHeading>
                 <NumericMenu
                   attribute="price"
@@ -467,7 +464,6 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, itemsPerPage, hi
                 />
               </>
             }
-
           </LeftPanel>
         }
         <RightPanel>

@@ -30,7 +30,7 @@ class LineItem extends Component {
   }
 
   render() {
-    const itemTitle = (this.getCustomAttribute("shopName")+" Gift Card") || this.props.line_item.title
+    const itemTitle = this.getCustomAttribute("shopName") ? (this.getCustomAttribute("shopName")+" Gift Card") : this.props.line_item.title
     //console.log("**** lineitem",this.props.line_item.quantity,this.props.line_item.variant.price)
     return (
       <li className="Line-item">
