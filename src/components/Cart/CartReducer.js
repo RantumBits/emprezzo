@@ -59,6 +59,13 @@ export const CartReducer = (state, action) => {
                 cartItems: [],
                 ...sumItems([]),
             }
+        case "REFRESH":
+            const storage = (isBrowser() && window.localStorage.getItem('cart')) ? JSON.parse(window.localStorage.getItem('cart')) : [];
+            return {
+                cartItems: storage,
+                ...sumItems(storage),
+                checkout: false
+            }
         default:
             return state
 

@@ -68,16 +68,6 @@ const BuyPledgeling = (props) => {
 
   const [globalState, globalActions] = useGlobal();
 
-  const [selectedVariant, setSelectedVariant] = React.useState((globalState.pledgelingProduct && globalState.pledgelingProduct.variants && globalState.pledgelingProduct.variants[0]));
-  const [selectedVariantImage, setSelectedVariantImage] = React.useState();
-
-  let defaultOptionValues = {};
-  globalState.pledgelingProduct && globalState.pledgelingProduct.options && globalState.pledgelingProduct.options.forEach((selector) => {
-    defaultOptionValues[selector.name] = selector.values[0].value;
-  });
-  const [selectedOptions, setSelectedOptions] = React.useState(defaultOptionValues);
-  const [selectedRadioOption, setSelectedRadioOption] = React.useState(globalState.pledgelingProduct && globalState.pledgelingProduct.options && globalState.pledgelingProduct.options[0].values && globalState.pledgelingProduct.options[0].values[0].value);
-
   React.useEffect(() => {
     if (globalState.client == null) {
       globalActions.initializeStoreClient()
@@ -86,6 +76,25 @@ const BuyPledgeling = (props) => {
       globalActions.initializeShops();
     }
   }, [globalState.client]);
+
+  const [selectedVariant, setSelectedVariant] = React.useState();
+  const [selectedVariantImage, setSelectedVariantImage] = React.useState();
+
+  let defaultOptionValues = {};
+  globalState.pledgelingProduct && globalState.pledgelingProduct.options && globalState.pledgelingProduct.options.forEach((selector) => {
+    defaultOptionValues[selector.name] = selector.values[0].value;
+  });
+  const [selectedOptions, setSelectedOptions] = React.useState(defaultOptionValues);
+  const [selectedRadioOption, setSelectedRadioOption] = React.useState();
+
+  React.useEffect(() => {
+    if (globalState.pledgelingProduct && globalState.pledgelingProduct.options && globalState.pledgelingProduct.options[0].values && globalState.pledgelingProduct.options[0].values[0]) {
+      setSelectedRadioOption(globalState.pledgelingProduct.options[0].values[0].value)
+    }
+    if(globalState.pledgelingProduct && globalState.pledgelingProduct.variants){
+      setSelectedVariant(globalState.pledgelingProduct.variants[0])
+    }
+  }, [globalState.pledgelingProduct, selectedRadioOption]);
 
   let variantQuantity = 1
 
