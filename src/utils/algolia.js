@@ -73,6 +73,11 @@ const productQuery = `{
         variantPrice: VariantPrice
         variantImageURL: VariantImageURL
         variantTitles: VariantTitle
+        tag01: Tag01
+        tag02: Tag02
+        tag03: Tag03
+        tag04: Tag04
+        tag05: Tag05
       }
     }
   }

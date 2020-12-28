@@ -3,6 +3,21 @@ import { useBlockstack, didConnect, useConnectOptions, useFile } from 'react-blo
 import { showBlockstackConnect } from '@blockstack/connect'
 import { isBrowser } from '../Cart/utils'
 import { CartContext } from '../Cart/CartContext'
+import { Dialog } from "@reach/dialog";
+import "@reach/dialog/styles.css";
+import styled from '@emotion/styled';
+
+const StyledList = styled.ul`
+    list-style: none;
+    padding-top: 1rem;
+    border-top: 1px solid black;
+    span {
+        padding-right: 2rem;
+    }
+`;
+const Title = styled.h2`
+  margin: 1rem;
+`;
 
 const connectOptions = isBrowser() ? {
     redirectTo: '/',
@@ -27,15 +42,35 @@ const Authentication = (props) => {
     const { refreshCart } = useContext(CartContext);
     const cartPersistPath = "emprezzocart"
     const [cartContent, setCartContent] = useFile(cartPersistPath);
+    const [cartName, setCartName] = React.useState("");
+
+    const allCarts = cartContent ? JSON.parse(cartContent || []) : []
+
     const persistCart = () => {
-        setCartContent((isBrowser() && window.localStorage.getItem('cart')) ? JSON.stringify(window.localStorage.getItem('cart')) : null)
+        const newItem = {
+            name: cartName,
+            cart: (isBrowser() && window.localStorage.getItem('cart')) ? window.localStorage.getItem('cart') : null
+        }
+        allCarts.push(newItem)
+        console.log("allCarts", allCarts)
+        setCartContent(JSON.stringify(allCarts))
     }
-    const loadCart = () => {
+    const loadCart = (name) => {
         if (isBrowser()) {
-            window.localStorage.setItem('cart', JSON.parse(cartContent || []));
-            refreshCart();
+            const foundCart = _.filter(allCarts, item => item.name === name)
+            if (foundCart && foundCart.length > 0) {
+                window.localStorage.setItem('cart', foundCart[0].cart);
+                refreshCart();
+            }
         }
     }
+
+    const [showDialog, setShowDialog] = React.useState(false);
+    const openDialog = () => {
+        setCartName("");
+        setShowDialog(true);
+    }
+    const closeDialog = () => setShowDialog(false);
 
     return (
         <div>
@@ -48,9 +83,29 @@ const Authentication = (props) => {
             </button>
             {authenticated &&
                 <>
-                    <button className="button" onClick={persistCart}>Persist(Save) Cart</button>
-                    <button className="button" onClick={loadCart}>Load Cart</button>
-                    <div>{cartContent}</div>
+                    <button className="button" onClick={openDialog}>Persist(Save) Current Cart</button>                    
+                    {allCarts && allCarts.length > 0 && <Title>Existing Cart(s) List</Title>}
+                    {allCarts && allCarts.map((thisCart) => (
+                        <StyledList>
+                            <li>
+                                <span>{thisCart.name}</span>
+                                <button className="button" onClick={() => loadCart(thisCart.name)}>Load Cart</button>
+                            </li>
+                        </StyledList>
+                    ))} 
+                    <Dialog isOpen={showDialog} onDismiss={closeDialog}>
+                        <button className="close-button" onClick={closeDialog} style={{ float: "right", cursor: "pointer" }}>
+                            <span aria-hidden>X</span>
+                        </button>
+                        <div>
+                            <label>Cart Name : </label>
+                            <input value={cartName} onChange={e => setCartName(e.target.value)} />
+                        </div>
+                        <br />
+                        <div>
+                            <button className="button" onClick={() => { persistCart(); closeDialog(); }}>Persist(Save) Cart</button>
+                        </div>
+                    </Dialog>
                 </>
             }
         </div>
