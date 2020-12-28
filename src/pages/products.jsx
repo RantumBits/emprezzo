@@ -55,7 +55,7 @@ const CarouselWrapper = styled.div`
   }
 `;
 
-const Products = ({ data, pageContext }) => {
+const Products = ({ data, pageContext, location }) => {
   const rowallMysqlShopifyProductsAllEdges = data.allMysqlShopifyProductsAll ? data.allMysqlShopifyProductsAll.edges : [];
   const mainViewEdges = data.allMysqlMainView.edges;
   const maxFeaturedItems = 15;
@@ -213,6 +213,7 @@ const Products = ({ data, pageContext }) => {
             facetsToShow={'category,brands,storeoffers'}
             showSearchBox={true}
             showClearFilter={true}
+            location={location}
           />
         </SearchWrapper>
 

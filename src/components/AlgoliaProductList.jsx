@@ -26,6 +26,8 @@ import {
   connectSearchBox,
 } from 'react-instantsearch-dom';
 import 'instantsearch.css/themes/algolia.css';
+import qs from 'qs'
+import { navigate } from "@reach/router"
 
 const SearchWrapper = styled.div`
   width: 100%;
@@ -275,7 +277,7 @@ const FilterHeading = styled.div`
 `;
 const VirtualSearchBox = connectSearchBox(() => null);
 
-const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, itemsPerPage, hideLeftPanel, hideCTAButton, showClearFilter, facetsToShow, showSearchBox, showSearchSuggestions, searchIndexName, enableShopProductSwitch, enableCart, noResultMessage }) => {
+const AlgoliaProductList = ({ location, history, defaultFilter, defaultSearchTerm, itemsPerPage, hideLeftPanel, hideCTAButton, showClearFilter, facetsToShow, showSearchBox, showSearchSuggestions, searchIndexName, enableShopProductSwitch, enableCart, noResultMessage }) => {
 
   const [currentIndexName, setCurrentIndexName] = React.useState(searchIndexName || `empProducts`)
   const changeCurrentIndexName = (e) => { setCurrentIndexName(e.target.value); setCurrentSuggestionIndexName(getSuggestionIndex(e.target.value)); setSuggestionQuery(''); }
@@ -320,6 +322,27 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, itemsPerPage, hi
     );
   }
 
+  //Routing URL Changes
+  const createURL = state => `?${qs.stringify(state)}`;
+
+  const searchStateToUrl = (location , searchState) =>
+    location && searchState ? `${location.pathname}${createURL(searchState)}` : '';
+
+  const urlToSearchState = (location) => qs.parse(location && location.search.slice(1));
+
+  const DEBOUNCE_TIME = 700;
+  const [searchState, setSearchState] = useState(urlToSearchState(location));
+  const [debouncedSetState, setDebouncedSetState] = useState(null);
+  const onSearchStateChange = updatedSearchState => {
+    clearTimeout(debouncedSetState);
+    setDebouncedSetState(
+      setTimeout(() => {
+        navigate(searchStateToUrl(location, updatedSearchState), { state: updatedSearchState })
+      }, DEBOUNCE_TIME)
+    );
+    setSearchState(updatedSearchState);
+  };
+
   return (
     <SearchWrapper>
       {!enableCart &&
@@ -331,7 +354,13 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, itemsPerPage, hi
         `}
         />
       }
-      <InstantSearch indexName={currentIndexName} searchClient={searchClient}>
+      <InstantSearch
+        indexName={currentIndexName}
+        searchClient={searchClient}
+        searchState={searchState}
+        onSearchStateChange={onSearchStateChange}
+        createURL={createURL}
+      >
         <VirtualSearchBox defaultRefinement={suggestionQuery} />
         {!hideLeftPanel &&
           <LeftPanel>
@@ -492,25 +521,25 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, itemsPerPage, hi
                 />
               </div>
             }
-          <div class="searchContainer">
-            {showSearchBox &&
-              <>
-                <SearchBox defaultRefinement={suggestionQuery} />
-              </>
-            }<br style={{ clear: 'both' }} />
-            <span style={{ 'font-weight': 'bold', 'padding': '0 1em 1em 0' }}>Trending </span>
-            {showSearchSuggestions && currentSuggestionIndexName &&
-              <div className="suggestions">
+            <div class="searchContainer">
+              {showSearchBox &&
+                <>
+                  <SearchBox defaultRefinement={suggestionQuery} />
+                </>
+              }<br style={{ clear: 'both' }} />
+              <span style={{ 'font-weight': 'bold', 'padding': '0 1em 1em 0' }}>Trending </span>
+              {showSearchSuggestions && currentSuggestionIndexName &&
+                <div className="suggestions">
 
-                <InstantSearch
-                  searchClient={searchClient}
-                  indexName={currentSuggestionIndexName}
-                >
-                  <Configure hitsPerPage={5} />
-                  <InfiniteHits hitComponent={AlgoliaSuggestions} />
-                </InstantSearch>
-              </div>
-            }
+                  <InstantSearch
+                    searchClient={searchClient}
+                    indexName={currentSuggestionIndexName}
+                  >
+                    <Configure hitsPerPage={5} />
+                    <InfiniteHits hitComponent={AlgoliaSuggestions} />
+                  </InstantSearch>
+                </div>
+              }
             </div>
             {!hideCTAButton &&
               <div class="giftCard">

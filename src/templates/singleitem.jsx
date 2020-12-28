@@ -188,7 +188,7 @@ const CategoryWrapper = styled.div`
   grid-template-columns: repeat(5, 1fr);
 `;
 
-const SingleItem = ({ data, pageContext }) => {
+const SingleItem = ({ data, pageContext, location }) => {
   const { next, prev } = pageContext;
   let {
     AlexaURL,
@@ -910,6 +910,7 @@ const SingleItem = ({ data, pageContext }) => {
               showClearFilter={false}
               enableCart={true}
               currentShop={{ name: name, link: AlexaURL }}
+              location={location}
               noResultMessage={`Shop direct at <a href=${AlexaURL} target="_blank">${name}</a>`}
             />
           </TabPanel>
@@ -969,14 +970,15 @@ const SingleItem = ({ data, pageContext }) => {
 
 
 
-          <TabPanel>          
+          <TabPanel>
             <AlgoliaProductList
               searchIndexName={"emails"}
-              defaultSearchTerm={(AlexaURL||"").replace(/^(?:https?:\/\/)?(?:www\.)?/i, "").split('/')[0]}
+              defaultSearchTerm={(AlexaURL || "").replace(/^(?:https?:\/\/)?(?:www\.)?/i, "").split('/')[0]}
               hideCTAButton={true}
               showSearchBox={true}
               hideLeftPanel={true}
               itemsPerPage={3}
+              location={location}
             />
           </TabPanel>
 

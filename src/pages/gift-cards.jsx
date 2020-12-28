@@ -33,7 +33,7 @@ const SearchWrapper = styled.div`
 
 `;
 
-const GiftCard = () => {
+const GiftCard = (props) => {
   return (
     <Layout title={'Shop gift cards from hundreds of direct to consumer brands and indepdent retailers'} description="Discover and shop for digital gift cards and gift certificates from hundreds of amazing online stores. ">
       <Header title="Shop gift cards" subtitle="Shop gift cards from hundreds of great shops" />
@@ -46,6 +46,7 @@ const GiftCard = () => {
           facetsToShow={'category,brands,prices'}
           showSearchBox={true}
           showClearFilter={true}
+          location={props.location}
         />
       </SearchWrapper>
     </Layout>

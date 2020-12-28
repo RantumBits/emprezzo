@@ -26,7 +26,7 @@ const ShopWrapper = styled.div`
   }
 `;
 
-const Index = ({ data }) => {
+const Index = ({ data, location }) => {
 
   return (
     <Layout title={'emprezzo | Discover great independent online stores'} description="Discover the best online storess & direct-to-consumer brands" >
@@ -52,6 +52,7 @@ const Index = ({ data }) => {
             enableCart={true}
             enableShopProductSwitch={true}
             searchIndexName={'uncommonry'}
+            location={location}
           />
         </ShopWrapper>
       </LazyLoad>

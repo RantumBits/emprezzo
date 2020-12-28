@@ -245,6 +245,7 @@ const TopShopifyStores = ({ location, data }) => {
             showSearchBox={true}
             showClearFilter={true}
             searchIndexName={`uncommonry`}
+            location={location}
           />
         </ShopsWrapper>
       {/* <Dialog isOpen={showDialog} onDismiss={closeMoreDialog}>
