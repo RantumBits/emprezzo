@@ -908,6 +908,7 @@ const SingleItem = ({ data, pageContext, location }) => {
               facetsToShow={'onsale,giftcard'}
               showSearchBox={true}
               showClearFilter={false}
+              hideCTAButton={true}
               enableCart={true}
               currentShop={{ name: name, link: AlexaURL }}
               location={location}

@@ -26,8 +26,6 @@ import {
   connectSearchBox,
 } from 'react-instantsearch-dom';
 import 'instantsearch.css/themes/algolia.css';
-import qs from 'qs'
-import { navigate } from "@reach/router"
 
 const SearchWrapper = styled.div`
   width: 100%;
@@ -42,47 +40,34 @@ const LeftPanel = styled.div`
   width: 20vw;
   @media (max-width: 600px) {
     display: none;
-
   }
-
   .ais-ClearRefinements-button {
     background-color: #C04CFD;
     @media (max-width: 600px) {
       font-size: 0.5rem;
     }
   }
-
-
-
   .ais-SortBy {
     padding: 0.8rem 0 0.8rem 0;
   }
-
-
-
   .ais-SortBy-select {
     font-size: 0.8rem;
     @media (max-width: 600px) {
       font-size: 0.5rem;
     }
   }
-
-
-
   .ais-RefinementList-item, .ais-NumericMenu-item {
     margin-bottom: 0px;
     @media (max-width: 600px) {
       margin: 0;
     }
   }
-
   .ais-RefinementList-label , .ais-NumericMenu-label, .ais-RefinementList-checkbox {
     font-size: 0.8rem;
     @media (max-width: 600px) {
       font-size: 0.5rem;
     }
   }
-
   .ais-RefinementList-labelText , .ais-NumericMenu-labelText {
     margin-left: 5px;
     font-size: 0.8rem;
@@ -91,12 +76,10 @@ const LeftPanel = styled.div`
       line-height: 0.5rem;
     }
   }
-
   .ais-RefinementList-count {
     display: none;
     font-size: 0.6rem;
   }
-
   .ais-RangeSlider {
     margin: 0.8rem 1rem 2.4rem 1rem;
   }
@@ -113,16 +96,12 @@ const RightPanel = styled.div`
     display: block;
   }
   .searchline {
-
       display: flex;
-
     margin: 0 0 2em 0;
   }
-
   .searchContainer {
     width: 60%;
   }
-
   .ais-SearchBox-input{
     padding: 0.5rem 1.8remm;
     height: 50px;
@@ -134,15 +113,12 @@ const RightPanel = styled.div`
       margin-left: 0.5em;
     }
   }
-
   button.Product__buy.button {
       @media (max-width: 800px) {
     padding: 2px;
   }
   }
-
   .GiftCard--BuyButton {
-
     @media (max-width: 800px) {
         display:none;
       diplay: block;
@@ -150,20 +126,16 @@ const RightPanel = styled.div`
       padding: 0px;
     }
   }
-
   form.ais-SearchBox-form {
         margin-bottom: 1em;
   }
-
   .indexSelect {
     float:left;
     width: 18%;
     height: 50px;
-
     margin-right: 0.5rem;
     @media (max-width: 900px) {
       width: calc(15% - 1rem);
-
     }
     @media (max-width: 600px) {
       width: calc(35% - 1rem);
@@ -184,7 +156,6 @@ const RightPanel = styled.div`
     padding: 0.25rem;
     }
   }
-
   .saleFacet {
     float:left;
     width: 100px;
@@ -201,11 +172,9 @@ const RightPanel = styled.div`
       line-height: 0.5rem;
     }
   }
-
   li.ais-Hits-item a {
     color: #3a4570;
   }
-
   .ais-Hits-item, .ais-Results-item {
     padding: 0px;
     width: calc(25% - 1rem);
@@ -217,35 +186,28 @@ const RightPanel = styled.div`
       width: calc(50% - 1rem);
     }
   }
-
   .ais-SearchBox {
     @media (min-width: 900px) {
       width: calc(80% - 1rem);
     }
     width: 100%;
-
       margin: 0;
       display: inline-block;
   }
-
   .ais-Pagination-item--selected .ais-Pagination-link {
     color: #FFF;
     background-color: #C04CFD;
     border-color:#C04CFD
   }
-
   .ais-Pagination-item--disabled .ais-Pagination-link, .ais-Pagination-link, a.ais-Pagination-link {
     color: #a5abc4;
     padding: .3rem .5rem;
     font-size: .9rem;
   }
-
   .ais-Breadcrumb-link, .ais-HierarchicalMenu-link, .ais-Menu-link, .ais-Pagination-link, .ais-RatingMenu-link {
     color:#C04CFD
   }
-
   .suggestions {
-
     width: 70%;
     font-style: italic;
     display: inline-block;
@@ -277,7 +239,7 @@ const FilterHeading = styled.div`
 `;
 const VirtualSearchBox = connectSearchBox(() => null);
 
-const AlgoliaProductList = ({ location, history, defaultFilter, defaultSearchTerm, itemsPerPage, hideLeftPanel, hideCTAButton, showClearFilter, facetsToShow, showSearchBox, showSearchSuggestions, searchIndexName, enableShopProductSwitch, enableCart, noResultMessage }) => {
+const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, itemsPerPage, hideLeftPanel, hideCTAButton, showClearFilter, facetsToShow, showSearchBox, showSearchSuggestions, searchIndexName, enableShopProductSwitch, enableCart, noResultMessage }) => {
 
   const [currentIndexName, setCurrentIndexName] = React.useState(searchIndexName || `empProducts`)
   const changeCurrentIndexName = (e) => { setCurrentIndexName(e.target.value); setCurrentSuggestionIndexName(getSuggestionIndex(e.target.value)); setSuggestionQuery(''); }
@@ -322,27 +284,6 @@ const AlgoliaProductList = ({ location, history, defaultFilter, defaultSearchTer
     );
   }
 
-  //Routing URL Changes
-  const createURL = state => `?${qs.stringify(state)}`;
-
-  const searchStateToUrl = (location , searchState) =>
-    location && searchState ? `${location.pathname}${createURL(searchState)}` : '';
-
-  const urlToSearchState = (location) => qs.parse(location && location.search.slice(1));
-
-  const DEBOUNCE_TIME = 700;
-  const [searchState, setSearchState] = useState(urlToSearchState(location));
-  const [debouncedSetState, setDebouncedSetState] = useState(null);
-  const onSearchStateChange = updatedSearchState => {
-    clearTimeout(debouncedSetState);
-    setDebouncedSetState(
-      setTimeout(() => {
-        navigate(searchStateToUrl(location, updatedSearchState), { state: updatedSearchState })
-      }, DEBOUNCE_TIME)
-    );
-    setSearchState(updatedSearchState);
-  };
-
   return (
     <SearchWrapper>
       {!enableCart &&
@@ -354,13 +295,7 @@ const AlgoliaProductList = ({ location, history, defaultFilter, defaultSearchTer
         `}
         />
       }
-      <InstantSearch
-        indexName={currentIndexName}
-        searchClient={searchClient}
-        searchState={searchState}
-        onSearchStateChange={onSearchStateChange}
-        createURL={createURL}
-      >
+      <InstantSearch indexName={currentIndexName} searchClient={searchClient}>
         <VirtualSearchBox defaultRefinement={suggestionQuery} />
         {!hideLeftPanel &&
           <LeftPanel>
@@ -521,25 +456,28 @@ const AlgoliaProductList = ({ location, history, defaultFilter, defaultSearchTer
                 />
               </div>
             }
-            <div class="searchContainer">
-              {showSearchBox &&
-                <>
-                  <SearchBox defaultRefinement={suggestionQuery} />
-                </>
-              }<br style={{ clear: 'both' }} />
-              <span style={{ 'font-weight': 'bold', 'padding': '0 1em 1em 0' }}>Trending </span>
-              {showSearchSuggestions && currentSuggestionIndexName &&
-                <div className="suggestions">
+          <div class="searchContainer">
+            {showSearchBox &&
+              <>
+                <SearchBox defaultRefinement={suggestionQuery} />
+              </>
+            }<br style={{ clear: 'both' }} />
+  {showSearchSuggestions && currentSuggestionIndexName &&
+    <span style={{ 'font-weight': 'bold', 'padding': '0 1em 1em 0' }}>Trending </span>
+  }
+            {showSearchSuggestions && currentSuggestionIndexName &&
 
-                  <InstantSearch
-                    searchClient={searchClient}
-                    indexName={currentSuggestionIndexName}
-                  >
-                    <Configure hitsPerPage={5} />
-                    <InfiniteHits hitComponent={AlgoliaSuggestions} />
-                  </InstantSearch>
-                </div>
-              }
+              <div className="suggestions">
+
+                <InstantSearch
+                  searchClient={searchClient}
+                  indexName={currentSuggestionIndexName}
+                >
+                  <Configure hitsPerPage={5} />
+                  <InfiniteHits hitComponent={AlgoliaSuggestions} />
+                </InstantSearch>
+              </div>
+            }
             </div>
             {!hideCTAButton &&
               <div class="giftCard">
@@ -556,5 +494,4 @@ const AlgoliaProductList = ({ location, history, defaultFilter, defaultSearchTer
     </SearchWrapper>
   );
 }
-
 export default AlgoliaProductList;
