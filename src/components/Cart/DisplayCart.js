@@ -1,9 +1,25 @@
-import React, { useContext } from 'react';
+import React, { useCallback, useContext } from 'react';
+import { useBlockstack, didConnect, useConnectOptions, useFile } from 'react-blockstack';
+import { showBlockstackConnect } from '@blockstack/connect'
 import styled from '@emotion/styled';
 import { CartContext } from './CartContext';
 import CartItem from './CartItem';
-import { formatNumber } from './utils';
+import { formatNumber, isBrowser } from './utils';
+import { Dialog } from "@reach/dialog";
+import "@reach/dialog/styles.css";
 
+const StyledList = styled.ul`
+    list-style: none;
+    padding-top: 1rem;
+    border-top: 1px solid black;
+    span {
+        padding-right: 2rem;
+    }
+`;
+const Title = styled.h2`
+  margin: 1rem;
+  width: -webkit-fill-available;
+`;
 const Wrapper = styled.div`
   text-align: center;
 `;
@@ -34,23 +50,71 @@ const CartSummaryBody = styled.div`
 `;
 const CartSummaryElement = styled.div`
     padding: .5rem;    
-    flex: 0 0 25%;
-    max-width: 25%;
+    flex: 0 0 33%;
+    max-width: 33%;
     @media (max-width: 600px) {
         flex: 0 0 99%;
         max-width: 99%;
     }
 `;
 
+const connectOptions = isBrowser() ? {
+    redirectTo: '/',
+    finished: ({ userSession }) => {
+        didConnect({ userSession })
+    },
+    appDetails: {
+        name: "Emprezzo",
+        icon: "https://emprezzo.com/logo/logo.png"
+    }
+} : {};
+
 const DisplayCart = () => {
+    const { signOut, authenticated } = useBlockstack();
+    const authOptions = useConnectOptions(connectOptions);
+    const signIn = useCallback(() => {
+        showBlockstackConnect(authOptions)
+    }, [authOptions])
+    const cartPersistPath = "emprezzocart"
+    const [cartContent, setCartContent] = useFile(cartPersistPath);
+    const [cartName, setCartName] = React.useState("");
+    const allCarts = cartContent ? JSON.parse(cartContent || []) : []
+
     const { total, cartItems, itemCount, clearCart, refreshCart, checkout, handleCheckout } = useContext(CartContext);
+
     const [loaded, setLoaded] = React.useState(false)
-    React.useEffect(()=>{
-        if(!loaded){
+    React.useEffect(() => {
+        if (!loaded) {
             setLoaded(true);
             refreshCart();
         }
-    },[loaded]);    
+    }, [loaded]);
+
+    const persistCart = () => {
+        const newItem = {
+            name: cartName,
+            cart: (isBrowser() && window.localStorage.getItem('cart')) ? window.localStorage.getItem('cart') : null
+        }
+        allCarts.push(newItem)
+        console.log("allCarts", allCarts)
+        setCartContent(JSON.stringify(allCarts))
+    }
+    const loadCart = (name) => {
+        if (isBrowser()) {
+            const foundCart = _.filter(allCarts, item => item.name === name)
+            if (foundCart && foundCart.length > 0) {
+                window.localStorage.setItem('cart', foundCart[0].cart);
+                refreshCart();
+            }
+        }
+    }
+
+    const [showDialog, setShowDialog] = React.useState(false);
+    const openDialog = () => {
+        setCartName("");
+        setShowDialog(true);
+    }
+    const closeDialog = () => setShowDialog(false);
 
     return (
         <Wrapper>
@@ -64,7 +128,6 @@ const DisplayCart = () => {
                     </CartItems>
                     <CartSummary>
                         <CartSummaryBody>
-                            <CartSummaryElement></CartSummaryElement>
                             <CartSummaryElement>
                                 <div>Total Items: </div><h4>{itemCount}</h4>
                             </CartSummaryElement>
@@ -73,12 +136,48 @@ const DisplayCart = () => {
                             </CartSummaryElement>
                             <CartSummaryElement>
                                 <div>
+                                    <button
+                                        className="button"
+                                        disabled={!signIn && !signOut}
+                                        onClick={!authenticated ? signIn : openDialog}
+                                    >
+                                        Save Current Cart
+                                    </button>
                                     <button type="button" className="button" onClick={clearCart}>CLEAR</button>
                                 </div>
                             </CartSummaryElement>
                         </CartSummaryBody>
                     </CartSummary>
                 </CartWrapper>
+            }
+            {authenticated &&
+                <>
+                    <div style={{display: "flex"}}>
+                        <div><button className="button" disabled={!signIn && !signOut} onClick={signOut}>Logout</button></div>
+                        {allCarts && allCarts.length > 0 && <Title>Existing Cart(s) List</Title>}
+                    </div>                    
+                    {allCarts && allCarts.map((thisCart) => (
+                        <StyledList>
+                            <li>
+                                <span>{thisCart.name}</span>
+                                <button className="button" onClick={() => loadCart(thisCart.name)}>Load Cart</button>
+                            </li>
+                        </StyledList>
+                    ))}
+                    <Dialog isOpen={showDialog} onDismiss={closeDialog}>
+                        <button className="close-button" onClick={closeDialog} style={{ float: "right", cursor: "pointer" }}>
+                            <span aria-hidden>X</span>
+                        </button>
+                        <div>
+                            <label>Cart Name : </label>
+                            <input value={cartName} onChange={e => setCartName(e.target.value)} />
+                        </div>
+                        <br />
+                        <div>
+                            <button className="button" onClick={() => { persistCart(); closeDialog(); }}>Persist(Save) Cart</button>
+                        </div>
+                    </Dialog>
+                </>
             }
         </Wrapper>
     );
