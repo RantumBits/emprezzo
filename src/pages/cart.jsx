@@ -8,9 +8,7 @@ const Cart = () => (
   <Layout>
     <Helmet title={'Saved Products'} />
     <Header>Saved Products</Header>
-    <Container>
-      <DisplayCart />
-    </Container>
+    <DisplayCart />
   </Layout>
 );
 

@@ -4,6 +4,8 @@ import { showBlockstackConnect } from '@blockstack/connect'
 import styled from '@emotion/styled';
 import { CartContext } from './CartContext';
 import CartItem from './CartItem';
+import CartItemShop from './CartItemShop';
+import _ from 'lodash';
 import { formatNumber, isBrowser } from './utils';
 import { Dialog } from "@reach/dialog";
 import "@reach/dialog/styles.css";
@@ -25,6 +27,14 @@ const Wrapper = styled.div`
 `;
 const CartWrapper = styled.div`
   justify-content: center;
+  padding: 5rem;
+  @media (max-width: 600px) {
+    display: block;
+    padding: 1rem;
+  }
+`;
+const CartSection = styled.div`
+  display: flex;
   @media (max-width: 600px) {
     display: block;
   }
@@ -123,9 +133,16 @@ const DisplayCart = () => {
             }
             {cartItems.length > 0 &&
                 <CartWrapper>
-                    <CartItems>
-                        {cartItems.map(product => <CartItem key={product.id} product={product} />)}
-                    </CartItems>
+                    <CartSection>
+                        <CartItems style={{borderRight: "1px solid lightgray"}}>
+                            <h3>Products</h3>
+                            {_.filter(cartItems, item => item.type == null).map(product => <CartItem key={product.id} product={product} />)}
+                        </CartItems>
+                        <CartItems>
+                            <h3>Saved Shops</h3>
+                            {_.filter(cartItems, item => item.type && item.type == "shop").map(shop => <CartItemShop key={shop.id} shop={shop} />)}
+                        </CartItems>
+                    </CartSection>
                     <CartSummary>
                         <CartSummaryBody>
                             <CartSummaryElement>
@@ -151,11 +168,11 @@ const DisplayCart = () => {
                 </CartWrapper>
             }
             {authenticated &&
-                <>
-                    <div style={{display: "flex"}}>
+                <CartWrapper style={{paddingTop: "0"}}>
+                    <div style={{ display: "flex" }}>
                         <div><button className="button" disabled={!signIn && !signOut} onClick={signOut}>Logout</button></div>
                         {allCarts && allCarts.length > 0 && <Title>Existing Cart(s) List</Title>}
-                    </div>                    
+                    </div>
                     {allCarts && allCarts.map((thisCart) => (
                         <StyledList>
                             <li>
@@ -177,7 +194,7 @@ const DisplayCart = () => {
                             <button className="button" onClick={() => { persistCart(); closeDialog(); }}>Persist(Save) Cart</button>
                         </div>
                     </Dialog>
-                </>
+                </CartWrapper>
             }
         </Wrapper>
     );

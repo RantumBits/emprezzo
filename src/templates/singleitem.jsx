@@ -11,6 +11,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
 import ProductCategoryItem from '../components/ProductCategoryItem';
 import AlgoliaProductList from '../components/AlgoliaProductList';
+import AddShopToCartButton from '../components/Cart/AddShopToCartButton';
 import { useMediaQuery } from 'react-responsive';
 import ReactFrappeChart from 'react-frappe-charts';
 import {
@@ -812,6 +813,15 @@ const SingleItem = ({ data, pageContext, location }) => {
           <div style={{ paddingLeft: '5px' }}>
 
             <Title>{name}</Title>
+            <AddShopToCartButton
+              details={{
+                storeName: name,
+                storeURL: AlexaURL,
+                storeProfileImage: ProfileImage || (firstRowDataView && firstRowDataView.node.ProfilePicURL),
+                emprezzoID: emprezzoID,
+                description: about,
+              }}
+            />
             <Subtitle><b>{category}</b><br /><i>{tags}</i><br /></Subtitle>
             <Stat>{rowShopifyProductSummary.PriceMin &&
               rowShopifyProductSummary.PriceMax && (
