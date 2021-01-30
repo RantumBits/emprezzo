@@ -13,6 +13,7 @@ import ProductCategoryItem from '../components/ProductCategoryItem';
 import AlgoliaProductList from '../components/AlgoliaProductList';
 import AddShopToCartButton from '../components/Cart/AddShopToCartButton';
 import { useMediaQuery } from 'react-responsive';
+import { getClearbitLogoURL } from '../utils/miscUtils';
 import ReactFrappeChart from 'react-frappe-charts';
 import {
   FaInstagram,
@@ -222,6 +223,8 @@ const SingleItem = ({ data, pageContext, location }) => {
   } = data.mysqlMainView;
   if (AlexaURL.slice(-1) != '/') AlexaURL += "/";
 
+  const clearbitLogoURL = getClearbitLogoURL(AlexaURL);
+  
   const allMysqlMainViewEdges = data.allMysqlMainView.edges;
   const rowallMysqlCrunchBaseViewEdges = data.allMysqlCrunchBaseView ? data.allMysqlCrunchBaseView.edges : [];
   const rowallMysqlPayNShipEdges = data.allMysqlPayNShip ? data.allMysqlPayNShip.edges : [];
@@ -321,7 +324,7 @@ const SingleItem = ({ data, pageContext, location }) => {
     }
     combinedRelatedShops.push(newNode);
   })
-
+  
   //Extracting Products from MySQL Data
   const maxProducts = 10;
   const rowShopifyViewEdges = data.allMysqlShopifyView.edges;
@@ -806,7 +809,7 @@ const SingleItem = ({ data, pageContext, location }) => {
         pathname={AlexaURL}
       />
       <Header
-        description={`${category}: ${tags}`} children={subtitle} likeEnabled={{ storeName: name, storeURL: AlexaURL, storeProfileImage: ProfileImage || (firstRowDataView && firstRowDataView.node.ProfilePicURL) }} />
+        description={`${category}: ${tags}`} children={subtitle} likeEnabled={{ storeName: name, storeURL: AlexaURL, storeProfileImage: clearbitLogoURL || ProfileImage || (firstRowDataView && firstRowDataView.node.ProfilePicURL) }} />
       <Container>
         <div className="profileimage" style={{ display: 'flex' }}>
           {/*firstRowDataView && renderProfilePicURL(firstRowDataView.node, name)*/}
@@ -817,7 +820,7 @@ const SingleItem = ({ data, pageContext, location }) => {
               details={{
                 storeName: name,
                 storeURL: AlexaURL,
-                storeProfileImage: ProfileImage || (firstRowDataView && firstRowDataView.node.ProfilePicURL),
+                storeProfileImage: clearbitLogoURL || ProfileImage || (firstRowDataView && firstRowDataView.node.ProfilePicURL),
                 emprezzoID: emprezzoID,
                 description: about,
               }}
@@ -1083,7 +1086,7 @@ const SingleItem = ({ data, pageContext, location }) => {
                   <span key={index}>
                     <PostSectionImage>
                       <Link key={index} to={`/shops/${shop.emprezzoID}/`}>
-                        <img src={shop.ProfileImage || shop.ProfilePicURL || shop.profile_image_url || "/logo/logo.png"} title={shop.name} alt={shop.name} onError={defaultImageOnError} style={{ height: 'inherit', 'textAlign': 'center', 'borderRadius': '100%' }} />
+                        <img src={getClearbitLogoURL(shop.AlexaURL) || shop.ProfileImage || shop.ProfilePicURL || shop.profile_image_url || "/logo/logo.png"} title={shop.name} alt={shop.name} onError={defaultImageOnError} style={{ height: 'inherit', 'textAlign': 'center', 'borderRadius': '100%' }} />
                       </Link>
                     </PostSectionImage>
                     <PostSectionContent>

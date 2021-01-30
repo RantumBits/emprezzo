@@ -5,6 +5,7 @@ import _ from 'lodash';
 import { Highlight } from 'react-instantsearch-dom';
 import aa from "search-insights";
 import theme from '../../config/theme';
+import { getClearbitLogoURL } from '../utils/miscUtils';
 import {
   FaInstagram,
   FaFacebookSquare,
@@ -107,7 +108,7 @@ const AlgoliaUncommonryItem = (props) => {
           <div style={{ width: "25%" }}>
             <a href={`/shops/${props.hit.emprezzoID}/`} title={props.hit.shopName} target="_blank">
               <Image>
-                <img src={props.hit.shopImage || props.hit.imageURL} />
+                <img src={getClearbitLogoURL(props.hit.url) || props.hit.shopImage || props.hit.imageURL} />
               </Image>
             </a>
           </div>

@@ -8,6 +8,11 @@ exports.createSchemaCustomization = ({ actions }) => {
     type MysqlDataView implements Node {
       mysqlImage: File
       mysqlImages: File
+      PostDate: String
+      PhotoLink: String
+      Caption: String
+      ShortCodeURL: String
+      activity: Float
     }
   `)
   createTypes(`
@@ -31,6 +36,14 @@ exports.createSchemaCustomization = ({ actions }) => {
       FollowerRate: Float
       PostRate: Float
       activity: Float
+    }
+  `)
+  createTypes(`
+    type MysqlRankViewPaypal implements Node {
+      ProfilePicURL: String
+      FollowerRate: Float
+      PostRate: Float
+      activity: Float 
     }
   `)
 }
