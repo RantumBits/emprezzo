@@ -95,7 +95,7 @@ module.exports = {
             name: 'Pages'
           },
           {
-            statement: 'SELECT \n    FLOOR(RAND() * 1000) AS UniqueKey,\n    CONCAT(SUBSTRING(VendorURL, 9, 9),\n            ShopifyProductsAll.ProductID) AS UniqueID,\n    AlexaRankView.UserName AS emprezzoID,\n    ShopifyProductsAll.*,\n    IFNULL((ShopifyProductsAll.Price < ShopifyProductsAll.MaxPrice * 0.8),\n            0) AS OnSale,\n    ShopifyDesc.Description AS productDesc,\n    Tags.*,\n    PayNShip.*,\n    AlexaRankView.*,\n    InstagramHistory.*,\n    SocialSummary.*\nFROM\n    ShopifyProductsAll\n        LEFT JOIN\n    ShopifyDesc ON ShopifyDesc.ProductID = ShopifyProductsAll.ProductID\n        LEFT JOIN\n    Tags ON TRIM(TRAILING \'/\' FROM ShopifyProductsAll.VendorURL) = TRIM(TRAILING \'/\' FROM Tags.url)\n        LEFT JOIN\n    PayNShip ON TRIM(TRAILING \'/\' FROM ShopifyProductsAll.VendorURL) = TRIM(TRAILING \'/\' FROM PayNShip.URL)\n        LEFT JOIN\n    SocialIDView ON TRIM(TRAILING \'/\' FROM ShopifyProductsAll.VendorURL) = TRIM(TRAILING \'/\' FROM SocialIDView.URL)\n        LEFT JOIN\n    AlexaRankView ON TRIM(TRAILING \'/\' FROM ShopifyProductsAll.VendorURL) = TRIM(TRAILING \'/\' FROM AlexaRankView.URL)\n        LEFT JOIN\n    SocialSummary ON TRIM(TRAILING \'/\' FROM SocialIDView.Instagram) = TRIM(TRAILING \'/\' FROM SocialSummary.Instagram)\n        LEFT JOIN\n    InstagramHistory ON TRIM(TRAILING \'/\' FROM SocialIDView.Instagram) = TRIM(TRAILING \'/\' FROM InstagramHistory.UserName)\nWHERE\n    AlexaRankView.UserName IS NOT NULL\nGROUP BY UniqueID \n',
+            statement: "SELECT FLOOR(RAND() * 1000) AS UniqueKey, CONCAT(SUBSTRING(VendorURL, 9, 9), ShopifyProductsTop12.ProductID) AS UniqueID, AlexaRankView.UserName AS emprezzoID, ShopifyProductsTop12.*, IFNULL((ShopifyProductsTop12.Price < ShopifyProductsTop12.MaxPrice * 0.8), 0) AS OnSale, ShopifyDesc.Description AS productDesc, Tags.*,     PayNShip.*,     AlexaRankView.*,     InstagramHistory.*,     SocialSummary.* FROM ( SELECT * , @rn := IF(@prev = VendorURL, @rn + 1, 1) AS rn, @prev := VendorURL FROM ShopifyProductsAll JOIN (SELECT @prev := NULL, @rn := 0) AS vars ORDER BY VendorURL, Position, UpdateDate DESC ) AS ShopifyProductsTop12 LEFT JOIN     ShopifyDesc ON ShopifyDesc.ProductID = ShopifyProductsTop12.ProductID  LEFT JOIN     Tags ON TRIM(TRAILING '/' FROM ShopifyProductsTop12.VendorURL) = TRIM(TRAILING '/' FROM Tags.url) LEFT JOIN     PayNShip ON TRIM(TRAILING '/' FROM ShopifyProductsTop12.VendorURL) = TRIM(TRAILING '/' FROM PayNShip.URL) LEFT JOIN     SocialIDView ON TRIM(TRAILING '/' FROM ShopifyProductsTop12.VendorURL) = TRIM(TRAILING '/' FROM SocialIDView.URL) LEFT JOIN     AlexaRankView ON TRIM(TRAILING '/' FROM ShopifyProductsTop12.VendorURL) = TRIM(TRAILING '/' FROM AlexaRankView.URL) LEFT JOIN     SocialSummary ON TRIM(TRAILING '/' FROM SocialIDView.Instagram) = TRIM(TRAILING '/' FROM SocialSummary.Instagram) LEFT JOIN     InstagramHistory ON TRIM(TRAILING '/' FROM SocialIDView.Instagram) = TRIM(TRAILING '/' FROM InstagramHistory.UserName) WHERE ShopifyProductsTop12.rn <= 12",
             idFieldName: 'UniqueID',
             name: 'ShopifyProductsAll'
           },
@@ -166,7 +166,7 @@ module.exports = {
         apiKey: process.env.ALGOLIA_ADMIN_KEY,
         queries,
         chunkSize: 500, // default: 1000
-        enablePartialUpdates: false,
+        enablePartialUpdates: true,
                 matchFields: ['random','price','shopImage','randomShopKey'],
 
       },

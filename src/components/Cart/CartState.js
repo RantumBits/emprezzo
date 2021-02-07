@@ -3,19 +3,9 @@ import useGlobalHook from "use-global-hook";
 import Client from 'shopify-buy';
 import _ from 'lodash';
 import { isBrowser } from './utils'
-
-const initialState = {
-    isCartOpen: false,
-    client: null,
-    checkout: { lineItems: [] },
-    products: [],
-    giftcardExchangeProduct: {},
-    giftcardProduct: {},
-    pledgelingProduct: {},
-    pledgelingAdded: false,
-    shop: {},
-    visibility: false
-};
+import fetch from 'node-fetch';
+import regeneratorRuntime from "regenerator-runtime";
+import * as contentful from 'contentful-management';
 
 const setLocalStorage = (value) => {
     if (isBrowser()) {
@@ -25,6 +15,16 @@ const setLocalStorage = (value) => {
 
 const getLocalStorage = () => {
     return ((isBrowser() && window.localStorage.getItem('shopifycart')) ? JSON.parse(window.localStorage.getItem('shopifycart')) : []);
+}
+
+const setUserToLocalStorage = (value) => {
+    if (isBrowser()) {
+        window.localStorage.setItem('shopifyuser', JSON.stringify(value));
+    }
+}
+
+const getUserFromLocalStorage = () => {
+    return ((isBrowser() && window.localStorage.getItem('shopifyuser')) ? JSON.parse(window.localStorage.getItem('shopifyuser')) : null);
 }
 
 const removeItemFromLocalStorage = (cart) => {
@@ -41,6 +41,55 @@ const removeItemFromLocalStorage = (cart) => {
     }
 }
 
+const createCustomerQuery = `mutation customerCreate($input: CustomerCreateInput!) {
+    customerCreate(input: $input) {
+      customer {
+        id
+      }
+      customerUserErrors {
+        code
+        field
+        message
+      }
+    }
+  }`;
+const findCustomerQuery = `mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {
+    customerAccessTokenCreate(input: $input) {
+      customerAccessToken {
+        accessToken
+        expiresAt
+      }
+      customerUserErrors {
+        code
+        field
+        message
+      }
+    }
+  }`;
+
+const initialState = {
+    isCartOpen: false,
+    client: null,
+    checkout: { lineItems: [] },
+    products: [],
+    giftcardExchangeProduct: {},
+    giftcardProduct: {},
+    pledgelingProduct: {},
+    pledgelingAdded: false,
+    shop: {},
+    shopUrl: "emprezzo.myshopify.com",
+    accessToken: "0c291ce7693710e4baf0db2cf74576ca",
+    cfAccessToken: 'CFPAT-UjglQTu0UcIGgRtK9i44_Lvh481GA7DAeGwNY32MKMA',
+    cfSpaceID: 'lz0damvofaeg',
+    cfClient: null,
+    cfSavedStoresList: [],
+    visibility: false,
+    user: (getUserFromLocalStorage() !== null ? getUserFromLocalStorage() : {}),
+    authenticated: (getUserFromLocalStorage() !== null),
+    authMessage: "",
+    isAuthDialogOpen: false
+};
+
 const actions = {
     addToCounter: (store, amount) => {
         const newCounterValue = store.state.counter + amount;
@@ -49,11 +98,19 @@ const actions = {
     show: (store, change) => {
         store.setState({ visibility: change });
     },
+    initializeContentfulClient: (store) => {
+        if (store.state.cfClient == null) {
+            const localClient = contentful.createClient({
+                accessToken: store.state.cfAccessToken
+            });
+            store.setState({ cfClient: localClient });
+        }
+    },
     initializeStoreClient: (store) => {
         if (store.state.client == null) {
             const localClient = Client.buildClient({
-                storefrontAccessToken: '0c291ce7693710e4baf0db2cf74576ca',
-                domain: 'emprezzo.myshopify.com'
+                storefrontAccessToken: store.state.accessToken,
+                domain: store.state.shopUrl
             });
             store.setState({ client: localClient });
         }
@@ -173,7 +230,156 @@ const actions = {
     },
     handleCartClose: (store) => {
         store.setState({ isCartOpen: false });
-    }
+    },
+    openAuthDialog: (store) => {
+        store.setState({ isAuthDialogOpen: true });
+    },
+    closeAuthDialog: (store) => {
+        store.setState({ isAuthDialogOpen: false });
+    },
+    registerUser: (store, user) => {
+        store.setState({ authMessage: "" });
+        const params = {
+            query: createCustomerQuery,
+            variables: {
+                input: {
+                    "email": user.email,
+                    "password": user.password
+                }
+            }
+        }
+        const optionsQuery = {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "X-Shopify-Storefront-Access-Token": store.state.accessToken
+            },
+            body: JSON.stringify(params)
+        };
+
+        fetch(`https://` + store.state.shopUrl + `/api/graphql`, optionsQuery)
+            .then(res => res.json())
+            .then(response => {
+                console.log("=============== Response from Create Customer Call ===============", response);
+                console.log(JSON.stringify(response, null, 4))
+                if (response.data && response.data.customerCreate) {
+                    if (response.data.customerCreate.customer) {
+                        const localUser = {
+                            email: user.email
+                        }
+                        setUserToLocalStorage(localUser)
+                        console.log("***** getuser", getUserFromLocalStorage())
+                        store.setState({ authMessage: "User registered and Logged in Successfully", user: localUser, authenticated: (getUserFromLocalStorage() !== null) });
+                    }
+                    if (!!response.data.customerCreate.customerUserErrors.length) {
+                        setUserToLocalStorage(null)
+                        store.setState({ authMessage: response.data.customerCreate.customerUserErrors[0].message, authenticated: false });
+                    }
+                }
+                if (response.errors) {
+                    setUserToLocalStorage(null)
+                    store.setState({ authMessage: response.errors[0].message, authenticated: false });
+                }
+            });
+    },
+    signinUser: (store, user) => {
+        store.setState({ authMessage: "" });
+        const params = {
+            query: findCustomerQuery,
+            variables: {
+                input: {
+                    "email": user.email,
+                    "password": user.password
+                }
+            }
+        }
+        const optionsQuery = {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "X-Shopify-Storefront-Access-Token": store.state.accessToken
+            },
+            body: JSON.stringify(params)
+        };
+
+        fetch(`https://` + store.state.shopUrl + `/api/graphql`, optionsQuery)
+            .then(res => res.json())
+            .then(response => {
+                console.log("=============== Response from Find Customer Call ===============", response);
+                // console.log(JSON.stringify(response, null, 4))
+                if (response.data && response.data.customerAccessTokenCreate) {
+                    if (response.data.customerAccessTokenCreate.customerAccessToken) {
+                        const localUser = {
+                            email: user.email
+                        }
+                        setUserToLocalStorage(localUser)
+                        console.log("***** getuser", getUserFromLocalStorage())
+                        store.setState({ authMessage: "Login Successful", user: localUser, authenticated: (getUserFromLocalStorage() !== null) });
+                    }
+                    if (!!response.data.customerAccessTokenCreate.customerUserErrors.length) {
+                        setUserToLocalStorage(null)
+                        store.setState({ authMessage: response.data.customerAccessTokenCreate.customerUserErrors[0].message, authenticated: false });
+                    }
+                }
+                if (response.errors) {
+                    setUserToLocalStorage(null)
+                    store.setState({ authMessage: response.errors[0].message, authenticated: false });
+                }
+            });
+    },
+    signoutUser: (store) => {
+        setUserToLocalStorage(null)
+        store.setState({ authMessage: "Logged Out Successfully", user: {}, authenticated: false });
+    },
+    getSavedStores: (store) => {
+        console.log("*** About to GET SavedStores", store.state.user)
+        if (store.state.user.email) {
+            actions.initializeContentfulClient(store);
+            store.state.cfClient.getSpace(store.state.cfSpaceID).then((space) => {
+                space.getEnvironment('master').then((environment) => {
+                    environment.getEntries({ 'content_type': 'customerSavedStores', 'fields.customerEmail': store.state.user.email }).then((entries) => {
+                        if (entries.items && entries.items.length > 0) {
+                            const savedStores = entries.items[0].fields['savedStores']['en-US'];
+                            store.setState({ cfSavedStoresList: savedStores });
+                        }
+                    })
+                })
+            })
+        }
+    },
+    addToSavedStores: (store, shop) => {
+        console.log("*** About to add SavedStores", store.state.user)
+        if (store.state.user.email) {
+            actions.initializeContentfulClient(store);
+            store.state.cfClient.getSpace(store.state.cfSpaceID).then((space) => {
+                space.getEnvironment('master').then((environment) => {
+                    environment.getEntries({ 'content_type': 'customerSavedStores', 'fields.customerEmail': store.state.user.email }).then((entries) => {
+                        if (entries.items && entries.items.length > 0) {
+                            const existingStores = entries.items[0].fields['savedStores']['en-US']['stores'];
+                            //add the store to list if it doesnot already exist
+                            if (!!!existingStores.find(item => item.emprezzoID === shop.emprezzoID)) {
+                                existingStores.push(shop)
+                                entries.items[0].update()
+                                store.setState({ cfSavedStoresList: existingStores });
+                            }
+                        }
+                        else { // if this is first item for the customer then create content in contentful
+                            environment.createEntry('customerSavedStores', {
+                                fields: {
+                                    customerEmail: { 'en-US': store.state.user.email },
+                                    savedStores: { 'en-US': { title: "Default", stores: [shop] } }
+                                }
+                            }).then((entry) => console.log("New entry created successfully",entry))
+                                .catch(console.error)
+                        }
+                    })
+                })
+            })
+        }
+    },
+
 };
 
 const useGlobal = useGlobalHook(React, initialState, actions);
