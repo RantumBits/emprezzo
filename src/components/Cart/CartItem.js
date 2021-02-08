@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { PlusCircleIcon, MinusCircleIcon, TrashIcon } from './icons'
 import { Home } from "@styled-icons/material"
-import { CartContext } from './CartContext';
 import { formatNumber } from './utils';
 import styled from '@emotion/styled';
 import { Dialog } from "@reach/dialog";
@@ -142,8 +141,6 @@ const CartItem = ({ product }) => {
         );
     }
 
-    const { increase, decrease, removeProduct } = useContext(CartContext);
-
     return (
         <>
             <CartItemWrapper>
@@ -159,10 +156,10 @@ const CartItem = ({ product }) => {
                     <ProductName><a href="javascript:" onClick={() => openDialog(product)}>{product.name}</a></ProductName>
                     <Price>Price: {formatNumber(product.price)} </Price>
                 </CartElementBig>
-                <CartElementSmall>
+                {/* <CartElementSmall>
                     <Quantity>Qty: {product.quantity}</Quantity>
-                </CartElementSmall>
-                <CartElementMedium>
+                </CartElementSmall> */}
+                {/* <CartElementMedium>
                     <ButtonsWrapper>
                         <button className="btn" onClick={() => increase(product)}>
                             <PlusCircleIcon width={"20px"} />
@@ -184,7 +181,7 @@ const CartItem = ({ product }) => {
                             </a>
                         }
                     </ButtonsWrapper>
-                </CartElementMedium>
+                </CartElementMedium> */}
             </CartItemWrapper>
             <StyledDialog isOpen={showDialog} onDismiss={closeDialog}>
                 <button className="close-button" onClick={closeDialog} style={{ float: "right", cursor: "pointer" }}>

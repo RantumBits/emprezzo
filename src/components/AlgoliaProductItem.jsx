@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
 import styled from '@emotion/styled';
 import _ from 'lodash';
-import { CartContext } from './Cart/CartContext'
 import ShopifyCart from './Cart/ShopifyCart';
-import { Highlight } from 'react-instantsearch-dom';
+import useGlobal from "./Cart/CartState";
 import theme from '../../config/theme';
 import { Dialog } from "@reach/dialog";
 import "@reach/dialog/styles.css";
@@ -59,8 +58,6 @@ const Image = styled.div`
     position: static !important;
   }
 `;
-
-
 
 const StyledLink = styled.a`
   position: absolute;
@@ -201,15 +198,15 @@ margin-top: 0.5rem;
 `;
 
 const AlgoliaProductItem = (props) => {
+  const [globalState, globalActions] = useGlobal();
   const [showDialog, setShowDialog] = React.useState(false);
   const openDialog = () => setShowDialog(true);
   const closeDialog = () => setShowDialog(false);
+  const [showMessageDialog, setShowMessageDialog] = React.useState(false);
+  const openMessageDialog = () => setShowMessageDialog(true);
+  const closeMessageDialog = () => setShowMessageDialog(false);
 
   //console.log("**** props=AlgoliaProductItem=", props)
-  const { addProduct, cartItems, increase } = useContext(CartContext);
-  const isInCart = product => {
-    return !!cartItems.find(item => item.id === product.id);
-  }
   const addToCartWrapper = hit => {
     const hitToProduct = {
       id: hit.objectID,
@@ -221,8 +218,8 @@ const AlgoliaProductItem = (props) => {
       shopName: hit.shopName,
       description: hit.description,
     }
-    //increase the quantity if already present, if not add product to cart
-    isInCart(hitToProduct) ? increase(hitToProduct) : addProduct(hitToProduct);
+    globalActions.addToSavedProducts(hitToProduct); 
+    openMessageDialog();   
   }
 
   const [currentPrice, setCurrentPrice] = React.useState(props.hit.price)
@@ -328,6 +325,16 @@ const AlgoliaProductItem = (props) => {
             </div>
 
           </StyledDialog>
+          <Dialog isOpen={showMessageDialog} onDismiss={closeMessageDialog}>
+                <button className="close-button" onClick={closeMessageDialog} style={{ float: "right", cursor: "pointer" }}>
+                    <span aria-hidden>X</span>
+                </button>
+                <div>Product saved Successfully. <br /><a href="/savedstores">Click Here</a> to see the saved product list</div>
+                <br />
+                <div>
+                    <button className="button" onClick={() => { closeMessageDialog(); }}>Close</button>
+                </div>
+            </Dialog>
         </>
       }
     </Wrapper>

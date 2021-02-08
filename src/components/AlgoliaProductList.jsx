@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 import { css, Global } from '@emotion/core';
 import _ from 'lodash';
 import { Link } from 'gatsby'
-import { CartContext } from './Cart/CartContext'
 import AlgoliaProductItem from './AlgoliaProductItem'
 import AlgoliaUncommonryItem from './AlgoliaUncommonryItem'
 import AlgoliaEmailsItem from './AlgoliaEmailsItem'
@@ -264,8 +263,7 @@ const AlgoliaProductList = ({ defaultFilter, defaultSearchTerm, itemsPerPage, hi
   noResultMessage = noResultMessage || `No result found`;
   enableCart = enableCart || false;
   itemsPerPage = itemsPerPage || 12;
-  const { itemCount } = useContext(CartContext);
-
+  
   aa('init', {
     appId: process.env.GATSBY_ALGOLIA_APP_ID,
     apiKey: process.env.GATSBY_ALGOLIA_SEARCH_KEY

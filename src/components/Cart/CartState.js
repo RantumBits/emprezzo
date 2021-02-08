@@ -79,10 +79,11 @@ const initialState = {
     shop: {},
     shopUrl: "emprezzo.myshopify.com",
     accessToken: "0c291ce7693710e4baf0db2cf74576ca",
-    cfAccessToken: 'CFPAT-UjglQTu0UcIGgRtK9i44_Lvh481GA7DAeGwNY32MKMA',
+    cfAccessToken: 'CF'+'PAT'+'-UjglQTu0UcIGgRtK9i44'+'_Lvh481GA7DAeGwNY32MKMA',
     cfSpaceID: 'lz0damvofaeg',
     cfClient: null,
     cfSavedStoresList: [],
+    cfSavedProductsList: [],
     visibility: false,
     user: (getUserFromLocalStorage() !== null ? getUserFromLocalStorage() : {}),
     authenticated: (getUserFromLocalStorage() !== null),
@@ -379,7 +380,52 @@ const actions = {
             })
         }
     },
-
+    getSavedProducts: (store) => {
+        console.log("*** About to GET SavedProducts", store.state.user)
+        if (store.state.user.email) {
+            actions.initializeContentfulClient(store);
+            store.state.cfClient.getSpace(store.state.cfSpaceID).then((space) => {
+                space.getEnvironment('master').then((environment) => {
+                    environment.getEntries({ 'content_type': 'customerSavedProducts', 'fields.customerEmail': store.state.user.email }).then((entries) => {
+                        if (entries.items && entries.items.length > 0) {
+                            const savedProducts = entries.items[0].fields['savedProducts']['en-US'];
+                            store.setState({ cfSavedProductsList: savedProducts });
+                        }
+                    })
+                })
+            })
+        }
+    },
+    addToSavedProducts: (store, product) => {
+        console.log("*** About to add SavedProducts", store.state.user)
+        if (store.state.user.email) {
+            actions.initializeContentfulClient(store);
+            store.state.cfClient.getSpace(store.state.cfSpaceID).then((space) => {
+                space.getEnvironment('master').then((environment) => {
+                    environment.getEntries({ 'content_type': 'customerSavedProducts', 'fields.customerEmail': store.state.user.email }).then((entries) => {
+                        if (entries.items && entries.items.length > 0) {
+                            const existingProducts = entries.items[0].fields['savedProducts']['en-US']['products'];
+                            //add the store to list if it doesnot already exist
+                            if (!!!existingProducts.find(item => item.id === product.id)) {
+                                existingProducts.push(product)
+                                entries.items[0].update()
+                                store.setState({ cfSavedProductsList: existingProducts });
+                            }
+                        }
+                        else { // if this is first item for the customer then create content in contentful
+                            environment.createEntry('customerSavedProducts', {
+                                fields: {
+                                    customerEmail: { 'en-US': store.state.user.email },
+                                    savedProducts: { 'en-US': { title: "Default", products: [product] } }
+                                }
+                            }).then((entry) => console.log("New entry created successfully",entry))
+                                .catch(console.error)
+                        }
+                    })
+                })
+            })
+        }
+    },
 };
 
 const useGlobal = useGlobalHook(React, initialState, actions);

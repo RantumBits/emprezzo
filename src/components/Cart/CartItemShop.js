@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { PlusCircleIcon, MinusCircleIcon, TrashIcon } from './icons'
 import { Home } from "@styled-icons/material"
-import { CartContext } from './CartContext';
 import { formatNumber } from './utils';
 import styled from '@emotion/styled';
 import { Dialog } from "@reach/dialog";
@@ -141,8 +140,6 @@ const CartItemShop = ({ shop }) => {
         );
     }
 
-    const { removeProduct } = useContext(CartContext);
-
     return (
         <>
             <CartItemWrapper>
@@ -157,7 +154,7 @@ const CartItemShop = ({ shop }) => {
                 <CartElementBig>
                     <ProductName><a href="javascript:" onClick={() => openDialog(shop)}>{shop.name}</a></ProductName>
                 </CartElementBig>
-                <CartElementMedium>
+                {/* <CartElementMedium>
                     <ButtonsWrapper>
                         {shop.quantity === 1 &&
                             <button className="btn btn-alt" onClick={() => removeProduct(shop)}>
@@ -165,7 +162,7 @@ const CartItemShop = ({ shop }) => {
                             </button>
                         }
                     </ButtonsWrapper>
-                </CartElementMedium>
+                </CartElementMedium> */}
             </CartItemWrapper>
             <StyledDialog isOpen={showDialog} onDismiss={closeDialog}>
                 <button className="close-button" onClick={closeDialog} style={{ float: "right", cursor: "pointer" }}>

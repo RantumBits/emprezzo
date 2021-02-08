@@ -5,7 +5,7 @@ import Headroom from 'react-headroom';
 import logo from '../../static/logo/logo.png';
 import Search from '../components/search'
 import { ShoppingCart, Menu } from "@styled-icons/material"
-import { CartContext } from '../components/Cart/CartContext'
+import { LuggageCart } from "@styled-icons/remix-line/LuggageCart"
 import Cart from '../components/Cart/components/Cart'
 import { useMediaQuery } from 'react-responsive'
 
@@ -108,7 +108,7 @@ const SearchWrapper = styled.div`
 `;
 
 const NavBar = () => {
-  const { itemCount } = useContext(CartContext);
+  
   const isMobile = useMediaQuery({ query: '(max-width: 600px)' })
 
   return (
@@ -140,8 +140,8 @@ const NavBar = () => {
               <Search collapse indices={searchIndices} variation={"light"} />
             </SearchWrapper>
             <div>
-              <Link to="/cart" style={{ display: "flex", margin: "0.5rem", fontSize: "0.85rem" }}>
-                <ShoppingCart width="24px" />{itemCount}
+              <Link to="/savedstores" style={{ display: "flex", margin: "0.5rem", fontSize: "0.85rem" }}>
+                <LuggageCart width="24px" />
               </Link>
             </div>
           </Nav>

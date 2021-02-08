@@ -11,6 +11,7 @@ const Title = styled.h2`
 `;
 const Wrapper = styled.div`
   text-align: left;
+  width: 100%;
 `;
 const CartWrapper = styled.div`
   justify-content: left;
@@ -47,7 +48,6 @@ const DisplaySavedStores = () => {
         }
     }, [loaded, globalState.authenticated]);
     const allStores = globalState.cfSavedStoresList['stores'];
-    console.log("*** allStores", allStores)
 
     return (
         <Wrapper>
@@ -57,15 +57,18 @@ const DisplaySavedStores = () => {
                     <ShopifyAuthentication />
                 </>
             }
-            {globalState.authenticated && (!allStores || allStores.length <= 0) &&
-                <div>Your list is empty</div>
-            }
-            {globalState.authenticated && allStores && allStores.length > 0 &&
-                <CartWrapper>
-                    <CartSection>
-                        <CartItems>
-                            <h3>Saved Shops</h3>
-                            {allStores.map((shop, index) => {
+            <CartWrapper>
+                <CartSection>
+                    <CartItems>
+                        <h3>Saved Shops</h3>
+                        {globalState.authenticated && !allStores &&
+                            <div>Loading...</div>
+                        }
+                        {globalState.authenticated && allStores && allStores.length <= 0 &&
+                            <CartItemWrapper>Your list is empty</CartItemWrapper>
+                        }
+                        {globalState.authenticated && allStores && allStores.length > 0 &&
+                            allStores.map((shop, index) => {
                                 const storeDetail = {
                                     ...shop,
                                     name: shop.shopName
@@ -75,11 +78,11 @@ const DisplaySavedStores = () => {
                                         <CartItemShop shop={storeDetail} />
                                     </CartItem>
                                 );
-                            })}
-                        </CartItems>
-                    </CartSection>
-                </CartWrapper>
-            }
+                            })
+                        }
+                    </CartItems>
+                </CartSection>
+            </CartWrapper>
         </Wrapper>
     );
 }
