@@ -140,6 +140,11 @@ module.exports = {
             statement: "SELECT CONCAT(ProductID,FLOOR(RAND()*10000)) AS UniqueKey, CONCAT(SUBSTRING(VendorURL,9,9), ShopifyProducts.ProductID) AS UniqueID, ShopifyProducts.* FROM ShopifyProducts WHERE Available = 0 GROUP BY ProductID LIMIT 5000",
             idFieldName: 'UniqueKey',
             name: 'ShopifyProductsAvailableView'
+          },
+          {
+            statement: 'SELECT CONCAT(uniqid,FLOOR(RAND()*10000)) AS UniqueKey,Emails.* FROM Emails',
+            idFieldName: 'UniqueKey',
+            name: 'Emails'
           }
         ]
       }

@@ -11,6 +11,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
 import ProductCategoryItem from '../components/ProductCategoryItem';
 import AlgoliaProductList from '../components/AlgoliaProductList';
+import EmailsItem from '../components/EmailsItem';
 import AddShopToCartButton from '../components/Cart/AddShopToCartButton';
 import { useMediaQuery } from 'react-responsive';
 import { getClearbitLogoURL } from '../utils/miscUtils';
@@ -190,6 +191,16 @@ const CategoryWrapper = styled.div`
   grid-template-columns: repeat(5, 1fr);
 `;
 
+const EmailGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 2rem;
+  text-align: left;
+  @media (max-width: ${props => props.theme.breakpoints.s}) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+`;
+
 const SingleItem = ({ data, pageContext, location }) => {
   const { next, prev } = pageContext;
   let {
@@ -224,7 +235,7 @@ const SingleItem = ({ data, pageContext, location }) => {
   if (AlexaURL.slice(-1) != '/') AlexaURL += "/";
 
   const clearbitLogoURL = getClearbitLogoURL(AlexaURL);
-  
+
   const allMysqlMainViewEdges = data.allMysqlMainView.edges;
   const rowallMysqlCrunchBaseViewEdges = data.allMysqlCrunchBaseView ? data.allMysqlCrunchBaseView.edges : [];
   const rowallMysqlPayNShipEdges = data.allMysqlPayNShip ? data.allMysqlPayNShip.edges : [];
@@ -324,7 +335,7 @@ const SingleItem = ({ data, pageContext, location }) => {
     }
     combinedRelatedShops.push(newNode);
   })
-  
+
   //Extracting Products from MySQL Data
   const maxProducts = 10;
   const rowShopifyViewEdges = data.allMysqlShopifyView.edges;
@@ -371,6 +382,13 @@ const SingleItem = ({ data, pageContext, location }) => {
   //Extracting gift cards
   const filteredShopifyGiftCards = _.filter(rowallMysqlShopifyProductsAllEdges, ({ node }) => node.Title.toLowerCase().indexOf("gift card") >= 0);
   const listShopifyGiftCards = _.slice(filteredShopifyGiftCards, 0, maxProducts);
+
+  //Extracting emails  
+  const maxEmails = 3;
+  const rowallMysqlEmailsEdges = data.allMysqlEmails ? data.allMysqlEmails.edges : [];
+  const filteredEmails = _.filter(rowallMysqlEmailsEdges, ({ node }) => AlexaURL.toLowerCase().indexOf(node.domain.toLowerCase()) >= 0);
+  const listEmails = _.slice(filteredEmails, 0, maxEmails);
+  console.log("***** listEmails", AlexaURL.toLowerCase(), listEmails)
 
   //Generating the data for chart
   let chartRankData = null;
@@ -985,15 +1003,12 @@ const SingleItem = ({ data, pageContext, location }) => {
 
 
           <TabPanel>
-            <AlgoliaProductList
-              searchIndexName={"emails"}
-              defaultSearchTerm={(AlexaURL || "").replace(/^(?:https?:\/\/)?(?:www\.)?/i, "").split('/')[0]}
-              hideCTAButton={true}
-              showSearchBox={true}
-              hideLeftPanel={true}
-              itemsPerPage={3}
-              location={location}
-            />
+            
+            <EmailGrid>
+              {listEmails && listEmails.map((emailNode) => (
+                <EmailsItem email={emailNode} emprezzoID={emprezzoID} />
+              ))}
+            </EmailGrid>
           </TabPanel>
 
 
@@ -1546,6 +1561,24 @@ export const query = graphql`
         node {
           URL
           profile_image_url
+        }
+      }
+    }
+
+    allMysqlEmails {
+      edges {
+        node {
+          name
+          domain
+          email
+          subject
+          time
+          body_html
+          body_text
+          messageid
+          uniqid
+          screenshot
+          snippet
         }
       }
     }
