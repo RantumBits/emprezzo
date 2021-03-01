@@ -200,7 +200,7 @@ const EmailsItem = (props) => {
   const openDialog = () => setShowDialog(true);
   const closeDialog = () => setShowDialog(false);
 
-  console.log("**** props=EmailsItem=", props)
+  // console.log("**** props=EmailsItem=", props)
   return (
     <Wrapper>
       {props && props.email &&

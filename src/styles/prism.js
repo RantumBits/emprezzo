@@ -6,7 +6,7 @@ const prism = css`
   li > code {
     color: #f8f8f2;
     background: #131316;
-    font-family: 'Overpass Mono', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-family: 'Jost', sans-serif;
     text-align: left;
     word-spacing: normal;
     word-break: normal;
@@ -23,7 +23,7 @@ const prism = css`
   pre[class*='language-'] {
     color: #f8f8f2;
     background: none;
-    font-family: 'Overpass Mono', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-family: 'Jost', sans-serif;
     text-align: left;
     word-spacing: normal;
     word-break: normal;
