@@ -388,7 +388,7 @@ const SingleItem = ({ data, pageContext, location }) => {
   const rowallMysqlEmailsEdges = data.allMysqlEmails ? data.allMysqlEmails.edges : [];
   const filteredEmails = _.filter(rowallMysqlEmailsEdges, ({ node }) => AlexaURL.toLowerCase().indexOf(node.domain.toLowerCase()) >= 0);
   const listEmails = _.slice(filteredEmails, 0, maxEmails);
-  console.log("***** listEmails", AlexaURL.toLowerCase(), listEmails)
+  //console.log("***** listEmails", AlexaURL.toLowerCase(), listEmails)
 
   //Generating the data for chart
   let chartRankData = null;

@@ -142,7 +142,8 @@ module.exports = {
             name: 'ShopifyProductsAvailableView'
           },
           {
-            statement: 'SELECT CONCAT(uniqid,FLOOR(RAND()*10000)) AS UniqueKey,Emails.* FROM Emails',
+            //statement: 'SELECT CONCAT(uniqid,FLOOR(RAND()*10000)) AS UniqueKey,Emails.* FROM Emails',
+            statement: "SELECT 1 AS UniqueKey, '2' AS messageid, 3 AS uniqid, '4' AS time, '5' AS name, '6' AS email, '7' AS subject, '8' AS body_text, '9' AS body_html, '10' AS domain, '11' AS snippet, '12' AS screenshot, '13' AS updated FROM DUAL",
             idFieldName: 'UniqueKey',
             name: 'Emails'
           }
