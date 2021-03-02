@@ -45,6 +45,7 @@ const GiftCard = (props) => {
           defaultSearchTerm={'gift card'}
           facetsToShow={'category,brands,prices'}
           showSearchBox={true}
+            hideCTAButton={false}
           showClearFilter={true}
           location={props.location}
         />

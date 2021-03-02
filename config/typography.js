@@ -17,8 +17,8 @@ export const typography = new Typography({
     'sans-serif',
   ],
   bodyFontFamily: [
-    'Overpass Mono',
-    'Consolas',
+      'Jost',
+  
     'Open Sans',
     '-apple-system',
     'BlinkMacSystemFont',

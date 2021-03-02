@@ -12,9 +12,8 @@ const headroom = css`
     display: none;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Jost:wght@200;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;700&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Jost:wght@500&family=Overpass+Mono:wght@400&display=swap');
 p.center {
     text-align: center;
     margin: 25px;
@@ -59,11 +58,13 @@ button.ais-RefinementList-showMore:hover {
 
 [data-reach-dialog-overlay]{z-index: 10;}
 
-h4 {margin: 1rem; font-size: .8rem;
+h4 {margin: 1rem; font-size: 1rem;
 font-family: 'Jost', sans-serif;
+}
 
-li.ais-Hits-item {
+li.ais-Hits-item, .css-1t9eqyr-AlgoliaProductList--RightPanel .ais-Hits-item {
   border: unset;
+
 }
 
 .lb-ef-bounce {

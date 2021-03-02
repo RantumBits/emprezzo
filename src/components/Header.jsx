@@ -72,7 +72,7 @@ const Header = ({ children, title, date, subtitle, cover, socialDetails, likeEna
     <Text>
 
  {likeEnabled &&
-        <img src={likeEnabled.storeProfileImage} title={title} alt={title} style={{ 'margin-top': '4rem', height: '80px', 'textAlign': 'center', 'borderRadius': '100%' }} />
+        <img src={likeEnabled.storeProfileImage} title={title} alt={title} style={{ 'margin-top': '4rem', 'max-height': '80px', 'textAlign': 'center', 'borderRadius': '0%' }} />
       }
       {likeEnabled &&
         <span

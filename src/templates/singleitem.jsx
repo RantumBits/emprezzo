@@ -79,8 +79,7 @@ const Stat = styled.p`
   @media (max-width: ${props => props.theme.breakpoints.s}) {
     font-size: 0.7rem;
   }
-  font-family: 'Overpass Mono', 'Consolas', 'Open Sans', -apple-system,
-    'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+
   line-height: 1.5;
   margin-top: 0rem;
   margin-bottom: 0rem;
@@ -121,9 +120,7 @@ const StatisticItem = styled.div`
   h6 {
     margin: 0px;
     font-size: 0.7em;
-    font-family: 'Overpass Mono', 'Consolas', 'Open Sans', -apple-system,
-      'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial',
-      sans-serif;
+
   }
 `;
 
@@ -383,7 +380,7 @@ const SingleItem = ({ data, pageContext, location }) => {
   const filteredShopifyGiftCards = _.filter(rowallMysqlShopifyProductsAllEdges, ({ node }) => node.Title.toLowerCase().indexOf("gift card") >= 0);
   const listShopifyGiftCards = _.slice(filteredShopifyGiftCards, 0, maxProducts);
 
-  //Extracting emails  
+  //Extracting emails
   const maxEmails = 3;
   const rowallMysqlEmailsEdges = data.allMysqlEmails ? data.allMysqlEmails.edges : [];
   const filteredEmails = _.filter(rowallMysqlEmailsEdges, ({ node }) => AlexaURL.toLowerCase().indexOf(node.domain.toLowerCase()) >= 0);
@@ -843,29 +840,31 @@ const SingleItem = ({ data, pageContext, location }) => {
                 description: about,
               }}
             />
-            <Subtitle><b>{category}</b><br /><i>{tags}</i><br /></Subtitle>
+            <Subtitle><b>{category}</b> {tags}<br /></Subtitle>
             <Stat>{rowShopifyProductSummary.PriceMin &&
               rowShopifyProductSummary.PriceMax && (
-                <small>
-                  ${rowShopifyProductSummary.PriceMin}-${rowShopifyProductSummary.PriceMax} (${rowShopifyProductSummary.PriceAvg} avg)</small>
+                <span>
+                  ${rowShopifyProductSummary.PriceMin}-${rowShopifyProductSummary.PriceMax} (${rowShopifyProductSummary.PriceAvg} avg)</span>
               )}
+              &nbsp;
+              {PaypalShopID && PaypalShopID != '#' &&
+                  <span style={{ paddingRight: "0.25rem" }}><FaPaypal size="16" color="#666" /></span>
+                }
+                {AmazonPay == '1' &&
+                  <span style={{ paddingRight: "0.25rem" }}><FaAmazon size="16" color="#666" /></span>
+                }
+                {ShopifyPay && ShopifyPay == '1' &&
+                  <span style={{ paddingRight: "0.25rem" }}><FaShopify size="16" color="#666" /></span>
+                }
+                {ApplePay && ApplePay == '1' &&
+                  <span style={{ paddingRight: "0.25rem" }}><FaApple size="16" color="#666" /></span>
+                }
             </Stat>
 
 
 
-            <Stat>PAY&nbsp;
-            {PaypalShopID && PaypalShopID != '#' &&
-                <span style={{ paddingRight: "0.25rem" }}><FaPaypal size="16" color="#666" /></span>
-              }
-              {AmazonPay == '1' &&
-                <span style={{ paddingRight: "0.25rem" }}><FaAmazon size="16" color="#666" /></span>
-              }
-              {ShopifyPay && ShopifyPay == '1' &&
-                <span style={{ paddingRight: "0.25rem" }}><FaShopify size="16" color="#666" /></span>
-              }
-              {ApplePay && ApplePay == '1' &&
-                <span style={{ paddingRight: "0.25rem" }}><FaApple size="16" color="#666" /></span>
-              }
+            <Stat>
+
 
             </Stat>
 
@@ -876,14 +875,15 @@ const SingleItem = ({ data, pageContext, location }) => {
                 <div>
 
                   {firstRowDataView.node.FreeShipMin != null && firstRowDataView.node.FreeShipMin != 0 &&
-                    <span><FaTruck size="16" color="#666" class="icon" title="free shipping info" /> Free shipping over ${firstRowDataView.node.FreeShipMin}<br /></span>
+                    <span><FaTruck size="16" color="#666" class="icon" title="free shipping info" /> Free shipping ${firstRowDataView.node.FreeShipMin}+ &nbsp;</span>
                   }
                   {firstRowDataView.node.FreeShipMin == 0 &&
-                    <span><FaTruck size="16" color="#666" class="icon" title="free shipping on most orders" /> Most orders ship free!<br /></span>
+                    <span><FaTruck size="16" color="#666" class="icon" title="free shipping on most orders" /> Most orders ship free! &nbsp;</span>
                   }
                   {firstRowDataView.node.BaseShipRate > 1 &&
-                    <span><FaBoxOpen size="16" color="#666" class="icon" title="shipping rates" /> Rates from ${firstRowDataView.node.BaseShipRate}<br /></span>
+                    <span><FaBoxOpen size="16" color="#666" class="icon" title="shipping rates" /> Rates ${firstRowDataView.node.BaseShipRate}+ &nbsp; </span>
                   }
+                  <br />
                   {firstRowDataView.node.ReturnDays != null && firstRowDataView.node.ReturnDays != "0" &&
                     <span><FaUndoAlt size="16" color="#666" /> {firstRowDataView.node.ReturnDays} day returns</span>
                   }
@@ -939,7 +939,7 @@ const SingleItem = ({ data, pageContext, location }) => {
               facetsToShow={'onsale,giftcard'}
               showSearchBox={true}
               showClearFilter={false}
-              hideCTAButton={true}
+              hideCTAButton={true}f
               enableCart={true}
               currentShop={{ name: name, link: AlexaURL }}
               location={location}
@@ -1003,7 +1003,7 @@ const SingleItem = ({ data, pageContext, location }) => {
 
 
           <TabPanel>
-            
+
             <EmailGrid>
               {listEmails && listEmails.map((emailNode) => (
                 <EmailsItem email={emailNode} emprezzoID={emprezzoID} />

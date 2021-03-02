@@ -65,7 +65,7 @@ const Title = styled.h3`
 `;
 
 const Tags = styled.span`
-  font-size: 12px;
+  font-size: 0.8em;
   font-family: 'Jost','Segoe UI','Roboto','Candal',-apple-system,'BlinkMacSystemFont','Segoe UI','Helvetica','Arial',sans-serif;
   font-weight: 300;
   margin: 5px 0;;
@@ -75,7 +75,7 @@ const Tags = styled.span`
 `;
 
 const Stats = styled.span`
-  font-size: 12px;
+  font-size: 0.8em;
   display: block;
 
   margin-bottom: 8px;
@@ -154,7 +154,7 @@ const AlgoliaUncommonryItem = (props) => {
                     <span> <FaBoxOpen paddingRight='2px' size="14" color="#666" class="icon" title="Shipping rates from" />${props.hit.baseShipRate}+ </span>
                   }
                   {props.hit.returnDays != null && props.hit.returnDays != "0" &&
-                    <span title={`${props.hit.returnDays} day returns`}> <FaUndoAlt paddingRight='5px' size="14" color="#666" />{props.hit.returnDays} </span>
+                    <span title={`${props.hit.returnDays} day returns`}> <FaUndoAlt paddingRight='5px' size="14" color="#666" title="return days" /> {props.hit.returnDays} </span>
                   }
                   {props.hit.returnShipFree != "." && props.hit.returnShipFree == "Yes" &&
                     <span> <FaRegStar size="14" color="#666" title="Most returns ship free" /></span>

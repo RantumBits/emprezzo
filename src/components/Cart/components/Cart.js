@@ -37,19 +37,27 @@ const Cart = (props) => {
     <>
       <div className={`Cart ${globalState.isCartOpen ? 'Cart--open' : ''}`}>
         <header className="Cart__header">
-          <h2>Your cart</h2>
+          <h3>Saved items</h3>
           <button
             onClick={() => globalActions.handleCartClose()}
             className="Cart__close">
             ×
           </button>
         </header>
+        <h4>Products</h4>
         <ul className="Cart__line-items">
           {line_items}
         </ul>
+
+        <h4>Shops</h4>
+        <ul className="Cart__line-items">
+          {line_items}
+        </ul>
+      {/**
         <ul>
           <BuyPledgeling />
         </ul>
+
         <footer className="Cart__footer">
 
           <div className="Cart-info clearfix">
@@ -72,6 +80,7 @@ const Cart = (props) => {
           </div>
           <button className="Cart__checkout button" onClick={openCheckout}>Checkout</button>
         </footer>
+        **/}
       </div>
       {globalState.checkout.lineItems.length > 0 &&
         <StickyIcon className="shopify-buy__cart-toggle" onClick={() => globalActions.handleCartOpen()}>

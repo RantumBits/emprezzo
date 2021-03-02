@@ -45,8 +45,9 @@ const Index = ({ data, location }) => {
 
         <ShopWrapper>
           <AlgoliaProductList
-            facetsToShow={'category,prices,storeoffers,brands,payments,giftcard,gifimage'}
+            facetsToShow={'category,prices,storeoffers,brands,payments,gifimage'}
             showSearchBox={true}
+            hideCTAButton={true}
             showSearchSuggestions={true}
             showClearFilter={true}
             enableCart={true}
