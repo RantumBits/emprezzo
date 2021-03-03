@@ -88,7 +88,8 @@ const initialState = {
     user: (getUserFromLocalStorage() !== null ? getUserFromLocalStorage() : {}),
     authenticated: (getUserFromLocalStorage() !== null),
     authMessage: "",
-    isAuthDialogOpen: false
+    isAuthDialogOpen: false,
+    isRegisterDialogOpen: false
 };
 
 const actions = {
@@ -232,12 +233,18 @@ const actions = {
     handleCartClose: (store) => {
         store.setState({ isCartOpen: false });
     },
+    openRegisterDialog: (store) => {
+        store.setState({ isRegisterDialogOpen: true, authMessage: "" });
+    },
+    closeRegisterDialog: (store) => {
+        store.setState({ isRegisterDialogOpen: false });
+    },
     openAuthDialog: (store) => {
-        store.setState({ isAuthDialogOpen: true });
+        store.setState({ isAuthDialogOpen: true, authMessage: "" });
     },
     closeAuthDialog: (store) => {
         store.setState({ isAuthDialogOpen: false });
-    },
+    },    
     registerUser: (store, user) => {
         store.setState({ authMessage: "" });
         const params = {
@@ -350,6 +357,13 @@ const actions = {
             })
         }
     },
+    findInSavedStores: (store, shop) => {
+        console.log("*** About to FIND in SavedStores", store.state.user, store.state.cfSavedStoresList)
+        if (store.state.user.email) {
+            const filteredStores = store.state.cfSavedStoresList && store.state.cfSavedStoresList.stores && _.filter(store.state.cfSavedStoresList.stores, item => item.emprezzoID == shop.emprezzoID)
+            return filteredStores && filteredStores.length > 0;
+        }
+    },
     addToSavedStores: (store, shop) => {
         console.log("*** About to add SavedStores", store.state.user)
         if (store.state.user.email) {
@@ -372,7 +386,7 @@ const actions = {
                                     customerEmail: { 'en-US': store.state.user.email },
                                     savedStores: { 'en-US': { title: "Default", stores: [shop] } }
                                 }
-                            }).then((entry) => console.log("New entry created successfully",entry))
+                            }).then((entry) => {console.log("New entry created successfully",entry); getSavedStores(store)})
                                 .catch(console.error)
                         }
                     })

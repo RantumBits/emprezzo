@@ -55,6 +55,8 @@ export const Input = styled.input`
   background: transparent;
   color: ${props => ((props.variation && props.variation == "light") ? props.theme.colors.white.light :  props.theme.colors.primary.light)};
   padding-left: 5px;
+  border-radius: 8px;
+  padding: 8px;
   margin-left: 5px;
   transition: ${props => props.theme.shortTrans};
   border-radius: ${props => props.theme.smallBorderRadius};

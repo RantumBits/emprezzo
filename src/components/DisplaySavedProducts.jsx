@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 import CartItem from './Cart/CartItem';
 import _ from 'lodash';
 import useGlobal from "./Cart/CartState";
-import ShopifyAuthentication from "./Cart/ShopifyAuthentication"
 
 const Title = styled.h2`
   margin: 1rem;
@@ -51,12 +50,6 @@ const DisplaySavedProducts = () => {
     
     return (
         <Wrapper>
-            {!globalState.authenticated &&
-                <>
-                    <button className="button" onClick={globalActions.openAuthDialog}>Login to Continue</button>
-                    <ShopifyAuthentication />
-                </>
-            }
             <CartWrapper>
                 <CartSection>
                     <CartItems>

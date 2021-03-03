@@ -30,12 +30,12 @@ class LineItem extends Component {
   }
 
   render() {
-    const itemTitle = this.getCustomAttribute("shopName") ? (this.getCustomAttribute("shopName")+" Gift Card") : this.props.line_item.title
+    const itemTitle = this.getCustomAttribute("shopName") ? (this.getCustomAttribute("shopName") + " Gift Card") : this.props.line_item.title
     //console.log("**** lineitem",this.props.line_item.quantity,this.props.line_item.variant.price)
     return (
       <li className="Line-item">
         <div className="Line-item__img">
-          <img  src={this.getCustomAttribute("imageURL") || this.props.line_item.variant.image.src} alt={`${this.props.line_item.title} product shot`} />
+          <img src={this.getCustomAttribute("imageURL") || this.props.line_item.variant.image.src} alt={`${this.props.line_item.title} product shot`} />
         </div>
         <div className="Line-item__content">
           <div className="Line-item__content-row">
@@ -55,7 +55,9 @@ class LineItem extends Component {
             <span className="Line-item__price1">
               $ {(this.props.line_item.quantity * this.props.line_item.variant.price).toFixed(2)}
             </span>
-            <button className="Line-item__remove" onClick={() => this.props.removeLineItemInCart(this.props.line_item.id)}>×</button>
+            {this.props.removeLineItemInCart &&
+              <button className="Line-item__remove" onClick={() => this.props.removeLineItemInCart(this.props.line_item.id)}>×</button>
+            }
           </div>
         </div>
       </li>

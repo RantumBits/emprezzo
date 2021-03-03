@@ -11,6 +11,14 @@ const Row = styled.div`
 const Col = styled.div`
   flex: ${(props) => props.size};
 `;
+const StyledDialog = styled(Dialog)`
+width: 20vw;
+@media (max-width: 600px) {
+  width: 90vw;
+  padding: 1.5rem;
+  margin: 11vh auto 5vh auto;
+}
+`;
 
 const ShopifyAuthentication = () => {
 
@@ -37,7 +45,12 @@ const ShopifyAuthentication = () => {
             "lastName": createLastname,
             "phone": createPhone
         }
-        globalActions.registerUser(user)
+        globalActions.registerUser(user);
+        setCreateEmail("");
+        setCreatePassword("");
+        setCreateFirstname("");
+        setCreateLastname("");
+        setCreatePhone("");
     }
 
     const signinUser = () => {
@@ -45,22 +58,64 @@ const ShopifyAuthentication = () => {
             "email": findEmail,
             "password": findPassword,
         }
-        globalActions.signinUser(user)
-    }
-
-    const signoutUser = () => {
-        setCreateEmail("");
-        setCreatePassword("");
-        setCreateFirstname("");
-        setCreateLastname("");
-        setCreatePhone("");
+        globalActions.signinUser(user);
         setFindEmail("");
         setFindPassword("");
+    }
+
+    const signoutUser = () => {                
         globalActions.signoutUser()
     }
 
     return (
-        <Dialog isOpen={globalState.isAuthDialogOpen} onDismiss={globalActions.closeAuthDialog}>
+        <>
+        <StyledDialog isOpen={globalState.isRegisterDialogOpen} onDismiss={globalActions.closeRegisterDialog}>
+            <button className="close-button" onClick={globalActions.closeRegisterDialog} style={{ float: "right", cursor: "pointer" }}>
+                <span aria-hidden>X</span>
+            </button>
+            <Grid>
+                <Row>
+                    <Col><i>{globalState.authMessage}</i><br /></Col>
+                </Row>
+
+                {globalState.authenticated &&
+                    <Row style={{ justifyContent: "flex-end" }}>
+                        <Col>
+                            <span>Logged in as '{globalState.user.email}' &nsbp;&nsbp;</span>
+                            <input type="button" value="Logout" className="button" onClick={signoutUser} />
+                        </Col>
+                    </Row>
+                }
+                {!globalState.authenticated &&
+                    <>
+                        <Row>
+                            <Col size={2}>
+                                <Row><Col><h2>Sign Up</h2></Col></Row>
+                                <Row>
+                                    <Col>Email:<br /><input type="email" value={createEmail} onChange={e => setCreateEmail(e.target.value)} /></Col>
+                                </Row>
+                                <Row>
+                                    <Col>Password:<br /><input type="password" value={createPassword} onChange={e => setCreatePassword(e.target.value)} /></Col>
+                                </Row>
+                                {/* <Row>
+                                    <Col>Firstname:<br /><input type="text" value={createFirstname} onChange={e => setCreateFirstname(e.target.value)} /></Col>
+                                </Row>
+                                <Row>
+                                    <Col>Lastname:<br /><input type="text" value={createLastname} onChange={e => setCreateLastname(e.target.value)} /></Col>
+                                </Row>
+                                <Row>
+                                    <Col>Phonenumber:<br /><input type="number" value={createPhone} onChange={e => setCreatePhone(e.target.value)} /></Col>
+                                </Row> */}
+                                <Row>
+                                    <Col style={{ paddingTop: "0.5rem" }}><input className="button" type="button" value="SIGNUP" onClick={registerUser} /></Col>
+                                </Row>
+                            </Col>
+                        </Row>
+                    </>
+                }
+            </Grid>
+        </StyledDialog>
+        <StyledDialog isOpen={globalState.isAuthDialogOpen} onDismiss={globalActions.closeAuthDialog}>
             <button className="close-button" onClick={globalActions.closeAuthDialog} style={{ float: "right", cursor: "pointer" }}>
                 <span aria-hidden>X</span>
             </button>
@@ -72,7 +127,7 @@ const ShopifyAuthentication = () => {
                 {globalState.authenticated &&
                     <Row style={{ justifyContent: "flex-end" }}>
                         <Col>
-                            <span>Logged in as '{globalState.user.email}'</span>
+                            <span>Logged in as '{globalState.user.email}' &nsbp;&nsbp;</span>
                             <input type="button" value="Logout" className="button" onClick={signoutUser} />
                         </Col>
                     </Row>
@@ -80,27 +135,6 @@ const ShopifyAuthentication = () => {
                 {!globalState.authenticated &&
                     <>
                         <Row>
-                            <Col size={2}>
-                                <Row><Col><h2>Register Customer</h2></Col></Row>
-                                <Row>
-                                    <Col>Email:<br /><input type="email" value={createEmail} onChange={e => setCreateEmail(e.target.value)} /></Col>
-                                </Row>
-                                <Row>
-                                    <Col>Password:<br /><input type="password" value={createPassword} onChange={e => setCreatePassword(e.target.value)} /></Col>
-                                </Row>
-                                <Row>
-                                    <Col>Firstname:<br /><input type="text" value={createFirstname} onChange={e => setCreateFirstname(e.target.value)} /></Col>
-                                </Row>
-                                <Row>
-                                    <Col>Lastname:<br /><input type="text" value={createLastname} onChange={e => setCreateLastname(e.target.value)} /></Col>
-                                </Row>
-                                <Row>
-                                    <Col>Phonenumber:<br /><input type="number" value={createPhone} onChange={e => setCreatePhone(e.target.value)} /></Col>
-                                </Row>
-                                <Row>
-                                    <Col style={{ paddingTop: "0.5rem" }}><input className="button" type="button" value="REGISTER" onClick={registerUser} /></Col>
-                                </Row>
-                            </Col>
                             <Col size={2}>
                                 <Row><Col><h2>Login Customer</h2></Col></Row>
                                 <Row>
@@ -117,7 +151,8 @@ const ShopifyAuthentication = () => {
                     </>
                 }
             </Grid>
-        </Dialog>
+        </StyledDialog>
+        </>
     )
 };
 

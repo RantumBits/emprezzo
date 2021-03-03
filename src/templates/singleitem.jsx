@@ -75,7 +75,7 @@ font-family: 'Jost','Segoe UI','Roboto','Candal',-apple-system,'BlinkMacSystemFo
 `;
 
 const Stat = styled.p`
-  font-size: 1rem;
+  font-size: 0.8rem;
   @media (max-width: ${props => props.theme.breakpoints.s}) {
     font-size: 0.7rem;
   }
@@ -830,16 +830,18 @@ const SingleItem = ({ data, pageContext, location }) => {
           {/*firstRowDataView && renderProfilePicURL(firstRowDataView.node, name)*/}
           <div style={{ paddingLeft: '5px' }}>
 
-            <Title>{name}</Title>
-            <AddShopToCartButton
-              details={{
-                storeName: name,
-                storeURL: AlexaURL,
-                storeProfileImage: clearbitLogoURL || ProfileImage || (firstRowDataView && firstRowDataView.node.ProfilePicURL),
-                emprezzoID: emprezzoID,
-                description: about,
-              }}
-            />
+            <Title>
+              <AddShopToCartButton
+                details={{
+                  storeName: name,
+                  storeURL: AlexaURL,
+                  storeProfileImage: clearbitLogoURL || ProfileImage || (firstRowDataView && firstRowDataView.node.ProfilePicURL),
+                  emprezzoID: emprezzoID,
+                  description: about,
+                }}
+              />
+              {name}
+            </Title>
             <Subtitle><b>{category}</b> {tags}<br /></Subtitle>
             <Stat>{rowShopifyProductSummary.PriceMin &&
               rowShopifyProductSummary.PriceMax && (
@@ -848,17 +850,17 @@ const SingleItem = ({ data, pageContext, location }) => {
               )}
               &nbsp;
               {PaypalShopID && PaypalShopID != '#' &&
-                  <span style={{ paddingRight: "0.25rem" }}><FaPaypal size="16" color="#666" /></span>
-                }
-                {AmazonPay == '1' &&
-                  <span style={{ paddingRight: "0.25rem" }}><FaAmazon size="16" color="#666" /></span>
-                }
-                {ShopifyPay && ShopifyPay == '1' &&
-                  <span style={{ paddingRight: "0.25rem" }}><FaShopify size="16" color="#666" /></span>
-                }
-                {ApplePay && ApplePay == '1' &&
-                  <span style={{ paddingRight: "0.25rem" }}><FaApple size="16" color="#666" /></span>
-                }
+                <span style={{ paddingRight: "0.25rem" }}><FaPaypal size="16" color="#666" /></span>
+              }
+              {AmazonPay == '1' &&
+                <span style={{ paddingRight: "0.25rem" }}><FaAmazon size="16" color="#666" /></span>
+              }
+              {ShopifyPay && ShopifyPay == '1' &&
+                <span style={{ paddingRight: "0.25rem" }}><FaShopify size="16" color="#666" /></span>
+              }
+              {ApplePay && ApplePay == '1' &&
+                <span style={{ paddingRight: "0.25rem" }}><FaApple size="16" color="#666" /></span>
+              }
             </Stat>
 
 
@@ -937,9 +939,9 @@ const SingleItem = ({ data, pageContext, location }) => {
               defaultFilter={`emprezzoID:"${emprezzoID}"`}
               hideLeftPanel={true}
               facetsToShow={'onsale,giftcard'}
-              showSearchBox={true}
+              showSearchBox={false}
               showClearFilter={false}
-              hideCTAButton={true}f
+              hideCTAButton={true} f
               enableCart={true}
               currentShop={{ name: name, link: AlexaURL }}
               location={location}
@@ -1050,7 +1052,7 @@ const SingleItem = ({ data, pageContext, location }) => {
 
         <br />
 
-
+      
         <h3>About {name}</h3>
         <b>{name}</b> produces and sells {category} products {tags} and more. The company sells direct-to-consumer on its website.
 
@@ -1101,7 +1103,7 @@ const SingleItem = ({ data, pageContext, location }) => {
                   <span key={index}>
                     <PostSectionImage>
                       <Link key={index} to={`/shops/${shop.emprezzoID}/`}>
-                        <img src={getClearbitLogoURL(shop.AlexaURL) || shop.ProfileImage || shop.ProfilePicURL || shop.profile_image_url || "/logo/logo.png"} title={shop.name} alt={shop.name} onError={defaultImageOnError} style={{ height: 'inherit', 'textAlign': 'center', 'borderRadius': '100%' }} />
+                        <img src={getClearbitLogoURL(shop.AlexaURL) || shop.ProfileImage || shop.ProfilePicURL || shop.profile_image_url || "/logo/logo.png"} title={shop.name} alt={shop.name} onError={defaultImageOnError} style={{ height: 'inherit', 'textAlign': 'center', 'borderRadius': '5%' }} />
                       </Link>
                     </PostSectionImage>
                     <PostSectionContent>

@@ -114,6 +114,7 @@ const Title = styled.div`
   white-space: nowrap;
   overflow: hidden;
   color: #ccc;
+  margin-bottom: 5px !important;
   span {
     font-size: 0.8rem
   }
@@ -218,8 +219,8 @@ const AlgoliaProductItem = (props) => {
       shopName: hit.shopName,
       description: hit.description,
     }
-    globalActions.addToSavedProducts(hitToProduct); 
-    openMessageDialog();   
+    globalActions.addToSavedProducts(hitToProduct);
+    openMessageDialog();
   }
 
   const [currentPrice, setCurrentPrice] = React.useState(props.hit.price)

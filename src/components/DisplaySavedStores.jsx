@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 import CartItemShop from './Cart/CartItemShop';
 import _ from 'lodash';
 import useGlobal from "../components/Cart/CartState";
-import ShopifyAuthentication from "../components/Cart/ShopifyAuthentication"
 
 const Title = styled.h2`
   margin: 1rem;
@@ -50,13 +49,7 @@ const DisplaySavedStores = () => {
     const allStores = globalState.cfSavedStoresList['stores'];
 
     return (
-        <Wrapper>
-            {!globalState.authenticated &&
-                <>
-                    <button className="button" onClick={globalActions.openAuthDialog}>Login to Continue</button>
-                    <ShopifyAuthentication />
-                </>
-            }
+        <Wrapper>            
             <CartWrapper>
                 <CartSection>
                     <CartItems>
